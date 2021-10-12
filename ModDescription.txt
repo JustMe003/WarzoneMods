@@ -1,0 +1,3 @@
+[!]BETA[!]
+Prevends AI's from playing cards, configurable for all cards AI's play. Note that checking a checkbox allows an AI to play that card
+Not working for reinforcement cards yet due to unexpected behaviour
