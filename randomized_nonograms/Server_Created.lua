@@ -5,7 +5,7 @@ function Server_Created(game, settings)
     publicGameData.nonogram = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
     local overriddenBonuses = setLeftBonuses(publicGameData.nonogram)
 --	table.insert(overriddenBonuses, setTopBonuses(publicGameData.nonogram));
---	settings.OverriddenBonuses = overriddenBonuses;
+	settings.OverriddenBonuses = overriddenBonuses;
 
 end
 
