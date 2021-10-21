@@ -38,14 +38,14 @@ function setLeftBonuses(nonogram)
 				counter = counter + 1;
 			elseif counter ~= 0 then
 				tempList[index] = counter;
-				print(index .. ": " .. tempList[index]);
+				print(i, j, index .. ": " .. tempList[index]);
 				index = index + 1;
 				leftBonuses[401] = leftBonuses[401] - counter;
 				counter = 0;
 			end
 		if counter ~= 0 then
 			tempList[index] = counter;
-			print(index .. ": " .. tempList[index]);
+			print(i, j, index .. ": " .. tempList[index]);
 			index = index + 1;
 			leftBonuses[401] = leftBonuses[401] - counter;
 		end
