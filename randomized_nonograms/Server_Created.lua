@@ -28,7 +28,7 @@ end
 
 function setLeftBonuses(nonogram)
 	local leftBonuses = {};
-	leftBonuses[0] = 0
+	leftBonuses[401] = 0
 	for i, row in pairs(nonogram) do
 		local counter = 0
 		local bonusID = i * 10 + 1;
@@ -38,14 +38,14 @@ function setLeftBonuses(nonogram)
 			elseif counter ~= 0 then
 				leftBonuses[bonusID] = counter
 				print(bonusID .. ": " .. leftBonuses[bonusID]);
-				leftBonuses[0] = leftBonuses[0] - counter;
+				leftBonuses[401] = leftBonuses[0] - counter;
 				bonusID = bonusID + 1;
 				counter = 0
 			end
 		if counter ~= 0 then
 			leftBonuses[bonusID] = counter;
 			print(bonusID .. ": " .. leftBonuses[bonusID]);
-			leftBonuses[0] = leftBonuses[0] - counter;
+			leftBonuses[401] = leftBonuses[0] - counter;
 		end
 		end
 	end
