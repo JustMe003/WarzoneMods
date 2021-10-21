@@ -6,11 +6,7 @@ function Server_Created(game, settings)
     local overriddenBonuses = setLeftBonuses(publicGameData.nonogram)
 --	table.insert(overriddenBonuses, setTopBonuses(publicGameData.nonogram));
 	settings.OverriddenBonuses = overriddenBonuses;
-	local total = 0
-	for _, bonus in pairs(game.Map.Bonuses) do
-		total = bonus.Amount + total;
-	end
-	print(total);
+
 end
 
 function createNonogram(width, heigth, density)
@@ -35,28 +31,37 @@ function setLeftBonuses(nonogram)
 	leftBonuses[401] = 0
 	for i, row in pairs(nonogram) do
 		local counter = 0
-		local bonusID = i * 10 + 1;
+		local tempList = {};
 		for j, cell in pairs(row) do
 			if cell == 1 then
 				counter = counter + 1;
 			elseif counter ~= 0 then
-				leftBonuses[bonusID] = counter
-				print(bonusID .. ": " .. leftBonuses[bonusID]);
+				table.insert(tempList, counter);
 				leftBonuses[401] = leftBonuses[401] - counter;
-				bonusID = bonusID + 1;
-				counter = 0
+				counter = 0;
 			end
 		if counter ~= 0 then
-			leftBonuses[bonusID] = counter;
-			print(bonusID .. ": " .. leftBonuses[bonusID]);
+			table.insert(tempList, counter);
 			leftBonuses[401] = leftBonuses[401] - counter;
+		end
+		local bonusID = i * 10 + 1;
+		for index, index < table.getn(tempList) do
+			leftBonuses[bonusID] = tempList[table.getn(tempList)-index];
 		end
 		end
 	end
+	leftBonuses[401] = leftBonuses[401] * 2;
 	return leftBonuses;
 end
 
 function setTopBonuses(nonogram)
-
+	local topBonuses = {};
+	for i, row in pairs(nonogram) do
+		local counter = 0
+		local bonusID = i * 10 + 201;
+		for j, cell in pairs(row) do
+			print()
+		end
+	end
 	return nil;
 end
