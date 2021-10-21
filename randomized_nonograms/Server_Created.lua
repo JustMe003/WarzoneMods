@@ -38,12 +38,15 @@ function setLeftBonuses(nonogram)
 				counter = counter + 1;
 			elseif counter ~= 0 then
 				tempList[index] = counter;
-				print(tempList[index]);
+				print(index .. ": " .. tempList[index]);
 				index = index + 1;
 				leftBonuses[401] = leftBonuses[401] - counter;
 				counter = 0;
 			end
 		if counter ~= 0 then
+			tempList[index] = counter;
+			print(index .. ": " .. tempList[index]);
+			index = index + 1;
 			leftBonuses[401] = leftBonuses[401] - counter;
 		end
 		local bonusID = i * 10 + 1;
@@ -66,12 +69,4 @@ function setTopBonuses(nonogram)
 	return nil;
 end
 
-local function reversedipairsiter(t, i)
-    i = i - 1
-    if i ~= 0 then
-        return i, t[i]
-    end
-end
-function reversedipairs(t)
-    return reversedipairsiter, t, #t + 1
-end
+
