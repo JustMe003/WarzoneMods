@@ -32,22 +32,22 @@ function setLeftBonuses(nonogram)
 	for i, row in pairs(nonogram) do
 		local counter = 0
 		local tempList = {};
+		local index = 0
 		for j, cell in pairs(row) do
 			if cell == 1 then
 				counter = counter + 1;
 			elseif counter ~= 0 then
-				table.insert(tempList, counter);
+				tempList[index] = counter;
 				leftBonuses[401] = leftBonuses[401] - counter;
 				counter = 0;
 			end
 		if counter ~= 0 then
-			table.insert(tempList, counter);
+			tempList[index] = counter;
 			leftBonuses[401] = leftBonuses[401] - counter;
 		end
 		local bonusID = i * 10 + 1;
-		print(#tempList);
-		for index = #tempList, 1, -1 do
-			leftBonuses[bonusID] = tempList[index - 1];
+		for index, 1, -1 do
+			leftBonuses[bonusID] = tempList[index];
 			bonusID = bonusID + 1;
 			print(bonusID .. ": " .. leftBonuses[bonusID]);
 		end
