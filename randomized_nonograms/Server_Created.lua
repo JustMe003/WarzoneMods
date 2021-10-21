@@ -7,7 +7,7 @@ function Server_Created(game, settings)
 --	table.insert(overriddenBonuses, setTopBonuses(publicGameData.nonogram));
 	settings.OverriddenBonuses = overriddenBonuses;
 	local total = 0
-	for _, bonus in overriddenBonuses do
+	for _, bonus in pairs(game.Map.Bonuses) do
 		total = bonus.Amount + total;
 	end
 	print(total);
