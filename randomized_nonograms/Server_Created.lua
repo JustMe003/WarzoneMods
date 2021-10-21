@@ -36,12 +36,13 @@ function setLeftBonuses(nonogram)
 				counter = counter + 1;
 			elseif counter ~= 0 then
 				leftBonuses[bonusID] = counter
-				print(bonusID .. ": " .. leftBonuses[bonusID])
+				print(bonusID .. ": " .. leftBonuses[bonusID]);
 				bonusID = bonusID + 1;
 				counter = 0
 			end
 		if counter ~= 0 then
 			leftBonuses[bonusID] = counter;
+			print(bonusID .. ": " .. leftBonuses[bonusID]);
 		end
 		end
 	end
