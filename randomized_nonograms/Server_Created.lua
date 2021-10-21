@@ -6,7 +6,11 @@ function Server_Created(game, settings)
     local overriddenBonuses = setLeftBonuses(publicGameData.nonogram)
 --	table.insert(overriddenBonuses, setTopBonuses(publicGameData.nonogram));
 	settings.OverriddenBonuses = overriddenBonuses;
-
+	local total = 0
+	for _, bonus in overriddenBonuses do
+		total = bonus.Amount + total;
+	end
+	print(total);
 end
 
 function createNonogram(width, heigth, density)
