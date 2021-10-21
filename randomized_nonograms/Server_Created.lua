@@ -45,8 +45,8 @@ function setLeftBonuses(nonogram)
 			leftBonuses[401] = leftBonuses[401] - counter;
 		end
 		local bonusID = i * 10 + 1;
-		for index = 0, index < #tempList do
-			leftBonuses[bonusID] = tempList[table.getn(tempList)-index];
+		for index = #tempList, 1, -1 do
+			leftBonuses[bonusID] = tempList[index];
 		end
 		end
 	end
