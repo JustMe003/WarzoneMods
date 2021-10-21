@@ -31,28 +31,23 @@ function setLeftBonuses(nonogram)
 	leftBonuses[401] = 0
 	for i, row in pairs(nonogram) do
 		local counter = 0
-		local tempList = {};
 		local index = 0
+		local tempList = {};
 		for j, cell in pairs(row) do
 			if cell == 1 then
 				counter = counter + 1;
 			elseif counter ~= 0 then
 				tempList[index] = counter;
+				print(tempList[index]);
 				index = index + 1;
 				leftBonuses[401] = leftBonuses[401] - counter;
 				counter = 0;
 			end
 		if counter ~= 0 then
-			tempList[index] = counter;
-			index = index + 1;
 			leftBonuses[401] = leftBonuses[401] - counter;
 		end
 		local bonusID = i * 10 + 1;
-		for dex = index, 1, -1 do
-			leftBonuses[bonusID] = tempList[dex];
-			bonusID = bonusID + 1;
-			print(bonusID .. ": " .. leftBonuses[bonusID]);
-		end
+		
 		end
 	end
 	leftBonuses[401] = leftBonuses[401] * 2;
@@ -69,4 +64,14 @@ function setTopBonuses(nonogram)
 		end
 	end
 	return nil;
+end
+
+local function reversedipairsiter(t, i)
+    i = i - 1
+    if i ~= 0 then
+        return i, t[i]
+    end
+end
+function reversedipairs(t)
+    return reversedipairsiter, t, #t + 1
 end
