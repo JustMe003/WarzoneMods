@@ -62,7 +62,7 @@ end
 function setTopBonuses(nonogram)
 	nonogram1 = table.unpack(nonogram);
 	nonogram2 = table.unpack(nonogram1);
-	print(nonogram2);
+	print(nonogram1);
 	local topBonuses = {};
 	for i, row in pairs(nonogram) do
 		local counter = 0
