@@ -2,10 +2,10 @@
 function Server_Created(game, settings)
 	print("game started");
 	local publicGameData = Mod.PublicGameData;
-    publicGameData.nonogram = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
-    local overriddenBonuses = setLeftBonuses(publicGameData.nonogram)
-	topBonuses = setTopBonuses(publicGameData.nonogram);
-	settings.OverriddenBonuses = overriddenBonuses;
+    publicGameData.nonogram, leftBonuses, topBonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
+--	local overriddenBonuses = setLeftBonuses(publicGameData.nonogram)
+--	topBonuses = setTopBonuses(publicGameData.nonogram);
+--	settings.OverriddenBonuses = overriddenBonuses;
 
 end
 
@@ -23,7 +23,18 @@ function createNonogram(width, heigth, density)
 		end
 		nonogram[i] = nonogram_row;
 	end
-	return nonogram;
+	
+	leftBonuses = setLeftBonuses(nonogram);
+	
+	topBonuses = {};
+	for i = 0, Mod.Settings.NonogramWidth - 1 do
+		for j = 0, Mod.Settings.NonogramHeigth - 1 do
+			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
+		end
+		table.insert(topBonuses, setTopBonuses(nonogramColumn));
+	end
+	
+	return nonogram, leftBonuses, topBonuses;
 end
 
 function setLeftBonuses(nonogram)
@@ -59,18 +70,8 @@ function setLeftBonuses(nonogram)
 	return leftBonuses;
 end
 
-function setTopBonuses(nonogram)
-	nonogram1 = table.unpack(nonogram);
-	nonogram2 = table.unpack(nonogram1);
-	print(nonogram1);
-	local topBonuses = {};
-	for i, row in pairs(nonogram) do
-		local counter = 0
-		local bonusID = i * 10 + 201;
-		for j, cell in pairs(row) do
-		end
-	end
-	return nil;
+function setTopBonuses(value)
+	
 end
 
 
