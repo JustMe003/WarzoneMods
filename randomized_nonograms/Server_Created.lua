@@ -42,12 +42,11 @@ function setLeftBonuses(nonogram)
 				leftBonuses[401] = leftBonuses[401] - counter;
 				counter = 0;
 			end
+		end
 		if counter ~= 0 then
 			print(i, j, bonusID, counter);
 			leftBonuses[bonusID] = counter;
 			leftBonuses[401] = leftBonuses[401] - counter;
-		end
-		
 		end
 	end
 	leftBonuses[401] = leftBonuses[401] * 2;
