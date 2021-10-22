@@ -30,12 +30,13 @@ function createNonogram(width, heigth, density)
 			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
 		end
 		for index, v in ipairs(setTopBonuses(nonogramColumn, i)) do 
+			print(index, v);
 			overriddenBonuses[index] = v;
 		end
 	end
 	
 	for index, value in pairs(overriddenBonuses) do
-		print(index, value)
+--		print(index, value)
 	end
 	
 	return nonogram, overriddenBonuses;
@@ -83,14 +84,14 @@ function setTopBonuses(column, columnNumber)
 			counter = counter + 1;
 		elseif counter ~= 0 then
 			bonusColumn[bonusID] = counter;
-			print(bonusID, counter);
+--			print(bonusID, counter);
 			counter = 0;
 			bonusID = bonusID + 1;
 		end
 	end
 	if counter ~= 0 then
 		bonusColumn[bonusID] = counter;
-		print(bonusID, counter);
+--		print(bonusID, counter);
 	end
 	return bonusColumn;
 end
