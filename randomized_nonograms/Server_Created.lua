@@ -83,6 +83,7 @@ function setTopBonuses(column, columnNumber)
 	end
 	if counter ~= 0 then
 		bonusColumn[bonusID] = counter;
+	end
 	return bonusColumn;
 end
 
