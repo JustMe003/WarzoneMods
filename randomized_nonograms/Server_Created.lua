@@ -84,12 +84,14 @@ function setTopBonuses(column, columnNumber)
 			counter = counter + 1;
 		elseif counter ~= 0 then
 			bonusColumn[bonusID] = counter;
+			print(bonusID);
 			counter = 0;
 			bonusID = bonusID + 1;
 		end
 	end
 	if counter ~= 0 then
 		bonusColumn[bonusID] = counter;
+		print(bonusID);
 	end
 	return bonusColumn;
 end
