@@ -3,7 +3,6 @@ function Server_Created(game, settings)
 	print("game started");
 	local publicGameData = Mod.PublicGameData;
     publicGameData.nonogram, overriddenBonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
-	print(overriddenBonuses);
 	settings.OverriddenBonuses = overriddenBonuses;
 
 end
@@ -30,8 +29,8 @@ function createNonogram(width, heigth, density)
 		for j = 0, Mod.Settings.NonogramHeigth - 1 do
 			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
 		end
-		for _,v in ipairs(setTopBonuses(nonogramColumn, i)) do 
-			table.insert(overriddenBonuses, v);
+		for index, v in ipairs(setTopBonuses(nonogramColumn, i)) do 
+			overriddenBonuses[index] = v;
 		end
 	end
 	
