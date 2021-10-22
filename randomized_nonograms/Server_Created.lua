@@ -2,10 +2,8 @@
 function Server_Created(game, settings)
 	print("game started");
 	local publicGameData = Mod.PublicGameData;
-    publicGameData.nonogram, leftBonuses, topBonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
---	local overriddenBonuses = setLeftBonuses(publicGameData.nonogram)
---	topBonuses = setTopBonuses(publicGameData.nonogram);
---	settings.OverriddenBonuses = overriddenBonuses;
+    publicGameData.nonogram, overriddenBonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
+	settings.OverriddenBonuses = overriddenBonuses;
 
 end
 
@@ -24,18 +22,17 @@ function createNonogram(width, heigth, density)
 		nonogram[i] = nonogram_row;
 	end
 	
-	leftBonuses = setLeftBonuses(nonogram);
-	
-	topBonuses = {};
+	overriddenBonuses = setLeftBonuses(nonogram);
+
 	for i = 0, Mod.Settings.NonogramWidth - 1 do
 		nonogramColumn = {};
 		for j = 0, Mod.Settings.NonogramHeigth - 1 do
 			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
 		end
-		table.insert(topBonuses, setTopBonuses(nonogramColumn));
+		table.insert(overriddenBonuses, setTopBonuses(nonogramColumn, i));
 	end
 	
-	return nonogram, leftBonuses, topBonuses;
+	return nonogram, overriddenBonuses;
 end
 
 function setLeftBonuses(nonogram)
@@ -71,8 +68,22 @@ function setLeftBonuses(nonogram)
 	return leftBonuses;
 end
 
-function setTopBonuses(value)
-	
+function setTopBonuses(column, columnNumber)
+	bonusColumn = {}
+	counter = 0
+	bonusID = columnNumber * 10 + 201
+	for _, value in pairs(column) do
+		if value == 1 then
+			counter = counter + 1;
+		elseif counter ~= 0 then
+			bonusColumn[bonusID] = counter;
+			counter = 0;
+			bonusID = bonusID + 1;
+		end
+	end
+	if counter ~= 0 then
+		bonusColumn[bonusID] = counter;
+	return bonusColumn;
 end
 
 
