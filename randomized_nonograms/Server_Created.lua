@@ -30,7 +30,9 @@ function createNonogram(width, heigth, density)
 		for j = 0, Mod.Settings.NonogramHeigth - 1 do
 			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
 		end
-		table.insert(overriddenBonuses, setTopBonuses(nonogramColumn, i));
+		for _,v in ipairs(setTopBonuses(nonogramColumn, i) do 
+			table.insert(overriddenBonuses, v);
+		end
 	end
 	
 	for index, value in pairs(overriddenBonuses) do
