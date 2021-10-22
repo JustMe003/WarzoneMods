@@ -68,7 +68,6 @@ function setTopBonuses(nonogram)
 		local counter = 0
 		local bonusID = i * 10 + 201;
 		for j, cell in pairs(row) do
-			print()
 		end
 	end
 	return nil;
