@@ -53,6 +53,7 @@ function setLeftBonuses(nonogram)
 			leftBonuses[bonusID] = value;
 			print(leftBonuses[bonusID], bonusID);
 			bonusID = bonusID - 1;
+		end
 			
 	end
 	leftBonuses[401] = leftBonuses[401] * 2;
