@@ -33,6 +33,10 @@ function createNonogram(width, heigth, density)
 		table.insert(overriddenBonuses, setTopBonuses(nonogramColumn, i));
 	end
 	
+	for index, value in pairs(overriddenBonuses) do
+		print(index, value)
+	end
+	
 	return nonogram, overriddenBonuses;
 end
 
