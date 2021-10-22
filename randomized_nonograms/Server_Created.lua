@@ -36,12 +36,14 @@ function setLeftBonuses(nonogram)
 			if cell == 1 then
 				counter = counter + 1;
 			elseif counter ~= 0 then
+				print(i, j, bonusID, counter);
 				leftBonuses[bonusID] = counter;
 				bonusID = bonusID + 1;
 				leftBonuses[401] = leftBonuses[401] - counter;
 				counter = 0;
 			end
 		if counter ~= 0 then
+			print(i, j, bonusID, counter);
 			leftBonuses[bonusID] = counter;
 			leftBonuses[401] = leftBonuses[401] - counter;
 		end
