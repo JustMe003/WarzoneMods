@@ -29,7 +29,7 @@ function createNonogram(width, heigth, density)
 		for j = 0, Mod.Settings.NonogramHeigth - 1 do
 			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
 		end
-		for index, v in ipairs(setTopBonuses(nonogramColumn, i)) do 
+		for index, v in pairs(setTopBonuses(nonogramColumn, i)) do 
 			print(index, v);
 			overriddenBonuses[index] = v;
 		end
