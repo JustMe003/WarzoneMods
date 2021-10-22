@@ -29,6 +29,7 @@ function createNonogram(width, heigth, density)
 	topBonuses = {};
 	for i = 0, Mod.Settings.NonogramWidth - 1 do
 		for j = 0, Mod.Settings.NonogramHeigth - 1 do
+			print(nonogram[j][i]);
 			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
 		end
 		table.insert(topBonuses, setTopBonuses(nonogramColumn));
