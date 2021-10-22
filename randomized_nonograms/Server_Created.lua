@@ -48,7 +48,7 @@ function setLeftBonuses(nonogram)
 			index = index + 1;
 			leftBonuses[401] = leftBonuses[401] - counter;
 		end
-		local bonusID = i * 10 + 1 + index;
+		local bonusID = i * 10 + index;
 		for _, value in pairs(tempList) do
 			leftBonuses[bonusID] = value;
 			print(leftBonuses[bonusID], bonusID);
