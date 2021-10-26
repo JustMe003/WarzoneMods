@@ -14,15 +14,15 @@ function Client_PresentConfigureUI(rootParent)
     setWidth = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(5)
 		.SetSliderMaxValue(20)
-		.SetValue(initialValue);
+		.SetValue(initialWidth);
 	setHeigth = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(5)
 		.SetSliderMaxValue(20)
-		.SetValue(initialValue);
+		.SetValue(initialHeigth);
 	setDensity = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(30)
 		.SetSliderMaxValue(70)
-		.SetValue(initialValue*5);
+		.SetValue(initialValueDensity);
 	LocalDeployments = UI.CreateCheckBox(vert)
 		.Text("Check this to play with custom local deployments")
 		.IsChecked(localDeploymentsValue);
