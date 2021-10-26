@@ -37,7 +37,7 @@ function createNonogram(width, heigth, density)
 	end
 	
 	for index, value in pairs(overriddenBonuses) do
-		print(index, value)
+--		print(index, value)
 	end
 	
 	return nonogram, overriddenBonuses, bonuses;
