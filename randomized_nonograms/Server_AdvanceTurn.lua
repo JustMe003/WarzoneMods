@@ -3,6 +3,7 @@ function Server_AdvanceTurn_End(Game, addNeworder)
 	bonuses = publicGameData.Bonuses
 	for bonusID, list in pairs(bonuses) do
 		if player_has_bonus(Game, list) then
+			print("true");
 			if Mod.Settings.LocalDeployments == true then
 				local_deployments(Game, list);
 			else
@@ -17,8 +18,8 @@ function player_has_bonus(game, list_of_terr)
 	for _, terrID in pairs(list_of_terr) do
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID]
 		if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and playerID == 0 then
-			playerID = terrID.OwnerPlayerID;
-		elseif terrID.OwnerPlayerID ~= playerID or terrID.OwnerPlayerID == WL.PlayerID.Neutral then
+			playerID = terr.OwnerPlayerID;
+		elseif terr.OwnerPlayerID ~= playerID or terr.OwnerPlayerID == WL.PlayerID.Neutral then
 			return false;
 		end
 	end
