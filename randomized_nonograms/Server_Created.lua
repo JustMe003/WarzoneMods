@@ -2,13 +2,14 @@
 function Server_Created(game, settings)
 	print("game started");
 	local publicGameData = Mod.PublicGameData;
-    publicGameData.nonogram, overriddenBonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
+    publicGameData.nonogram, overriddenBonuses, publicGameData.Bonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
 	settings.OverriddenBonuses = overriddenBonuses;
 
 end
 
 function createNonogram(width, heigth, density)
 	local nonogram = {};
+	local bonuses = {};
 	print("creating nonogram")
 	for i = 0, Mod.Settings.NonogramHeigth - 1 do
 		local nonogram_row = {};
@@ -22,7 +23,8 @@ function createNonogram(width, heigth, density)
 		nonogram[i] = nonogram_row;
 	end
 	
-	overriddenBonuses = setLeftBonuses(nonogram);
+	overriddenBonuses, territoriesInBonus = setLeftBonuses(nonogram);
+	table.insert(bonuses, territoriesInBonus);
 
 	for i = 0, Mod.Settings.NonogramWidth - 1 do
 		nonogramColumn = {};
@@ -38,16 +40,18 @@ function createNonogram(width, heigth, density)
 		print(index, value)
 	end
 	
-	return nonogram, overriddenBonuses;
+	return nonogram, overriddenBonuses, bonuses;
 end
 
 function setLeftBonuses(nonogram)
 	local leftBonuses = {};
+	local territoriesInBonus = {};
 	leftBonuses[401] = 0
 	for i, row in pairs(nonogram) do
 		local counter = 0
 		local index = 0
 		local tempList = {};
+		local startTerritory = i * 20 + 1;
 		for j, cell in pairs(row) do
 			if cell == 1 then
 				counter = counter + 1;
@@ -55,11 +59,16 @@ function setLeftBonuses(nonogram)
 				tempList[index] = counter;
 				index = index + 1;
 				counter = 0;
+				table.insert(territoriesInBonus, getTerritories(startTerritory, startTerritory + j);
+				startTerritory = i * 20 + j + 1;
+			else
+				startTerritory = i * 20 + j + 1;
 			end
 		end
 		if counter ~= 0 then
 			tempList[index] = counter;
 			index = index + 1;
+			table.insert(territoriesInBonus, getTerritories(startTerritory, (i + 1) * 20)
 		end
 		local bonusID = i * 10 + index;
 		for _, value in pairs(tempList) do
@@ -71,7 +80,7 @@ function setLeftBonuses(nonogram)
 	end
 	-- No need to keep track of the total bonus count in setTopBonuses
 	leftBonuses[401] = leftBonuses[401] * 2;
-	return leftBonuses;
+	return leftBonuses, territoriesInBonus;
 end
 
 function setTopBonuses(column, columnNumber)
@@ -93,4 +102,10 @@ function setTopBonuses(column, columnNumber)
 	return bonusColumn;
 end
 
-
+function getTerritories(startInt, endInt)
+	list = {};
+	for i = startInt, i <= endInt do
+		table.insert(list, i);
+	end
+	return list;
+end

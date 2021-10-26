@@ -1,10 +1,14 @@
 
 function Client_PresentConfigureUI(rootParent)
-	local initialValue = Mod.Settings.RandomizeAmount;
-	if initialValue == nil then
-		initialValue = 10;
-	end
-    
+	local initialHeigth = Mod.Settings.NonogramHeigth;
+	local initialWidth = Mod.Settings.NonogramWidth;
+	local initialValueDensity = Mod.Settings.NonogramDensity;
+	local localDeploymentsValue = Mod.Settings.LocalDeployments;
+	if initialHeigth == nil then initialHeigth = 10; end
+	if initialWidth == nil then initialWidth = 10; end
+	if initialValueDensity == nil then initialValueDensity = 50; end
+	if localDeploymentsValue == nil then localDeploymentsValue = false; end
+
     local vert = UI.CreateVerticalLayoutGroup(rootParent);
 	UI.CreateLabel(vert).SetText('Random +/- limit');
     setWidth = UI.CreateNumberInputField(vert)
@@ -19,5 +23,8 @@ function Client_PresentConfigureUI(rootParent)
 		.SetSliderMinValue(30)
 		.SetSliderMaxValue(70)
 		.SetValue(initialValue*5);
+	LocalDeployments = UI.CreateCheckBox(vert)
+		.Text("Check this to play with custom local deployments")
+		.IsChecked(localDeploymentsValue);
 
 end
