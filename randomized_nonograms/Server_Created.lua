@@ -60,12 +60,13 @@ function setLeftBonuses(nonogram)
 				index = index + 1;
 				counter = 0;
 				table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + j));
-				startTerritory = i * 20 + j + 1;
+				startTerritory = i * 20 + j + 2;
 			else
 				startTerritory = i * 20 + j + 1;
 			end
 			print(cell, j, startTerritory);
 		end
+		print();
 		if counter ~= 0 then
 			tempList[index] = counter;
 			index = index + 1;
@@ -105,7 +106,7 @@ end
 
 function getTerritories(startInt, endInt)
 	list = {};
-	print(startInt, endInt);
+--	print(startInt, endInt);
 	for i = startInt, endInt do
 		table.insert(list, i);
 	end
