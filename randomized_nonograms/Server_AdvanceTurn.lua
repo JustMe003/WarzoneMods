@@ -2,9 +2,9 @@ function Server_AdvanceTurn_End(Game, addNeworder)
 	local publicGameData = Mod.PublicGameData;
 	bonuses = publicGameData.Bonuses
 	for bonusID, list in pairs(bonuses) do
-		if player_has_bonus(list) then
+		if player_has_bonus(Game, list) then
 			if Mod.Settings.LocalDeployments == true then
-				local_deployments(list);
+				local_deployments(Game, list);
 			else
 				print(tostring(Mod.Settings.LocalDeployments));
 			end
@@ -12,7 +12,7 @@ function Server_AdvanceTurn_End(Game, addNeworder)
 	end
 end
 
-function player_has_bonus(list_of_terr)
+function player_has_bonus(Game, list_of_terr)
 	local playerID = 0;
 	for _, terrID in pairs(list_of_terr) do
 		print(terrID);
@@ -25,9 +25,9 @@ function player_has_bonus(list_of_terr)
 	return true;
 end
 
-function local_deployments (list_of_terr)
+function local_deployments (Game, list_of_terr)
 	for _, terrID in pairs(list_of_terr) do
-		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
+		local terr = Game.ServerGame.LatestTurnStanding.Territories[terrID];
 		terrMod = WL.TerritoryModification.Create(terr.ID);
 		terrMod.SetArmiesTo = terr.NumArmies.NumArmies + 1;
 	end
