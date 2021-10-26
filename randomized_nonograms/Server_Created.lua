@@ -53,7 +53,6 @@ function setLeftBonuses(nonogram)
 		local tempList = {};
 		local startTerritory = i * 20 + 1;
 		for j, cell in pairs(row) do
-			print(cell, j, startTerritory);
 			if cell == 1 then
 				counter = counter + 1;
 			elseif counter ~= 0 and cell == 0 then
@@ -65,6 +64,7 @@ function setLeftBonuses(nonogram)
 			else
 				startTerritory = i * 20 + j + 1;
 			end
+			print(cell, j, startTerritory);
 		end
 		if counter ~= 0 then
 			tempList[index] = counter;
