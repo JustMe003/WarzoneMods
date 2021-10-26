@@ -15,7 +15,7 @@ end
 function player_has_bonus(Game, list_of_terr)
 	local playerID = 0;
 	for _, terrID in pairs(list_of_terr) do
-		print(terrID);
+		print(terrID, type(terrID));
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID]
 		if terr.OwnerPlayerID ~= PlayerID.Neutral and playerID == 0 then
 			playerID = game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
