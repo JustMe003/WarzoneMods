@@ -4,6 +4,7 @@ function Server_Created(game, settings)
 	local publicGameData = Mod.PublicGameData;
     publicGameData.nonogram, overriddenBonuses, publicGameData.Bonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
 	settings.OverriddenBonuses = overriddenBonuses;
+	Mod.PublicGameData = publicGameData;
 
 end
 
