@@ -1,5 +1,5 @@
 function Server_AdvanceTurn_End(Game, addNeworder)
-	local publicGameData = Mod.publicGameData;
+	local publicGameData = Mod.PublicGameData;
 	for bonusID, list in pairs(publicGameData.Bonuses) do
 		if player_has_bonus(list) then
 			if Mod.Settings.LocalDeployments == true then
