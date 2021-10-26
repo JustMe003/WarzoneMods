@@ -10,7 +10,6 @@ end
 
 function createNonogram(width, heigth, density)
 	local nonogram = {};
-	local bonuses = {};
 	print("creating nonogram")
 	for i = 0, Mod.Settings.NonogramHeigth - 1 do
 		local nonogram_row = {};
@@ -25,7 +24,7 @@ function createNonogram(width, heigth, density)
 	end
 	
 	overriddenBonuses, territoriesInBonus = setLeftBonuses(nonogram);
-	table.insert(bonuses, territoriesInBonus);
+	
 
 	for i = 0, Mod.Settings.NonogramWidth - 1 do
 		nonogramColumn = {};
@@ -41,7 +40,7 @@ function createNonogram(width, heigth, density)
 --		print(index, value)
 	end
 	
-	return nonogram, overriddenBonuses, bonuses;
+	return nonogram, overriddenBonuses, territoriesInBonus;
 end
 
 function setLeftBonuses(nonogram)
