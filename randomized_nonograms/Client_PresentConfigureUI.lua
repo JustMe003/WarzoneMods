@@ -24,6 +24,6 @@ function Client_PresentConfigureUI(rootParent)
 		.SetSliderMaxValue(70)
 		.SetValue(initialValueDensity);
 	LocalDeployments = UI.CreateCheckBox(vert)
-		.IsChecked(localDeploymentsValue);
+		.SetIsChecked(localDeploymentsValue);
 
 end
