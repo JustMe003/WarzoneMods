@@ -2,9 +2,9 @@ function Server_AdvanceTurn_End(Game, addNeworder)
 	local publicGameData = Mod.PublicGameData;
 	bonuses = publicGameData.Bonuses
 	for bonusID, list in pairs(bonuses) do
-		if player_has_bonus(game, list) then
+		if player_has_bonus(Game, list) then
 			if Mod.Settings.LocalDeployments == true then
-				local_deployments(game, list);
+				local_deployments(Game, list);
 			else
 				print(tostring(Mod.Settings.LocalDeployments));
 			end
