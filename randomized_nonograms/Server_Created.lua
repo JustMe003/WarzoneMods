@@ -62,7 +62,7 @@ function setLeftBonuses(nonogram)
 				table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + j));
 				startTerritory = i * 20 + j + 2;
 			else
-				startTerritory = i * 20 + j + 1;
+				startTerritory = i * 20 + j + 2;
 			end
 			print(cell, j, startTerritory);
 		end
