@@ -104,6 +104,7 @@ end
 
 function getTerritories(startInt, endInt)
 	list = {};
+	print(startInt, endInt);
 	for i = startInt, i <= endInt do
 		table.insert(list, i);
 	end
