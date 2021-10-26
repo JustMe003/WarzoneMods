@@ -16,9 +16,9 @@ function player_has_bonus(Game, list_of_terr)
 	local playerID = 0;
 	for _, terrID in pairs(list_of_terr) do
 		print(terrID);
-		if Game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID ~= PlayerID.Neutral and playerID == 0 then
-			playerID = Game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
-		elseif Game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID ~= playerID or Game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == PlayerID.Neutral then
+		if game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID ~= PlayerID.Neutral and playerID == 0 then
+			playerID = game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
+		elseif game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID ~= playerID or game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == PlayerID.Neutral then
 			return false;
 		end
 	end
@@ -27,7 +27,7 @@ end
 
 function local_deployments (Game, list_of_terr)
 	for _, terrID in pairs(list_of_terr) do
-		local terr = Game.ServerGame.LatestTurnStanding.Territories[terrID];
+		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
 		terrMod = WL.TerritoryModification.Create(terr.ID);
 		terrMod.SetArmiesTo = terr.NumArmies.NumArmies + 1;
 	end
