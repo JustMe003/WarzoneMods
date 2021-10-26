@@ -24,7 +24,6 @@ function Client_PresentConfigureUI(rootParent)
 		.SetSliderMaxValue(70)
 		.SetValue(initialValueDensity);
 	LocalDeployments = UI.CreateCheckBox(vert)
-		.Text("Check this to play with custom local deployments")
 		.IsChecked(localDeploymentsValue);
 
 end
