@@ -69,7 +69,7 @@ function setLeftBonuses(nonogram)
 		if counter ~= 0 then
 			tempList[index] = counter;
 			index = index + 1;
-			table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + Mod.Settings.Width))
+			table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + Mod.Settings.NonogramWidth))
 		end
 		local bonusID = i * 10 + index;
 		for _, value in pairs(tempList) do
