@@ -16,7 +16,7 @@ function player_has_bonus(game, list_of_terr)
 	local playerID = 0;
 	for _, terrID in pairs(list_of_terr) do
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID]
-		if terr.OwnerPlayerID ~= PlayerID.Neutral and playerID == 0 then
+		if terr.OwnerPlayerID ~= playerID.Neutral and playerID == 0 then
 			playerID = game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
 		elseif game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID ~= playerID or game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == PlayerID.Neutral then
 			return false;
