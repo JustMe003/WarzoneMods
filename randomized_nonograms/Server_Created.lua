@@ -36,6 +36,7 @@ function createNonogram(width, heigth, density)
 		if length ~= 0 then
 			overrideBonuses[bonusID] = length
 			territoriesInBonus[bonusID] = getTerritories((i*20) + 1,(i*20) + length,1)
+		end
 	end
 	for i = 0, width do
 		length = 0
