@@ -31,7 +31,8 @@ function createNonogram(width, heigth, density)
 		for j = 0, Mod.Settings.NonogramHeigth - 1 do
 			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
 		end
-		for index, v in pairs(setTopBonuses(nonogramColumn, i)) do 
+		topBonuses, territoriesInBonus = setTopBonuses(nonogramColumn, i, overriddenBonuses)
+		for index, v in pairs(topBonuses) do 
 			overriddenBonuses[index] = v;
 		end
 	end
@@ -59,7 +60,7 @@ function setLeftBonuses(nonogram)
 				tempList[index] = counter;
 				index = index + 1;
 				counter = 0;
-				table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + j));
+				table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + j, 1));
 				startTerritory = i * 20 + j + 2;
 			else
 				startTerritory = i * 20 + j + 2;
@@ -70,7 +71,7 @@ function setLeftBonuses(nonogram)
 		if counter ~= 0 then
 			tempList[index] = counter;
 			index = index + 1;
-			table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + Mod.Settings.NonogramWidth))
+			table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + Mod.Settings.NonogramWidth, 1))
 		end
 		local bonusID = i * 10 + index;
 		for _, value in pairs(tempList) do
@@ -85,29 +86,35 @@ function setLeftBonuses(nonogram)
 	return leftBonuses, territoriesInBonus;
 end
 
-function setTopBonuses(column, columnNumber)
-	bonusColumn = {}
-	counter = 0
-	bonusID = columnNumber * 10 + 201
+function setTopBonuses(column, columnNumber, territoriesInBonus)
+	bonusColumn = {};
+	counter = 0;
+	bonusID = columnNumber * 10 + 201;
+	territoryID = columnNumber;
 	for _, value in pairs(column) do
 		if value == 1 then
 			counter = counter + 1;
 		elseif counter ~= 0 then
 			bonusColumn[bonusID] = counter;
+			table.insert(territoriesInBonus, getTerritories(territoryID, territoryID + (counter * 20) - 20, 20));
+			territoryID = territoryID + (counter * 20) - 20;
 			counter = 0;
 			bonusID = bonusID + 1;
+		else
+			territoryID = territoryID + 20;
 		end
 	end
 	if counter ~= 0 then
 		bonusColumn[bonusID] = counter;
+		table.insert(territoriesInBonus, getTerritories(territoryID, territoryID + (counter * 20) - 20, 20));
 	end
-	return bonusColumn;
+	return bonusColumn, territoriesInBonus;
 end
 
-function getTerritories(startInt, endInt)
+function getTerritories(startInt, endInt, step)
 	list = {};
 --	print(startInt, endInt);
-	for i = startInt, endInt do
+	for i = startInt, endInt, step do
 		table.insert(list, i);
 	end
 	return list;
