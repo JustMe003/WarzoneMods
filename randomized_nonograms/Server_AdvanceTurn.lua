@@ -38,7 +38,7 @@ function player_has_bonus(game, list_of_terr)
 		if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and playerID == 0 then
 			playerID = terr.OwnerPlayerID;
 		elseif terr.OwnerPlayerID ~= playerID or terr.OwnerPlayerID == WL.PlayerID.Neutral then
-			return false;
+--			return false;
 		end
 	end
 	return true;
