@@ -39,10 +39,12 @@ function local_deployments (game, addNewOrder, list_of_terr)
 end
 
 function grant_income(Game, addNewOrder, player_income)
-	for _,playerID in pairs(game.ServerGame.Game.PlayingPlayers)do
-		local moneyforplayer = {};
-		moneyforplayer[playerID.ID] = {};
-		moneyforplayer[playerID.ID][WL.ResourceType.Gold] = player_income[playerID.ID] + Game.ServerGame.LatestTurnStanding.NumResources(playerID.ID,WL.ResourceType.Gold);
-		addNewOrder(WL.GameOrderEvent.Create(playerID.ID, "Recieved " .. player_income[playerID.ID] .. " gold from bonuses", {}, {},moneyforplayer));
+	if game.ServerGame.Settings.CommerceGame == true then
+		for _,playerID in pairs(game.ServerGame.Game.PlayingPlayers)do
+			local moneyforplayer = {};
+			moneyforplayer[playerID.ID] = {};
+			moneyforplayer[playerID.ID][WL.ResourceType.Gold] = player_income[playerID.ID] + Game.ServerGame.LatestTurnStanding.NumResources(playerID.ID,WL.ResourceType.Gold);
+			addNewOrder(WL.GameOrderEvent.Create(playerID.ID, "Recieved " .. player_income[playerID.ID] .. " gold from bonuses", {}, {},moneyforplayer));
+		end
 	end
 end
