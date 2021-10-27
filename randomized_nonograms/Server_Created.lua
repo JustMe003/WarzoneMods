@@ -20,7 +20,7 @@ function createNonogram(width, heigth, density)
 		end
 	end
 	overrideBonuses, territoriesInBonus = {}, {};
-	for i = 0, heigth do
+	for i = 0, heigth - 1 do
 		length = 0;
 		bonusID = (i*10) + 1;
 		for j = width, 0, -1 do
@@ -39,7 +39,7 @@ function createNonogram(width, heigth, density)
 			territoriesInBonus[bonusID] = getTerritories((i*20) + 1,(i*20) + length,1)
 		end
 	end
-	for i = 0, width do
+	for i = 0, width - 1 do
 		length = 0
 		bonusID = (i*10) + 201
 		for j = heigth - 1, 0, -1 do
