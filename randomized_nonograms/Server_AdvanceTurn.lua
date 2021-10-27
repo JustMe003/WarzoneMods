@@ -1,6 +1,7 @@
 function Server_AdvanceTurn_End(Game, addNewOrder)
 	local publicGameData = Mod.PublicGameData;
 	bonuses = publicGameData.Bonuses;
+	print(bonuses);
 	local player_income = initiate_player_income(Game);
 	for _, list in pairs(bonuses) do
 		if player_has_bonus(Game, list) then
