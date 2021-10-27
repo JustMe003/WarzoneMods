@@ -51,7 +51,7 @@ function createNonogram(width, heigth, density)
 				length = 0
 				bonusID = bonusID + 1
 			end
-			print(nonogramData[(j*20) + i], (j*20) + i - (length * 20), (j*20) + i - 20)
+			print(nonogramData[(j*20) + i], i, j)
 		end
 		if length ~= 0 then
 			overrideBonuses[bonusID] = length
