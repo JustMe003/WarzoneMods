@@ -13,7 +13,7 @@ function Server_AdvanceTurn_End(Game, addNewOrder)
 			end
 		end
 	end
-	grant_income(Game, addNewOrder, player_income);
+	if Mod.Settings.LocalDeployments == false then grant_income(Game, addNewOrder, player_income); end
 end
 
 function get_player(game, list)
