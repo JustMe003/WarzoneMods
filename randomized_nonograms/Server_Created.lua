@@ -61,7 +61,7 @@ end
 
 function getTerritories(start, ending, step)
 	list = {};
-	for i = start, ending + 1, step do
+	for i = start, ending, step do
 		table.insert(list, i);
 	end
 	return list;
