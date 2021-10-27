@@ -90,7 +90,7 @@ function setTopBonuses(column, columnNumber, territoriesInBonus)
 	bonusColumn = {};
 	counter = 0;
 	bonusID = columnNumber * 10 + 201;
-	territoryID = columnNumber;
+	territoryID = columnNumber + 1;
 	for _, value in pairs(column) do
 		if value == 1 then
 			counter = counter + 1;
