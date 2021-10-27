@@ -33,23 +33,23 @@ end
 function player_has_bonus(game, list_of_terr)
 	local playerID = 0;
 	for _, terrID in pairs(list_of_terr) do
-		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID]
+		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
 		if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and playerID == 0 then
 			playerID = terr.OwnerPlayerID;
 		elseif terr.OwnerPlayerID ~= playerID or terr.OwnerPlayerID == WL.PlayerID.Neutral then
-			return false, playerID;
+			return false;
 		end
 	end
-	return true, playerID;
+	return true;
 end
 
 function local_deployments (game, addNewOrder, list_of_terr)
 	for _, terrID in pairs(list_of_terr) do
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
-			terrMod = WL.TerritoryModification.Create(terr.ID);
-			terrMod.SetOwnerOpt = terr.OwnerPlayerID;
-			terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 1;
-			addNewOrder(WL.GameOrderEvent.Create(terr.OwnerPlayerID,"added armies",{},{terrMod}));
+		terrMod = WL.TerritoryModification.Create(terr.ID);
+		terrMod.SetOwnerOpt = terr.OwnerPlayerID;
+		terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 1;
+		addNewOrder(WL.GameOrderEvent.Create(terr.OwnerPlayerID,"added armies",{},{terrMod}));
 	end
 end
 
