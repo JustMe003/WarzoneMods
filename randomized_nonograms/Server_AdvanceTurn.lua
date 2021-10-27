@@ -51,7 +51,7 @@ function local_deployments (game, addNewOrder, list_of_terr, modifiedTerritories
 		terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 1;
 		table.insert(orders, terrMod);
 	end
-	addNewOrder(WL.GameOrderEvent.Create(get_player(list_of_terr),"added armies",{},{orders}));
+	addNewOrder(WL.GameOrderEvent.Create(get_player(game, list_of_terr),"added armies",{},{orders}));
 end
 
 function grant_income(game, addNewOrder, player_income)
