@@ -10,6 +10,13 @@ function Client_PresentConfigureUI(rootParent)
 	if localDeploymentsValue == nil then localDeploymentsValue = false; end
 
     local vert = UI.CreateVerticalLayoutGroup(rootParent);
+	heigthLabel = UI.CreateLabel(vert)
+		.SetText("Specify the heigth of the nonogram:")
+		.SetColor("#88FF00");
+	setHeigth = UI.CreateNumberInputField(vert)
+		.SetSliderMinValue(5)
+		.SetSliderMaxValue(20)
+		.SetValue(initialHeigth);
     widthLabel = UI.CreateLabel(vert)
 		.SetText("Specify the width of the nonogram:")
 		.SetColor("#88FF00");
@@ -17,13 +24,9 @@ function Client_PresentConfigureUI(rootParent)
 		.SetSliderMinValue(5)
 		.SetSliderMaxValue(20)
 		.SetValue(initialWidth);
-	heigthLabel = UI.CreateLabel(vert)
-		.SetText("Specify the width of the nonogram:")
+	densityLabel = UI.CreateLabel(vert)
+		.SetText("Specify the density in percentages (60% or more is recommended!):")
 		.SetColor("#88FF00");
-	setHeigth = UI.CreateNumberInputField(vert)
-		.SetSliderMinValue(5)
-		.SetSliderMaxValue(20)
-		.SetValue(initialHeigth);
 	setDensity = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(30)
 		.SetSliderMaxValue(70)
