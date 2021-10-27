@@ -8,6 +8,7 @@ function Server_AdvanceTurn_End(Game, addNewOrder)
 				local_deployments(Game, addNewOrder, list);
 			else
 				playerID = get_player(Game, list);
+				print(playerID);
 				player_income[playerID] = player_income[playerID] + table.getn(list);
 			end
 		end
