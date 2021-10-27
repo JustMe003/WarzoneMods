@@ -1,9 +1,6 @@
 
 function Server_Created(game, settings)
 	print("game started");
-	if Mod.Settings.LocalDeployments ~= true and settings.CommerceGame == false then
-		settings.CommerceGame = true
-	end
 	local publicGameData = Mod.PublicGameData;
     publicGameData.nonogram, overriddenBonuses, publicGameData.Bonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
 	settings.OverriddenBonuses = overriddenBonuses;
