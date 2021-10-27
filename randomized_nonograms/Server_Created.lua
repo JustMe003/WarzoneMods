@@ -1,122 +1,67 @@
 
 function Server_Created(game, settings)
-	print("game started");
 	local publicGameData = Mod.PublicGameData;
-    publicGameData.nonogram, overriddenBonuses, publicGameData.Bonuses = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
+	overriddenBonuses, territoriesInBonus = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
 	settings.OverriddenBonuses = overriddenBonuses;
+	publicGameData.bonuses = territoriesInBonus;
 	Mod.PublicGameData = publicGameData;
 
 end
 
 function createNonogram(width, heigth, density)
-	local nonogram = {};
-	print("creating nonogram")
-	for i = 0, Mod.Settings.NonogramHeigth - 1 do
-		local nonogram_row = {};
-		for j = 0, Mod.Settings.NonogramWidth - 1 do
-			if(math.random(1, 100) <= density) then
-				nonogram_row[j] = 1;
+	nonogramData = {};
+	for i, heigth do
+		for j, width do
+			if math.random(100) < density then
+				nonogramData[(i*20) + j + 1] = 1;
 			else
-				nonogram_row[j] = 0;
+				nonogramData[(i*20) + j + 1] = 0;
 			end
 		end
-		nonogram[i] = nonogram_row;
 	end
-	
-	overriddenBonuses, territoriesInBonus = setLeftBonuses(nonogram);
-	
-
-	for i = 0, Mod.Settings.NonogramWidth - 1 do
-		nonogramColumn = {};
-		for j = 0, Mod.Settings.NonogramHeigth - 1 do
-			nonogramColumn[Mod.Settings.NonogramHeigth - 1 - j] = nonogram[j][i]
-		end
-		topBonuses, territoriesInBonus = setTopBonuses(nonogramColumn, i, overriddenBonuses)
-		for index, v in pairs(topBonuses) do 
-			overriddenBonuses[index] = v;
-		end
-	end
-	
-	for index, value in pairs(overriddenBonuses) do
---		print(index, value)
-	end
-	
-	return nonogram, overriddenBonuses, territoriesInBonus;
-end
-
-function setLeftBonuses(nonogram)
-	local leftBonuses = {};
-	local territoriesInBonus = {};
-	leftBonuses[401] = 0
-	for i, row in pairs(nonogram) do
-		local counter = 0
-		local index = 0
-		local tempList = {};
-		local startTerritory = i * 20 + 1;
-		for j, cell in pairs(row) do
-			if cell == 1 then
-				counter = counter + 1;
-			elseif counter ~= 0 and cell == 0 then
-				tempList[index] = counter;
-				index = index + 1;
-				counter = 0;
-				table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + j, 1));
-				startTerritory = i * 20 + j + 2;
-			else
-				startTerritory = i * 20 + j + 2;
+	overrideBonuses, territoriesInBonus = {}, {};
+	for i, heigth do
+		length = 0;
+		bonusID = i * 20 + 1;
+		for j = width, 0, -1 do
+			if nonogramData[(i*20) + j] == 1 then
+				length = length + 1;
+			elseif nonogramData[(i*20) + j] == 0 and length ~= 0
+				overrideBonuses[bonusID] = length
+				territoriesInBonus[bonusID] = getTerritories((i*20) + j - length,(i*20) + j - 1,1)
+				length = 0
+				bonusID = bonusID + 1
 			end
-			print(cell, j, startTerritory);
 		end
-		print();
-		if counter ~= 0 then
-			tempList[index] = counter;
-			index = index + 1;
-			table.insert(territoriesInBonus, getTerritories(startTerritory, i * 20 + Mod.Settings.NonogramWidth, 1))
-		end
-		local bonusID = i * 10 + index;
-		for _, value in pairs(tempList) do
-			leftBonuses[bonusID] = value;
-			bonusID = bonusID - 1;
-			leftBonuses[401] = leftBonuses[401] - value;
-		end
-			
+		if length ~= 0 then
+			overrideBonuses[bonusID] = length
+			territoriesInBonus[bonusID] = getTerritories((i*20) + 1,(i*20) + length,1)
 	end
-	-- No need to keep track of the total bonus count in setTopBonuses
-	leftBonuses[401] = leftBonuses[401] * 2;
-	return leftBonuses, territoriesInBonus;
+	for i, width do
+		length = 0
+		bonusID = (i*20) + 201
+		for j = heigth - 1, -1, -1 do
+			if nonogramData[(j*20) + i] == 1 then
+				length = length + 1;
+			elseif nonogramData[(j*20) + i] == 0 and length ~= 0 then
+				overrideBonuses[bonusID] = length
+				territoriesInBonus[bonusID] = getTerritories((j*20) + i - (length * 20), (j*20) + i - 20, 20)
+				length = 0
+				bonusID = bonusID + 1
+			end
+		end
+		if length ~= 0 then
+			overrideBonuses[bonusID] = length
+			territoriesInBonus[bonusID] = getTerritories((j*20) + 20, (j*20) , 20)
+	end
+	return overrideBonuses, territoriesInBonus;
 end
 
-function setTopBonuses(column, columnNumber, territoriesInBonus)
-	bonusColumn = {};
-	counter = 0;
-	bonusID = columnNumber * 10 + 201;
-	territoryID = columnNumber + 1;
-	for _, value in pairs(column) do
-		if value == 1 then
-			counter = counter + 1;
-		elseif counter ~= 0 then
-			bonusColumn[bonusID] = counter;
-			table.insert(territoriesInBonus, getTerritories(territoryID, territoryID + (counter * 20) - 20, 20));
-			territoryID = territoryID + (counter * 20) - 20;
-			counter = 0;
-			bonusID = bonusID + 1;
-		else
-			territoryID = territoryID + 20;
-		end
-		print(territoryID, counter);
-	end
-	if counter ~= 0 then
-		bonusColumn[bonusID] = counter;
-		table.insert(territoriesInBonus, getTerritories(territoryID, territoryID + (counter * 20) - 20, 20));
-	end
-	return bonusColumn, territoriesInBonus;
-end
-
-function getTerritories(startInt, endInt, step)
+function getTerritories(start, ending, step)
 	list = {};
---	print(startInt, endInt);
-	for i = startInt, endInt, step do
+	for i = start, ending + 1, step do
 		table.insert(list, i);
+		print(i);
 	end
 	return list;
 end
