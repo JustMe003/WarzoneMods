@@ -31,6 +31,6 @@ function local_deployments (game, addNeworder, list_of_terr)
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
 		terrMod = WL.TerritoryModification.Create(terr.ID);
 		terrMod.SetArmiesTo = terr.NumArmies.NumArmies + 1;
-		addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "deployed", {}, {terrMod}));
+		addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID, "deployed", {}, {terrMod}));
 	end
 end
