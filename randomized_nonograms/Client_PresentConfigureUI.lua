@@ -10,10 +10,9 @@ function Client_PresentConfigureUI(rootParent)
 	if localDeploymentsValue == nil then localDeploymentsValue = false; end
 
     local vert = UI.CreateVerticalLayoutGroup(rootParent);
-	UI.CreateLabel(vert).SetText('Random +/- limit');
     widthLabel = UI.CreateLabel(vert)
 		.SetText("Specify the width of the nonogram:")
-		.SetColor("#00FF00");
+		.SetColor("#00AA00");
 	setWidth = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(5)
 		.SetSliderMaxValue(20)
