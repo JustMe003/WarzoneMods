@@ -15,7 +15,7 @@ function Server_AdvanceTurn_End(Game, addNewOrder)
 	grant_income(Game, addNewOrder, player_income);
 end
 
-function get_player(Game, list)
+function get_player(game, list)
 	for _, terrID in pairs(list) do
 		return game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
 	end
