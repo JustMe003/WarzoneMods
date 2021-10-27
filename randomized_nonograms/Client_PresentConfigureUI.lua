@@ -31,7 +31,7 @@ function Client_PresentConfigureUI(rootParent)
 		.SetSliderMinValue(30)
 		.SetSliderMaxValue(70)
 		.SetValue(initialValueDensity);
-	emptyLabel = UI.CreateLabel(vert).SetText();
+	emptyLabel = UI.CreateLabel(vert).SetText(" ");
 	localDeploymentsLabel = UI.CreateLabel(vert)
 		.SetText("Check checkbox below to play with custom local deployments")
 		.SetColor("#88FF00");
