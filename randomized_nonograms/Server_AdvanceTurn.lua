@@ -3,16 +3,22 @@ function Server_AdvanceTurn_End(Game, addNewOrder)
 	bonuses = publicGameData.Bonuses;
 	local player_income = {};
 	for _, list in pairs(bonuses) do
-		player_has_bonus, playerID = player_has_bonus(Game, list);
-		if player_has_bonus then
+		if player_has_bonus(Game, list) then
 			if Mod.Settings.LocalDeployments == true then
 				local_deployments(Game, addNewOrder, list);
 			else
+				playerID = get_player(Game, list);
 				player_income[playerID] = player_income[playerID] + table.getn(list);
 			end
 		end
 	end
 	grant_income(Game, addNewOrder, player_income);
+end
+
+function get_player(Game, list)
+	for _, terrID in pairs(list) do
+		return game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
+	end
 end
 
 function player_has_bonus(game, list_of_terr)
