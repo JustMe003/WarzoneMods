@@ -103,6 +103,7 @@ function setTopBonuses(column, columnNumber, territoriesInBonus)
 		else
 			territoryID = territoryID + 20;
 		end
+		print(territoryID, counter);
 	end
 	if counter ~= 0 then
 		bonusColumn[bonusID] = counter;
