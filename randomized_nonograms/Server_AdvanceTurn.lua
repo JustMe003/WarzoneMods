@@ -29,9 +29,10 @@ end
 function local_deployments (game, addNeworder, list_of_terr)
 	for _, terrID in pairs(list_of_terr) do
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
-		terrMod = WL.TerritoryModification.Create(terr.ID);
-		terrMod.SetArmiesTo = terr.NumArmies.NumArmies + 1;
-		addNewOrder(WL.GameOrderEvent.Create(terr.OwnerPlayerID,"added armies",{},{terrMod}));
+			terrMod = WL.TerritoryModification.Create(terr.ID);
+			terrMod.SetOwnerOpt = terr.OwnerPlayerID;
+			terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 1;
+			addNewOrder(WL.GameOrderEvent.Create(terr.OwnerPlayerID,"added armies",{},{terrMod}));
 	end
 	print("added armies???");
 end
