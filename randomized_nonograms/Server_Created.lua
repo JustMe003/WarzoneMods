@@ -10,8 +10,8 @@ end
 
 function createNonogram(width, heigth, density)
 	nonogramData = {};
-	for i, heigth do
-		for j, width do
+	for i = 0, heigth do
+		for j = 0, width do
 			if math.random(100) < density then
 				nonogramData[(i*20) + j + 1] = 1;
 			else
@@ -20,7 +20,7 @@ function createNonogram(width, heigth, density)
 		end
 	end
 	overrideBonuses, territoriesInBonus = {}, {};
-	for i, heigth do
+	for i = 0, heigth do
 		length = 0;
 		bonusID = i * 20 + 1;
 		for j = width, 0, -1 do
@@ -37,7 +37,7 @@ function createNonogram(width, heigth, density)
 			overrideBonuses[bonusID] = length
 			territoriesInBonus[bonusID] = getTerritories((i*20) + 1,(i*20) + length,1)
 	end
-	for i, width do
+	for i = 0, width do
 		length = 0
 		bonusID = (i*20) + 201
 		for j = heigth - 1, -1, -1 do
