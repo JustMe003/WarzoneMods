@@ -36,6 +36,7 @@ function Client_PresentConfigureUI(rootParent)
 		.SetText("Check checkbox below to play with custom local deployments")
 		.SetColor("#88FF00");
 	LocalDeployments = UI.CreateCheckBox(vert)
+		.SetText(" ")
 		.SetIsChecked(localDeploymentsValue);
 
 end
