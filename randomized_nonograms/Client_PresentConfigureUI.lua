@@ -11,7 +11,10 @@ function Client_PresentConfigureUI(rootParent)
 
     local vert = UI.CreateVerticalLayoutGroup(rootParent);
 	UI.CreateLabel(vert).SetText('Random +/- limit');
-    setWidth = UI.CreateNumberInputField(vert)
+    widthLabel = UI.CreateLabel(vert)
+		.SetText("Specify the width of the nonogram:")
+		.SetColor("#00FF00");
+	setWidth = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(5)
 		.SetSliderMaxValue(20)
 		.SetValue(initialWidth);
