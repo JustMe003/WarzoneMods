@@ -39,9 +39,9 @@ function createNonogram(width, heigth, density)
 			territoriesInBonus[bonusID] = getTerritories((i*20) + 1,(i*20) + length,1)
 		end
 	end
-	for i = 0, width - 1 do
+	for i = 1, width do
 		length = 0
-		bonusID = (i*10) + 201
+		bonusID = ((i-1)*10) + 201
 		for j = heigth - 1, 0, -1 do
 			if nonogramData[(j*20) + i] == 1 then
 				length = length + 1;
