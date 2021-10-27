@@ -42,16 +42,14 @@ function player_has_bonus(game, list_of_terr)
 	return true;
 end
 
-function local_deployments (game, addNewOrder, list_of_terr, modifiedTerritories)
-	local orders = {};
+function local_deployments (game, addNewOrder, list_of_terr)
 	for _, terrID in pairs(list_of_terr) do
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
 		terrMod = WL.TerritoryModification.Create(terr.ID);
 		terrMod.SetOwnerOpt = terr.OwnerPlayerID;
 		terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 1;
-		table.insert(orders, terrMod);
+		addNewOrder(WL.GameOrderEvent.Create(terr.OwnerPlayerID,"added armies",{},{terrMod}));
 	end
-	addNewOrder(WL.GameOrderEvent.Create(get_player(game, list_of_terr),"added armies",{},{orders}));
 end
 
 function grant_income(game, addNewOrder, player_income)
