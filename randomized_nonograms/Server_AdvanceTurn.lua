@@ -2,10 +2,13 @@ function Server_AdvanceTurn_End(Game, addNewOrder)
 	local publicGameData = Mod.PublicGameData;
 	bonuses = publicGameData.Bonuses;
 	local player_income = initiate_player_income(Game);
+	if Mod.Settings.LocalDeployments == true then
+		local modifiedTerritories = {};
+	end
 	for bonusID, list in pairs(bonuses) do
 		if player_has_bonus(Game, list) then
 			if Mod.Settings.LocalDeployments == true then
-				local_deployments(Game, addNewOrder, list);
+				modifiedTerritories = local_deployments(Game, addNewOrder, list, modifiedTerritories);
 			else
 				playerID = get_player(Game, list);
 				player_income[playerID] = player_income[playerID] + #list;
@@ -42,13 +45,18 @@ function player_has_bonus(game, list_of_terr)
 	return true;
 end
 
-function local_deployments (game, addNewOrder, list_of_terr)
+function local_deployments (game, addNewOrder, list_of_terr, modifiedTerritories)
 	for _, terrID in pairs(list_of_terr) do
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
 		terrMod = WL.TerritoryModification.Create(terr.ID);
 		terrMod.SetOwnerOpt = terr.OwnerPlayerID;
-		terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 1;
+		if modifiedTerritories[terrID] ~= nil then
+			terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 2;
+		else
+			terrMod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + 1;
 		addNewOrder(WL.GameOrderEvent.Create(terr.OwnerPlayerID,"added armies",{},{terrMod}));
+		modifiedTerritories[terrID] = true;
+		return modifiedTerritories
 	end
 end
 
