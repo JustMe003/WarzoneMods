@@ -6,7 +6,7 @@ function Client_PresentConfigureUI(rootParent)
 	local localDeploymentsValue = Mod.Settings.LocalDeployments;
 	if initialHeigth == nil then initialHeigth = 10; end
 	if initialWidth == nil then initialWidth = 10; end
-	if initialValueDensity == nil then initialValueDensity = 50; end
+	if initialValueDensity == nil then initialValueDensity = 60; end
 	if localDeploymentsValue == nil then localDeploymentsValue = false; end
 
     local vert = UI.CreateVerticalLayoutGroup(rootParent);
@@ -31,8 +31,11 @@ function Client_PresentConfigureUI(rootParent)
 		.SetSliderMinValue(30)
 		.SetSliderMaxValue(70)
 		.SetValue(initialValueDensity);
+	emptyLabel = UI.CreateLabel(vert).SetText();
+	localDeploymentsLabel = UI.CreateLabel(vert)
+		.SetText("Check checkbox below to play with custom local deployments")
+		.SetColor("#88FF00");
 	LocalDeployments = UI.CreateCheckBox(vert)
-		.SetText("Check this to play with custom local deployments")
 		.SetIsChecked(localDeploymentsValue);
 
 end
