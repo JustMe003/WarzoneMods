@@ -23,7 +23,7 @@ function createNonogram(width, heigth, density)
 	for i = 0, heigth - 1 do
 		length = 0;
 		bonusID = (i*10) + 1;
-		for j = width, 0, -1 do
+		for j = width, 1, -1 do
 			if nonogramData[(i*20) + j] == 1 then
 				length = length + 1;
 			elseif nonogramData[(i*20) + j] == 0 and length ~= 0 then
