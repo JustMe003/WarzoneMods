@@ -26,7 +26,7 @@ function player_has_bonus(game, list_of_terr)
 	return true;
 end
 
-function local_deployments (game, addNeworder, list_of_terr)
+function local_deployments (game, addNewOrder, list_of_terr)
 	for _, terrID in pairs(list_of_terr) do
 		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
 			terrMod = WL.TerritoryModification.Create(terr.ID);
