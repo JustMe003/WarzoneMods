@@ -24,16 +24,16 @@ function createNonogram(width, heigth, density)
 		length = 0;
 		bonusID = (i*10) + 1;
 		for j = width, 0, -1 do
-			print(nonogramData[(i*20) + j]);
 			if nonogramData[(i*20) + j] == 1 then
 				length = length + 1;
 			elseif nonogramData[(i*20) + j] == 0 and length ~= 0 then
 				overrideBonuses[bonusID] = length;
 				territoriesInBonus[bonusID] = getTerritories((i*20) + j - length + 1,(i*20) + j,1)
-				print((i*20) + j - length + 1,(i*20) + j);
+				print((i*20) + j - length + 1,(i*20) + j)
 				length = 0
 				bonusID = bonusID + 1
 			end
+			print(nonogramData[(i*20) + j], (i*20) + j - length + 1, (i*20) + j)
 		end
 		if length ~= 0 then
 			overrideBonuses[bonusID] = length
@@ -44,16 +44,15 @@ function createNonogram(width, heigth, density)
 		length = 0
 		bonusID = (i*10) + 201
 		for j = heigth - 1, -1, -1 do
-			print(nonogramData[(j*20) + i]);
 			if nonogramData[(j*20) + i] == 1 then
 				length = length + 1;
 			elseif nonogramData[(j*20) + i] == 0 and length ~= 0 then
 				overrideBonuses[bonusID] = length
 				territoriesInBonus[bonusID] = getTerritories((j*20) + i - (length * 20), (j*20) + i - 20, 20)
-				print((j*20) + i - (length * 20), (j*20) + i - 20)
 				length = 0
 				bonusID = bonusID + 1
 			end
+			print(nonogramData[(j*20) + i], (j*20) + i - (length * 20), (j*20) + i - 20)
 		end
 		if length ~= 0 then
 			overrideBonuses[bonusID] = length
