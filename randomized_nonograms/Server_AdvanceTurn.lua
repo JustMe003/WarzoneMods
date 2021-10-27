@@ -2,13 +2,13 @@ function Server_AdvanceTurn_End(Game, addNewOrder)
 	local publicGameData = Mod.PublicGameData;
 	bonuses = publicGameData.Bonuses;
 	local player_income = initiate_player_income(Game);
-	for _, list in pairs(bonuses) do
+	for bonusID, list in pairs(bonuses) do
+		print(bonusID)
 		if player_has_bonus(Game, list) then
 			if Mod.Settings.LocalDeployments == true then
 				local_deployments(Game, addNewOrder, list);
 			else
 				playerID = get_player(Game, list);
-				print(playerID, #list);
 				player_income[playerID] = player_income[playerID] + #list;
 			end
 		end
