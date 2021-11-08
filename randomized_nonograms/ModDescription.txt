@@ -1,0 +1,3 @@
+[!] ONLY USE THIS MOD ON THE "Randomized nonogram map" (ID = 96671) [!]
+This mod creates a random nonogram and will show the correct data of it in bonuslinks. Because there is no way you can add territies to bonuses by mods (at least I don't know them) this mod makes use of a custom bonus system very similar than you're used to. There is a custom local deployment option included
+Note that all the bonuses have the same territory, 400. There is a negative bonus that is equal to all other bonuses combined to make sure you're only getting income from the mod

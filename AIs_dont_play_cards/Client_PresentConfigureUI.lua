@@ -1,7 +1,5 @@
 	
 function Client_PresentConfigureUI(rootParent)
---	CanPlayReinforcement = Mod.Settings.CanPlayReinforcement;
---	if(CanPlayReinforcement == nil)then CanPlayReinforcement = false; end
 	CanPlayEMB = Mod.Settings.CanPlayEMB;
 	if(CanPlayEMB == nil)then CanPlayEMB = false; end
 	CanPlayDiplomacy = Mod.Settings.CanPlayDiplomacy;
@@ -16,8 +14,6 @@ function Client_PresentConfigureUI(rootParent)
 	horzlist = {};
 	horzlist[0] = UI.CreateHorizontalLayoutGroup(rootParent);
 	UI.CreateLabel(horzlist[0]).SetText("AI's can play ...");
---	horzlist[1] = UI.CreateHorizontalLayoutGroup(rootParent);
---	CanPlayReinforcementCheckBox = UI.CreateCheckBox(horzlist[1]).SetText("Reinfocement cards").SetIsChecked(CanPlayReinforcement);
 	horzlist[2] = UI.CreateHorizontalLayoutGroup(rootParent);
 	CanPlayEMBCheckBox = UI.CreateCheckBox(horzlist[2]).SetText("Emergency Blockade cards").SetIsChecked(CanPlayEMB);
 	horzlist[3] = UI.CreateHorizontalLayoutGroup(rootParent);

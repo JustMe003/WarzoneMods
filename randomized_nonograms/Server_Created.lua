@@ -1,6 +1,8 @@
 
 function Server_Created(game, settings)
+--	We need to store the custom bonuses somewhere, so we call the PublicGameData of the mod
 	local publicGameData = Mod.PublicGameData;
+--	overriddenBonuses will override the bonuses that we need to show the nonogram to the user, territoriesInBonus contains tables with the territories in a bonus
 	overriddenBonuses, territoriesInBonus = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
 	settings.OverriddenBonuses = overriddenBonuses;
 	publicGameData.Bonuses = territoriesInBonus;
@@ -9,9 +11,10 @@ function Server_Created(game, settings)
 end
 
 function createNonogram(width, heigth, density)
+--	In here the nonogram gets created
 	nonogramData = {};
-	for i = 0, heigth do
-		for j = 0, width do
+	for i = 0, heigth - 1 do
+		for j = 0, width - 1 do
 			if math.random(100) < density then
 				nonogramData[(i*20) + j + 1] = 1;
 			else
@@ -19,7 +22,10 @@ function createNonogram(width, heigth, density)
 			end
 		end
 	end
+--	So far creating the process of creating the data values of the nonogram, now we need to use it to set the rigth bonuses to their corresponding number
 	overrideBonuses, territoriesInBonus = {}, {};
+--	Bonus 401 (with the ID 401) will cancel out all other bonuses cos they all contain the exact same territory (400)
+--	If we wouldn't, the player owning territory 400 will get a bonus equal to the maximum income of all the bonuses combined
 	overrideBonuses[401] = 0;
 	for i = 0, heigth - 1 do
 		length = 0;

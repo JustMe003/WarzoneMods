@@ -1,6 +1,5 @@
 
 function Client_SaveConfigureUI(alert)
---	Mod.Settings.CanPlayReinforcement = CanPlayReinforcementCheckBox.GetIsChecked();
 	Mod.Settings.CanPlayEMB = CanPlayEMBCheckBox.GetIsChecked();
 	Mod.Settings.CanPlayDiplomacy = CanPlayDiplomacyCheckBox.GetIsChecked();
 	Mod.Settings.CanPlaySanctions = CanPlaySanctionsCheckBox.GetIsChecked();
