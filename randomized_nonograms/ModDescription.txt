@@ -1,3 +1,13 @@
 [!] ONLY USE THIS MOD ON THE "Randomized nonogram map" (ID = 96671) [!]
-This mod creates a random nonogram and will show the correct data of it in bonuslinks. Because there is no way you can add territies to bonuses by mods (at least I don't know them) this mod makes use of a custom bonus system very similar than you're used to. There is a custom local deployment option included
+This mod creates a random nonogram and will show the correct data of it in bonuslinks. Because there is no way you can add territies to bonuses by mods (at least I don't know them) this mod makes use of a recreated bonus system . 
+
+Few notes:
 Note that all the bonuses have the same territory, 400. There is a negative bonus that is equal to all other bonuses combined to make sure you're only getting income from the mod
+With the custom distribution everyone will be able to see the answer because only territies in the answer are pickable
+If the custom distribution is turned on, the distribution will always be manual. 
+If the dimensions of the nonogram are bigger than 20 or smaller than 5 they will be modified to avoid a crash
+I highly recommend to not play with a density lower than 60%! Else there will likely be more than 1 answer, meaning the puzzle is not solvable. 
+Only exception for above is with the combination with custom distribution, which show the answer thus players don't have to solve the puzzle by themselves
+The local deployments option will auto-deploy for everyone. It will increase the armies in every completed bonus by 1 (every territory in a bonus is part of 2 bonuses. So if you complete both bonuses for a territory it will be increased by 2)
+Note that you'll have to manually turn on commerce if you disable custom local deployments, otherwise the mod can't give you extra income
+Note that when the custom local deployments is not on you'll receive your extra income from bonuses in turn 0 (after the distribution) after turn 1
