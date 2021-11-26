@@ -19,7 +19,8 @@ function setPickable(standing, listOfTerr)
 	for _, terrID in pairs(listOfTerr) do
 		terr = standing.Territories[terrID];
 		terr.OwnerPlayerID = WL.PlayerID.AvailableForDistribution;
-		standing.Territories[terrID] = terr;
+--		standing.Territories[terrID] = terr;
+		
 	end
 end
 
