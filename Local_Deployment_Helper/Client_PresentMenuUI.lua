@@ -18,9 +18,9 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	
 	setMaxSize(450, 300);
 	if (not game.Settings.LocalDeployments) then
-		return createNewLabel(vert, "This mod only works in Local Deployment games. This isn't a Local Deployment.", colors.ErrorColor)
+		return createLabel(vert, "This mod only works in Local Deployment games. This isn't a Local Deployment.", colors.ErrorColor)
 	elseif (not game.Us or game.Us.State ~= WL.GamePlayerState.Playing) then
-		return createNewLabel(vert, "You cannot do anything since you're not in the game.", colors.ErrorColor);
+		return createLabel(vert, "You cannot do anything since you're not in the game.", colors.ErrorColor);
 	end
 
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
@@ -40,7 +40,7 @@ function showMenu()
 		createButton(vert, "Add last turns deployment only", "#00ff05", AddDeployHelper);
 		createButton(vert, "Clear Orders", "#0000FF", clearOrdersFunction);
 	else
-		createNewLabel(vert, "This game does not use the deploy/transfer helper", colors.FalseColor);
+		createLabel(vert, "This game does not use the deploy/transfer helper", colors.FalseColor);
 	end
 	createButton(vert, "Settings", "#3333FF", showSettings);
 	createButton(vert, "Credits", "#88FF00", showCredits);
@@ -54,15 +54,21 @@ end
 function showSettings()
 	resetAll();
 	if Mod.Settings.BonusOverrider == true then
-		createNewLabel(vert, "This game makes use of the automatic bonus overrider", colors.TrueColor)
+		createLabel(vert, "This game makes use of the automatic bonus overrider", colors.TrueColor)
 	else
-		createNewLabel(vert, "This game did not makes use of the automatic bonus overrider", colors.FalseColor)
+		createLabel(vert, "This game did not makes use of the automatic bonus overrider", colors.FalseColor)
 	end
 	if Mod.Settings.DeployTransferHelper == true then
-		createNewLabel(vert, "In this game you're able to use the deploy/transfer helper", colors.TrueColor)
+		createLabel(vert, "In this game you're able to use the deploy/transfer helper", colors.TrueColor)
 	else
-		createNewLabel(vert, "In this game you're not able to use the deploy/transfer helper", colors.FalseColor)
+		createLabel(vert, "In this game you're not able to use the deploy/transfer helper", colors.FalseColor)
 	end
+	if Mod.Settings.OverridePercentage == true then
+		createLabel(vert, "The mod has overridden the 'can attack by percentage' setting to be enabled", colors.TrueColor)
+	else
+		createLabel(vert, "The mod has not overriden the 'can attack by percentage' setting, the option can be either on or off", colors.FalseColor)
+	end
+	
 end
 
 function getNewHorz()
@@ -70,7 +76,7 @@ function getNewHorz()
 	return horz[#horz];
 end
 
-function createNewLabel(line, text, color)
+function createLabel(line, text, color)
 	table.insert(labels, UI.CreateLabel(line).SetText(text).SetColor(color));
 end
 

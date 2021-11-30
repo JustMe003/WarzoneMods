@@ -1,4 +1,7 @@
 function Server_Created(game, settings)
+	if Mod.Settings.DeployTransferHelper == true and Mod.Settings.OverridePercentage == true then 
+		settings.AllowPercentageAttacks = true; 
+	end
 	if Mod.Settings.BonusOverrider == true then
 		OverriddenBonuses = LoopTerritories(game, settings.OverriddenBonuses)
 	end
