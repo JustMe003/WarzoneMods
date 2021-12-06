@@ -101,12 +101,12 @@ function deleteUI(list)
 end
 
 function clearOrdersFunction()
-	if(Game.Us.HasCommittedOrders)then
+	if Game.Us.HasCommittedOrders then
 		return UI.Alert("You need to uncommit first");
 	end
 	local orderTabel = Game.Orders;--get client order list
 
-	if (next(orderTabel) ~= nil) then
+	if next(orderTabel) ~= nil then
 		orderTabel = {}
 		Game.Orders = orderTabel
 	end
@@ -116,115 +116,120 @@ function AddDeploy()
 	print ('running AddDeploy');
 
 	
-	if(Game.Us.HasCommittedOrders == true)then
+	if Game.Us.HasCommittedOrders == true then
 		UI.Alert("You need to uncommit first");
 		return;
 	end
 	
 	local orderTabel = Game.Orders;--get client order list
-	if (next(orderTabel) ~= nil) then --make sure we don't have past orders, since that is alot of extra work
+	if next(orderTabel) ~= nil then --make sure we don't have past orders, since that is alot of extra work
 		UI.Alert('Please clear your order list before using this mod.')
 		return;
-	end;
+	end
 	
 	
 	local maxDeployBonuses = {}; --array with the bonuses
 	for _, bonus in pairs (Game.Map.Bonuses) do
 		maxDeployBonuses[bonus.ID] = bonus.Amount --store the bonus value
-	end;
+	end
 	
 	local newOrder;
 	
 	for _,order in pairs(LastTurn) do
-		if (order.PlayerID == Game.Us.ID) then
-			if (order.proxyType == "GameOrderDeploy")then
+		if order.PlayerID == Game.Us.ID then
+			if order.proxyType == "GameOrderDeploy" then
 					--check that we own the territory
-				if (Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID) then
+				if Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID then
 					--check that we have armies to deploy
 					local bonusID;
 					for i, bonus in ipairs(Game.Map.Territories[order.DeployOn].PartOfBonuses) do
-						print(bonus)
-						bonusID = bonus;
-						break;
-					end;
+						if bonusValue(bonus) ~= 0 then
+							bonusID = bonus;
+							break;
+						end
+					end
 					--make sure we deploy more then 0
-					if (order.NumArmies == 0) then break; end;
-					if (maxDeployBonuses[bonusID] == 0) then break; end;	
-					if (maxDeployBonuses[bonusID] - order.NumArmies >=0) then --deploy full
-						maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
-						newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
-						table.insert(orderTabel, newOrder);
-					elseif (maxDeployBonuses[bonusID] > 0) then --deploy the max we can
-						newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false)
-						table.insert(orderTabel, newOrder);
-						maxDeployBonuses[bonusID] = 0;
-					end;
-				end;
-			end;
-		end;
-	end;
+					if order.NumArmies == 0 then break; end
+					if maxDeployBonuses[bonusID] == 0 then break; end
+					if ownsBonus(bonusID) then 
+						if (maxDeployBonuses[bonusID] - order.NumArmies >=0) then --deploy full
+							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
+							table.insert(orderTabel, newOrder);
+						elseif (maxDeployBonuses[bonusID] > 0) then --deploy the max we can
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false)
+							table.insert(orderTabel, newOrder);
+							maxDeployBonuses[bonusID] = 0;
+						end
+					end
+				end
+			end
+		end
+	end
 	--update client orders list
 	Game.Orders = orderTabel;
 end;
 
 function AddOrdersConfirmes()	
 	print ('running addOrders');
-	if(Game.Us.HasCommittedOrders == true)then
+	if Game.Us.HasCommittedOrders == true then
 		UI.Alert("You need to uncommit first");
 		return;
 	end
 	local standing = Game.LatestStanding; --used to make sure we can make the depoly/transfear
 	local orderTabel = Game.Orders;--get client order list
-	if (next(orderTabel) ~= nil) then --make sure we don't have past orders, since that is alot of extra work
+	if next(orderTabel) ~= nil then --make sure we don't have past orders, since that is alot of extra work
 		UI.Alert('Please clear your order list before using this mod.')
 		return;
-	end;
+	end
 	
 	
 	local maxDeployBonuses = {}; --aray with the bonuses
 	for _, bonus in pairs (Game.Map.Bonuses) do
 		maxDeployBonuses[bonus.ID] = bonus.Amount --store the bonus value
-	end;
+	end
 	
 	local newOrder;
 	
 	for _,order in pairs(LastTurn) do
-		if (order.PlayerID == Game.Us.ID) then
-			if (order.proxyType == "GameOrderDeploy")then
+		if order.PlayerID == Game.Us.ID then
+			if order.proxyType == "GameOrderDeploy" then
 					--check that we own the territory
-				if (Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID) then
+				if Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID then
 					--check that we have armies to deploy
 					local bonusID;
 					for i, bonus in ipairs(Game.Map.Territories[order.DeployOn].PartOfBonuses) do
-						print(bonus .. ' bonusID')
-						bonusID = bonus;
-						break;
-					end;
+						if bonusValue(bonus) ~= 0 then
+							bonusID = bonus;
+							break;
+						end
+					end
 					--make sure we deploy more then 0
-					if (order.NumArmies == 0) then break; end;
-					if (maxDeployBonuses[bonusID] == 0) then break; end;
-					
-					if (maxDeployBonuses[bonusID] - order.NumArmies >=0) then --deploy full
-						maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
-						newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
-						table.insert(orderTabel, newOrder);
-					elseif (maxDeployBonuses[bonusID] > 0) then --deploy the max we can
-						newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false)
-						table.insert(orderTabel, newOrder);
-						maxDeployBonuses[bonusID] = 0;
-					end;
-				end;
-			end;
+					if order.NumArmies == 0 then break; end;
+					if maxDeployBonuses[bonusID] == 0 then break; end;
+					if ownsBonus(bonusID) then
+						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
+							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
+							table.insert(orderTabel, newOrder);
+						elseif maxDeployBonuses[bonusID] > 0 then --deploy the max we can
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false)
+							table.insert(orderTabel, newOrder);
+							maxDeployBonuses[bonusID] = 0;
+						end
+					end
+				end
+			end
 			if (order.proxyType == "GameOrderAttackTransfer") then
 				if (Game.Us.ID == standing.Territories[order.From].OwnerPlayerID) then --from us 
 					if (Game.Us.ID == standing.Territories[order.To].OwnerPlayerID) then -- to us
 							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, order.ByPercent, order.NumArmies, false)	
 						table.insert(orderTabel, newOrder);
-					end;
-				end;
-			end;
-		end;
-	end;
+					end
+				end
+			end
+		end
+	end
 	--update client orders list
 	Game.Orders = orderTabel;
 end;
@@ -241,7 +246,7 @@ function AddDeployHelper()
 	if (Distribution == nil) then --auto dist
 		firstTurn = 0;
 	end;
-	if(turn -1 <= firstTurn) then
+	if(turn <= firstTurn) then
 		UI.Alert("You can't use the mod during distribution or for the first turn.");
 		return;
 	end;
@@ -263,7 +268,7 @@ function AddOrdersHelper()
 	if (Distribution == nil) then --auto dist
 		firstTurn = 0;
 	end;
-	if(turn -1 <= firstTurn) then
+	if(turn <= firstTurn) then
 		UI.Alert("You can't use the mod during distribution or for the first turn.");
 		return;
 	end;
@@ -291,3 +296,20 @@ function getDistHelper(data)
 	print('got Distribution');
 	Distribution = data;
 end;
+
+function ownsBonus(bonusID)
+	for _, terrID in pairs(Game.Map.Bonuses[bonusID].Territories) do
+		if Game.LatestStanding.Territories[terrID].OwnerPlayerID ~= Game.Us.ID then 
+			return false; 
+		end
+	end
+	return true;
+end
+
+function bonusValue(bonusID)
+	if Game.Settings.OverriddenBonuses[bonusID] ~= nil then
+		return Game.Settings.OverriddenBonuses[bonusID];
+	else
+		return Game.Map.Bonuses[bonusID].Amount;
+	end
+end

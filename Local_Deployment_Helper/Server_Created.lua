@@ -3,16 +3,14 @@ function Server_Created(game, settings)
 		settings.AllowPercentageAttacks = true; 
 	end
 	if Mod.Settings.BonusOverrider == true then
-		OverriddenBonuses = LoopTerritories(game, settings.OverriddenBonuses)
+		settings.OverriddenBonuses = LoopTerritories(game, settings.OverriddenBonuses)
 	end
-	settings.OverriddenBonuses = OverriddenBonuses;
 	settings.LocalDeployments = true;
 end
 
 function LoopTerritories(game, OverriddenBonuses)
 	if OverriddenBonuses == nil then OverriddenBonuses = {}; end
 	for terrID, terr in pairs(game.Map.Territories) do
---		print("Territory " .. terr.Name);
 		OverriddenBonuses = SetToOneBonus(game, terr, OverriddenBonuses);
 	end
 	return OverriddenBonuses;
@@ -23,6 +21,7 @@ function SetToOneBonus(game, terr, OverriddenBonuses)
 	if AmountOfBonuses(game, terr, OverriddenBonuses) > 1 then
 		local smallestBonus = 10000;
 		local smallestBonusID = -1;
+		local bonusValueZero = {};
 		for _, bonusID in pairs(terr.PartOfBonuses) do
 			if GetValue(game, OverriddenBonuses, bonusID) ~= 0 then
 				if math.min(smallestBonus, #game.Map.Bonuses[bonusID].Territories) == #game.Map.Bonuses[bonusID].Territories then
@@ -30,25 +29,38 @@ function SetToOneBonus(game, terr, OverriddenBonuses)
 					smallestBonus = #game.Map.Bonuses[bonusID].Territories;
 					smallestBonusID = bonusID;
 				end
+			else
+				table.insert(bonusValueZero, bonusID);
 			end
 		end
-		OverriddenBonuses = OverrideBonuses(game, terr, OverriddenBonuses, smallestBonusID);
+		OverriddenBonuses = OverrideBonuses(game, terr, OverriddenBonuses, smallestBonusID, bonusValueZero);
 	end
 	return OverriddenBonuses;
 end
 
-function OverrideBonuses(game, terr, OverriddenBonuses, exceptForBonus)
+function OverrideBonuses(game, terr, OverriddenBonuses, exceptForBonus, bonusValueZero)
 --	print(game.Map.Bonuses[exceptForBonus].Name);
 	for _, bonusID in pairs(terr.PartOfBonuses) do
+		bool = true;
 		if bonusID ~= exceptForBonus then
-			OverriddenBonuses[bonusID] = 0;
---			print("overridden bonus " .. game.Map.Bonuses[bonusID].Name);
+			for _, bonusID2 in pairs(bonusValueZero) do
+				if bonusID == bonusID2 then
+--					print(game.Map.Bonuses[bonusID].Name, "not overridden")
+					bool = false;
+					break;
+				end
+			end
+			if bool == true then
+				OverriddenBonuses[bonusID] = 0;
+--				print("overridden bonus " .. game.Map.Bonuses[bonusID].Name);
+			end
 		end
 	end
 	return OverriddenBonuses;
 end
 
 function GetValue(game, OverriddenBonuses, bonusID)
+--	if bonusID == 
 	if OverriddenBonuses[bonusID] ~= nil then
 		return OverriddenBonuses[bonusID];
 	else
