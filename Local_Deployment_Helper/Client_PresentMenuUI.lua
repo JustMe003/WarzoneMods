@@ -149,9 +149,7 @@ function AddDeploy()
 						end
 					end
 					--make sure we deploy more then 0
-					if order.NumArmies == 0 then break; end
-					if maxDeployBonuses[bonusID] == 0 then break; end
-					if ownsBonus(bonusID) then 
+					if ownsBonus(bonusID) and order.NumArmies > 0 then 
 						if (maxDeployBonuses[bonusID] - order.NumArmies >=0) then --deploy full
 							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
 							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
@@ -205,9 +203,7 @@ function AddOrdersConfirmes()
 						end
 					end
 					--make sure we deploy more then 0
-					if order.NumArmies == 0 then break; end;
-					if maxDeployBonuses[bonusID] == 0 then break; end;
-					if ownsBonus(bonusID) then
+					if ownsBonus(bonusID) and order.NumArmies > 0 then
 						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
 							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
 							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
@@ -246,7 +242,7 @@ function AddDeployHelper()
 	if (Distribution == nil) then --auto dist
 		firstTurn = 0;
 	end;
-	if(turn <= firstTurn) then
+	if(turn - 1 <= firstTurn) then
 		UI.Alert("You can't use the mod during distribution or for the first turn.");
 		return;
 	end;
@@ -268,7 +264,7 @@ function AddOrdersHelper()
 	if (Distribution == nil) then --auto dist
 		firstTurn = 0;
 	end;
-	if(turn <= firstTurn) then
+	if(turn - 1 <= firstTurn) then
 		UI.Alert("You can't use the mod during distribution or for the first turn.");
 		return;
 	end;
@@ -307,9 +303,5 @@ function ownsBonus(bonusID)
 end
 
 function bonusValue(bonusID)
-	if Game.Settings.OverriddenBonuses[bonusID] ~= nil then
-		return Game.Settings.OverriddenBonuses[bonusID];
-	else
-		return Game.Map.Bonuses[bonusID].Amount;
-	end
+	return Game.Map.Bonuses[bonusID].Amount;
 end
