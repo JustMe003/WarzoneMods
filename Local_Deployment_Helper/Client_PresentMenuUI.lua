@@ -32,7 +32,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	UI.CreateLabel(permanentLabel1).SetText("Mod author:\t").SetColor(colors.TextColor);
 	UI.CreateLabel(permanentLabel1).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
 	UI.CreateLabel(permanentLabel2).SetText("Special thanks to: ").SetColor(colors.TextColor);
-	UI.CreateLabel(permanentLabel2).SetText("TBest").SetColor("#800080");
+--	UI.CreateLabel(permanentLabel2).SetText("TBest").SetColor("#800080");
 	showMenu();
 end
 
