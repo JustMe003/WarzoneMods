@@ -1,6 +1,6 @@
 function SetTextColors()
 	list = {}
-	list.TextColor = "#AAAAAA"; list.ErrorColor = "#FF2222"; list.TrueColor = "#33AA33"; list.FalseColor = "#AA3333"; list.NumberColor = "#3333AA"; list.WarningNumberColor = "#DD1111"; list.Lime = "#88DD00";
+	list.TextColor = "#AAAAAA"; list.ErrorColor = "#FF2222"; list.TrueColor = "#33AA33"; list.FalseColor = "#AA3333"; list.NumberColor = "#3333AA"; list.WarningNumberColor = "#DD1111"; list.Lime = "#88DD00"; list.Purple = "#800080"
 	return list;
 end
 
