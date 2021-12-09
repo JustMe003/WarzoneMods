@@ -27,9 +27,12 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	buttons = {};
 	labels = {};
 	horz = {};
-	permanentLabel = UI.CreateHorizontalLayoutGroup(vert);
-	UI.CreateLabel(permanentLabel).SetText("Mod creator:\t").SetColor(colors.TextColor);
-	UI.CreateLabel(permanentLabel).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
+	permanentLabel1 = UI.CreateHorizontalLayoutGroup(vert);
+	permanentLabel2 = UI.CreateHorizontalLayoutGroup(vert);
+	UI.CreateLabel(permanentLabel1).SetText("Mod author:\t").SetColor(colors.TextColor);
+	UI.CreateLabel(permanentLabel1).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
+	UI.CreateLabel(permanentLabel2).SetText("Special thanks to: ").SetColor(colors.TextColor);
+	UI.CreateLabel(permanentLabel2).SetText("TBest").SetColor(colors.Purple);
 	showMenu();
 end
 
