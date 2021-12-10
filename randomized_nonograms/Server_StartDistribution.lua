@@ -21,7 +21,7 @@ end
 function setPickable(standing, listOfTerr)
 	for _, terrID in pairs(listOfTerr) do
 		terr = standing.Territories[terrID];
-		print(terr.proxyType)
+		print(terr.proxyType, table.concat(terr.writableKeys, ','))
 		terr.OwnerPlayerID = WL.PlayerID.AvailableForDistribution;
 --		standing.Territories[terrID] = terr;
 --		print(terr.OwnerPlayerID)
