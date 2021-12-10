@@ -9,13 +9,13 @@ function Server_StartDistribution(game, standing)
 				terr.NumArmies = terr.NumArmies.Add(WL.Armies.Create(game.Settings.InitialNonDistributionArmies));
 				standing.Territories[terrID] = terr; -- reset all territories 
 			end
-			print(#Mod.PublicGameData.Bonuses)
-			for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
-				if bonusID < 201 then
-					print(bonusID)
-					setPickable(standing, listOfTerr);
-				else break; end
-			end
+		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
+			if bonusID < 201 then
+				print(bonusID)
+				setPickable(standing, listOfTerr);
+			else break; end
+		end
+		print(#Mod.PublicGameData.Bonuses)
 		end
 	end
 end
