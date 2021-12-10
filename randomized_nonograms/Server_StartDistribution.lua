@@ -23,7 +23,8 @@ function setPickable(standing, listOfTerr)
 		terr = standing.Territories[terrID];
 		print(terr.proxyType, table.concat(terr.writableKeys, ','))
 		terr.OwnerPlayerID = WL.PlayerID.AvailableForDistribution;
---		standing.Territories[terrID] = terr;
---		print(terr.OwnerPlayerID)
+		standing.Territories[terrID] = terr;
+		print(standing.Territories[terrID].OwnerPlayerID)
+		print(terr.OwnerPlayerID)
 	end
 end
