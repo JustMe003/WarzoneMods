@@ -23,6 +23,6 @@ function setPickable(standing, listOfTerr)
 		terr = standing.Territories[terrID];
 		terr.OwnerPlayerID = WL.PlayerID.AvailableForDistribution;
 		standing.Territories[terrID] = terr;
-		print(standing.Territories[terrID].OwnerPlayerID, terr.OwnerPlayerID)
+		print(terrID, standing.Territories[terrID].OwnerPlayerID, terr.OwnerPlayerID)
 	end
 end
