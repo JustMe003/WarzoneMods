@@ -12,11 +12,10 @@ function Server_StartDistribution(game, standing)
 		end
 		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
 			if bonusID < 201 then
-				print(bonusID)
+--				print(bonusID)
 				setPickable(standing, listOfTerr);
 			else break; end
 		end
-		print(#Mod.PublicGameData.Bonuses)
 	end
 end
 
