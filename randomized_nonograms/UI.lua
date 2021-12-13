@@ -72,7 +72,6 @@ function destroyAll()
 end
 
 function destroyItems(list)
-	print(#list)
 	for _, item in pairs(list) do
 		UI.Destroy(item);
 	end
