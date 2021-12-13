@@ -36,7 +36,7 @@ function showCredits()
 	createLabel(line, "καλλιστηι \t", getColor("καλλιστηι", game.Game.Players, colors.Red));
 	createLabel(line, "JK_3 \t", getColor("JK_3", game.Game.Players, colors.Green));
 	createLabel(line, "Samek \n", getColor("Samek", game.Game.Players, colors.Ivory));
-	createButton(vert, "close", "#33CC33", function() showMenu(); end);
+	createButton(vert, "close", "#33CC33", function() destroyAll(); showMenu(); end);
 
 end
 
