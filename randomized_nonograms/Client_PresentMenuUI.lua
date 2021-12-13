@@ -42,12 +42,14 @@ end
 
 function showSettings()
 	destroyAll();
+	print("dis")
 	if Mod.Settings.CustomDistribution == true then
 		createLabel(getNewHorz(vert), "Custom distribution is being used", colors.TrueColor);
 		createLabel(getNewHorz(vert), "This option enforces manual distribution, and all pickable territories are in bonuses",colors.TextColors);
 	else
 		createLabel(getNewHorz(vert), "Custom distribution is not being used", colors.FalseColor);
 	end
+	print(dimensions")
 	createLabel(getNewHorz(vert), "The dimensions of the nonogram are:", colors.TextColors);
 	line = getNewHorz(vert);
 	createLabel(line, Mod.Settings.NonogramWidth, colors.NumberColor);
@@ -55,15 +57,18 @@ function showSettings()
 	createLabel(line, " " .. Mod.Settings.NonogramHeigth, colors.NumberColor);
 	createLabel(getNewHorz(vert), "The density is set to:", colors.TextColors);
 	createLabel(getNewHorz(vert), Mod.Settings.NonogramDensity, colors.NumberColor);
+	print("den")
 	if Mod.Settings.NonogramDensity >= 60 then
 		createLabel(getNewHorz(vert), "This means the nonogram is likely solveable, there should be 1 answer possible", colors.NumberColor);
 	else
 		createLabel(getNewHorz(vert), "This means the nonogram might not be solveable, you might get stuck because there is more than 1 answer possible", colors.WarningNumberColor);
 	end
+	print("dep")
 	if Mod.Settings.LocalDeployments == true then
 		createLabel(getNewHorz(vert), "Custom local deployments is on, this means that all armies you get from territories are automatically deployed, 1 on each territory in the bonus", colors.TextColor);
 	else
 		createLabel(getNewHorz(vert), "Custom local deployments is off, if commerce is on you'll get gold to spend on armies",colors.TextColors);
 	end
+	print("button")
 	createButton(vert, "close", "#33CC33", function() destroyAll(); showMenu(); end);
 end
