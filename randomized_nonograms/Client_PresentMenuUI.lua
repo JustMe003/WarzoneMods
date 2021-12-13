@@ -1,11 +1,12 @@
 require("UI")
-local colors = init();
+local colors;
 local vert;
 local game;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, ClientGame, close)
 --	setMaxSize(500, 500);
 	game = ClientGame;
+	colors = init();
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	permanentLabel = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(permanentLabel).SetText("Mod creator:\t").SetColor(colors.TextColor);
