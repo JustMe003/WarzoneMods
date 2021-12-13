@@ -15,7 +15,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, ClientGame,
 end
 
 function showMenu()
-	resetAll();
+	init()
 	createButton(vert, "settings", "#3333FF", showSettings);
 	createButton(vert, "Credits", "#88FF00", showCredits);
 end
