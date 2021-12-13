@@ -68,6 +68,7 @@ function destroyAll()
 	destroyItems(buttons);
 	destroyItems(texts);
 	destroyItems(numbers);
+	init()
 end
 
 function destroyItems(list)
