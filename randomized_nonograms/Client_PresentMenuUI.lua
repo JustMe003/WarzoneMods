@@ -17,17 +17,6 @@ function showMenu()
 	resetAll();
 	createButton(vert, "settings", "#3333FF", showSettings);
 	createButton(vert, "Credits", "#88FF00", showCredits);
-	if game.Game.Players[1311724] ~= nil then
-		createButton(vert, "show player ID's", colors.Aqua, showPlayerIDs);
-	end
-end
-
-function showPlayerIDs()
-	resetAll()
-	for ID, player in pairs(game.Game.Players) do
-		line = getNewHorz(vert)
-		createLabel(line, ID .. "\t" .. player.DisplayName(nil, false), colors.TextColor)
-	end
 end
 
 function showCredits()
@@ -35,17 +24,17 @@ function showCredits()
 	line = getNewHorz(vert);
 	createLabel(line, "testers:", colors.TextColor);
 	line = getNewHorz(vert);
---	createLabel(line, "Priamus \t", getColor(3629785970, game.Game.Players, colors.SaddleBrown));
---	createLabel(line, "krinid \t", getColor(79105823914, game.Game.Players, colors.TyrianPurple));
---	createLabel(line, "ShatteredMagpie \t", getColor(13126682508, game.Game.Players, colors.Orchid));
---	line = getNewHorz(vert);
---	createLabel(line, "[GW] Rob \t", getColor(72115235360, game.Game.Players, colors.Blue));
---	createLabel(line, "unFairerOrb76 \t", getColor(67130550347, game.Game.Players, colors.Yellow));
---	createLabel(line, "DooDlefight \t", getColor(39131934059, game.Game.Players, colors.DarkGreen));
---	line = getNewHorz(vert);
---	createLabel(line, "καλλιστηι \t", getColor(51131559866, game.Game.Players, colors.Red));
---	createLabel(line, "JK_3 \t", getColor(31105111944, game.Game.Players, colors.Green));
---	createLabel(line, "Samek \n", getColor(69135440841, game.Game.Players, colors.Ivory));
+	createLabel(line, "Priamus \t", getColor(297859, game.Game.Players, colors.SaddleBrown));
+	createLabel(line, "krinid \t", getColor(1058239, game.Game.Players, colors.TyrianPurple));
+	createLabel(line, "ShatteredMagpie \t", getColor(1266825, game.Game.Players, colors.Orchid));
+	line = getNewHorz(vert);
+	createLabel(line, "[GW] Rob \t", getColor(1152353, game.Game.Players, colors.Blue));
+	createLabel(line, "unFairerOrb76 \t", getColor(1305503, game.Game.Players, colors.Yellow));
+	createLabel(line, "DooDlefight \t", getColor(1319340, game.Game.Players, colors.DarkGreen));
+	line = getNewHorz(vert);
+	createLabel(line, "καλλιστηι \t", getColor(1315598, game.Game.Players, colors.Red));
+	createLabel(line, "JK_3 \t", getColor(1051119, game.Game.Players, colors.Green));
+	createLabel(line, "Samek \n", getColor(1354408, game.Game.Players, colors.Ivory));
 	createButton(vert, "close", "#33CC33", showMenu);
 
 end
