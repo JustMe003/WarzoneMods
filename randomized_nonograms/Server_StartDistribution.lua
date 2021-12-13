@@ -24,7 +24,7 @@ function Server_StartDistribution(game, standing)
 		end
 		terr = standing.Territories[400];
 		terr.OwnerPlayerID = -2
-		standing.Territories[400] = terr;0
+		standing.Territories[400] = terr;
 	end
 end
 
