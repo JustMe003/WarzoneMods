@@ -22,12 +22,16 @@ function Server_StartDistribution(game, standing)
 				for _, terrID in pairs(listOfTerr) do
 					terr = standing.Territories[terrID];
 					terr.OwnerPlayerID = -2;
+					standing.Territories[terrID] = terr;
 				end
 			else break; end
 		end
 		terr = standing.Territories[400];
 		terr.OwnerPlayerID = -2
 		standing.Territories[400] = terr;
+		terr = standing.Territories[399];
+		terr.OwnerPlayerID = WL.PlayerID.AvailableForDistribution;
+		standing.Territories[399] = terr;
 	end
 end
 --[[
