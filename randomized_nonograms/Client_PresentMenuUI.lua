@@ -6,7 +6,7 @@ local game;
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, ClientGame, close)
 --	setMaxSize(500, 500);
 	game = ClientGame;
-	colors = init();
+	colors = initColors();
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	permanentLabel = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(permanentLabel).SetText("Mod creator:\t").SetColor(colors.TextColor);
@@ -21,7 +21,7 @@ function showMenu()
 end
 
 function showCredits()
-	resetAll();
+	destroyAll();
 	line = getNewHorz(vert);
 	createLabel(line, "testers:", colors.TextColor);
 	line = getNewHorz(vert);
@@ -41,7 +41,7 @@ function showCredits()
 end
 
 function showSettings()
-	resetAll();
+	destroyAll();
 	if Mod.Settings.CustomDistribution == true then
 		createLabel(getNewHorz(), "Custom distribution is being used", "#33CC33");
 		createLabel(getNewHorz(), "This option enforces manual distribution, and all pickable territories are in bonuses",colors.TextColors);
