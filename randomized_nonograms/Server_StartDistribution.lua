@@ -19,7 +19,10 @@ function Server_StartDistribution(game, standing)
 			-- when we reach bonusID 200+, we can break the loop since we've had all the territories once
 			if bonusID < 201 then
 --				print(bonusID)
-				setPickable(standing, listOfTerr);
+				for _, terrID in pairs(listOfTerr) do
+					terr = standing.Territories[terrID];
+					terr.OwnerPlayerID = -2;
+				end
 			else break; end
 		end
 		terr = standing.Territories[400];
@@ -27,7 +30,7 @@ function Server_StartDistribution(game, standing)
 		standing.Territories[400] = terr;
 	end
 end
-
+--[[
 function setPickable(standing, listOfTerr)
 	for _, terrID in pairs(listOfTerr) do
 		terr = standing.Territories[terrID];
@@ -36,3 +39,4 @@ function setPickable(standing, listOfTerr)
 --		print(terrID, standing.Territories[terrID].OwnerPlayerID, terr.OwnerPlayerID)
 	end
 end
+]]--
