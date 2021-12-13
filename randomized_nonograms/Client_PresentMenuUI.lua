@@ -9,7 +9,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, ClientGame,
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	permanentLabel = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(permanentLabel).SetText("Mod creator:\t").SetColor(colors.TextColor);
-	UI.CreateLabel(permanentLabel).SetText("Just_A_Dutchman_").SetColor(getColor(1311724, game.Game.Players, colors.Lime));
+	UI.CreateLabel(permanentLabel).SetText("Just_A_Dutchman_").SetColor(getColor("Just_A_Dutchman_", game.Game.Players, colors.Lime));
 	showMenu();
 end
 
@@ -24,17 +24,17 @@ function showCredits()
 	line = getNewHorz(vert);
 	createLabel(line, "testers:", colors.TextColor);
 	line = getNewHorz(vert);
-	createLabel(line, "Priamus \t", getColor(297859, game.Game.Players, colors.SaddleBrown));
-	createLabel(line, "krinid \t", getColor(1058239, game.Game.Players, colors.TyrianPurple));
-	createLabel(line, "ShatteredMagpie \t", getColor(1266825, game.Game.Players, colors.Orchid));
+	createLabel(line, "Priamus \t", getColor("Priamus", game.Game.Players, colors.SaddleBrown));
+	createLabel(line, "krinid \t", getColor("krinid", game.Game.Players, colors.TyrianPurple));
+	createLabel(line, "ShatteredMagpie \t", getColor("ShatteredMagpie", game.Game.Players, colors.Orchid));
 	line = getNewHorz(vert);
-	createLabel(line, "[GW] Rob \t", getColor(1152353, game.Game.Players, colors.Blue));
-	createLabel(line, "unFairerOrb76 \t", getColor(1305503, game.Game.Players, colors.Yellow));
-	createLabel(line, "DooDlefight \t", getColor(1319340, game.Game.Players, colors.DarkGreen));
+	createLabel(line, "[GW] Rob \t", getColor("[GW] Rob", game.Game.Players, colors.Blue));
+	createLabel(line, "unFairerOrb76 \t", getColor("unFairerOrb76", game.Game.Players, colors.Yellow));
+	createLabel(line, "DooDlefight \t", getColor("DooDlefight", game.Game.Players, colors.DarkGreen));
 	line = getNewHorz(vert);
-	createLabel(line, "καλλιστηι \t", getColor(1315598, game.Game.Players, colors.Red));
-	createLabel(line, "JK_3 \t", getColor(1051119, game.Game.Players, colors.Green));
-	createLabel(line, "Samek \n", getColor(1354408, game.Game.Players, colors.Ivory));
+	createLabel(line, "καλλιστηι \t", getColor("καλλιστηι", game.Game.Players, colors.Red));
+	createLabel(line, "JK_3 \t", getColor("JK_3", game.Game.Players, colors.Green));
+	createLabel(line, "Samek \n", getColor("Samek", game.Game.Players, colors.Ivory));
 	createButton(vert, "close", "#33CC33", showMenu);
 
 end
