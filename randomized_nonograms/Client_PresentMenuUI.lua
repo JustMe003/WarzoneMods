@@ -53,9 +53,9 @@ function showSettings()
 	createLabel(getNewHorz(vert), "The dimensions of the nonogram are:", colors.TextColor);
 	line = getNewHorz(vert);
 	createLabel(line, Mod.Settings.NonogramWidth, colors.NumberColor);
-	createLabel(line, " by ",colors.TextColors);
+	createLabel(line, " by ",colors.TextColor);
 	createLabel(line, Mod.Settings.NonogramHeigth, colors.NumberColor);
-	createLabel(getNewHorz(vert), "The density is set to:", colors.TextColors);
+	createLabel(getNewHorz(vert), "The density is set to:", colors.TextColor);
 	createLabel(getNewHorz(vert), Mod.Settings.NonogramDensity, colors.NumberColor);
 	print("den")
 	if Mod.Settings.NonogramDensity >= 60 then
