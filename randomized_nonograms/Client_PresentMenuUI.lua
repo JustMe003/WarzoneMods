@@ -45,7 +45,7 @@ function showSettings()
 	print("dis")
 	if Mod.Settings.CustomDistribution == true then
 		createLabel(getNewHorz(vert), "Custom distribution is being used", colors.TrueColor);
-		createLabel(getNewHorz(vert), "This option enforces manual distribution, and all pickable territories are in bonuses",colors.TextColors);
+		createLabel(getNewHorz(vert), "This option enforces manual distribution, and all pickable territories are in bonuses",colors.TextColor);
 	else
 		createLabel(getNewHorz(vert), "Custom distribution is not being used", colors.FalseColor);
 	end
