@@ -6,6 +6,7 @@ local texts;
 local numbers;
 
 function init()
+	print("init")
 	horzs = {};
 	verts = {};
 	labels = {};
