@@ -54,12 +54,12 @@ function showSettings()
 	line = getNewHorz(vert);
 	createLabel(line, Mod.Settings.NonogramWidth, colors.NumberColor);
 	createLabel(line, " by ",colors.TextColors);
-	createLabel(line, " " .. Mod.Settings.NonogramHeigth, colors.NumberColor);
+	createLabel(line, Mod.Settings.NonogramHeigth, colors.NumberColor);
 	createLabel(getNewHorz(vert), "The density is set to:", colors.TextColors);
 	createLabel(getNewHorz(vert), Mod.Settings.NonogramDensity, colors.NumberColor);
 	print("den")
 	if Mod.Settings.NonogramDensity >= 60 then
-		createLabel(getNewHorz(vert), "This means the nonogram is likely solveable, there should be 1 answer possible", colors.NumberColor);
+		createLabel(getNewHorz(vert), "This means the nonogram is likely solveable, there should be 1 answer possible", colors.TextColor);
 	else
 		createLabel(getNewHorz(vert), "This means the nonogram might not be solveable, you might get stuck because there is more than 1 answer possible", colors.WarningNumberColor);
 	end
