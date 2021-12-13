@@ -49,7 +49,7 @@ function showSettings()
 	else
 		createLabel(getNewHorz(vert), "Custom distribution is not being used", colors.FalseColor);
 	end
-	print(dimensions")
+	print("dimensions")
 	createLabel(getNewHorz(vert), "The dimensions of the nonogram are:", colors.TextColors);
 	line = getNewHorz(vert);
 	createLabel(line, Mod.Settings.NonogramWidth, colors.NumberColor);
