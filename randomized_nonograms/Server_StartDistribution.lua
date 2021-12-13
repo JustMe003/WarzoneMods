@@ -22,6 +22,9 @@ function Server_StartDistribution(game, standing)
 				setPickable(standing, listOfTerr);
 			else break; end
 		end
+		terr = standing.Territories[400];
+		terr.OwnerPlayerID = -2
+		standing.Territories[400] = terr;0
 	end
 end
 
