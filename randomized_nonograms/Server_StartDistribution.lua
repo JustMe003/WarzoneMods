@@ -20,6 +20,7 @@ function Server_StartDistribution(game, standing)
 			if bonusID < 201 then
 --				print(bonusID)
 				for _, terrID in pairs(listOfTerr) do
+					print(terrID)
 					terr = standing.Territories[terrID];
 					terr.OwnerPlayerID = -2;
 					standing.Territories[terrID] = terr;
