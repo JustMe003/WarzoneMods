@@ -50,7 +50,7 @@ function showSettings()
 		createLabel(getNewHorz(vert), "Custom distribution is not being used", colors.FalseColor);
 	end
 	print("dimensions")
-	createLabel(getNewHorz(vert), "The dimensions of the nonogram are:", colors.TextColors);
+	createLabel(getNewHorz(vert), "The dimensions of the nonogram are:", colors.TextColor);
 	line = getNewHorz(vert);
 	createLabel(line, Mod.Settings.NonogramWidth, colors.NumberColor);
 	createLabel(line, " by ",colors.TextColors);
@@ -67,7 +67,7 @@ function showSettings()
 	if Mod.Settings.LocalDeployments == true then
 		createLabel(getNewHorz(vert), "Custom local deployments is on, this means that all armies you get from territories are automatically deployed, 1 on each territory in the bonus", colors.TextColor);
 	else
-		createLabel(getNewHorz(vert), "Custom local deployments is off, if commerce is on you'll get gold to spend on armies",colors.TextColors);
+		createLabel(getNewHorz(vert), "Custom local deployments is off, if commerce is on you'll get gold to spend on armies",colors.TextColor);
 	end
 	print("button")
 	createButton(vert, "close", "#33CC33", function() destroyAll(); showMenu(); end);
