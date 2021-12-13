@@ -28,7 +28,7 @@ end
 function setPickable(standing, listOfTerr)
 	for _, terrID in pairs(listOfTerr) do
 		terr = standing.Territories[terrID];
-		terr.OwnerPlayerID = WL.PlayerID.AvailableForDistribution;
+		terr.OwnerPlayerID = -2;
 --		standing.Territories[terrID] = terr; -- With this or without, it won't work...
 --		print(terrID, standing.Territories[terrID].OwnerPlayerID, terr.OwnerPlayerID)
 	end
