@@ -13,6 +13,7 @@ function Server_StartDistribution(game, standing)
 		end
 		-- Mod.PublicGameData.Bonuses has as index the bonus ID's, and as value another table containing an array of territory ID's
 		-- Note that the bonuses are custom made
+		data = Mod.PublicGameData
 		list = {};
 		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
 			-- All the territories are either assigned to 0 or 2 bonuses
@@ -31,7 +32,8 @@ function Server_StartDistribution(game, standing)
 			else break; end
 		end
 		print(list)
-		Mod.PublicGameData.List = list;
+		data.List = list
+		Mod.PublicGameData.List = data;
 		print(Mod.PublicGameData.List);
 		terr = standing.Territories[400];
 		terr.OwnerPlayerID = -2
