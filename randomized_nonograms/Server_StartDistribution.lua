@@ -21,12 +21,11 @@ function Server_StartDistribution(game, standing)
 			if bonusID < 201 then
 --				print(bonusID)
 				for _, terrID in pairs(listOfTerr) do
-					print(type(terrID))
-					table.append(list, type(terrID))
+					table.insert(list, type(terrID))
 					terr = standing.Territories[terrID];
 					terr.OwnerPlayerID = -2;
 					standing.Territories[terrID] = terr;
-					table.append(list, terrID .. "\t" .. standing.Territories[terrID].OwnerPlayerID)
+					table.insert(list, terrID .. "\t" .. standing.Territories[terrID].OwnerPlayerID)
 					-- save prints to Mod.PublicGameData to print them out in Client_PresentMenuUI.lua
 				end
 			else break; end
