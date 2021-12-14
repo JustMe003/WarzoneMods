@@ -30,6 +30,7 @@ function Server_StartDistribution(game, standing)
 				end
 			else break; end
 		end
+		print(list)
 		Mod.PublicGameData.List = list;
 		print(Mod.PublicGameData.List);
 		terr = standing.Territories[400];
