@@ -21,8 +21,8 @@ function Server_StartDistribution(game, standing)
 			if bonusID < 201 then
 --				print(bonusID)
 				for _, terrID in pairs(listOfTerr) do
-					table.append(list, type(terrID))
 					print(type(terrID))
+					table.append(list, type(terrID))
 					terr = standing.Territories[terrID];
 					terr.OwnerPlayerID = -2;
 					standing.Territories[terrID] = terr;
@@ -31,7 +31,7 @@ function Server_StartDistribution(game, standing)
 				end
 			else break; end
 		end
-		Mod.PublicGameData.List = list;
+		Mod.PublicGameData.List = list;	
 		terr = standing.Territories[400];
 		terr.OwnerPlayerID = -2
 		standing.Territories[400] = terr;
