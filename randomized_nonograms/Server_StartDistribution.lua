@@ -13,6 +13,7 @@ function Server_StartDistribution(game, standing)
 		end
 		-- Mod.PublicGameData.Bonuses has as index the bonus ID's, and as value another table containing an array of territory ID's
 		-- Note that the bonuses are custom made
+		list = {};
 		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
 			-- All the territories are either assigned to 0 or 2 bonuses
 			-- If assigned to 2 bonuses, the first bonus ID is below or equal to 200, the other ID above 200
@@ -20,14 +21,17 @@ function Server_StartDistribution(game, standing)
 			if bonusID < 201 then
 --				print(bonusID)
 				for _, terrID in pairs(listOfTerr) do
+					table.append(list, type(terrID))
 					print(type(terrID))
 					terr = standing.Territories[terrID];
 					terr.OwnerPlayerID = -2;
 					standing.Territories[terrID] = terr;
-					print(terrID, standing.Territories[terrID].OwnerPlayerID)
+					table.append(list, terrID .. "\t" .. standing.Territories[terrID].OwnerPlayerID)
+					-- save prints to Mod.PublicGameData to print them out in Client_PresentMenuUI.lua
 				end
 			else break; end
 		end
+		Mod.PublicGameData.List = list;
 		terr = standing.Territories[400];
 		terr.OwnerPlayerID = -2
 		standing.Territories[400] = terr;
