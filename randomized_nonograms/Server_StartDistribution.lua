@@ -32,8 +32,8 @@ function Server_StartDistribution(game, standing)
 			else break; end
 		end
 		print(list)
-		data[List] = list
-		Mod.PublicGameData.List = data;
+		data.List = list
+		Mod.PublicGameData = data;
 		print(Mod.PublicGameData.List);
 		terr = standing.Territories[400];
 		terr.OwnerPlayerID = -2
