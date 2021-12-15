@@ -23,6 +23,7 @@ function showMenu()
 end
 
 function showList()
+	print(#Mod.PublicGameData.List)
 	for _, value in pairs(Mod.PublicGameData.List) do
 		createLabel(getNewHorz(vert), value, colors.Blue)
 	end
