@@ -31,7 +31,7 @@ function Server_StartDistribution(game, standing)
 					table.insert(list, terrID .. "   " .. standing.Territories[terrID].OwnerPlayerID)
 					-- save prints to Mod.PublicGameData to print them out in Client_PresentMenuUI.lua
 				end
-			else break; end
+			end
 		end
 		data.List = list
 		Mod.PublicGameData = data;
