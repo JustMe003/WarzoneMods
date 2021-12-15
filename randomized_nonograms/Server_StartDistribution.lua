@@ -15,8 +15,8 @@ function Server_StartDistribution(game, standing)
 		-- Note that the bonuses are custom made
 		data = Mod.PublicGameData;
 		list = {};
-		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
-			table.insert(list, bonusID)
+		for bonusID, listOfTerr in pairs(data.Bonuses) do
+			table.insert(list, "bonusID: " .. bonusID)
 			-- All the territories are either assigned to 0 or 2 bonuses
 			-- If assigned to 2 bonuses, the first bonus ID is below or equal to 200, the other ID above 200
 			-- when we reach bonusID 200+, we can break the loop since we've had all the territories once
