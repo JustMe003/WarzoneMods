@@ -15,6 +15,7 @@ function Server_StartDistribution(game, standing)
 		-- Note that the bonuses are custom made
 		data = Mod.PublicGameData;
 		list = {};
+		table.insert(list, "list has been created")
 		for bonusID, listOfTerr in pairs(data.Bonuses) do
 			table.insert(list, "bonusID: " .. bonusID)
 			-- All the territories are either assigned to 0 or 2 bonuses
