@@ -20,6 +20,7 @@ function showMenu()
 	createButton(vert, "settings", "#3333FF", showSettings);
 	createButton(vert, "Credits", "#88FF00", showCredits);
 	createButton(vert, "show list", colors.Aqua, showList);
+	print("Hi")
 end
 
 function showList()
