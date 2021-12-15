@@ -16,6 +16,7 @@ function Server_StartDistribution(game, standing)
 		data = Mod.PublicGameData;
 		list = {};
 		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
+			table.insert(list, bonusID)
 			-- All the territories are either assigned to 0 or 2 bonuses
 			-- If assigned to 2 bonuses, the first bonus ID is below or equal to 200, the other ID above 200
 			-- when we reach bonusID 200+, we can break the loop since we've had all the territories once
@@ -26,7 +27,7 @@ function Server_StartDistribution(game, standing)
 					terr = standing.Territories[terrID];
 					terr.OwnerPlayerID = -2;
 					standing.Territories[terrID] = terr;
-					table.insert(list, terrID .. "\t" .. standing.Territories[terrID].OwnerPlayerID)
+					table.insert(list, terrID .. "   " .. standing.Territories[terrID].OwnerPlayerID)
 					-- save prints to Mod.PublicGameData to print them out in Client_PresentMenuUI.lua
 				end
 			else break; end
