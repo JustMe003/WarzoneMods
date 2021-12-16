@@ -35,30 +35,34 @@ end;
 function showIncome()
 	destroyAll();
 	local players = getAllPlayers();
-	for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
-		local owner = 0;
-		for _, terrID in pairs(listOfTerr) do
-			terr = game.LatestStanding.Territories[terrID];
-			if terr.FogLevel < 4 then
-				if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and owner == 0 then
-					owner = terr.OwnerPlayerID;
-				elseif terr.OwnerPlayerID == WL.PlayerID.Neutral or owner ~= terr.OwnerPlayerID then
-					owner = 0;
-					break;
-				end
-			else break; end
+	if game.Game.TurnNumber ~= 0 then
+		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
+			local owner = 0;
+			for _, terrID in pairs(listOfTerr) do
+				terr = game.LatestStanding.Territories[terrID];
+				if terr.FogLevel < 4 then
+					if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and owner == 0 then
+						owner = terr.OwnerPlayerID;
+					elseif terr.OwnerPlayerID == WL.PlayerID.Neutral or owner ~= terr.OwnerPlayerID then
+						owner = 0;
+						break;
+					end
+				else break; end
+			end
+			if owner ~= 0 then
+				players[owner] = players[owner] + #listOfTerr;
+			end
 		end
-		if owner ~= 0 then
-			players[owner] = players[owner] + #listOfTerr;
+		createLabel(vert, "as far as the fog allows you to see this are the income value per player", colors.TextColor);
+		for ID, income in pairs(players) do
+			line = getNewHorz(vert);
+			createLabel(line, game.Game.Players[ID].DisplayName(nil, false), game.Game.Players[ID].Color.HtmlColor);
+			createLabel(line, " will get ", colors.TextColor);
+			createLabel(line, income, game.Game.Players[ID].Color.HtmlColor);
+			createLabel(line, " gold", colors.TextColor);
 		end
-	end
-	createLabel(vert, "as far as the fog allows you to see this are the income value per player", colors.TextColor);
-	for ID, income in pairs(players) do
-		line = getNewHorz(vert);
-		createLabel(line, game.Game.Players[ID].DisplayName(nil, false), game.Game.Players[ID].Color.HtmlColor);
-		createLabel(line, " will get ", colors.TextColor);
-		createLabel(line, income, game.Game.Players[ID].Color.HtmlColor);
-		createLabel(line, " gold", colors.TextColor);
+	else
+		createLabel(vert, "This option is not available in the distribution stage", colors.ErrorColor);
 	end
 end
 
