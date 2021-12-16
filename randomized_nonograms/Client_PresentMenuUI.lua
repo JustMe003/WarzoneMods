@@ -35,7 +35,7 @@ end;
 function showIncome()
 	destroyAll();
 	local players = getAllPlayers();
-	if game.Game.TurnNumber ~= 0 then
+	if game.Game.TurnNumber > 0 then
 		for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
 			local owner = 0;
 			for _, terrID in pairs(listOfTerr) do
