@@ -18,7 +18,7 @@ function Client_PresentConfigureUI(rootParent)
     local vert = UI.CreateVerticalLayoutGroup(rootParent);
 	createLabel(vert, "This option will set the distribution to manual, everyone can see the solution of the nonogram back in the history", colors.Ivory);
 	createLabel(vert, "Only make the territories that will give you gold / armies pickable", colors.TextColor);
-	setCustomDistribution = createCheckBox(vert, " ", customDistribution);
+	setCustomDistribution = createCheckBox(vert, customDistribution, " ");
 	createLabel(vert, "Specify the heigth of the nonogram:", colors.TextColor);
 	setHeigth = createNumberInputField(vert, initialHeigth, 5, 20);
 	createLabel(vert, "Specify the width of the nonogram:", colors.TextColor);
