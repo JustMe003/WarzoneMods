@@ -65,6 +65,7 @@ function createCheckBox(parent, value, text, interactable)
 end
 
 function getColor(playerName, players, colorString)
+	colorString = colorString or "#FF2222";
 	for ID, player in pairs(players) do
 		if player.DisplayName(nil, false) == playerName then 
 			return player.Color.HtmlColor
