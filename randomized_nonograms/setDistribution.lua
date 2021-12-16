@@ -4,12 +4,12 @@ function setDistribution(game, standing, bonuses)
 			if terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
 				terr.OwnerPlayerID = WL.PlayerID.Neutral;
 				terr.NumArmies = terr.NumArmies.Add(WL.Armies.Create(game.Settings.InitialNonDistributionArmies));
-				standing.Territories[terrID] = terr; -- reset all territories 
+				standing.Territories[terrID] = terr; -- reset all territories, no need to check which distribution was selected
 			end
 			for bonusID, listOfTerr in pairs(bonuses) do
 				if bonusID < 201 then
 					setPickable(standing, listOfTerr);
-				else break; end
+				end
 			end
 		end
 	end
@@ -21,11 +21,4 @@ function setPickable(standing, listOfTerr)
 		terr.OwnerPlayerID = WL.PlayerID.AvailableForDistribution;
 		standing.Territories[terrID] = terr;
 	end
-end
-
-function addValuesToList(bigList, list)
-	for _, value in pairs(list) do
-		table.insert(bigList, value);
-	end
-	return bigList;
 end

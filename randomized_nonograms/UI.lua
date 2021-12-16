@@ -4,6 +4,7 @@ local labels;
 local buttons;
 local texts;
 local numbers;
+local boxes;
 
 function init()
 	horzs = {};
@@ -12,6 +13,7 @@ function init()
 	buttons = {};
 	texts = {};
 	numbers = {};
+	boxes = {};
 end
 
 function initColors()
@@ -40,16 +42,22 @@ function createButton(parent, text, color, func)
 	table.insert(buttons, UI.CreateButton(parent).SetText(text).SetColor(color).SetOnClick(func));
 end
 
-function createTextInputField(parent, text)
-	field = UI.CreateTextInputField(parent).SetText(text)
+function createTextInputField(parent, text, interactable = true)
+	field = UI.CreateTextInputField(parent).SetText(text).SetInteractable(interactable)
 	table.insert(texts, field);
 	return field;
 end
 
-function createNumberInputField(parent, value, sliderMinValue, sliderMaxValue, wholeNumbers)
-	field = UI.CreateNumberInputField(parent).SetValue(value).SetSliderMinValue(sliderMinValue).SetSliderMaxValue(sliderMaxValue).SetWholeNumbers(wholeNumbers);
+function createNumberInputField(parent, value, sliderMinValue, sliderMaxValue, wholeNumbers = true, interactable = true)
+	field = UI.CreateNumberInputField(parent).SetValue(value).SetSliderMinValue(sliderMinValue).SetSliderMaxValue(sliderMaxValue).SetWholeNumbers(wholeNumbers).SetInteractable(interactable);
 	table.insert(numbers, field);
 	return field;
+end
+
+function createCheckBox(parent, value, text, interactable = true)
+	CheckBox = UI.CreateCheckBox(parent).SetIsChecked(value).SetText(text).SetInteractable(interactable);
+	table.insert(boxes, CheckBox)
+	return CheckBox;
 end
 
 function getColor(playerName, players, colorString)
@@ -68,6 +76,7 @@ function destroyAll()
 	destroyItems(buttons);
 	destroyItems(texts);
 	destroyItems(numbers);
+	destroyItems(boxes);
 	init()
 end
 
