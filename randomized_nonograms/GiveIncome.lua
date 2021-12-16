@@ -1,6 +1,6 @@
 function initiatePlayerIncome(game)
 	returnList = {};
-	for playerID, _ in pairs(game.ClientGame.Game.PlayingPlayers) do
+	for playerID, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
 		returnList[playerID] = 0;
 	end
 	return returnList;
