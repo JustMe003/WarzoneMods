@@ -52,7 +52,7 @@ end
 function createNumberInputField(parent, value, sliderMinValue, sliderMaxValue, wholeNumbers, interactable)
 	wholeNumbers = wholeNumbers or true;
 	interactable = interactable or true;
-	field = UI.CreateNumberInputField(parent).SetValue(value).SetSliderMinValue(sliderMinValue).SetSliderMaxValue(sliderMaxValue).SetWholeNumbers(wholeNumbers).SetInteractable(interactable);
+	field = UI.CreateNumberInputField(parent).SetSliderMinValue(sliderMinValue).SetSliderMaxValue(sliderMaxValue).SetValue(value).SetWholeNumbers(wholeNumbers).SetInteractable(interactable);
 	table.insert(numbers, field);
 	return field;
 end
