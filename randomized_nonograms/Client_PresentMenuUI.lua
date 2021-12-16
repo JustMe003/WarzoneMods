@@ -25,7 +25,7 @@ end
 
 function showIncome()
 	destroyAll();
-	local players = initiatePlayerIncome(game);
+	local players = function() array = {}; for ID,_ in pairs(game.Game.Players) do array[ID] = 0; end; return array; end;
 	for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
 		local owner = 0;
 		for _, terrID in pairs(listOfTerr) do
