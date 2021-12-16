@@ -56,7 +56,7 @@ function showIncome()
 		for ID, income in pairs(players) do
 			line = getNewHorz(vert);
 			createLabel(line, game.Game.Players[ID].DisplayName(nil, false), game.Game.Players[ID].Color.HtmlColor);
-			createLabel(line, " will get ", colors.TextColor);
+			createLabel(line, " will get  ", colors.TextColor);
 			createLabel(line, income, game.Game.Players[ID].Color.HtmlColor);
 			createLabel(line, " gold", colors.TextColor);
 		end
