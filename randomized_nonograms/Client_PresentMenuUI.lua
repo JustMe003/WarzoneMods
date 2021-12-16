@@ -27,7 +27,6 @@ function getAllPlayers()
 	local array = {};
 	for ID,_ in pairs(game.Game.Players) do 
 		array[ID] = 0;
-		print(ID, array[ID])
 	end
 	return array;
 end;
