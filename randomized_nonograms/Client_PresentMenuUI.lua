@@ -1,4 +1,5 @@
 require("UI")
+require("GiveIncome")
 local colors;
 local vert;
 local game;
@@ -17,15 +18,38 @@ end
 
 function showMenu()
 	init()
-	createButton(vert, "settings", "#3333FF", showSettings);
-	createButton(vert, "Credits", "#88FF00", showCredits);
-	createButton(vert, "show list", colors.Aqua, showList);
+	createButton(vert, "Income per player", colors.Orange, showIncome);
+	createButton(vert, "Settings", colors.Blue, showSettings);
+	createButton(vert, "Credits", colors.Lime, showCredits);
 end
 
-function showList()
-	print(#Mod.PublicGameData.List)
-	for _, value in pairs(Mod.PublicGameData.List) do
-		createLabel(getNewHorz(vert), value, colors.Blue)
+function showIncome()
+	destroyAll();
+	local players = initiatePlayerIncome(game);
+	for bonusID, listOfTerr in pairs(Mod.PublicGameData.Bonuses) do
+		local owner = 0;
+		for _, terrID in pairs(listOfTerr) do
+			terr = game.LatestStanding.Territories[terrID];
+			if terr.FogLevel < 4 then
+				if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and owner == 0 then
+					owner = terr.OwnerPlayerID;
+				elseif terr.OwnerPlayerID == WL.PlayerID.Neutral or owner ~= terr.OwnerPlayerID then
+					owner = 0;
+					break;
+				end
+			else break; end
+		end
+		if owner ~= 0 then
+			players[owner] = players[owner] + #listOfTerr;
+		end
+	end
+	createLabel(vert, "as far as the fog allows you to see this are the income value per player", colors.TextColor);
+	for ID, income in pairs(players) do
+		line = getNewHorz(vert);
+		createLabel(line, game.Game.Players[ID].DisplayName(nil, false), game.Game.Players[ID].Colors.HtmlColor);
+		createLabel(line, " will get ", colors.TextColor);
+		createLabel(line, income, game.Game.Players[ID].Colors.HtmlColor);
+		createLabel(line, " gold", colors.TextColor);
 	end
 end
 
