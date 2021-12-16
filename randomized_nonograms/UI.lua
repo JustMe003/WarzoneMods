@@ -42,19 +42,23 @@ function createButton(parent, text, color, func)
 	table.insert(buttons, UI.CreateButton(parent).SetText(text).SetColor(color).SetOnClick(func));
 end
 
-function createTextInputField(parent, text, interactable = true)
+function createTextInputField(parent, text, interactable)
+	interactable = interactable or true;
 	field = UI.CreateTextInputField(parent).SetText(text).SetInteractable(interactable)
 	table.insert(texts, field);
 	return field;
 end
 
-function createNumberInputField(parent, value, sliderMinValue, sliderMaxValue, wholeNumbers = true, interactable = true)
+function createNumberInputField(parent, value, sliderMinValue, sliderMaxValue, wholeNumbers, interactable)
+	wholeNumbers = wholeNumbers or true;
+	interactable = interactable or true;
 	field = UI.CreateNumberInputField(parent).SetValue(value).SetSliderMinValue(sliderMinValue).SetSliderMaxValue(sliderMaxValue).SetWholeNumbers(wholeNumbers).SetInteractable(interactable);
 	table.insert(numbers, field);
 	return field;
 end
 
-function createCheckBox(parent, value, text, interactable = true)
+function createCheckBox(parent, value, text, interactable)
+	interactable = interactable or true;
 	CheckBox = UI.CreateCheckBox(parent).SetIsChecked(value).SetText(text).SetInteractable(interactable);
 	table.insert(boxes, CheckBox)
 	return CheckBox;
