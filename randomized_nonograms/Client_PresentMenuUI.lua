@@ -47,7 +47,10 @@ function showIncome()
 						owner = 0;
 						break;
 					end
-				else break; end
+				else 
+					owner = 0;
+					break; 
+				end
 			end
 			if owner ~= 0 then
 				players[owner] = players[owner] + #listOfTerr;
