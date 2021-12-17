@@ -39,7 +39,6 @@ function showIncome()
 			local owner = 0;
 			for _, terrID in pairs(listOfTerr) do
 				terr = game.LatestStanding.Territories[terrID];
-				print(terrID, terr.FogLevel);
 				if terr.FogLevel < 4 then
 					if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and owner == 0 then
 						owner = terr.OwnerPlayerID;
