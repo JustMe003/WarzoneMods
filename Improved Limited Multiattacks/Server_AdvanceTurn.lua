@@ -30,7 +30,7 @@ function Server_AdvanceTurn_Start (game,addNewOrder)
 			boundtoacard=true;
 		end
 	end
-	UbrigeAngriffe={};
+	remainingAttacks={};
 	local Maximaleangriffe = Mod.Settings.MaxAttacks;
 	if (Maximaleangriffe < 1) then Maximaleangriffe = 1 end;
 	if (Maximaleangriffe > 100000) then Maximaleangriffe = 100000 end;
@@ -38,9 +38,9 @@ function Server_AdvanceTurn_Start (game,addNewOrder)
 	for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 		activated[terr.OwnerPlayerID] = false;
 		if(boundtoacard)then
-			UbrigeAngriffe[terr.ID] = 1;
+			remainingAttacks[terr.ID] = 1;
 		else
-			UbrigeAngriffe[terr.ID] = Maximaleangriffe;
+			remainingAttacks[terr.ID] = Maximaleangriffe;
 		end
 	end
 end
@@ -57,7 +57,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					if (Maximaleangriffe > 100000) then Maximaleangriffe = 100000 end;
 					for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 						if(terr.OwnerPlayerID == order.PlayerID)then
-							UbrigeAngriffe[terr.ID] = Maximaleangriffe;
+							remainingAttacks[terr.ID] = Maximaleangriffe;
 						end
 					end
 				end
@@ -72,7 +72,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					if (Maximaleangriffe > 100000) then Maximaleangriffe = 100000 end;
 					for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 						if(terr.OwnerPlayerID == order.PlayerID)then
-							UbrigeAngriffe[terr.ID] = Maximaleangriffe;
+							remainingAttacks[terr.ID] = Maximaleangriffe;
 						end
 					end
 				end
@@ -87,7 +87,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					if (Maximaleangriffe > 100000) then Maximaleangriffe = 100000 end;
 					for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 						if(terr.OwnerPlayerID == order.PlayerID)then
-							UbrigeAngriffe[terr.ID] = Maximaleangriffe;
+							remainingAttacks[terr.ID] = Maximaleangriffe;
 						end
 					end
 				end
@@ -102,7 +102,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					if (Maximaleangriffe > 100000) then Maximaleangriffe = 100000 end;
 					for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 						if(terr.OwnerPlayerID == order.PlayerID)then
-							UbrigeAngriffe[terr.ID] = Maximaleangriffe;
+							remainingAttacks[terr.ID] = Maximaleangriffe;
 						end
 					end
 				end
@@ -117,7 +117,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					if (Maximaleangriffe > 100000) then Maximaleangriffe = 100000 end;
 					for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 						if(terr.OwnerPlayerID == order.PlayerID)then
-							UbrigeAngriffe[terr.ID] = Maximaleangriffe;
+							remainingAttacks[terr.ID] = Maximaleangriffe;
 						end
 					end
 				end
@@ -132,7 +132,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					if (Maximaleangriffe > 100000) then Maximaleangriffe = 100000 end;
 					for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 						if(terr.OwnerPlayerID == order.PlayerID)then
-							UbrigeAngriffe[terr.ID] = Maximaleangriffe;
+							remainingAttacks[terr.ID] = Maximaleangriffe;
 						end
 					end
 				end
@@ -140,15 +140,25 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 		end
 	end
 	if(order.proxyType == 'GameOrderAttackTransfer') then
-		if(UbrigeAngriffe[order.From] > 0 or (activated[order.PlayerID] and Mod.Settings.MaxAttacks == 0))then
+		-- it says in the mod configuration that when MaxAttacks set to 0 there is unlimited multi attacks, but I believe you get an alert of you set it to 0
+		if(remainingAttacks[order.From] > 0 or (activated[order.PlayerID] and Mod.Settings.MaxAttacks == 0))then
 			if(result.IsSuccessful)then
+				-- check if the attack was a transfer, if this is the case do nothing
+				-- Warzone itself makes sure these armies are not able to move again
 				if(game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID ~= game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID)then
-					UbrigeAngriffe[order.To] = UbrigeAngriffe[order.From] - 1;
+					-- order was an attack, so we can set the table value at order.To to the table value at order.From - 1
+				else
+					modifications = {};
+					armies = game.ServerGame.LatestTurnStanding.Territories[order.To];
+					table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].Add(armies));
+					table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].Subtract(armies));
+					WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications, {});
 				end
+				remainingAttacks[order.To] = remainingAttacks[order.From] - 1;
 			else
 				if(order.PlayerID == game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID)then
 					if(Mod.Settings.ContinueAttackIfFailed == nil or Mod.Settings.ContinueAttackIfFailed == false)then
-						UbrigeAngriffe[order.From] = -1;
+						remainingAttacks[order.From] = -1;
 					end
 				end
 			end
