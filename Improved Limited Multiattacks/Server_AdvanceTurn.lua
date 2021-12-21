@@ -150,9 +150,8 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				else
 					modifications = {};
 					armies = order.NumArmies;
-					print(armies.proxyType);
-				--	table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.Add(armies));
-				--	table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.Subtract(armies));
+					table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.Add(armies));
+					table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.Subtract(armies));
 					WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications, {});
 				end
 				remainingAttacks[order.To] = remainingAttacks[order.From] - 1;
