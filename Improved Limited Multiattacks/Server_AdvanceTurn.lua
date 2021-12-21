@@ -151,6 +151,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					modifications = WL.TerritoryModification.Create(order.From);
 					terr = game.ServerGame.LatestTurnStanding.Territories[order.From];
 					modifications.SetOwnerOpt = terr.OwnerPlayerID;
+					print(terr.NumArmies.NumArmies, order.NumArmies.NumArmies);
 					modifications.SetArmiesTo = terr.NumArmies.NumArmies + order.NumArmies.NumArmies;
 					WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications, {});
 				end
