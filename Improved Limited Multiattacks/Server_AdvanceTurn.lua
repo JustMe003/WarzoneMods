@@ -148,10 +148,11 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				if(game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID ~= game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID)then
 					-- order was an attack, so we can set the table value at order.To to the table value at order.From - 1
 				else
-					modifications = {};
 					armies = order.NumArmies;
-					table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.Add(armies));
-					table.insert(modifications, game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.Subtract(armies));
+					modifications = WL.TerritoryModification.Create(order.From);
+					terr = game.ServerGame.LatestTurnStanding.Territories[order.From];
+					modifications.SetOwnerOpt = terr.OwnerPlayerID;
+					modifications.SetArmiesTo = terr.NumArmies.Subtract(armies);
 					WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications, {});
 				end
 				remainingAttacks[order.To] = remainingAttacks[order.From] - 1;
