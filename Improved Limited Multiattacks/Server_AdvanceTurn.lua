@@ -147,12 +147,15 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				-- Warzone itself makes sure these armies are not able to move again
 				if(game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID ~= game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID)then
 					-- order was an attack, so we can set the table value at order.To to the table value at order.From - 1
-				else
-					modifications = WL.TerritoryModification.Create(order.From);
-					terr = game.ServerGame.LatestTurnStanding.Territories[order.From];
+				elseif not order.ByPercent then
+					modifications = WL.TerritoryModification.Create(order.To);
+					terr = game.ServerGame.LatestTurnStanding.Territories[order.To];
 					modifications.SetOwnerOpt = terr.OwnerPlayerID;
+					modifications.SetArmiesTo = 0
 					modifications.SetArmiesTo = terr.NumArmies.NumArmies;
 					addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, {modifications}));
+				else
+					print(order.NumArmies)
 				end
 				remainingAttacks[order.To] = remainingAttacks[order.From] - 1;
 			else
