@@ -155,7 +155,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					modifications.SetArmiesTo = terr.NumArmies.NumArmies;
 					addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, {modifications}));
 				else
-					print(order.NumArmies)
+					print(order.NumArmies.NumArmies)
 				end
 				remainingAttacks[order.To] = remainingAttacks[order.From] - 1;
 			else
