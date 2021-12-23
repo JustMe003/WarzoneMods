@@ -155,8 +155,8 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					terrFrom = game.ServerGame.LatestTurnStanding.Territories[order.From];
 					terrTo = game.ServerGame.LatestTurnStanding.Territories[order.To];
 					for i, v in pairs(modifications) do print(i, v) end
-					modifications[0].SetArmiesTo = terrFrom.NumArmies.NumArmies - order.NumArmies.NumArmies;
-					modifications[1].SetArmiesTo = terrTo.NumArmies.NumArmies + order.NumArmies.NumArmies;
+					modifications[1].SetArmiesTo = terrFrom.NumArmies.NumArmies - order.NumArmies.NumArmies;
+					modifications[2].SetArmiesTo = terrTo.NumArmies.NumArmies + order.NumArmies.NumArmies;
 					addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications));
 				else
 					print(order.NumArmies.NumArmies)
