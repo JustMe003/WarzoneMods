@@ -150,7 +150,8 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				elseif not order.ByPercent then
 					skipThisOrder(WL.ModOrderControl.Skip); --SkipAndSuppressSkippedMessage
 					modifications = {}
-					table.insert(modifications, WL.TerritoryModification.Create(order.From), WL.TerritoryModification.Create(order.To));
+					table.insert(modifications, WL.TerritoryModification.Create(order.From));
+					table.insert(modifications, WL.TerritoryModification.Create(order.To));
 					terrFrom = game.ServerGame.LatestTurnStanding.Territories[order.From];
 					terrTo = game.ServerGame.LatestTurnStanding.Territories[order.To];
 					modifications[0].SetArmiesTo = terrFrom.NumArmies.NumArmies - order.NumArmies.NumArmies;
