@@ -152,7 +152,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					terr = game.ServerGame.LatestTurnStanding.Territories[order.From];
 					modifications.SetOwnerOpt = terr.OwnerPlayerID;
 					modifications.SetArmiesTo = terr.NumArmies.NumArmies;
-					WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications, {});
+					addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications, {}));
 				end
 				remainingAttacks[order.To] = remainingAttacks[order.From] - 1;
 			else
