@@ -148,12 +148,13 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				if(game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID ~= game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID)then
 					-- order was an attack, so we can set the table value at order.To to the table value at order.From - 1
 				elseif not order.ByPercent then
-					modifications = WL.TerritoryModification.Create(order.To);
-					terr = game.ServerGame.LatestTurnStanding.Territories[order.To];
-					modifications.SetOwnerOpt = terr.OwnerPlayerID;
-					modifications.SetArmiesTo = 0
-					modifications.SetArmiesTo = terr.NumArmies.NumArmies;
-					addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, {modifications}));
+					skipThisOrder(WL.ModOrderControl.SkipAndSuppressSkippedMessage);
+					modifications = {WL.TerritoryModification.Create(order.From), WL.TerritoryModification.Create(order.To)};
+					terrFrom = game.ServerGame.LatestTurnStanding.Territories[order.From];
+					terrTo = game.ServerGame.LatestTurnStanding.Territories[order.To];
+					modifications[0].SetArmiesTo = terrFrom.NumArmies.NumArmies - order.NumArmies.NumArmies;
+					modifications[1].SetArmiesTo = terrTo.NumArmies.NumArmies + order.NumArmies.NumArmies;
+					addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "multi moves", {}, modifications));
 				else
 					print(order.NumArmies.NumArmies)
 				end
