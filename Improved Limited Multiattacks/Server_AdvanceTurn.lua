@@ -149,7 +149,8 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					-- order was an attack, so we can set the table value at order.To to the table value at order.From - 1
 				elseif not order.ByPercent then
 					skipThisOrder(WL.ModOrderControl.Skip); --SkipAndSuppressSkippedMessage
-					modifications = {WL.TerritoryModification.Create(order.From), WL.TerritoryModification.Create(order.To)};
+					modifications = {}
+					table.insert(modifications, WL.TerritoryModification.Create(order.From), WL.TerritoryModification.Create(order.To));
 					terrFrom = game.ServerGame.LatestTurnStanding.Territories[order.From];
 					terrTo = game.ServerGame.LatestTurnStanding.Territories[order.To];
 					modifications[0].SetArmiesTo = terrFrom.NumArmies.NumArmies - order.NumArmies.NumArmies;
