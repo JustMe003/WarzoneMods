@@ -58,6 +58,7 @@ function showIncome()
 		createLabel(vert, "as far as the fog allows you to see this are the income value per player", colors.TextColor);
 		for ID, income in pairs(players) do
 			line = getNewHorz(vert);
+			print(ID, game.Game.Players[ID].DisplayName(nil, false))
 			createLabel(line, game.Game.Players[ID].DisplayName(nil, false), game.Game.Players[ID].Color.HtmlColor);
 			createLabel(line, " will get  ", colors.TextColor);
 			createLabel(line, income, game.Game.Players[ID].Color.HtmlColor);
