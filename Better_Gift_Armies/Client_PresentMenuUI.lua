@@ -6,6 +6,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game)
 	colors = initColors();
 	Game = game;
 	SubmitBtn = nil;
+	NumArmiesInput = nil;
 
 	setMaxSize(450, 280);
 
@@ -82,7 +83,9 @@ function CheckCreateFinalStep()
 
 		local row3 = UI.CreateHorizontalLayoutGroup(vert);
 		createLabel(row3, "How many armies would you like to gift: ", colors.TextColor);
-		NumArmiesInput = createNumberInputField(row3, 1, 1, 1);
+		if NumArmiesInput == nil then
+			NumArmiesInput = createNumberInputField(row3, 1, 1, 1);
+		end
 
 		SubmitBtn = createButton(vert, "Gift", colors.Blue, SubmitClicked);
 	end
