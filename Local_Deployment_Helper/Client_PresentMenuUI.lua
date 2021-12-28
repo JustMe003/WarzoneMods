@@ -1,16 +1,8 @@
-function SetTextColors()
-	list = {}
-	list.TextColor = "#AAAAAA"; list.ErrorColor = "#FF2222"; list.TrueColor = "#33AA33"; list.FalseColor = "#AA3333"; list.NumberColor = "#3333AA"; list.WarningNumberColor = "#DD1111"; list.Lime = "#88DD00"; list.Purple = "#800080";
-	return list;
-end
-
-local vert;
-local buttons;
-local labels;
-local horz;
-local colors = SetTextColors();
+require("UI")
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
+	init();
+	colors = initColors();
 	Game = game; --global variables
 	
 	LastTurn = {};   --we get the orders from History later
@@ -24,23 +16,20 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	end
 
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
-	buttons = {};
-	labels = {};
-	horz = {};
 	permanentLabel1 = UI.CreateHorizontalLayoutGroup(vert);
 	permanentLabel2 = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(permanentLabel1).SetText("Mod author:\t").SetColor(colors.TextColor);
 	UI.CreateLabel(permanentLabel1).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
-	UI.CreateLabel(permanentLabel2).SetText("Special thanks to: ").SetColor(colors.TextColor);
+	UI.CreateLabel(permanentLabel2).SetText("Special thanks to:\t").SetColor(colors.TextColor);
 	UI.CreateLabel(permanentLabel2).SetText("TBest").SetColor("#800080");
 	showMenu();
 end
 
 function showMenu()
-	resetAll();
+	init();
 	if Mod.Settings.DeployTransferHelper == true then
-		createButton(vert, "Add last turns deployment and transfers", "#00ff05", AddOrdersHelper);
-		createButton(vert, "Add last turns deployment only", "#00ff05", AddDeployHelper);
+		createButton(vert, "Go to deploy/transfer helper", "#00ff05", function() destroyAll(); showHelperMenu(); end);
+		
 		createButton(vert, "Clear Orders", "#0000FF", clearOrdersFunction);
 	else
 		createLabel(vert, "This game does not use the deploy/transfer helper", colors.FalseColor);
@@ -50,12 +39,35 @@ function showMenu()
 end
 
 function showCredits()
-	resetAll();
+	init();
 	
 end
 
+function showHelperMenu()
+	init();
+	line = getNewHorz(vert);
+	line = getNewHorz(vert);
+	addDeployments = createCheckBox(line, true, " ");
+	createLabel(line, "Add deployments", colors.TextColor);
+	createButton(line, "?", colors.Green, function() UI.Alert("When checked your deployments from the previous turn will be added to your orderlist") end)
+	line = getNewHorz(vert);
+	addTransfers = createCheckBox(line, false, " ");
+	createLabel(line, "Add transfers", colors.TextColor);
+	createButton(line, "?", colors.Green, function() UI.Alert("When checked your transfers from the previous turn will be added to your orderlist") end)
+	line = getNewHorz(vert);
+	setToPercentage = createCheckBox(line, false,  " ");
+	createLabel(line, "overwrite all attacks/transfers to 100% orders", colors.TextColor);
+	createButton(line, "?", colors.Green, function() UI.Alert("When checked all your transfers will be overwritten to 100% attacks/transfers. This will allow every army to be transferred, no matter the amount of armies") end)
+	line = getNewHorz(vert);
+	addAttacks = createCheckBox(line, false, " ");
+	createLabel(line, "Add attacks", colors.TextColor);
+	createButton(line, "?", colors.Green, function() UI.Alert("When checked your attacks from the previous turn will be added if you still control the attacking territory") end)
+	addOrdersButton = createButton(vert, "Add orders", colors.Green, function() AddOrdersHelper(); destroyAll(); showMenu(); end);
+end
+
+
 function showSettings()
-	resetAll();
+	init();
 	if Mod.Settings.BonusOverrider == true then
 		createLabel(vert, "This game makes use of the automatic bonus overrider", colors.TrueColor)
 	else
@@ -74,35 +86,6 @@ function showSettings()
 	
 end
 
-function getNewHorz()
-	table.insert(horz, UI.CreateHorizontalLayoutGroup(vert));
-	return horz[#horz];
-end
-
-function createLabel(line, text, color)
-	table.insert(labels, UI.CreateLabel(line).SetText(text).SetColor(color));
-end
-
-function createButton(root, text, color, func)
-	table.insert(buttons, UI.CreateButton(root).SetText(text).SetColor(color).SetOnClick(func));
-end
-
-
-function resetAll()
-	deleteUI(buttons);
-	deleteUI(labels);
-	deleteUI(horz);
-	horz = {};
-	buttons = {};
-	labels = {};
-end
-
-function deleteUI(list)
-	for ID, item in pairs(list) do
-		UI.Destroy(item);
-	end
-end
-
 function clearOrdersFunction()
 	if Game.Us.HasCommittedOrders then
 		return UI.Alert("You need to uncommit first");
@@ -113,62 +96,6 @@ function clearOrdersFunction()
 		orderTabel = {}
 		Game.Orders = orderTabel
 	end
-end;
-
-function AddDeploy()
-	print ('running AddDeploy');
-
-	
-	if Game.Us.HasCommittedOrders == true then
-		UI.Alert("You need to uncommit first");
-		return;
-	end
-	
-	local orderTabel = Game.Orders;--get client order list
-	if next(orderTabel) ~= nil then --make sure we don't have past orders, since that is alot of extra work
-		UI.Alert('Please clear your order list before using this mod.')
-		return;
-	end
-	
-	
-	local maxDeployBonuses = {}; --array with the bonuses
-	for _, bonus in pairs (Game.Map.Bonuses) do
-		maxDeployBonuses[bonus.ID] = bonus.Amount --store the bonus value
-	end
-	
-	local newOrder;
-	
-	for _,order in pairs(LastTurn) do
-		if order.PlayerID == Game.Us.ID then
-			if order.proxyType == "GameOrderDeploy" then
-					--check that we own the territory
-				if Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID then
-					--check that we have armies to deploy
-					local bonusID;
-					for i, bonus in ipairs(Game.Map.Territories[order.DeployOn].PartOfBonuses) do
-						if bonusValue(bonus) ~= 0 then
-							bonusID = bonus;
-							break;
-						end
-					end
-					--make sure we deploy more then 0
-					if ownsBonus(bonusID) and order.NumArmies > 0 then 
-						if (maxDeployBonuses[bonusID] - order.NumArmies >=0) then --deploy full
-							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
-							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
-							table.insert(orderTabel, newOrder);
-						elseif (maxDeployBonuses[bonusID] > 0) then --deploy the max we can
-							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false)
-							table.insert(orderTabel, newOrder);
-							maxDeployBonuses[bonusID] = 0;
-						end
-					end
-				end
-			end
-		end
-	end
-	--update client orders list
-	Game.Orders = orderTabel;
 end;
 
 function AddOrdersConfirmes()	
@@ -194,7 +121,7 @@ function AddOrdersConfirmes()
 	
 	for _,order in pairs(LastTurn) do
 		if order.PlayerID == Game.Us.ID then
-			if order.proxyType == "GameOrderDeploy" then
+			if order.proxyType == "GameOrderDeploy" and addDeployments.GetIsChecked() == true then
 					--check that we own the territory
 				if Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID then
 					--check that we have armies to deploy
@@ -209,21 +136,33 @@ function AddOrdersConfirmes()
 					if ownsBonus(bonusID) and order.NumArmies > 0 then
 						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
 							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
-							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false)
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false);
 							table.insert(orderTabel, newOrder);
 						elseif maxDeployBonuses[bonusID] > 0 then --deploy the max we can
-							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false)
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false);
 							table.insert(orderTabel, newOrder);
 							maxDeployBonuses[bonusID] = 0;
 						end
 					end
 				end
 			end
-			if (order.proxyType == "GameOrderAttackTransfer") then
+			if (order.proxyType == "GameOrderAttackTransfer") and addTransfers.GetIsChecked() == true then
 				if (Game.Us.ID == standing.Territories[order.From].OwnerPlayerID) then --from us 
 					if (Game.Us.ID == standing.Territories[order.To].OwnerPlayerID) then -- to us
-							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, order.ByPercent, order.NumArmies, false)	
+						if setToPercentage.GetIsChecked() == false then
+							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, order.ByPercent, order.NumArmies, false);
+						else
+							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(100, {}), false);
+						end
 						table.insert(orderTabel, newOrder);
+					end
+				end
+			elseif order.proxyType == "GameOrderAttackTransfer" and addAttacks.GetIsChecked() == true then
+				if Game.Us.ID == standing.Territories[order.From].OwnerPlayerID then
+					if setToPercentage.GetIsChecked() == false then
+						newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, order.ByPercent, order.NumArmies, false);
+					else
+						newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(100, {}), false);
 					end
 				end
 			end
@@ -231,28 +170,6 @@ function AddOrdersConfirmes()
 	end
 	--update client orders list
 	Game.Orders = orderTabel;
-end;
-
-function AddDeployHelper()
-	standing = Game.LatestStanding; --used to make sure we can make the deploy/transfer
-	LastTurn = Game.Orders
-
-	--can we get rid of this Call?
-	Game.GetDistributionStanding(function(data) getDistHelper(data)  end)
-	
-	local turn = Game.Game.TurnNumber;
-	local firstTurn = 1;
-	if (Distribution == nil) then --auto dist
-		firstTurn = 0;
-	end;
-	if(turn - 1 <= firstTurn) then
-		UI.Alert("You can't use the mod during distribution or for the first turn.");
-		return;
-	end;
-	
-	local turn = turn -2;
-	print('request Game.GetTurn for turn: ' .. turn);
-	Game.GetTurn(turn, function(data) getTurnHelperAdd(data) end)--getTurnHelperAdd(data) end)
 end;
 
 function AddOrdersHelper()
@@ -275,12 +192,6 @@ function AddOrdersHelper()
 	local turn = turn -2;
 	print('request Game.GetTurn for turn: ' .. turn);
 	Game.GetTurn(turn, function(data) getTurnHelperAddOrders(data) end)--getTurnHelperAdd(data) end)
-end;
-
-function getTurnHelperAdd(prevTurn)
-	print('got prevTurn');
-	LastTurn = prevTurn.Orders;
-	AddDeploy();
 end;
 
 function getTurnHelperAddOrders(prevTurn)
