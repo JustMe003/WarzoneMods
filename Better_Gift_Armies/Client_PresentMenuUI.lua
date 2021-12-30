@@ -79,12 +79,14 @@ function TerritoryButtonTwo(terr)
 end
 
 function CheckCreateFinalStep()
+	print(SubmitBtn);
 	if (SubmitBtn == nil) then
 
 		local row3 = UI.CreateHorizontalLayoutGroup(vert);
 		createLabel(row3, "How many armies would you like to gift: ", colors.TextColor);
-		if NumArmiesInput ~= nil then UI.Destroy(NumArmiesInput); end
-		NumArmiesInput = createNumberInputField(row3, 1, 1, 1);
+		if NumArmiesInput == nil then
+			NumArmiesInput = createNumberInputField(row3, 1, 1, 1);
+		end
 
 		SubmitBtn = createButton(vert, "Gift", colors.Blue, SubmitClicked);
 	end
