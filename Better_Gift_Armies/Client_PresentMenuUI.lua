@@ -83,9 +83,8 @@ function CheckCreateFinalStep()
 
 		local row3 = UI.CreateHorizontalLayoutGroup(vert);
 		createLabel(row3, "How many armies would you like to gift: ", colors.TextColor);
-		if NumArmiesInput == nil then
-			NumArmiesInput = createNumberInputField(row3, 1, 1, 1);
-		end
+		if NumArmiesInput == nil then UI.Destroy(NumArmiesInput);
+		NumArmiesInput = createNumberInputField(row3, 1, 1, 1);
 
 		SubmitBtn = createButton(vert, "Gift", colors.Blue, SubmitClicked);
 	end
