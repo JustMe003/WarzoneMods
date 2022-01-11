@@ -48,7 +48,7 @@ function Server_StartDistribution(game, standing)
     for terrIndex=1,numTerrs do
         for _,gp in pairs(players) do
             terrs[i].OwnerPlayerID = gp.ID;
-			terrs[i].NumArmies.NumArmies = numberOfArmies;
+			terrs[i].NumArmies = WL.Armies.Create(numberOfArmies, {});
             i = i + 1;	
         end
     end
