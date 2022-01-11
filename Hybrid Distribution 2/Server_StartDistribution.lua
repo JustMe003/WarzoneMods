@@ -31,6 +31,7 @@ function Server_StartDistribution(game, standing)
         table.insert(players, gp);
     end
     local numTerrs = Mod.Settings.NumTerritories; --num territories each player will get
+	print("terrs = " .. #terrs, #terrs - (game.Settings.LimitDistributionTerritories * #players))
     print(numTerrs * #players > #terrs - (game.Settings.LimitDistributionTerritories * #players), math.floor(#terrs - (game.Settings.LimitDistributionTerritories * #players) / #players));
 	if (Mod.Settings.takeDistributionTerr == nil or Mod.Settings.takeDistributionTerr == false) then
 		if (numTerrs * #players > #terrs) then numTerrs = math.floor(#terrs / #players); end; --if there are fewer terrs than what's requested, reduce how many we'll change
