@@ -29,10 +29,11 @@ function showMenu()
 	init();
 	if Mod.Settings.DeployTransferHelper == true then
 		createButton(vert, "Go to deploy/transfer helper", "#00ff05", function() destroyAll(); showHelperMenu(); end);
-		
 		createButton(vert, "Clear Orders", "#0000FF", clearOrdersFunction);
 	else
-		createLabel(vert, "This game does not use the deploy/transfer helper", colors.FalseColor);
+		if Game.Us ~= nil and not Game.Us.IsAIOrHumanTurnedIntoAI then
+			createLabel(vert, "You can not use the deploy / transfer helper since you're not in the game (anymore)", colors.FalseColor);
+		end
 	end
 	createButton(vert, "Settings", "#3333FF", showSettings);
 	createButton(vert, "Credits", "#88FF00", showCredits);
