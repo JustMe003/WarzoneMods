@@ -49,7 +49,7 @@ function Server_StartDistribution(game, standing)
         for _,gp in pairs(players) do
             terrs[i].OwnerPlayerID = gp.ID;
 			terrs[i].NumArmies.NumArmies = numberOfArmies;
-            i = i + 1;
+            i = i + 1;	
         end
     end
 end
