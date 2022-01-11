@@ -8,10 +8,11 @@ function Server_StartDistribution(game, standing)
 	end
 
     local terrs = {};
+	local doNotDistribute = 0;
 	if (Mod.Settings.takeDistributionTerr == nil or Mod.Settings.takeDistributionTerr == false) then
-		local doNotDistribute = WL.PlayerID.AvailableForDistribution;
+		doNotDistribute = WL.PlayerID.AvailableForDistribution;
 	else
-		local doNotDistribute = WL.PlayerID.Neutral;
+		doNotDistribute = WL.PlayerID.Neutral;
 	end
     --Collect every territory that we could distribute to
     for _,territory in pairs(standing.Territories) do
@@ -38,12 +39,12 @@ function Server_StartDistribution(game, standing)
 	end	
 
     --Change owners to players
+	local numberOfArmies = 0;
 	if (Mod.Settings.setArmiesToInDistribution == nil or Mod.Settings.setArmiesToInDistribution == false) then
-		local numberOfArmies = game.Settings.InitialNonDistributionArmies;
+		numberOfArmies = game.Settings.InitialNonDistributionArmies;
 	else
-		local numberOfArmies = game.Settings.InitialPlayerArmiesPerTerritory;
+		numberOfArmies = game.Settings.InitialPlayerArmiesPerTerritory;
 	end
-	print(numberOfArmies, game, game.Settings, game.Settings.InitialNonDistributionArmies);
 	
     local i = 1;
     for terrIndex=1,numTerrs do
