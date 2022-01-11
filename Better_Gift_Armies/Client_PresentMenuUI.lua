@@ -125,6 +125,31 @@ function getBonusColor(bonusID)
 	return colorString;
 end
 
+
+function numberToHex(value)
+	lookUpList = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+	returnString = "";
+	for i = 1, 16 do
+		if value - (16 * i) < 0 then
+			returnString = returnString .. lookUpList[i];
+			value = value - (16 * (i - 1));
+			break;
+		end
+	end
+	if value == 0 then
+		returnString = returnString .. lookUpList[1];
+	else
+		for i = 1, 16 do
+			if value - i == 0 then
+				returnString = returnString .. lookUpList[i+1];
+				break;
+			end
+		end
+	end
+	return returnString;
+end
+
+
 function getTerritoryNames(array)
 	newArray = {};
 	for i,terr in pairs(array) do
