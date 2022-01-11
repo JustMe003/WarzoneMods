@@ -43,7 +43,7 @@ function Server_StartDistribution(game, standing)
 	else
 		local numberOfArmies = game.Settings.InitialPlayerArmiesPerTerritory;
 	end
-	print(numberOfArmies);
+	print(numberOfArmies, game, game.Settings, game.Settings.InitialNonDistributionArmies);
 	
     local i = 1;
     for terrIndex=1,numTerrs do
