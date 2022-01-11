@@ -1,4 +1,5 @@
 Allows for some territories to be auto-distributed and some to be manual-distributed (picked) with more options.
-- choose if territories in the distribution are auto-distributed or neutrals
-- choose if auto-distributed territories have the same amount of armies as manual-distributed territories or as neutrals not in the distribution
+- Choose if territories in the distribution are auto-distributed or neutrals
+- Choose if auto-distributed territories have the same amount of armies as manual-distributed territories or as neutrals not in the distribution
 - This mod overwrites wastelands, 'Hybrid Distribution' does not. This can lead to players having wastelands and thus more or less armies than their opponent
+- Forces the game to be manual distribution since the mod does nothing with auto distribution
