@@ -22,6 +22,7 @@ function Server_StartGame(game, standing)
 		end
 		if #group ~= 0 then table.insert(groups, group); end
 		data.Groups = groups;
+		data.numberOfGroups = #data.Groups;
 	end
 	
 	if Mod.Settings.distributionTerritories == true then
@@ -40,7 +41,6 @@ function Server_StartGame(game, standing)
 			end
 		end
 		data.distributionTerritories = distributionTerritories;
-		data.numberOfGroups = #data.Groups;
 	end
 	Mod.PublicGameData = data;
 end
