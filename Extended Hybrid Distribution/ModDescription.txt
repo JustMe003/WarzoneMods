@@ -1,0 +1,4 @@
+Extended Hybrid Distribution
+Adds at least 1 extra turn of distribution to the game by cancelling each order except for the custom picks
+Configurable to only pick territories that were in the distribution
+When you set the number of groups to the number of players in each team, there will be 1 player of each team in each group
