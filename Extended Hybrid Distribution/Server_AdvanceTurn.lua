@@ -148,13 +148,17 @@ end
 function pickTerritory(arrayOfTerrID, playerID)
 	for _, ID in pairs(arrayOfTerrID) do
 		if game.ServerGame.LatestTurnStanding.Territories[ID].OwnerPlayerID == WL.PlayerID.Neutral then
-			local mod = WL.TerritoryModification.Create(ID);
-			mod.SetOwnerOpt = playerID;
-			mod.SetArmiesTo = game.Settings.InitialPlayerArmiesPerTerritory;
-			AddNewOrder(WL.GameOrderEvent.Create(playerID, "picked " .. game.Map.Territories[ID].Name, {}, {mod})) -- nil value?
-			picked[playerID] = true;
-			for i, terrID in pairs(listOfTerr) do if terrID == ID then table.remove(listOfTerr, i); return; end end
-			return;
+			local index;
+			for i, terrID in pairs(listOfTerr) do if terrID == ID then inded = i; break; end end
+			if index ~= nil then
+				local mod = WL.TerritoryModification.Create(ID);
+				mod.SetOwnerOpt = playerID;
+				mod.SetArmiesTo = game.Settings.InitialPlayerArmiesPerTerritory;
+				AddNewOrder(WL.GameOrderEvent.Create(playerID, "picked " .. game.Map.Territories[ID].Name, {}, {mod}))
+				picked[playerID] = true;
+				table.remove(listOfTerr, index)
+				return;
+			end
 		end
 	end
 end
