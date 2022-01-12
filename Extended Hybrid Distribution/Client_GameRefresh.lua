@@ -5,7 +5,7 @@ function Client_GameRefresh(Game)
 	if game.Us == nil then return; end
 	if game.Game.TurnNumber > 0 then
 		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage then
-			UI.Alert("In this turn you're able to pick " .. Mod.Settings.picksPerTurn .. " more territories. Open the Extended Distribution Phase mod menu to pick");
+			UI.Alert("In this turn you're able to pick 1 more territory. Open the Extended Distribution Phase mod menu to pick");
 		end
 	end
 	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.hasSeenPlayMessage ~= nil then
