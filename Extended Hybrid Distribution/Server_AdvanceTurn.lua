@@ -148,9 +148,9 @@ end
 function pickTerritory(arrayOfTerrID, playerID)
 	for _, ID in pairs(arrayOfTerrID) do
 		if game.ServerGame.LatestTurnStanding.Territories[ID].OwnerPlayerID == WL.PlayerID.Neutral then
-			local index;
+			local index = 0;
 			for i, terrID in pairs(listOfTerr) do if terrID == ID then index = i; break; end end
-			if index ~= nil then
+			if index ~= 0 then
 				local mod = WL.TerritoryModification.Create(ID);
 				mod.SetOwnerOpt = playerID;
 				mod.SetArmiesTo = game.Settings.InitialPlayerArmiesPerTerritory;
