@@ -22,7 +22,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	UI.CreateLabel(permanentLabel1).SetText("Mod author:\t").SetColor(colors.TextColor);
 	UI.CreateLabel(permanentLabel1).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
 	UI.CreateLabel(permanentLabel2).SetText("Special thanks to:\t").SetColor(colors.TextColor);
-	UI.CreateLabel(permanentLabel2).SetText("TBest").SetColor("#800080");
+	UI.CreateLabel(permanentLabel2).SetText("TBest").SetColor(colors.Purple);
 	if game.Us == nil then return; end
 	if game.Us.IsAIOrHumanTurnedIntoAI then return; end
 	showMenu();
@@ -44,7 +44,13 @@ end
 
 function showCredits()
 	init();
-	
+	createLabel(vert, "Testers:", colors.TextColor)
+	line = getNewHorz(vert);
+	createLabel(line, "JK_3", colors.Green)
+	createLabel(line, "krinid", colors.TyrianPurple)
+	line = getNewHorz(vert);
+	createLabel(line, "El Teoremas", colors.DarkMagenta)
+	createLabel(line, "Zazzlegut", colors.Green)
 end
 
 function showHelperMenu()
@@ -59,7 +65,7 @@ function showHelperMenu()
 	createLabel(line, "Add transfers", colors.TextColor);
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked your transfers from the previous turn will be added to your orderlist") end)
 	line = getNewHorz(vert);
-	setToPercentage = createCheckBox(line, false,  " ");
+	setToPercentage = createCheckBox(line, false,  " ", Game.Settings.AllowPercentageAttacks);
 	createLabel(line, "overwrite all attacks/transfers to 100% orders", colors.TextColor);
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked all your transfers will be overwritten to 100% attacks/transfers. This will allow every army to be transferred, no matter the amount of armies") end)
 	line = getNewHorz(vert);
