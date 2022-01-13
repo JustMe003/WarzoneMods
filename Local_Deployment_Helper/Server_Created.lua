@@ -7,6 +7,7 @@ function Server_Created(game, settings)
 		local bonuses = OverriddenBonuses
 		OverriddenBonuses = LoopTerritories(game, OverriddenBonuses)
 		for i, v in pairs(bonuses) do
+			print(OverriddenBonuses[i]);
 			if OverriddenBonuses[i] == nil then
 				OverriddenBonuses[i] = v;
 			end
