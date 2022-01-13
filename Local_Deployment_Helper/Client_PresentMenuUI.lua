@@ -4,6 +4,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	init();
 	colors = initColors();
 	Game = game; --global variables
+	Close = close;
 	
 	LastTurn = {};   --we get the orders from History later
 	Distribution = {};	
@@ -180,6 +181,7 @@ function AddOrdersConfirmes()
 	end
 	--update client orders list
 	Game.Orders = orderTabel;
+	Close();
 end;
 
 function AddOrdersHelper()
