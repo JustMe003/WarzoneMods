@@ -14,6 +14,7 @@ function Server_Created(Game, Settings)
 end
 
 function loopTerritories()
+	print(OverriddenBonuses);
 	if OverriddenBonuses == nil then OverriddenBonuses = {}; end
 	for terrID, terr in pairs(game.Map.Territories) do
 		if getBonusCount(terr) > 1 then
