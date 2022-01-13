@@ -15,15 +15,15 @@ end
 function loopTerritories()
 	if OverriddenBonuses == nil then OverriddenBonuses = {}; end
 	for terrID, terr in pairs(game.Map.Territories) do
-		if getBonusCount(terr) > 1 then
+		if getBonusCount(terr) > 1 then -- When every territory has only 1 or 0 bonuses not equal to 0 LD is possible
 			overrideBonuses(terr, getSmallestBonusID(terr));
-		end
+		end -- We don't have to do anything if the territory already has 1 or 0 bonuses
 	end
 end
 
 function overrideBonuses(terr, exceptForBonusID)
 	for _, bonusID in pairs(terr.PartOfBonuses) do
-		if bonusID ~= exceptForBonusID and getBonusValue(bonusID) ~= 0 then
+		if bonusID ~= exceptForBonusID and getBonusValue(bonusID) ~= 0 then -- don't override (again) if the bonus is already 0
 			OverriddenBonuses[bonusID] = 0;
 		end
 	end
@@ -32,7 +32,7 @@ end
 function getBonusCount(terr)
 	local amount = 0;
 	for _, bonusID in pairs(terr.PartOfBonuses) do
-		if getBonusValue(bonusID) ~= 0 then
+		if getBonusValue(bonusID) ~= 0 then -- Don't count bonuses with the value 0
 			amount = amount + 1;
 		end
 	end
