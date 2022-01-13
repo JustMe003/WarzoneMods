@@ -123,6 +123,8 @@ function AddOrdersConfirmes()
 		return;
 	end
 	
+	Close();
+
 	
 	local maxDeployBonuses = {}; --aray with the bonuses
 	for _, bonus in pairs (Game.Map.Bonuses) do
@@ -182,7 +184,6 @@ function AddOrdersConfirmes()
 	end
 	--update client orders list
 	Game.Orders = orderTabel;
-	Close();
 end;
 
 function AddOrdersHelper()
