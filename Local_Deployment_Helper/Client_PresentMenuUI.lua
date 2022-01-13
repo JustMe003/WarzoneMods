@@ -188,12 +188,9 @@ function AddOrdersHelper()
 	standing = Game.LatestStanding; --used to make sure we can make the depoly/transfer
 	LastTurn = Game.Orders
 
-	--can we get rid of this Call?
-	Game.GetDistributionStanding(function(data) getDistHelper(data)  end)
-
 	local turn = Game.Game.TurnNumber;
 	local firstTurn = 1;
-	if (Distribution == nil) then --auto dist
+	if (Game.Settings.AutomaticTerritoryDistribution) then --auto dist
 		firstTurn = 0;
 	end;
 	if(turn - 1 <= firstTurn) then
