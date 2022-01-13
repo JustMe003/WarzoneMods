@@ -74,6 +74,7 @@ function showHelperMenu()
 	createLabel(line, "Add attacks", colors.TextColor);
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked your attacks from the previous turn will be added if you still control the attacking territory") end)
 	addOrdersButton = createButton(vert, "Add orders", colors.Green, function() AddOrdersHelper(); destroyAll(); showMenu(); end);
+	setToPercentage.SetInteractable(Game.Settings.AllowPercentageAttacks);
 end
 
 
@@ -207,13 +208,6 @@ function getTurnHelperAddOrders(prevTurn)
 	print('got prevTurn');
 	LastTurn = prevTurn.Orders;
 	AddOrdersConfirmes();
-end;
-
---Your function will be called with nil if the distribution standing is not available, 
---for example if it's an automatic distribution game
-function getDistHelper(data)
-	print('got Distribution');
-	Distribution = data;
 end;
 
 function ownsBonus(bonusID)
