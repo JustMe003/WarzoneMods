@@ -58,7 +58,7 @@ function createNumberInputField(parent, value, sliderMinValue, sliderMaxValue, w
 end
 
 function createCheckBox(parent, value, text, interactable)
-	Interactable = interactable or true;
+	Interactable = true or interactable;
 	CheckBox = UI.CreateCheckBox(parent).SetIsChecked(value).SetText(text).SetInteractable(Interactable);
 	table.insert(boxes, CheckBox)
 	return CheckBox;
