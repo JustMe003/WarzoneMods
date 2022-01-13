@@ -26,6 +26,7 @@ function overrideBonuses(terr, exceptForBonusID)
 	for _, bonusID in pairs(terr.PartOfBonuses) do
 		if bonusID ~= exceptForBonusID and getBonusValue(bonusID) ~= 0 then
 			OverriddenBonuses[bonusID] = 0;
+			print("Overriden " .. game.Map.Bonuses[bonusID].Name .. " to " .. OverriddenBonuses[bonusID]);
 		end
 	end
 end
