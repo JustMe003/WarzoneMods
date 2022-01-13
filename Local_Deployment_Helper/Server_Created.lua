@@ -1,5 +1,6 @@
-function Server_Created(Game, settings)
+function Server_Created(Game, Settings)
 	game = Game;
+	settings = Settings;
 	if Mod.Settings.DeployTransferHelper == true and Mod.Settings.OverridePercentage == true then 
 		settings.AllowPercentageAttacks = true; 
 	end
