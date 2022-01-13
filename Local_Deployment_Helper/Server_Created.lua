@@ -7,14 +7,12 @@ function Server_Created(Game, Settings)
 	if Mod.Settings.BonusOverrider == true then
 		OverriddenBonuses = settings.OverriddenBonuses;
 		loopTerritories();
-		for i, v in pairs(OverriddenBonuses) do print(game.Map.Bonuses[i].Name, v); end
 		settings.OverriddenBonuses = OverriddenBonuses;
 	end
 	settings.LocalDeployments = true;
 end
 
 function loopTerritories()
-	print(OverriddenBonuses);
 	if OverriddenBonuses == nil then OverriddenBonuses = {}; end
 	for terrID, terr in pairs(game.Map.Territories) do
 		if getBonusCount(terr) > 1 then
@@ -27,7 +25,6 @@ function overrideBonuses(terr, exceptForBonusID)
 	for _, bonusID in pairs(terr.PartOfBonuses) do
 		if bonusID ~= exceptForBonusID and getBonusValue(bonusID) ~= 0 then
 			OverriddenBonuses[bonusID] = 0;
-			print("Overriden " .. game.Map.Bonuses[bonusID].Name .. " to " .. OverriddenBonuses[bonusID]);
 		end
 	end
 end
