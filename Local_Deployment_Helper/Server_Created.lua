@@ -1,61 +1,43 @@
-function Server_Created(game, settings)
+function Server_Created(Game, settings)
+	game = Game;
 	if Mod.Settings.DeployTransferHelper == true and Mod.Settings.OverridePercentage == true then 
 		settings.AllowPercentageAttacks = true; 
 	end
 	if Mod.Settings.BonusOverrider == true then
-		local OverriddenBonuses = settings.OverriddenBonuses;
-		OverriddenBonuses = LoopTerritories(game, OverriddenBonuses);
+		OverriddenBonuses = settings.OverriddenBonuses;
+		OverriddenBonuses = loopTerritories();
 		settings.OverriddenBonuses = OverriddenBonuses;
-		for i, v in pairs(settings.OverriddenBonuses) do print(i, v); end
 	end
 	settings.LocalDeployments = true;
 end
 
-function LoopTerritories(game, OverriddenBonuses)
-	print(OverridenBonuses)
+function loopTerritories()
 	if OverriddenBonuses == nil then OverriddenBonuses = {}; end
 	for terrID, terr in pairs(game.Map.Territories) do
-		OverriddenBonuses = SetToOneBonus(game, terr, OverriddenBonuses);
-	end
-	return OverriddenBonuses;
-end
-
-
-function SetToOneBonus(game, terr, OverriddenBonuses)
-	if AmountOfBonuses(game, terr, OverriddenBonuses) > 1 then
-		local smallestBonus = 10000;
-		local smallestBonusID = -1;
-		local bonusValueZero = {};
-		for _, bonusID in pairs(terr.PartOfBonuses) do
-			if GetValue(game, OverriddenBonuses, bonusID) ~= 0 then
-				if smallestBonus > #game.Map.Bonuses[bonusID].Territories then
---					print(smallestBonus, #game.Map.Bonuses[bonusID].Territories);
-					smallestBonus = #game.Map.Bonuses[bonusID].Territories;
-					smallestBonusID = bonusID;
-				end
-			else
-				table.insert(bonusValueZero, bonusID);
-			end
+		if getBonusCount(terr) > 1 then
+			overrideBonuses(terr, getSmallestBonusID(terr));
 		end
-		OverriddenBonuses = OverrideBonuses(game, terr, OverriddenBonuses, smallestBonusID, bonusValueZero);
 	end
-	return OverriddenBonuses;
 end
 
-function OverrideBonuses(game, terr, OverriddenBonuses, exceptForBonus, bonusValueZero)
-	print(game.Map.Bonuses[exceptForBonus].Name);
+function overrideBonuses(terr, exceptForBonusID)
 	for _, bonusID in pairs(terr.PartOfBonuses) do
-		bool = true;
-		if bonusID ~= exceptForBonus then		
+		if bonusID ~= exceptForBonusID and getBonusValue(bonusID) ~= 0 then
 			OverriddenBonuses[bonusID] = 0;
-			print("overridden bonus " .. game.Map.Bonuses[bonusID].Name);
 		end
 	end
-	return OverriddenBonuses;
 end
 
-function GetValue(game, OverriddenBonuses, bonusID)
-	print(game.Map.Bonuses[bonusID].Name, OverriddenBonuses[bonusID]);
+function getBonusCount(terr)
+	local amount = 0;
+	for _, bonusID in pairs(terr.PartOfBonuses) do
+		if getBonusValue(bonusID) ~= 0 then
+			amount = amount + 1;
+		end
+	end
+end
+
+function getBonusValue(bonusID)
 	if OverriddenBonuses[bonusID] ~= nil then
 		return OverriddenBonuses[bonusID];
 	else
@@ -63,12 +45,16 @@ function GetValue(game, OverriddenBonuses, bonusID)
 	end
 end
 
-function AmountOfBonuses(game, terr, OverriddenBonuses)
-	local amount = 0;
+function getSmallestBonusID(terr)
+	local terrCount = 10000;
+	local smallestBonusID = 0;
 	for _, bonusID in pairs(terr.PartOfBonuses) do
---		print(terr.Name .. " exists in " .. game.Map.Bonuses[bonusID].Name, bonusID);
-		if GetValue(game, OverriddenBonuses, bonusID) ~= 0 then amount = amount + 1; end
+		if getBonusValue(bonusID) ~= 0 then
+			if #game.Map.Bonuses[bonusID].Territories < terrCount then
+				terrCount = #game.Map.Bonuses[bonusID].Territories;
+				smallestBonusID = bonusID;
+			end
+		end
 	end
---	print(amount, terr.Name);
-	return amount;
+	return smallestBonusID;
 end
