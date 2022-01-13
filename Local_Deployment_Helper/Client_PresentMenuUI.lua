@@ -9,6 +9,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Distribution = {};	
 	
 	setMaxSize(450, 300);
+	
 	if (not game.Settings.LocalDeployments) then
 		return createLabel(vert, "This mod only works in Local Deployment games. This isn't a Local Deployment.", colors.ErrorColor)
 	elseif (not game.Us or game.Us.State ~= WL.GamePlayerState.Playing) then
@@ -22,6 +23,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	UI.CreateLabel(permanentLabel1).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
 	UI.CreateLabel(permanentLabel2).SetText("Special thanks to:\t").SetColor(colors.TextColor);
 	UI.CreateLabel(permanentLabel2).SetText("TBest").SetColor("#800080");
+	if game.Us == nil then return; end
+	if game.Us.IsAIOrHumanTurnedIntoAI then return; end
 	showMenu();
 end
 

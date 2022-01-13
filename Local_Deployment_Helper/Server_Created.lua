@@ -9,6 +9,7 @@ function Server_Created(game, settings)
 end
 
 function LoopTerritories(game, OverriddenBonuses)
+	print(OverridenBonuses)
 	if OverriddenBonuses == nil then OverriddenBonuses = {}; end
 	for terrID, terr in pairs(game.Map.Territories) do
 		OverriddenBonuses = SetToOneBonus(game, terr, OverriddenBonuses);
@@ -60,7 +61,7 @@ function OverrideBonuses(game, terr, OverriddenBonuses, exceptForBonus, bonusVal
 end
 
 function GetValue(game, OverriddenBonuses, bonusID)
---	if bonusID == 
+	print(OverriddenBonuses[bonusID]);
 	if OverriddenBonuses[bonusID] ~= nil then
 		return OverriddenBonuses[bonusID];
 	else
