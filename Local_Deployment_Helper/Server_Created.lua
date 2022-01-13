@@ -5,7 +5,7 @@ function Server_Created(Game, settings)
 	end
 	if Mod.Settings.BonusOverrider == true then
 		OverriddenBonuses = settings.OverriddenBonuses;
-		OverriddenBonuses = loopTerritories();
+		loopTerritories();
 		settings.OverriddenBonuses = OverriddenBonuses;
 	end
 	settings.LocalDeployments = true;
