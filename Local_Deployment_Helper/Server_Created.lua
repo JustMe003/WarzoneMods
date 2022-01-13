@@ -14,7 +14,7 @@ function Server_Created(game, settings)
 		end
 		settings.OverriddenBonuses = OverriddenBonuses;
 	end
-	settings.LocalDeployments = true;
+--	settings.LocalDeployments = true;
 end
 
 function LoopTerritories(game, OverriddenBonuses)
