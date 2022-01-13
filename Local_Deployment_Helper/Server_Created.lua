@@ -35,6 +35,7 @@ function getBonusCount(terr)
 			amount = amount + 1;
 		end
 	end
+	return amount;
 end
 
 function getBonusValue(bonusID)
