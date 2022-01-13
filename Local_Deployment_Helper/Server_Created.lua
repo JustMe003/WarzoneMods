@@ -3,6 +3,7 @@ function Server_Created(game, settings)
 		settings.AllowPercentageAttacks = true; 
 	end
 	if Mod.Settings.BonusOverrider == true then
+		for i, v in pairs(settings.OverriddenBonuses) do print(game.Map.Bonuses[i].Name, v); end
 		settings.OverriddenBonuses = LoopTerritories(game, settings.OverriddenBonuses)
 	end
 	settings.LocalDeployments = true;
