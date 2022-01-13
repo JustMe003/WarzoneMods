@@ -65,7 +65,7 @@ function showHelperMenu()
 	createLabel(line, "Add transfers", colors.TextColor);
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked your transfers from the previous turn will be added to your orderlist") end)
 	line = getNewHorz(vert);
-	setToPercentage = createCheckBox(line, false,  " ", Game.Settings.AllowPercentageAttacks);
+	setToPercentage = createCheckBox(line, false,  " ", false);
 	createLabel(line, "overwrite all attacks/transfers to 100% orders", colors.TextColor);
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked all your transfers will be overwritten to 100% attacks/transfers. This will allow every army to be transferred, no matter the amount of armies") end)
 	line = getNewHorz(vert);
