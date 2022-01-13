@@ -25,7 +25,7 @@ function SetToOneBonus(game, terr, OverriddenBonuses)
 		local bonusValueZero = {};
 		for _, bonusID in pairs(terr.PartOfBonuses) do
 			if GetValue(game, OverriddenBonuses, bonusID) ~= 0 then
-				if math.min(smallestBonus, #game.Map.Bonuses[bonusID].Territories) == #game.Map.Bonuses[bonusID].Territories then
+				if smallestBonus > #game.Map.Bonuses[bonusID].Territories then
 --					print(smallestBonus, #game.Map.Bonuses[bonusID].Territories);
 					smallestBonus = #game.Map.Bonuses[bonusID].Territories;
 					smallestBonusID = bonusID;
@@ -40,28 +40,19 @@ function SetToOneBonus(game, terr, OverriddenBonuses)
 end
 
 function OverrideBonuses(game, terr, OverriddenBonuses, exceptForBonus, bonusValueZero)
---	print(game.Map.Bonuses[exceptForBonus].Name);
+	print(game.Map.Bonuses[exceptForBonus].Name);
 	for _, bonusID in pairs(terr.PartOfBonuses) do
 		bool = true;
-		if bonusID ~= exceptForBonus then
-			for _, bonusID2 in pairs(bonusValueZero) do
-				if bonusID == bonusID2 then
---					print(game.Map.Bonuses[bonusID].Name, "not overridden")
-					bool = false;
-					break;
-				end
-			end
-			if bool == true then
-				OverriddenBonuses[bonusID] = 0;
---				print("overridden bonus " .. game.Map.Bonuses[bonusID].Name);
-			end
+		if bonusID ~= exceptForBonus then		
+			OverriddenBonuses[bonusID] = 0;
+			print("overridden bonus " .. game.Map.Bonuses[bonusID].Name);
 		end
 	end
 	return OverriddenBonuses;
 end
 
 function GetValue(game, OverriddenBonuses, bonusID)
-	print(OverriddenBonuses[bonusID]);
+	print(game.Map.Bonuses[bonusID].Name, OverriddenBonuses[bonusID]);
 	if OverriddenBonuses[bonusID] ~= nil then
 		return OverriddenBonuses[bonusID];
 	else
