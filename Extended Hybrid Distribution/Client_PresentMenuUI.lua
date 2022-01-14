@@ -1,6 +1,9 @@
 require("utilities")
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close)
+	
+	print(_VERSION);
+	
 	game = Game;
 	orders = game.Orders;
 	close = Close;
