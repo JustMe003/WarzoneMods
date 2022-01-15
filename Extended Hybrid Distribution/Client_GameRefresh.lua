@@ -4,7 +4,7 @@ function Client_GameRefresh(Game)
 	game = Game;
 	if game.Us == nil then return; end
 	local playerData = Mod.PlayerGameData;
-	print(HighestTurnWatched)
+	print(game.Us.HighestTurnWatched)
 	if playerData.LastTurnSinceMessage == nil then playerData.LastTurnSinceMessage = game.Game.TurnNumber; end
 	if game.Game.TurnNumber > 0 then
 		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
