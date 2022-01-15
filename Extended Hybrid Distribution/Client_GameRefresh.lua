@@ -2,7 +2,9 @@ require("utilities");
 
 function Client_GameRefresh(Game)
 	return; -- Have to work on this later on
-	game = Game;
+end
+
+--[[	game = Game;
 	if game.Us == nil then return; end
 	local playerData = Mod.PlayerGameData;
 	print(game.Us.HighestTurnWatched)
@@ -18,7 +20,7 @@ function Client_GameRefresh(Game)
 		playerData.hasPlayeenMessage = true
 	end
 	Mod.PlayerGameData = playerData;
-end
+end]]--
 
 
 function playerShouldPick(PlayerID)
