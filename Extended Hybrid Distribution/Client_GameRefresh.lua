@@ -1,6 +1,7 @@
 require("utilities");
 
 function Client_GameRefresh(Game)
+	return; -- Have to work on this later on
 	game = Game;
 	if game.Us == nil then return; end
 	local playerData = Mod.PlayerGameData;
