@@ -11,7 +11,7 @@ function Client_GameRefresh(Game)
 			playerData.LastTurnSinceMessage = game.Game.TurnNumber;
 		end
 	end
-	if (game.Game.TurnNumber - 1 == data.DurationDistributionStage or data.AbortDistribution) and Mod.PlayerGameData.hasSeenPlayMessage ~= nil then
+	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.hasSeenPlayMessage ~= nil then
 		UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
 		playerData.hasPlayeenMessage = true
 	end
