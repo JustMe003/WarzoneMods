@@ -2,7 +2,11 @@ require("utilities")
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close)
 	
-	print(_VERSION);
+	if (not WL.IsVersionOrHigher or not WL.IsVersionOrHigher("5.17")) then
+		UI.Alert("You must update your app to the latest version to use this mod");
+		return;
+	end
+
 	
 	game = Game;
 	orders = game.Orders;
