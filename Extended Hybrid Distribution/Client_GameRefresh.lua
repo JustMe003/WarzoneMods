@@ -2,18 +2,20 @@ require("utilities");
 
 function Client_GameRefresh(Game)
 	game = Game;
+	local playerData = Mod.PlayerGameData;
 	if game.Us == nil then return; end
+	if playerData.LastTurnSinceMessage == nil then playerData.LastTurnSinceMessage = game.Game.TurnNumber; end
 	if game.Game.TurnNumber > 0 then
-		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage then
+		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= data.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
 			UI.Alert("In this turn you're able to pick 1 more territory. Open the Extended Distribution Phase mod menu to pick");
+			playerData.LastTurnSinceMessage = game.Game.TurnNumber;
 		end
 	end
-	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.hasSeenPlayMessage ~= nil then
+	if (game.Game.TurnNumber - 1 == data.DurationDistributionStage or data.AbortDistribution) and Mod.PlayerGameData.hasSeenPlayMessage ~= nil then
 		UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
-		local playerData = Mod.PlayerGameData;
 		playerData.hasPlayeenMessage = true
-		Mod.PlayerGameData = playerData;
 	end
+	Mod.PlayerGameData = playerData;
 end
 
 
