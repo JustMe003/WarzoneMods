@@ -6,8 +6,7 @@ function Client_GameRefresh(Game)
 	local playerData = Mod.PlayerGameData;
 	if playerData.LastTurnSinceMessage == nil then playerData.LastTurnSinceMessage = game.Game.TurnNumber; end
 	if game.Game.TurnNumber > 0 then
-		print(playerData.LastTurnSinceMessage, playerShouldPick(game.Us.ID), game.Game.TurnNumber, data.DurationDistributionStage);
-		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= data.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
+		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
 			UI.Alert("In this turn you're able to pick 1 more territory. Open the Extended Distribution Phase mod menu to pick");
 			playerData.LastTurnSinceMessage = game.Game.TurnNumber;
 		end
