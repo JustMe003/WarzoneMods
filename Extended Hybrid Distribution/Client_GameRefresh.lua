@@ -2,10 +2,11 @@ require("utilities");
 
 function Client_GameRefresh(Game)
 	game = Game;
-	local playerData = Mod.PlayerGameData;
 	if game.Us == nil then return; end
+	local playerData = Mod.PlayerGameData;
 	if playerData.LastTurnSinceMessage == nil then playerData.LastTurnSinceMessage = game.Game.TurnNumber; end
 	if game.Game.TurnNumber > 0 then
+		print(playerData.LastTurnSinceMessage);
 		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= data.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
 			UI.Alert("In this turn you're able to pick 1 more territory. Open the Extended Distribution Phase mod menu to pick");
 			playerData.LastTurnSinceMessage = game.Game.TurnNumber;
