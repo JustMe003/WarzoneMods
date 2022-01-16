@@ -15,6 +15,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	setMaxSize(400, 500);
 	
+	print(_VERSION);
+	
 	local row1 = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(row1).SetText("Mod author: ").SetColor("#CCCCCC");
 	UI.CreateLabel(row1).SetText("Just_A_Dutchman_").SetColor("#00FF00");
