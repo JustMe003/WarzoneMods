@@ -11,7 +11,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	
 	game = Game;
 	orders = game.Orders;
-	close = Close;
+	close = function() button = nil; return Close; end
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	setMaxSize(400, 500);
 		
