@@ -25,10 +25,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	button = UI.CreateButton(vert).SetText("Click here to add your picks to your orderlist").SetColor("#0000FF").SetOnClick(addOrdersToList);
 	UI.CreateLabel(vert).SetText("Every territory you click / tap will end up here below").SetColor("#FF8C00");
 	if playerShouldPick(game.Us.ID) then
-		if Mod.PublicGameData.numberOfGroups> 1 then
+		if Mod.PublicGameData.numberOfGroups > 1 then
 			minimumPicks = #Mod.PublicGameData.Groups[getGroup(game.Game.TurnNumber, Mod.PublicGameData.numberOfGroups)];
 		else
 			minimumPicks = #game.Game.PlayingPlayers;
+			print(minimumPicks);
 		end
 		updateLabel = UI.CreateLabel(vert).SetText("In this turn you are able to pick more territories! You should pick at least " .. minimumPicks .. " more to make sure you don't end up with random territories!").SetColor("#AA0000");
 	end
