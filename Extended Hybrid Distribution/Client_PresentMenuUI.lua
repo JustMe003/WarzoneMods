@@ -28,9 +28,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 		if Mod.PublicGameData.numberOfGroups > 1 then
 			minimumPicks = #Mod.PublicGameData.Groups[getGroup(game.Game.TurnNumber, Mod.PublicGameData.numberOfGroups)];
 		else
-			for i,v in pairs(game.Game.Players) do print(i, v); end
-			minimumPicks = #game.Game.PlayingPlayers;
-			print(minimumPicks);
+			minimumPicks = getTableLength(game.Game.PlayingPlayers);
 		end
 		updateLabel = UI.CreateLabel(vert).SetText("In this turn you are able to pick more territories! You should pick at least " .. minimumPicks .. " more to make sure you don't end up with random territories!").SetColor("#AA0000");
 	end
@@ -78,4 +76,12 @@ end
 function playerShouldPick(PlayerID)
 	if Mod.PublicGameData.numberOfGroups == 1 then return true; end
 	return valueInTable(Mod.PublicGameData.Groups[getGroup(game.Game.TurnNumber, Mod.PublicGameData.numberOfGroups)], PlayerID);
+end
+
+function getTableLength(t)
+	local int = 0;
+	for i,_ in pairs(t) do
+		int = int + 1;
+	end
+	return int;
 end
