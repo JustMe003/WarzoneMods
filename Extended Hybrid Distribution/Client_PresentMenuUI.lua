@@ -25,6 +25,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	button = UI.CreateButton(vert).SetText("Click here to add your picks to your orderlist").SetColor("#0000FF").SetOnClick(addOrdersToList);
 	UI.CreateLabel(vert).SetText("Every territory you click / tap will end up here below").SetColor("#FF8C00");
 	if playerShouldPick(game.Us.ID) then
+		print(Mod.PublicGameData.numberOfGroups)
 		if Mod.PublicGameData.numberOfGroups > 1 then
 			minimumPicks = #Mod.PublicGameData.Groups[getGroup(game.Game.TurnNumber, Mod.PublicGameData.numberOfGroups)];
 		else
