@@ -28,7 +28,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 		if Mod.PublicGameData.numberOfGroups > 1 then
 			minimumPicks = #Mod.PublicGameData.Groups[getGroup(game.Game.TurnNumber, Mod.PublicGameData.numberOfGroups)];
 		else
-			print(#game.Game.PlayingPlayers);
+			print(#game.Game.Players);
 			minimumPicks = #game.Game.PlayingPlayers;
 			print(minimumPicks);
 		end
