@@ -14,9 +14,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	close = Close;
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	setMaxSize(400, 500);
-	
-	print(_VERSION);
-	
+		
 	local row1 = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(row1).SetText("Mod author: ").SetColor("#CCCCCC");
 	UI.CreateLabel(row1).SetText("Just_A_Dutchman_").SetColor("#00FF00");
@@ -27,10 +25,10 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	button = UI.CreateButton(vert).SetText("Click here to add your picks to your orderlist").SetColor("#0000FF").SetOnClick(addOrdersToList);
 	UI.CreateLabel(vert).SetText("Every territory you click / tap will end up here below").SetColor("#FF8C00");
 	if playerShouldPick(game.Us.ID) then
-		print(Mod.PublicGameData.numberOfGroups)
 		if Mod.PublicGameData.numberOfGroups > 1 then
 			minimumPicks = #Mod.PublicGameData.Groups[getGroup(game.Game.TurnNumber, Mod.PublicGameData.numberOfGroups)];
 		else
+			print(#game.Game.PlayingPlayers);
 			minimumPicks = #game.Game.PlayingPlayers;
 			print(minimumPicks);
 		end
