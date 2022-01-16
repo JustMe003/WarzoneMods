@@ -11,9 +11,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	
 	game = Game;
 	orders = game.Orders;
-	close = function() button = nil; return Close; end
+	close = Close;
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	setMaxSize(400, 500);
+	
+	clickedATerritory = false;
 		
 	local row1 = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(row1).SetText("Mod author: ").SetColor("#CCCCCC");
@@ -30,7 +32,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 		else
 			minimumPicks = getTableLength(game.Game.PlayingPlayers);
 		end
-		updateLabel = UI.CreateLabel(vert).SetText("In this turn you are able to pick more territories! You should pick at least " .. minimumPicks .. " more to make sure you don't end up with random territories!").SetColor("#AA0000");
+		updateLabel = UI.CreateLabel(vert).SetText("In this turn you are able to pick more territories! You should pick at least " .. minimumPicks .. " more to make sure you don't end up with random territories!").SetColor("#CC0000");
 	end
 	labels = {UI.CreateLabel(vert).SetText("You have picked").SetColor("#C0C0C0")};
 	
@@ -42,7 +44,7 @@ function showPicks()
 end
 
 function territoryClicked(terrDetails)
-	if button == nil then return; end
+	if button == nil or clickedATerritory == false then return; end
 	if terrDetails == nil then return; end
 	if alreadyHasOrder("ExtendDistributionPhase_pick_" .. terrDetails.ID) then showPicks(); return; end
 	local pick = WL.GameOrderCustom.Create(game.Us.ID, "attempt to pick " .. terrDetails.Name, "ExtendDistributionPhase_pick_" .. terrDetails.ID, {})
@@ -52,6 +54,7 @@ function territoryClicked(terrDetails)
 		minimumPicks = math.max(minimumPicks - 1, 0)
 		updateLabel.SetText("In this turn you are able to pick more territories! You should pick at least " .. minimumPicks .. " more to make sure you don't end up with random territories!");
 	end
+	clickedATerritory = true;
 	showPicks();
 end
 
