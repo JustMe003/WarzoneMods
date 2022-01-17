@@ -4,7 +4,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	UIObjects = {};
 	
 	
---	showMenu();
+	showMenu();
 end
 
 function showMenu()
