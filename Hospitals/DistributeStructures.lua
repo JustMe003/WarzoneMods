@@ -1,7 +1,7 @@
 function distributeStructure(game, standing, amountOfStructures, structure)
 	local listOfTerr = getList(standing.Territories, function(terr) return terr.OwnerPlayerID == WL.PlayerID.Neutral end)
 	
-	amountOfStructures = math.min(amountOfStructures, math.max(math.floor(#listOfTerr / 4), 1)) -- Make sure to never have more than 1 / 4 of the map covered with a certain structure type
+	amountOfStructures = math.min(amountOfStructures, math.floor(#listOfTerr / 4)) -- Make sure to never have more than 1 / 4 of the map covered with a certain structure type
 	print(amountOfStructures)
 	for i = 1, amountOfStructures do
 		local rand = math.random(#listOfTerr);
@@ -27,6 +27,7 @@ function getList(list, func)
 	local array = {};
 	for i, v in pairs(list) do
 		if func(v) then
+			print(true)
 			table.insert(array, i);
 		end
 	end
