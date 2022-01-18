@@ -3,7 +3,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	print(playerData)
 	if playerData[playerID] == nil then playerData[playerID] = {}; end
 	if payload.Message == "HasSeenPlayMessage" then
-		playerData[playerID].HasSeenPlayMessage = true;
+		playerData[playerID].HasSeenPlayMessage = payload.Value;
 	elseif payload.Message == "LastTurnSinceMessage" then
 		playerData[playerID].LastTurnSinceMessage = payload.TurnNumber;
 	end
