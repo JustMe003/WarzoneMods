@@ -5,7 +5,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	if payload.Message == "HasSeenPlayMessage" then
 		playerData[playerID].HasSeenPlayMessage = true;
 	elseif payload.Message == "LastTurnSinceMessage" then
-		playerData.LastTurnSinceMessage[playerID] = payload.TurnNumber;
+		playerData[playerID].LastTurnSinceMessage = payload.TurnNumber;
 	end
 	Mod.PlayerGameData = playerData;
 end
