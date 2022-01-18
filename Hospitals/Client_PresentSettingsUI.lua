@@ -1,5 +1,5 @@
 function Client_PresentSettingsUI(rootParent)
-	local vert = UI.CreateVerticalLayoutGroup;
+	local vert = UI.CreateVerticalLayoutGroup(rootParent);
 	
 	UI.CreateLabel(vert).SetText("Note that the number of hospitals can be overridden by the mod").SetColor("#AA3333");
 	UI.CreateEmpty(vert).SetPreferredHeight(20);
