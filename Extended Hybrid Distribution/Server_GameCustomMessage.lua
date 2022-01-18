@@ -6,4 +6,5 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 		playerData.LastTurnSinceMessage = payload.TurnNumber;
 	end
 	Mod.PlayerGameData[playerID] = playerData;
+	print(playerData.LastTurnSinceMessage, playerData.HasSeenPlayMessage)
 end
