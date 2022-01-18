@@ -8,16 +8,12 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 	if order.proxyType == "GameOrderAttackTransfer" then
 		if not orderResult.IsNullified and orderResult.IsAttack then
 			if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures ~= nil then
-				print(game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.Hospital])
 				if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.Hospital] ~= nil then
-					print(data.Hospitals[order.To])
 					if data.Hospitals[order.To] ~= nil then
 						if Mod.Settings.upgradeSystem then
-							print("hospital has been taken");
 							data.Hospitals[order.To].Level = 1;
 							data.Hospitals[order.To].Progress = 0;
 							data.Hospitals[order.To].Territories = setTerritories(order.To);
-							for i, v in pairs(data.Hospitals[order.To].Territories) do print(i, v); end
 						end
 					else
 						data.Hospitals[order.To] = createHospital(order.To);
