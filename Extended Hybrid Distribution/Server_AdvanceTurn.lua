@@ -52,8 +52,8 @@ end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if not distributionPhase then return; end
-	if order.proxyType == "GameOrderDeploy" or order.proxyType == "GameOrderAttackTransfer" then skipThisOrder(WL.ModOrderControl.Skip); end
-	if order.proxyType ~= "GameOrderCustom" then return; end
+--	if order.proxyType == "GameOrderDeploy" or order.proxyType == "GameOrderAttackTransfer" then skipThisOrder(WL.ModOrderControl.Skip); end
+	if order.proxyType ~= "GameOrderCustom" then skipThisOrder(WL.ModOrderControl.Skip); end
 	if data.AbortDistribution == true then skipThisOrder(WL.ModOrderControl.Skip); end
 	if data.numberOfGroups> 1 then
 		if not valueInTable(Mod.PublicGameData.Groups[group], order.PlayerID) then 

@@ -24,6 +24,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, Close
 	
 	if game.Game.TurnNumber < 1 then return; end
 	if game.Us == nil then return; end
+	if Mod.PublicGameData.DurationDistributionStage < game.Game.TurnNumber then return; end
 	button = UI.CreateButton(vert).SetText("Click here to add your picks to your orderlist").SetColor("#0000FF").SetOnClick(addOrdersToList);
 	UI.CreateLabel(vert).SetText("Every territory you click / tap will end up here below").SetColor("#FF8C00");
 	if playerShouldPick(game.Us.ID) then
