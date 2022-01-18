@@ -9,6 +9,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 		if not orderResult.IsNullified and orderResult.IsAttack then
 			if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures ~= nil then
 				if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.Hospital] ~= nil then
+					print(data.Hospitals[order.To])
 					if data.Hospitals[order.To] ~= nil then
 						if Mod.Settings.upgradeSystem then
 							print("hospital has been taken");
