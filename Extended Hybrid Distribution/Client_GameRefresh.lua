@@ -13,7 +13,7 @@ function Client_GameRefresh(Game)
 	elseif playerData.LastTurnSinceMessage == nil then
 		local payload = {};
 		payload.Message = "LastTurnSinceMessage";
-		payload.TurnNumber = game.Game.TurnNumber - 1;
+		payload.TurnNumber = game.Game.TurnNumber;
 		game.SendGameCustomMessage("updating alerts...", payload, function() end);
 	end
 	if game.Game.TurnNumber > 0 then
