@@ -25,10 +25,17 @@ function Client_GameRefresh(Game)
 		end
 	end
 	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.HasSeenPlayMessage ~= nil then
-		UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
+		if not Mod.PlayerGameData.HasSeenPlayMessage then
+			UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
+			ocal payload = {};
+			payload.Message = "HasSeenPlayMessage";
+			payload.Value = true;
+			game.SendGameCustomMessage("Updating alerts", payload, function() end);
+		end
 	elseif (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.HasSeenPlayMessage == nil then
 		local payload = {};
 		payload.Message = "HasSeenPlayMessage";
+		payload.Value = false;
 		game.SendGameCustomMessage("Updating alerts", payload, function() end);
 	end
 end
