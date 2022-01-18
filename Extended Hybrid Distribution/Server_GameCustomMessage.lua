@@ -1,6 +1,5 @@
 function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
-	print(playerData)
 	if playerData[playerID] == nil then playerData[playerID] = {}; end
 	if payload.Message == "HasSeenPlayMessage" then
 		playerData[playerID].HasSeenPlayMessage = payload.Value;
