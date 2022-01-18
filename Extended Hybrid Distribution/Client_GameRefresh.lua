@@ -5,7 +5,17 @@ function Client_GameRefresh(Game)
 	if game.Us == nil then return; end
 	local playerData = Mod.PlayerGameData;
 	print(Mod.PlayerGameData.LastTurnSinceMessage)
-	if playerData.LastTurnSinceMessage == nil then playerData.LastTurnSinceMessage = game.Game.TurnNumber; end
+	if playerData.LastTurnSinceMessage == nil and game.Settings.AutomaticTerritoryDistribution then 
+		local payload = {};
+		payload.Message = "LastTurnSinceMessage";
+		payload.TurnNumber = game.Game.TurnNumber;
+		game.SendGameCustomMessage("updating alerts...", payload, nil);
+	elseif playerData.LastTurnSinceMessage == nil then
+		local payload = {};
+		payload.Message = "LastTurnSinceMessage";
+		payload.TurnNumber = game.Game.TurnNumber - 1;
+		game.SendGameCustomMessage("updating alerts...", payload, nil);
+	end
 	if game.Game.TurnNumber > 0 then
 		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
 			UI.Alert("In this turn you're able to pick 1 more territory. Open the Extended Distribution Phase mod menu to pick");
