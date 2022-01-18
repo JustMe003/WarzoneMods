@@ -1,11 +1,11 @@
 function Server_GameCustomMessage(game, playerID, payload, setReturn)
-	local playerData = Mod.PlayerGameData[playerID];
+	local playerData = Mod.PlayerGameData;
 	print(playerData)
-	if playerData == nil then playerData = {}; end
+	if playerData[playerID] == nil then playerData[playerID] = {}; end
 	if payload.Message == "HasSeenPlayMessage" then
-		playerData.HasSeenPlayMessage = true;
+		playerData[playerID].HasSeenPlayMessage = true;
 	elseif payload.Message == "LastTurnSinceMessage" then
-		playerData.LastTurnSinceMessage = payload.TurnNumber;
+		playerData.LastTurnSinceMessage[playerID] = payload.TurnNumber;
 	end
-	Mod.PlayerGameData[playerID] = playerData;
+	Mod.PlayerGameData = playerData;
 end
