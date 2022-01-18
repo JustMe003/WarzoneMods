@@ -9,12 +9,12 @@ function Client_GameRefresh(Game)
 		local payload = {};
 		payload.Message = "LastTurnSinceMessage";
 		payload.TurnNumber = game.Game.TurnNumber;
-		game.SendGameCustomMessage("updating alerts...", payload, nil);
+		game.SendGameCustomMessage("updating alerts...", payload, function() end);
 	elseif playerData.LastTurnSinceMessage == nil then
 		local payload = {};
 		payload.Message = "LastTurnSinceMessage";
 		payload.TurnNumber = game.Game.TurnNumber - 1;
-		game.SendGameCustomMessage("updating alerts...", payload, nil);
+		game.SendGameCustomMessage("updating alerts...", payload, function() end);
 	end
 	if game.Game.TurnNumber > 0 then
 		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
@@ -22,14 +22,14 @@ function Client_GameRefresh(Game)
 			local payload = {};
 			payload.Message = "LastTurnSinceMessage";
 			payload.TurnNumber = game.Game.TurnNumber;
-			game.SendGameCustomMessage("updating alerts...", payload, nil)
+			game.SendGameCustomMessage("updating alerts...", payload, function() end)
 		end
 	end
 	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.HasSeenPlayMessage ~= nil then
 		UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
 		local payload = {};
 		payload.Message = "HasSeenPlayMessage";
-		game.SendGameCustomMessage("updating alerts...", payload, nil)
+		game.SendGameCustomMessage("updating alerts...", payload, function() end)
 	end
 end
 
