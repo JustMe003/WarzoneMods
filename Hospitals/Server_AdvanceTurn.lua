@@ -8,6 +8,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 	if order.proxyType == "GameOrderAttackTransfer" then
 		if not orderResult.IsNullified and orderResult.IsAttack then
 			if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures ~= nil then
+				print(game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.Hospital])
 				if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.Hospital] ~= nil then
 					print(data.Hospitals[order.To])
 					if data.Hospitals[order.To] ~= nil then
