@@ -9,14 +9,17 @@ function Client_GameRefresh(Game)
 	if game.Game.TurnNumber > 0 then
 		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
 			UI.Alert("In this turn you're able to pick 1 more territory. Open the Extended Distribution Phase mod menu to pick");
-			playerData.LastTurnSinceMessage = game.Game.TurnNumber;
-			Mod.PlayerGameData = playerData
+			local payload = {};
+			payload.Message = "LastTurnSinceMessage";
+			payload.TurnNumber = game.Game.TurnNumber;
+			game.SendGameCustomMessage("updating alerts...", payload, nil)
 		end
 	end
-	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.hasSeenPlayMessage ~= nil then
+	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.HasSeenPlayMessage ~= nil then
 		UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
-		playerData.hasSeenPlayMessage = true
-		Mod.PlayerGameData = playerData;
+		local payload = {};
+		payload.Message = "HasSeenPlayMessage";
+		game.SendGameCustomMessage("updating alerts...", payload, nil)
 	end
 end
 
