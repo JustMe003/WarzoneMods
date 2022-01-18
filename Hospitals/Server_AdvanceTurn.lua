@@ -13,6 +13,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 						if Mod.Settings.upgradeSystem then
 							data.Hospitals[order.To].Level = 1;
 							data.Hospitals[order.To].Progress = 0;
+							data.Hospitals[order.To].Territories = setTerritories(order.To);
 						end
 					else
 						data.Hospitals[order.To] = createHospital(order.To);
