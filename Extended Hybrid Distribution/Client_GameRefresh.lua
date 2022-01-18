@@ -4,7 +4,7 @@ function Client_GameRefresh(Game)
 	game = Game;
 	if game.Us == nil then return; end
 	local playerData = Mod.PlayerGameData;
-	print(Mod.PlayerGameData.LastTurnSinceMessage)
+	print(playerData.LastTurnSinceMessage)
 	if playerData.LastTurnSinceMessage == nil and game.Settings.AutomaticTerritoryDistribution then 
 		local payload = {};
 		payload.Message = "LastTurnSinceMessage";
