@@ -52,27 +52,29 @@ end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if not distributionPhase then return; end
---	if order.proxyType == "GameOrderDeploy" or order.proxyType == "GameOrderAttackTransfer" then skipThisOrder(WL.ModOrderControl.Skip); end
-	if order.proxyType ~= "GameOrderCustom" and order.proxyType ~= "GameOrderEvent" then skipThisOrder(WL.ModOrderControl.Skip); end
-	print(order.proxyType);
-	if order.proxyType == "GameOrderEvent" then return; end
-	if data.AbortDistribution == true then skipThisOrder(WL.ModOrderControl.Skip); end
-	if data.numberOfGroups> 1 then
-		if not valueInTable(Mod.PublicGameData.Groups[group], order.PlayerID) then 
-			skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
-			addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You are not able to pick territories this turn", "_ExtendedDistributionPhase_Skip_Message_"));
-			return; 
+	if order.proxyType == "GameOrderCustom" or order.proxyType == "GameOrderEvent" then
+		print(order.proxyType);
+		if order.proxyType == "GameOrderEvent" then return; end
+		if data.AbortDistribution == true then skipThisOrder(WL.ModOrderControl.Skip); end
+		if data.numberOfGroups> 1 then
+			if not valueInTable(Mod.PublicGameData.Groups[group], order.PlayerID) then 
+				skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
+				addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You are not able to pick territories this turn", "_ExtendedDistributionPhase_Skip_Message_"));
+				return; 
+			end
 		end
-	end
-	if string.sub(order.Payload, 1, 24) ~= "ExtendDistributionPhase_" then return; end
-	local array = split(string.sub(order.Payload, 25), "_")
-	if array[1] ~= "pick" then return; end
-	local ID = tonumber(array[2]);
-	if game.ServerGame.LatestTurnStanding.Territories[ID].OwnerPlayerID == WL.PlayerID.Neutral then
-		table.insert(territoryPicks[order.PlayerID], ID)
+		if string.sub(order.Payload, 1, 24) ~= "ExtendDistributionPhase_" then return; end
+		local array = split(string.sub(order.Payload, 25), "_")
+		if array[1] ~= "pick" then return; end
+		local ID = tonumber(array[2]);
+		if game.ServerGame.LatestTurnStanding.Territories[ID].OwnerPlayerID == WL.PlayerID.Neutral then
+			table.insert(territoryPicks[order.PlayerID], ID)
+		else
+			skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
+			addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Your pick on " .. game.Map.Territories[ID].Name .. " was incorrect since someone else already controls the territory", "_ExtendedDistributionPhase_Skip_Message_"));
+		end
 	else
-		skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
-		addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Your pick on " .. game.Map.Territories[ID].Name .. " was incorrect since someone else already controls the territory", "_ExtendedDistributionPhase_Skip_Message_"));
+		skipThisOrder(WL.ModOrderControl.Skip);
 	end
 end
 
