@@ -27,7 +27,7 @@ function Client_GameRefresh(Game)
 	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.HasSeenPlayMessage ~= nil then
 		if not Mod.PlayerGameData.HasSeenPlayMessage then
 			UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
-			ocal payload = {};
+			local payload = {};
 			payload.Message = "HasSeenPlayMessage";
 			payload.Value = true;
 			game.SendGameCustomMessage("Updating alerts", payload, function() end);
