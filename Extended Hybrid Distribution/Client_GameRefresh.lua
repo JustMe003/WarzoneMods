@@ -4,7 +4,7 @@ function Client_GameRefresh(Game)
 	game = Game;
 	if game.Us == nil then return; end
 	local playerData = Mod.PlayerGameData;
-	print(game.Us.HighestTurnWatched)
+	print(Mod.PlayerGameData.LastTurnSinceMessage)
 	if playerData.LastTurnSinceMessage == nil then playerData.LastTurnSinceMessage = game.Game.TurnNumber; end
 	if game.Game.TurnNumber > 0 then
 		if playerShouldPick(game.Us.ID) and game.Game.TurnNumber <= Mod.PublicGameData.DurationDistributionStage and game.Game.TurnNumber > playerData.LastTurnSinceMessage then
@@ -15,7 +15,7 @@ function Client_GameRefresh(Game)
 	end
 	if (game.Game.TurnNumber - 1 == Mod.PublicGameData.DurationDistributionStage or Mod.PublicGameData.AbortDistribution) and Mod.PlayerGameData.hasSeenPlayMessage ~= nil then
 		UI.Alert("From this turn the game will advance normally again, any picks made will get ignored")
-		playerData.hasPlayeenMessage = true
+		playerData.hasSeenPlayMessage = true
 		Mod.PlayerGameData = playerData;
 	end
 end
