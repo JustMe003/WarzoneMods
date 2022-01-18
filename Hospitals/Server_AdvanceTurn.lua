@@ -11,6 +11,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 				if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.Hospital] ~= nil then
 					if data.Hospitals[order.To] ~= nil then
 						if Mod.Settings.upgradeSystem then
+							print("hospital has been taken");
 							data.Hospitals[order.To].Level = 1;
 							data.Hospitals[order.To].Progress = 0;
 							data.Hospitals[order.To].Territories = setTerritories(order.To);
@@ -49,7 +50,7 @@ function setTerritories(terrID)
 	local t = {};
 	t[terrID] = 0;
 	for i = 1, Mod.Settings.maximumHospitalRange do
-		print(i, getValue(i), Mod.PublicGameData.Values[i])
+--		print(i, getValue(i), Mod.PublicGameData.Values[i])
 		if i == 1 then
 			for connID, _ in pairs(Game.Map.Territories[terrID].ConnectedTo) do
 				t[connID] = getValue(i);
