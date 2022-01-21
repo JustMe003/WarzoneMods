@@ -41,7 +41,7 @@ function showTerritoryInformation(terrDetails)
 			if game.LatestStanding.Territories[terrDetails.ID].Structures[WL.StructureType.Hospital] ~= nil then
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
-				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(function() showRecoverTable(Mod.PublicGameData.Hospitals[terrDetails.ID]); end));
+				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(function() showRecoveryRate(Mod.PublicGameData.Hospitals[terrDetails.ID], UI.InterceptNextTerritoryClick(function(terrDetails) return terrDetails.ID; end)); end));
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
 				table.insert(UIObjects, UI.CreateLabel(line).SetText("Structure: ").SetColor("#CCCCCC"))
@@ -64,39 +64,6 @@ function showTerritoryInformation(terrDetails)
 		end
 	end
 	table.insert(UIObjects, UI.CreateButton(vert).SetText("return").SetColor("#0000FF").SetOnClick(getTerritory));
-end
-
-function showRecoverTable(hospital)
-	destroyAll();
-	if Mod.Settings.upgradeSystem then
-		local line = UI.CreateHorizontalLayoutGroup(vert);
-		table.insert(UIObjects, line);
-		local vertical = UI.CreateVerticalLayoutGroup(line);
-		table.insert(UIObjects, vertical);
-		table.insert(UIObjects, UI.CreateLabel(vertical).SetText("Level").SetColor("#CCCCCC"))
-		for i = 1, Mod.Settings.maximumHospitalRange do
-			vertical = UI.CreateVerticalLayoutGroup(line);
-			table.insert(UIObjects, vertical);
-			table.insert(UIObjects, UI.CreateLabel(vertical).SetText(i).SetColor("#3333CC"))
-		end
-		for i, v in pairs(hospital.Territories) do
-			local line = UI.CreateHorizontalLayoutGroup(vert);
-			table.insert(UIObjects, line);
-			for j = 1, Mod.Settings.maximumHospitalRange do
-				vertical = UI.CreateVerticalLayoutGroup(line);
-				table.insert(UIObjects, vertical);
-				table.insert(UIObjects, UI.CreateLabel(vertical).SetText(getValue(v - hospital.Level + j + 1)).SetColor("#0000CC"))
-			end
-			
-		end
-	else
-		for i, v in pairs(hospital.Territories) do
-			local line = UI.CreateHorizontalLayoutGroup(vert);
-			table.insert(UIObjects, line);
-			table.insert(UIObjects, UI.CreateLabel(line).SetText(game.Map.Territories[i].Name .. ": ").SetColor("#DDDDDD"))
-			table.insert(UIObjects, UI.CreateLabel(line).SetText(Mod.PublicGameData.Values[v] .. "%").SetColor("#0000DD"))
-		end
-	end
 end
 
 function destroyAll()
