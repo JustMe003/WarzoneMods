@@ -14,15 +14,10 @@ function showMenu()
 	table.insert(UIObjects, goToTerritoryInformation);
 end
 function getTerritory()
-	print(1)
 	destroyAll();
-	print(2)
 	local label = UI.CreateLabel(vert).SetText("Click a territory").SetColor("#00FF00");
-	print(3)
-	local click = UI.InterceptNextTerritoryClick(showTerritoryInformation)
-	print(4)
 	table.insert(UIObjects, label);
-	print(5)
+	UI.InterceptNextTerritoryClick(showTerritoryInformation)
 end
 
 function showTerritoryInformation(terrDetails)
@@ -46,7 +41,7 @@ function showTerritoryInformation(terrDetails)
 			if game.LatestStanding.Territories[terrDetails.ID].Structures[WL.StructureType.Hospital] ~= nil then
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
-				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(showRecoverTable);
+				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(showRecoverTable));
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
 				table.insert(UIObjects, UI.CreateLabel(line).SetText("Structure: ").SetColor("#CCCCCC"))
@@ -68,6 +63,7 @@ function showTerritoryInformation(terrDetails)
 			end
 		end
 	end
+	table.insert(UIObjects, UI.CreateButton(vert).SetText("return").SetColor("#0000FF").SetOnClick(getTerritory));
 end
 
 function showRecoverTable(hospital)
