@@ -41,7 +41,7 @@ function showTerritoryInformation(terrDetails)
 			if game.LatestStanding.Territories[terrDetails.ID].Structures[WL.StructureType.Hospital] ~= nil then
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
-				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(showRecoverTable));
+				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(function() showRecoverTable(Mod.PublicGameData.Hospitals[terrDetails.ID]); end);
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
 				table.insert(UIObjects, UI.CreateLabel(line).SetText("Structure: ").SetColor("#CCCCCC"))
