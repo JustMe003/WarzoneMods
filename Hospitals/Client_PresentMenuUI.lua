@@ -97,7 +97,7 @@ function territoriesInRange(listOfTerr)
 end
 
 function getValue(index)
-	if index == nil return 0; end
+	if index == nil then return 0; end
 	if Mod.PublicGameData.Values[index] ~= nil then return Mod.PublicGameData.Values[index]; end
 	return 0;
 end
