@@ -74,6 +74,7 @@ function showRecoveryRate(terrDetails)
 	table.insert(UIObjects, UI.CreateLabel(line).SetText("hospital at ").SetColor("#CCCCCC"));
 	table.insert(UIObjects, UI.CreateLabel(line).SetText(game.Map.Territories[hospital].Name).SetColor("#00FF05"));
 	table.insert(UIObjects, UI.CreateLabel(line).SetText(" will recover ").SetColor("#CCCCCC"));
+	print(Mod, Mod.PublicGameData, Mod.PublicGameData.Hospitals, Mod.PublicGameData.Hospitals[hospital], Mod.PublicGameData.Hospitals[hospital].Territories, Mod.PublicGameData.Hospitals[hospital].Territories[terrDetails.ID])
 	table.insert(UIObjects, UI.CreateLabel(line).SetText(getValue(Mod.PublicGameData.Hospitals[hospital].Territories[terrDetails.ID]) .. "%").SetColor("#0000FF"));
 	table.insert(UIObjects, UI.CreateLabel(line).SetText(" armies when it defends against an attack or attacks another territory").SetColor("#CCCCCC"));
 end
