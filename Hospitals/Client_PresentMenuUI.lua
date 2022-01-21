@@ -14,10 +14,15 @@ function showMenu()
 	table.insert(UIObjects, goToTerritoryInformation);
 end
 function getTerritory()
+	print(1)
 	destroyAll();
-	local label = UI.CreateLabel(vert).SetText("Click a territory").SetColor("#0000CC");
+	print(2)
+	local label = UI.CreateLabel(vert).SetText("Click a territory").SetColor("#00FF00");
+	print(3)
 	local click = UI.InterceptNextTerritoryClick(showTerritoryInformation)
+	print(4)
 	table.insert(UIObjects, label);
+	print(5)
 end
 
 function showTerritoryInformation(terrDetails)
