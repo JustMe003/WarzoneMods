@@ -101,13 +101,8 @@ function showRecoverTable(hospital)
 end
 
 function destroyAll(t)
-	t = t or UIObjects;
 	for _, v in pairs(t) do
-		if type(v) == type({}) then
-			destroyAll(v)
-		else
-			UI.Destroy(v);
-		end
+		UI.Destroy(v);
 	end
 	UIObjects = {}
 end
