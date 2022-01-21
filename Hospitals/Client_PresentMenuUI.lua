@@ -68,6 +68,7 @@ function showTerritoryInformation(terrDetails)
 end
 
 function showRecoveryRate(terrDetails)
+	if terrDetails == nil then return; end
 	destroyAll();
 	local line = UI.CreateHorizontalLayoutGroup(vert);
 	table.insert(UIObjects, line);
