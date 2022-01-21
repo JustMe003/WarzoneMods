@@ -39,9 +39,10 @@ function showTerritoryInformation(terrDetails)
 		end
 		if game.LatestStanding.Territories[terrDetails.ID].Structures ~= nil and game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			if game.LatestStanding.Territories[terrDetails.ID].Structures[WL.StructureType.Hospital] ~= nil then
+				hospital = terrDetails.ID;
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
-				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(function() showRecoveryRate(Mod.PublicGameData.Hospitals[terrDetails.ID], UI.InterceptNextTerritoryClick(function(terrDetails) return terrDetails.ID; end)); end));
+				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(function() UI.InterceptNextTerritoryClick(showRecoveryRate); end));
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
 				table.insert(UIObjects, UI.CreateLabel(line).SetText("Structure: ").SetColor("#CCCCCC"))
@@ -66,6 +67,18 @@ function showTerritoryInformation(terrDetails)
 	table.insert(UIObjects, UI.CreateButton(vert).SetText("return").SetColor("#0000FF").SetOnClick(getTerritory));
 end
 
+function showRecoveryRate(terrDetails)
+	destroyAll();
+	local line = UI.CreateHorizontalLayoutGroup(vert);
+	table.insert(UIObjects, line);
+	table.insert(UIObjects, UI.CreateLabel(line).SetText("hospital at ").SetColor("#CCCCCC"));
+	table.insert(UIObjects, UI.CreateLabel(line).SetText(game.Map.Territories[hospital].Name).SetColor("#00FF05"));
+	table.insert(UIObjects, UI.CreateLabel(line).SetText(" will recover ").SetColor("#CCCCCC"));
+	table.insert(UIObjects, UI.CreateLabel(line).SetText(getValue(Mod.PublicGameData.Hospitals[hospital].Territories[terrDetails.ID]) .. "%").SetColor("#0000FF"));
+	table.insert(UIObjects, UI.CreateLabel(line).SetText(" armies when it defends against an attack or attacks another territory").SetColor("#CCCCCC"));
+end
+
+
 function destroyAll()
 	for _, v in pairs(UIObjects) do
 		UI.Destroy(v);
@@ -84,6 +97,7 @@ function territoriesInRange(listOfTerr)
 end
 
 function getValue(index)
+	if index == nil return 0; end
 	if Mod.PublicGameData.Values[index] ~= nil then return Mod.PublicGameData.Values[index]; end
 	return 0;
 end
