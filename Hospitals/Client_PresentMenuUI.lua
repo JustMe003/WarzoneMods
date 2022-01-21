@@ -70,13 +70,11 @@ end
 function showRecoveryRate(terrDetails)
 	if terrDetails == nil then return; end
 	destroyAll();
-	local line = UI.CreateHorizontalLayoutGroup(vert);
-	table.insert(UIObjects, line);
-	table.insert(UIObjects, UI.CreateLabel(line).SetText("hospital at ").SetColor("#CCCCCC"));
-	table.insert(UIObjects, UI.CreateLabel(line).SetText(game.Map.Territories[hospital].Name).SetColor("#00FF05"));
-	table.insert(UIObjects, UI.CreateLabel(line).SetText(" will recover ").SetColor("#CCCCCC"));
-	table.insert(UIObjects, UI.CreateLabel(line).SetText(getValue(Mod.PublicGameData.Hospitals[hospital].Territories[terrDetails.ID]) .. "%").SetColor("#0000FF"));
-	table.insert(UIObjects, UI.CreateLabel(line).SetText(" armies").SetColor("#CCCCCC"));
+	table.insert(UIObjects, UI.CreateLabel(vert).SetText("hospital at ").SetColor("#CCCCCC"));
+	table.insert(UIObjects, UI.CreateLabel(vert).SetText(game.Map.Territories[hospital].Name).SetColor("#00FF05"));
+	table.insert(UIObjects, UI.CreateLabel(vert).SetText(" will recover ").SetColor("#CCCCCC"));
+	table.insert(UIObjects, UI.CreateLabel(vert).SetText(getValue(Mod.PublicGameData.Hospitals[hospital].Territories[terrDetails.ID]) .. "%").SetColor("#0000FF"));
+	table.insert(UIObjects, UI.CreateLabel(vert).SetText(" armies").SetColor("#CCCCCC"));
 end
 
 
