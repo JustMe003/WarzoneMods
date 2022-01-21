@@ -100,8 +100,8 @@ function showRecoverTable(hospital)
 	end
 end
 
-function destroyAll(t)
-	for _, v in pairs(t) do
+function destroyAll()
+	for _, v in pairs(UIObjects) do
 		UI.Destroy(v);
 	end
 	UIObjects = {}
