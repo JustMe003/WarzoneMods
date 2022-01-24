@@ -2,6 +2,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	Game = game;
 	AddNewOrder = addNewOrder;
 	data = Mod.PublicGameData;
+	print(game.ClientGame);
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
