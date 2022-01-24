@@ -2,7 +2,6 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	Game = game;
 	AddNewOrder = addNewOrder;
 	data = Mod.PublicGameData;
-	print(game.ClientGame);
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
@@ -36,7 +35,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 				data.Hospitals[hosID].Level = data.Hospitals[hosID].Level + 1;
 				data.Hospitals[hosID].Progress = 0;
 				data.Hospitals[hosID].Territories = increaseRange(data.Hospitals[hosID].Territories);
-				addNewOrder(WL.GameOrderCustom.Create(game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID, "Hospital at " .. game.Map.Territories[hosID].Name .. " leveled up! It is now level " .. data.Hospitals[hosID].Level, ""))
+				addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID, "Hospital at " .. game.Map.Territories[hosID].Name .. " leveled up! It is now level " .. data.Hospitals[hosID].Level, {}, {}))
 			else
 				data.Hospitals[hosID].Progress = data.Hospitals[hosID].Progress + 1;
 			end
