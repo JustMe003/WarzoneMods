@@ -37,7 +37,7 @@ function showDescription()
 		window(win);
 		local vert = newVerticalGroup("vert", "root");
 		showButtons(vert);
-		newLabel("desc1", vert, "This mod was made to provide manuals for all the individual mods. As game creator you should check every checkbox according to which mods the game is using. This is because mods can not detect which other mods are being used in the game, I hope to be able to detect other mods being used somewhere soon.", "Lime");
+		newLabel("desc1", vert, "This mod was made to provide manuals for all the individual mods and help to avoid games having incompatible mods combined. As game creator you should check every checkbox according to which mods the game is using. This is because mods can not detect which other mods are being used in the game, I hope to be able to detect other mods being used somewhere soon.", "Lime");
 		newLabel("desc2", vert, "The other use for this mod is to showcase this new UI.lua file that helps with creating the UI. These settings are 1 showcase, the other can be found in the mod menu", "Apple Green");
 	end
 	allObjects = getAllObjects();
@@ -65,11 +65,19 @@ function pageUp()
 		page = page + 1;
 		pages[page]();
 	end
+	if page + 1 > #pages then
+		page = 1;
+		pages[page]();
+	end
 end
 
 function pageDown()
 	if page - 1 >= 1 then
 		page = page - 1
+		pages[page]();
+	end
+	if page - 1 < 1 then
+		page = #pages;
 		pages[page]();
 	end
 end
@@ -220,8 +228,10 @@ end
 function updateLabel(name)
 	if getIsChecked(name) then
 		modsChecked = modsChecked + 1;
+		updateColor(name .. "Label", "#33FF3");
 	else
 		modsChecked = modsChecked - 1;
+		updateColor(name .. "Label", getColorFromStatus(name));
 	end
 	updateText("DescriptionLabel", "Check all the mods the game will use. Currently " .. modsChecked .. " mods checked");
 end
@@ -250,4 +260,10 @@ function getTotalModsIncluded()
 		end 
 	end 
 	return int;
+end
+
+
+function getColorFromStatus(mod)
+	local t = getStatus();
+	for i, v in pairs(t) do print(i, v); end
 end
