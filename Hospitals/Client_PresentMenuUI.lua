@@ -86,7 +86,7 @@ function showHospitalInformation()
 					line = UI.CreateHorizontalLayoutGroup(vert);
 					table.insert(UIObjects, line)
 					table.insert(UIObjects, UI.CreateLabel(line).SetText("Hospital level progress: ").SetColor("#CCCCCC"))
-					table.insert(UIObjects, UI.CreateLabel(line).SetText(Mod.PublicGameData.Hospitals[terrDetails.ID].Progress .. " / " .. math.pow(Mod.Settings.amountOfLevels, Mod.PublicGameData.Hospitals[terrDetails.ID].Level).SetColor("#0000CC"))
+					table.insert(UIObjects, UI.CreateLabel(line).SetText(Mod.PublicGameData.Hospitals[terrDetails.ID].Progress .. " / " .. math.pow(Mod.Settings.amountOfLevels)), Mod.PublicGameData.Hospitals[terrDetails.ID].Level).SetColor("#0000CC"))
 				end
 			end
 		end
