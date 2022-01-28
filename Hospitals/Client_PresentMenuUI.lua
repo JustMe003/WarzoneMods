@@ -13,6 +13,7 @@ function showMenu()
 	local goToTerritoryInformation = UI.CreateButton(vert).SetText("Advanced territory information").SetColor("#00FF05").SetOnClick(getTerritory);
 	table.insert(UIObjects, goToTerritoryInformation);
 	local goToHospitalInformation = UI.CreateButton(vert).SetText("Hospital information").SetColor("#0000FF").SetOnClick(getHospital);
+	table.insert(UIObjects, goToHospitalInformation);
 end
 
 function getHospital()
