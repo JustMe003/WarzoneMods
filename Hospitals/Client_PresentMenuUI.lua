@@ -52,7 +52,7 @@ function showTerritoryInformation(terrDetails)
 	end
 end
 
-function showHospitalInformation()
+function showHospitalInformation(terrDetails)
 	if terrDetails == nil then return; end
 	destroyAll();
 	local line = UI.CreateHorizontalLayoutGroup(vert);
