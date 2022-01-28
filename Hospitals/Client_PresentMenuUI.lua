@@ -50,6 +50,7 @@ function showTerritoryInformation(terrDetails)
 			end
 		end
 	end
+	table.insert(UIObjects, UI.CreateButton(vert).SetText("return").SetColor("#0000FF").SetOnClick(showMenu));
 end
 
 function showHospitalInformation(terrDetails)
@@ -92,20 +93,8 @@ function showHospitalInformation(terrDetails)
 			end
 		end
 	end
-	table.insert(UIObjects, UI.CreateButton(vert).SetText("return").SetColor("#0000FF").SetOnClick(getTerritory));
+	table.insert(UIObjects, UI.CreateButton(vert).SetText("return").SetColor("#0000FF").SetOnClick(showMenu));
 end
-
-function showRecoveryRate(terrDetails)
-	if terrDetails == nil then return; end
-	destroyAll();
-	table.insert(UIObjects, UI.CreateLabel(vert).SetText("hospital at ").SetColor("#CCCCCC"));
-	table.insert(UIObjects, UI.CreateLabel(vert).SetText(game.Map.Territories[hospital].Name).SetColor("#00FF05"));
-	table.insert(UIObjects, UI.CreateLabel(vert).SetText("will recover").SetColor("#CCCCCC"));
-	table.insert(UIObjects, UI.CreateLabel(vert).SetText(getValue(Mod.PublicGameData.Hospitals[hospital].Territories[terrDetails.ID]) .. "%").SetColor("#0000FF"));
-	table.insert(UIObjects, UI.CreateLabel(vert).SetText("armies from").SetColor("#CCCCCC"));
-	table.insert(UIObjects, UI.CreateLabel(vert).SetText(terrDetails.Name).SetColor("#FFAA00"));
-end
-
 
 function destroyAll()
 	for _, v in pairs(UIObjects) do
