@@ -58,8 +58,10 @@ function setTerritories(terrID)
 			for j, v in pairs(t) do
 				for connID, _ in pairs(Game.Map.Territories[j].ConnectedTo) do
 					if t[connID] == nil then
-						t[connID] = getValue(i);
-						print(Game.Map.Territories[connID].Name, t[connID]);
+						if v == getValue(i-1) then
+							t[connID] = getValue(i);
+							print(Game.Map.Territories[connID].Name, t[connID]);
+						end
 					end
 				end
 			end
