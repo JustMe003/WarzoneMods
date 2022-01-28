@@ -72,7 +72,7 @@ function showHospitalInformation(terrDetails)
 		end
 		if game.LatestStanding.Territories[terrDetails.ID].Structures ~= nil and game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			if game.LatestStanding.Territories[terrDetails.ID].Structures[WL.StructureType.Hospital] ~= nil then
-				for i, v in pairs(Mod.PublicGameData.Hospitals[terrDetails.ID].Territories) do print(i, v); end
+				for i, v in pairs(Mod.PublicGameData.Hospitals[terrDetails.ID].Territories) do print(game.Map.Territories[i].Name, v); end
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
 				table.insert(UIObjects, UI.CreateLabel(line).SetText("Structure: ").SetColor("#CCCCCC"))
