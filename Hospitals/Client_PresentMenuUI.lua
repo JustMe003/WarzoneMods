@@ -30,7 +30,25 @@ function getTerritory()
 end
 
 function showTerritoryInformation(terrDetails)
-	
+	if terrDetails == nil then return; end
+	destroyAll();
+	local line = UI.CreateHorizontalLayoutGroup(vert);
+	table.insert(UIObjects, line);
+	table.insert(UIObjects, UI.CreateLabel(line).SetText("Territory name: ").SetColor("#CCCCCC"))
+	table.insert(UIObjects, UI.CreateLabel(line).SetText(terrDetails.Name).SetColor("#DDDDDD"))
+	if game.LatestStanding.Territories[terrDetails.ID].FogLevel < 4 then
+		for hosID, hospital in pairs(Mod.PublicGameData.Hospitals) do
+			if game.LatestStanding.Territories[hosID].FogLevel < 4 then
+				if getValue(hospital.Territories[terrDetails.ID]) > 0 then
+					local line = UI.CreateHorizontalLayoutGroup(vert);
+					table.insert(UIObjects, line);
+					table.insert(UIObjects, UI.CreateLabel(line).SetText(game.Map.Territories[hosID].Name .. ": ").SetColor(game.Game.Players[game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID].Color.HtmlColor));
+					table.insert(UIObjects, UI.CreateLabel(line).SetText(getValue(hospital.Territories[terrDetails.ID]) .. "%").SetColor("#0000FF"));
+					table.insert(UIObjects, UI.CreateButton(line).SetText("?").SetColor("#00FF05").SetOnClick(function() UI.Alert("The hospital at " .. game.Map.Territories[hosID].Name .. " will recover " .. getValue(hospital.Territories[terrDetails.ID]) .. "% of the lost armies"); end));
+				end
+			end
+		end
+	end
 end
 
 function showHospitalInformation()
