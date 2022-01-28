@@ -60,7 +60,7 @@ function setTerritories(terrID)
 					if t[connID] == nil then
 						if v == getValue(i-1) then
 							t[connID] = getValue(i);
-							print(Game.Map.Territories[connID].Name, t[connID]);
+--							print(Game.Map.Territories[connID].Name, t[connID]);
 						end
 					end
 				end
