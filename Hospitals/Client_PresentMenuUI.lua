@@ -10,17 +10,30 @@ end
 function showMenu()
 	destroyAll();
 	
-	local goToTerritoryInformation = UI.CreateButton(vert).SetText("Advanced territory information").SetColor("#00FF00").SetOnClick(getTerritory);
+	local goToTerritoryInformation = UI.CreateButton(vert).SetText("Advanced territory information").SetColor("#00FF05").SetOnClick(getTerritory);
 	table.insert(UIObjects, goToTerritoryInformation);
+	local goToHospitalInformation = UI.CreateButton(vert).SetText("Hospital information").SetColor("#0000FF").SetOnClick(getHospital);
 end
+
+function getHospital()
+	destroyAll();
+	local label = UI.CreateLabel(vert).SetText("Click a territory").SetColor("#00FF00");
+	table.insert(UIObjects, label);
+	UI.InterceptNextTerritoryClick(showHospitalInformation);
+end
+
 function getTerritory()
 	destroyAll();
 	local label = UI.CreateLabel(vert).SetText("Click a territory").SetColor("#00FF00");
 	table.insert(UIObjects, label);
-	UI.InterceptNextTerritoryClick(showTerritoryInformation)
+	UI.InterceptNextTerritoryClick(showTerritoryInformation);
 end
 
 function showTerritoryInformation(terrDetails)
+	
+end
+
+function showHospitalInformation()
 	if terrDetails == nil then return; end
 	destroyAll();
 	local line = UI.CreateHorizontalLayoutGroup(vert);
@@ -39,10 +52,6 @@ function showTerritoryInformation(terrDetails)
 		end
 		if game.LatestStanding.Territories[terrDetails.ID].Structures ~= nil and game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			if game.LatestStanding.Territories[terrDetails.ID].Structures[WL.StructureType.Hospital] ~= nil then
-				hospital = terrDetails.ID;
-				line = UI.CreateHorizontalLayoutGroup(vert);
-				table.insert(UIObjects, line)
-				table.insert(UIObjects, UI.CreateButton(line).SetText("show territories").SetColor("#00FF05").SetOnClick(function() UI.InterceptNextTerritoryClick(showRecoveryRate); end));
 				line = UI.CreateHorizontalLayoutGroup(vert);
 				table.insert(UIObjects, line)
 				table.insert(UIObjects, UI.CreateLabel(line).SetText("Structure: ").SetColor("#CCCCCC"))
@@ -59,7 +68,7 @@ function showTerritoryInformation(terrDetails)
 					line = UI.CreateHorizontalLayoutGroup(vert);
 					table.insert(UIObjects, line)
 					table.insert(UIObjects, UI.CreateLabel(line).SetText("Hospital level progress: ").SetColor("#CCCCCC"))
-					table.insert(UIObjects, UI.CreateLabel(line).SetText(Mod.PublicGameData.Hospitals[terrDetails.ID].Progress).SetColor("#0000CC"))
+					table.insert(UIObjects, UI.CreateLabel(line).SetText(Mod.PublicGameData.Hospitals[terrDetails.ID].Progress .. " / " .. math.pow(Mod.Settings.amountOfLevels, Mod.PublicGameData.Hospitals[terrDetails.ID].Level).SetColor("#0000CC"))
 				end
 			end
 		end
