@@ -32,7 +32,7 @@ function init(root)
 	objects = {};					-- Will store all the objects (key = UI Object id)
 	objectsID = {};					-- Will store all the IDs indexed by the name identifier (key = name, value = UI Object id)
 	currentWindow = root.id;		-- Keeps track which window is currently shown to the player
-	functions = {}					-- Will store the functions since these are not acquirable with getters
+	functions = {};					-- Will store the functions since these are not acquirable with getters
 	layoutGroups = {};
 	layoutGroups["root"] = UI.CreateVerticalLayoutGroup(root);
 	colors = {};					-- Stores all the built-in colors (player colors only)
@@ -358,7 +358,7 @@ end
 --	+ flexHeigth	[number]			A number from 0 to 1 indicating how much of the remaining space this element wishes to take up (vertical)
 
 function button(parent, text, onClick, color, interactable, prefWidth, prefHeight, flexWidth, flexHeigth)
-	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; interactable = interactable or true;		-- Set optional paramaters to default value if not specified
+	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; if interactable == nil then interactable = true; end;		-- Set optional paramaters to default value if not specified
 	local but = UI.CreateButton(parent).SetText(text).SetColor(getColorFromString(color)).SetOnClick(onClick).SetInteractable(interactable).SetPreferredWidth(prefWidth).SetPreferredHeight(prefHeight).SetFlexibleWidth(flexWidth).SetFlexibleHeight(flexHeigth);
 	functions[but.id] = onClick;				-- Return the button so changes can be applied to it
 	return but;
@@ -381,7 +381,7 @@ end
 --	+ flexHeigth	[number]			A number from 0 to 1 indicating how much of the remaining space this element wishes to take up (vertical)
 
 function checkbox(parent, text, isChecked, interactable, onValueChange, prefWidth, prefHeight, flexWidth, flexHeigth)
-	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; interactable = interactable or true; isChecked = isChecked or false; onValueChange = onValueChange or function() end;			-- Set optional paramaters to default value if not specified
+	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; if interactable == nil then interactable = true; end; if isChecked == nil then isChecked = true; end; onValueChange = onValueChange or function() end;			-- Set optional paramaters to default value if not specified
 	local box = UI.CreateCheckBox(parent).SetText(text).SetIsChecked(isChecked).SetOnValueChanged(onValueChange).SetInteractable(interactable).SetPreferredWidth(prefWidth).SetPreferredHeight(prefHeight).SetFlexibleWidth(flexWidth).SetFlexibleHeight(flexHeigth);
 	functions[box.id] = onValueChange;			-- Return the checkbox so changes can be applied to it
 	return box;
@@ -404,7 +404,7 @@ end
 --	+ flexHeigth	[number]			A number from 0 to 1 indicating how much of the remaining space this element wishes to take up (vertical)
 
 function textInputField(parent, placeholderText, text, characterLimit, interactable, prefWidth, prefHeight, flexWidth, flexHeigth)
-	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; interactable = interactable or true; text = text or ""; characterLimit = characterLimit or 0;
+	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; if interactable == nil then interactable = true; end; text = text or ""; characterLimit = characterLimit or 0;
 	return UI.CreateTextInputField(parent).SetText(text).SetPlaceholderText(placeholderText).SetCharacterLimit(characterLimit).SetInteractable(interactable).SetPreferredWidth(prefWidth).SetPreferredHeight(prefHeight).SetFlexibleWidth(flexWidth).SetFlexibleHeight(flexHeigth);
 end
 
@@ -427,7 +427,7 @@ end
 --	+ flexHeigth	[number]			A number from 0 to 1 indicating how much of the remaining space this element wishes to take up (vertical)
 
 function numberInputField(parent, sliderMin, sliderMax, value, interactable, wholeNumbers, boxPreferredWidth, sliderPreferredWidth, prefWidth, prefHeight, flexWidth, flexHeigth)
-	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; interactable = interactable or true; wholeNumbers = wholeNumbers or true; boxPreferredWidth = boxPreferredWidth or -1; sliderPreferredWidth = sliderPreferredWidth or -1;
+	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; if interactable == nil then interactable = true; end; if wholeNumbers == nil then wholeNumbers = true; end; boxPreferredWidth = boxPreferredWidth or -1; sliderPreferredWidth = sliderPreferredWidth or -1;
 	return UI.CreateNumberInputField(parent).SetSliderMinValue(sliderMin).SetSliderMaxValue(sliderMax).SetValue(value).SetInteractable(interactable).SetWholeNumbers(wholeNumbers).SetBoxPreferredWidth(boxPreferredWidth).SetSliderPreferredWidth(sliderPreferredWidth).SetPreferredWidth(prefWidth).SetPreferredHeight(prefHeight).SetFlexibleWidth(flexWidth).SetFlexibleHeight(flexHeigth);
 end
 
