@@ -5,10 +5,10 @@ function Server_StartGame(game, standing)
 	for _, terr in pairs(game.Map.Territories) do
 		local value = captureValue(terr.Name);
 		if value >= 1 then
-			data.OneWayConnections[terr] = {};
+			data.OneWayConnections[terr.ID] = {};
 			for _, conn in pairs(terr.ConnectedTo) do
 				if captureValue(game.Map.Territories[conn].Name) > value then
-					table.insert(data.OneWayConnections[terr], conn);
+					table.insert(data.OneWayConnections[terr.ID], conn);
 				end
 			end
 		end
