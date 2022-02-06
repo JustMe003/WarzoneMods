@@ -17,8 +17,8 @@ function Server_StartGame(game, standing)
 end
 
 function captureValue(str)
-	local begin = string.find(str, "[");
-	local ending = string.find(str, "]");
+	local begin = string.find(str, "%[");
+	local ending = string.find(str, "%]");
 	if begin ~= nil and ending ~= nil then
 		local value = tonumber(string.sub(str, begin + 1, ending - 1));
 		if value ~= nil then return value; end
