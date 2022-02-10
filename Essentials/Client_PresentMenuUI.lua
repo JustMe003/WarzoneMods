@@ -45,6 +45,7 @@ function notInGameMods()
 		local vert = newVerticalGroup("vert", "root");
 		for i, v in pairs(Mod.Settings.Mods) do
 			if not v then
+				print(i, v);
 				local interactable = not (getContents(i) == nil);
 				newButton(win .. i, vert, i, function() seeContents(i); end, "Light Blue", interactable);
 			end
