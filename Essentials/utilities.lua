@@ -29,7 +29,7 @@ function split(str, pat)
    local t = {}  -- NOTE: use {n = 0} in Lua-5.0
    local fpat = "(.-)" .. pat
    local last_end = 1
-   print(str:find(fpat, 1))
+   print(string.find(str, fpat, 1))
    local s, e, cap = str:find(fpat, 1)
    while s do
       if s ~= 1 or cap ~= "" then
