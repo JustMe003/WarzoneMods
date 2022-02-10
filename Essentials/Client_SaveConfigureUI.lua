@@ -1,6 +1,6 @@
 function Client_SaveConfigureUI(alert)
 	local t = {};
-	for _, mod in pairs(mods) do
+	for _, mod in pairs(modList) do
 		if objectExists(mod) then
 			if getIsChecked(mod) then
 				t[mod] = true;
