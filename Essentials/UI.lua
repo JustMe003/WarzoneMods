@@ -54,7 +54,7 @@ end
 --	+ win			[string]			The name identifier of the window
 
 function resetWindow(win)
-	windows[win] = {};
+	windows[win] = nil;
 end
 
 
@@ -359,6 +359,7 @@ end
 
 function button(parent, text, onClick, color, interactable, prefWidth, prefHeight, flexWidth, flexHeigth)
 	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; if interactable == nil then interactable = true; end;		-- Set optional paramaters to default value if not specified
+--	print(parent, text, onClick, color, interactable, prefWidth, prefHeight, flexWidth, flexHeigth);
 	local but = UI.CreateButton(parent).SetText(text).SetColor(getColorFromString(color)).SetOnClick(onClick).SetInteractable(interactable).SetPreferredWidth(prefWidth).SetPreferredHeight(prefHeight).SetFlexibleWidth(flexWidth).SetFlexibleHeight(flexHeigth);
 	functions[but.id] = onClick;				-- Return the button so changes can be applied to it
 	return but;
@@ -529,6 +530,16 @@ function getObjectsFromWindow(win)
 		t[name] = objects[id].Object;
 	end
 	return t;
+end
+
+
+-- Returns true if the object exists --
+---------------------------------------
+-- Mandatory paramaters:
+--	+ name			[string]			The name of the object
+
+function objectExists(name)
+	return objectsID[name] ~= nil
 end
 
 -- Updates the text on a label, button, checkbox or text input field --
