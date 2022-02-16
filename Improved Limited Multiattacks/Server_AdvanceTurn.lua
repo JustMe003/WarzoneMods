@@ -142,7 +142,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 	if(order.proxyType == 'GameOrderAttackTransfer') then
 		if not result.IsAttack then
 			if result.ActualArmies.NumArmies == 0 then
-				print(table.concat(obj.WritableKeys, ", "))
+				print(table.concat(obj.WritableKeys, ",\n"))
 			end
 		end
 		-- it says in the mod configuration that when MaxAttacks set to 0 there is unlimited multi attacks, but I believe you get an alert of you set it to 0
