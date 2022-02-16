@@ -13,7 +13,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				numArmies = math.round(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.NumArmies / 100 * order.NumArmies.NumArmies);
 			end
 			result.ActualArmies = WL.Armies.Create(numArmies, order.SpecialUnits);
-		else
+		end
 	end
 end
 
