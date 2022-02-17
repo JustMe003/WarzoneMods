@@ -1,3 +1,4 @@
+Credits to TBest who came up with this solution!
  - takes your order from the previous turn and adds them to your order list
  - Automatic local deployment bonus overwriter
  - Recommended to play with 'can attack with percentage'!
