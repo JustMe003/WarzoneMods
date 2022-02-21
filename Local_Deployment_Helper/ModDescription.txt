@@ -2,3 +2,9 @@ Credits to TBest who came up with this solution!
  - takes your order from the previous turn and adds them to your order list
  - Automatic local deployment bonus overwriter
  - Recommended to play with 'can attack with percentage'!
+Few notes to take into account:
+ - It can occur players are not able to commit their orders because the helper function deployed to many armies with the following settings:
+   - army cap
+   - sanction cards
+   - army multiplier (commerce games only)
+   - negative bonuses (the automatic bonus overwriter overwrites these to 0)

@@ -7,6 +7,7 @@ function Server_Created(Game, Settings)
 	if Mod.Settings.BonusOverrider == true then
 		OverriddenBonuses = settings.OverriddenBonuses;
 		loopTerritories();
+		filterNegativeBonuses();
 		settings.OverriddenBonuses = OverriddenBonuses;
 	end
 	settings.LocalDeployments = true;
@@ -59,4 +60,12 @@ function getSmallestBonusID(terr)
 		end
 	end
 	return smallestBonusID;
+end
+
+function filterNegativeBonuses()
+	for id, _ in pairs(game.Map.Bonuses) do
+		if getBonusValue(id) < 0 then
+			OverriddenBonuses[id] = 0;
+		end
+	end
 end

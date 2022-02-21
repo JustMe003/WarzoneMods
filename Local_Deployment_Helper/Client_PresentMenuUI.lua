@@ -9,10 +9,10 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	LastTurn = {};   --we get the orders from History later
 	Distribution = {};	
 	
-	setMaxSize(450, 300);
+	setMaxSize(500, 420);
 	
 	if (not game.Settings.LocalDeployments) then
-		return createLabel(vert, "This mod only works in Local Deployment games. This isn't a Local Deployment.", colors.ErrorColor)
+		return createLabel(vert, "This mod only works in Local Deployment games. This isn't a Local Deployment game", colors.ErrorColor)
 	elseif (not game.Us or game.Us.State ~= WL.GamePlayerState.Playing) then
 		return createLabel(vert, "You cannot do anything since you're not in the game.", colors.ErrorColor);
 	end
@@ -55,8 +55,13 @@ function showCredits()
 end
 
 function showHelperMenu()
+	if Game.Game.TurnNumber < 2 then
+		UI.Alert("You cannon use the helper function in the distribution phase of in turn 1 and turn 2");
+		Close();
+	end
+	
 	init();
-	line = getNewHorz(vert);
+	createLabel(vert, "[!] Sometimes it is not possible to commit your orders after using the deployment helper function [!]\nIf this is the case please make your deployments manually", colors.Red);
 	line = getNewHorz(vert);
 	addDeployments = createCheckBox(line, true, " ");
 	createLabel(line, "Add deployments", colors.TextColor);
@@ -67,7 +72,7 @@ function showHelperMenu()
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked your transfers from the previous turn will be added to your orderlist") end)
 	line = getNewHorz(vert);
 	setToPercentage = createCheckBox(line, false,  " ", Game.Settings.AllowPercentageAttacks);
-	createLabel(line, "overwrite all attacks/transfers to 100% orders", colors.TextColor);
+	createLabel(line, "overwrite all attacks/transfers to percentage orders", colors.TextColor);
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked all your transfers will be overwritten to 100% attacks/transfers. This will allow every army to be transferred, no matter the amount of armies") end)
 	line = getNewHorz(vert);
 	addAttacks = createCheckBox(line, false, " ");
@@ -116,14 +121,35 @@ function AddOrdersConfirmes()
 		UI.Alert("You need to uncommit first");
 		return;
 	end
-	local standing = Game.LatestStanding; --used to make sure we can make the depoly/transfear
-	local orderTabel = Game.Orders;--get client order list
-	if next(orderTabel) ~= nil then --make sure we don't have past orders, since that is alot of extra work
-		UI.Alert('Please clear your order list before using this mod.')
-		return;
+	
+	local hasAttacksTransfers = false;
+	local hasDeploys = false;
+	local otherOrders = false;
+	
+	for _, order in pairs(Game.Orders) do
+		if order.proxyType == "GameOrderDeploy" then
+			hasDeploys = true;
+		elseif order.proxyType == "GameOrderAttackTransfer" then
+			hasAttacksTransfers = true;
+		else
+			otherOrders = true;
+		end
 	end
 	
-
+	local standing = Game.LatestStanding; --used to make sure we can make the depoly/transfear
+	local orderTabel = Game.Orders;--get client order list
+	if hasDeploys and addDeployments.GetIsChecked() then --make sure we don't have past orders, since that is alot of extra work
+		UI.Alert('Please clear all your deployment orders before using the deployment helper function')
+		return;
+	end
+	if hasAttacksTransfers and addDeployments.GetIsChecked() then
+		UI.Alert("Please clear all orders before using the deployment helper function");
+		return;
+	end
+	if otherOrders then
+		UI.Alert("Please remove all orders that are not deployment or attacks / transfers from your order list to use the helper function");
+		return;
+	end
 	
 	local maxDeployBonuses = {}; --aray with the bonuses
 	for _, bonus in pairs (Game.Map.Bonuses) do
@@ -148,9 +174,9 @@ function AddOrdersConfirmes()
 					--make sure we deploy more then 0
 					if ownsBonus(bonusID) and order.NumArmies > 0 then
 						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
-							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
 							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false);
 							table.insert(orderTabel, newOrder);
+							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies
 						elseif maxDeployBonuses[bonusID] > 0 then --deploy the max we can
 							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false);
 							table.insert(orderTabel, newOrder);
@@ -163,19 +189,32 @@ function AddOrdersConfirmes()
 				if (Game.Us.ID == standing.Territories[order.From].OwnerPlayerID) then --from us 
 					if (Game.Us.ID == standing.Territories[order.To].OwnerPlayerID) then -- to us
 						if setToPercentage.GetIsChecked() and Game.Settings.AllowPercentageAttacks then
-							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(100, {}), false);
+							if order.ByPercent then
+								newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(order.NumArmies.NumArmies, {}), false);
+							else
+								newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(100, {}), false);
+							end
 						else
 							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, order.ByPercent, order.NumArmies, false);
 						end
-						table.insert(orderTabel, newOrder);
+						if not orderExists(newOrder) then
+							table.insert(orderTabel, newOrder);
+						end
 					end
 				end
 			elseif order.proxyType == "GameOrderAttackTransfer" and addAttacks.GetIsChecked() == true then
 				if Game.Us.ID == standing.Territories[order.From].OwnerPlayerID then
 					if setToPercentage.GetIsChecked() and Game.Settings.AllowPercentageAttacks then
-						newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(100, {}), false);
+						if order.ByPercent then
+							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(order.NumArmies.NumArmies, {}), false);
+						else
+							newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, true, WL.Armies.Create(100, {}), false);
+						end					
 					else
 						newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To,3, order.ByPercent, order.NumArmies, false);
+					end
+					if not orderExists(newOrder) then
+						table.insert(orderTabel, newOrder);
 					end
 				end
 			end
@@ -191,19 +230,8 @@ function AddOrdersHelper()
 	standing = Game.LatestStanding; --used to make sure we can make the depoly/transfer
 	LastTurn = Game.Orders
 
-	local turn = Game.Game.TurnNumber;
-	local firstTurn = 1;
-	if (Game.Settings.AutomaticTerritoryDistribution) then --auto dist
-		firstTurn = 0;
-	end;
-	if(turn - 1 <= firstTurn) then
-		UI.Alert("You can't use the mod during distribution or for the first turn.");
-		return;
-	end;
 	
-	local turn = turn -2;
-	print('request Game.GetTurn for turn: ' .. turn);
-	Game.GetTurn(turn, function(data) getTurnHelperAddOrders(data) end)--getTurnHelperAdd(data) end)
+	Game.GetTurn(Game.Game.TurnNumber - 2, function(data) getTurnHelperAddOrders(data) end)--getTurnHelperAdd(data) end)
 end;
 
 function getTurnHelperAddOrders(prevTurn)
@@ -223,4 +251,21 @@ end
 
 function bonusValue(bonusID)
 	return Game.Map.Bonuses[bonusID].Amount;
+end
+
+function orderExists(newOrder)
+	for _, order in pairs(Game.Orders) do
+		if order.proxyType == newOrder.proxyType then
+			if order.proxyType == "GameOrderAttackTransfer" then
+				if order.To == newOrder.To and order.From == newOrder.From then
+					return true;
+				end
+			elseif order.proxyType == "GameOrderDeploy" then
+				if order.DeployOn == newOrder.DeployOn then
+					return true;
+				end
+			end
+		end
+	end
+	return false;
 end
