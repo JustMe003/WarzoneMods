@@ -153,7 +153,7 @@ function AddOrdersConfirmes()
 	
 	local maxDeployBonuses = {}; --aray with the bonuses
 	for _, bonus in pairs (Game.Map.Bonuses) do
-		maxDeployBonuses[bonus.ID] = bonus.Amount --store the bonus value
+		maxDeployBonuses[bonus.ID] = bonusValue(bonus.ID); --store the bonus value
 	end
 	
 	local newOrder;
@@ -250,6 +250,11 @@ function ownsBonus(bonusID)
 end
 
 function bonusValue(bonusID)
+	if Game.Settings.OverriddenBonuses ~= nil then
+		if Game.Settings.OverriddenBonuses[bonusID] ~= nil then
+			return Game.Settings.OverriddenBonuses[bonusID];
+		end
+	end
 	return Game.Map.Bonuses[bonusID].Amount;
 end
 
