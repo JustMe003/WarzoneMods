@@ -1,0 +1,5 @@
+Allows players to fake an army count on a territory
+
+[!] NOTE [!]
+This mod is not compatible with some other mods and the army cap setting. Especially with Gift Armies you will allow players to generate infinite armies!
+To make sure you don't add incompatible mods include the mod Essentials, the mod will tell you with which settings and mods it is not compatible
