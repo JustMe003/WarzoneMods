@@ -91,7 +91,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 			addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, order.Message, {}, {mod}))
 			data.DecoysPlayed[order.PlayerID] = data.DecoysPlayed[order.PlayerID] + 1;
 		else
-			addNewOrder(WL.GameOrderCustom(order.PlayerID, "Your decoy card couldn't be played because you don't own the territory anymore", ""))
+			addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Your decoy card couldn't be played because you don't own the territory anymore", ""));
 		end
 	end
 	Mod.PublicGameData = data;
