@@ -46,6 +46,7 @@ end
 function createCard(terrDetails)
 	if terrDetails == nil then chooseTerritory(); end
 	if game.Us.ID ~= game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID then UI.Alert("You must pick a territory you control"); chooseTerritory(); end
+	print(game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID)
 	local win = "createCard" .. terrDetails.ID;
 	if windowExists(win) then
 		if getCurrentWindow() ~= win then
