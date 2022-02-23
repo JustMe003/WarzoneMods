@@ -20,6 +20,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 					end
 				end
 			end
+			recoverArmies(game, data, addNewOrder, orderResult.AttackingArmiesKilled.NumArmies, order.To, order.PlayerID);
 			if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral then
 				recoverArmies(game, data, addNewOrder, orderResult.DefendingArmiesKilled.NumArmies, order.To);
 			end
@@ -87,11 +88,12 @@ function createHospital(terrID)
 	return hospital;
 end
 
-function recoverArmies(game, Data, addNewOrder, armiesKilled, terrID)
+function recoverArmies(game, Data, addNewOrder, armiesKilled, terrID, playerID)
+	playerID = playerID or game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
 	for hosID, hospital in pairs(Data.Hospitals) do
 		if hospital.Territories[terrID] ~= nil then
 			if hosID ~= terrID then
-				if game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID == game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID then
+				if game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID == playerID then
 				--	print(game.Map.Territories[terrID].Name, game.Map.Territories[hosID].Name, hospital.Territories[terrID])
 					if hospital.Territories[terrID] > 0 then
 						if math.floor(armiesKilled / 100 * data.Values[hospital.Territories[terrID]]) > 0 then
