@@ -20,7 +20,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 					end
 				end
 			end
-			recoverArmies(game, data, addNewOrder, orderResult.AttackingArmiesKilled.NumArmies, order.From);
 			if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral then
 				recoverArmies(game, data, addNewOrder, orderResult.DefendingArmiesKilled.NumArmies, order.To);
 			end
