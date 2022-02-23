@@ -122,7 +122,7 @@ end
 
 function hospitalLeveledUp(hospital)
 --	print(hospital.Progress + 1, math.pow(Mod.Settings.amountOfLevels, hospital.Level), hospital.Level < Mod.Settings.maximumHospitalRange - 1);
-	return hospital.Progress + 1 >= math.pow(Mod.Settings.amountOfLevels, hospital.Level) and hospital.Level < Mod.Settings.maximumHospitalRange - 1;
+	return hospital.Progress + 1 >= math.pow(Mod.Settings.amountOfLevels, hospital.Level) and hospital.Level < Mod.Settings.maximumHospitalRange;
 end
 
 function increaseRange(listOfTerr, int)
