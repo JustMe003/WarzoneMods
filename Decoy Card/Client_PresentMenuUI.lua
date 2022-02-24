@@ -24,6 +24,30 @@ function showOptions();
 		newLabel("AmountOfCards", vert, "you've got " .. getAmountOfAvailableCards() .. " cards, and " .. game.Game.TurnNumber % Mod.Settings.CardPieces .. " pieces", "Hot Pink");
 		updatePreferredHeight("AmountOfCards", 50);
 		newButton("playDecoy", vert, "Decoy Card", chooseTerritory, "Orange", getAmountOfAvailableCards() > 0);
+		newButton("description", vert, "More information", showDescription, "Gold");
+	end
+end
+
+function showDescription()
+	local win = "description";
+	if windowExists(win) then
+		destroyWindow(getCurrentWindow());
+		restoreWindow(win);
+	else
+		destroyWindow(getCurrentWindow());
+		window(win);
+		local vert = newVerticalGroup("vert", "root");
+		newLabel(win .. "label1", vert, " - When you play a decoy card, you must own the territory at the end of turn. Otherwise the card cannot get played, just like the blockade card\n \
+		- You can specify the amount of armies that will be shown yourself\n \
+		- A territory in decoy CAN NOT transfer, attack or airlift\n \
+		- You can deploy on a decoyed territory, although the armies will get added on the army count stored by the mod and not on the territory itself\n \
+		- The following will reveal that the territory is in decoy:\n \
+		  - An attack / transfer TO the decoyed territory\n \
+		  - An airlift TO the decoyed territory \n \
+		  - A blockade or emergency blockade on a decoyed territory\n \
+		  - A gift on a decoyed territory\n \
+		- Decoys always get played at the end of a turn, but can be revealed anywhere in the turn whenever a condition above is met", "Royal Blue");
+		newButton(win .. "return", vert, "Return", showOptions, "Green");
 	end
 end
 
@@ -56,9 +80,9 @@ function createCard(terrDetails)
 		destroyWindow(getCurrentWindow());
 		window(win);
 		local vert = newVerticalGroup("vert", "root");
-		newLabel("terrDetailsName", vert, "You have chosen" .. terrDetails.Name .. "\nSpecify how many armies will be visible on the territory", "Orchid")
-		local numberOfArmies = newNumberField("numberOfArmies", vert, 1, 100, 20);
-		newButton("playCard", vert, "Play Decoy Card", function() playCard(terrDetails, numberOfArmies); end, "Lime");
+		newLabel("terrDetailsName", vert, "You have chosen " .. terrDetails.Name .. "\nSpecify how many armies will be visible on the territory", "Light Blue")
+		local numberOfArmies = newNumberField("numberOfArmies", vert, 0, 100, 20);
+		newButton("playCard", vert, "Play Decoy Card", function() playCard(terrDetails, math.max(numberOfArmies, 0); end, "Lime");
 	end
 end
 
@@ -91,5 +115,5 @@ function showCreators(vert)
 	newLabel("creatorName", line, "Just_A_Dutchman_", "Lime");
 	local line = newHorizontalGroup("IdeaLine", vert);
 	newLabel("Suggestedby", line, "Suggested by: ", "#DDDDDD");
-	newLabel("suggestorName", line, "DomN8R (The CHEEZINATOR) Demon", "Blue");
+	newLabel("suggestorName", line, "DomN8R (The CHEEZINATOR) Demon", "Purple");
 end
