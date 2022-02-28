@@ -24,8 +24,21 @@ function showOptions();
 		newLabel("AmountOfCards", vert, "you've got " .. getAmountOfAvailableCards() .. " cards, and " .. game.Game.TurnNumber % Mod.Settings.CardPieces .. " pieces", "Hot Pink");
 		updatePreferredHeight("AmountOfCards", 50);
 		newButton("playDecoy", vert, "Decoy Card", chooseTerritory, "Orange", getAmountOfAvailableCards() > 0);
+		newButton("showActiveDecoys", vert, "Show your decoys", showDecoys, "Yellow");
 		newButton("description", vert, "More information", showDescription, "Gold");
 	end
+end
+
+function showDecoys()
+	local win = "Decoys";
+	if windowExists(win) then
+		destroyWindow(getCurrentWindow());
+		restoreWindow(win);
+	else
+		destroyWindow(getCurrentWindow());
+		window(win);
+		local vert = newVerticalGroup("vert", "root");
+		
 end
 
 function showDescription()
