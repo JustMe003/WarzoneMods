@@ -103,13 +103,13 @@ function createCard(terrDetails)
 		local vert = newVerticalGroup("vert", "root");
 		newLabel("terrDetailsName", vert, "You have chosen " .. terrDetails.Name .. "\nSpecify how many armies will be visible on the territory", "Light Blue")
 		local numberOfArmies = newNumberField("numberOfArmies", vert, 0, 100, 20);
-		newButton("playCard", vert, "Play Decoy Card", function() playCard(terrDetails, math.max(numberOfArmies, 0)); end, "Lime");
+		newButton("playCard", vert, "Play Decoy Card", function() playCard(terrDetails, numberOfArmies); end, "Lime");
 	end
 end
 
 function playCard(terrDetails, numArmiesInput)
 	local orders = game.Orders;
-	table.insert(orders, WL.GameOrderCustom.Create(game.Us.ID, "Play decoy card on " .. terrDetails.Name .. " and display " .. getValue(numArmiesInput) .. " armies", "playDecoy_" .. terrDetails.ID .. "_" .. getValue(numArmiesInput)))
+	table.insert(orders, WL.GameOrderCustom.Create(game.Us.ID, "Play decoy card on " .. terrDetails.Name .. " and display " .. math.max(getValue(numArmiesInput), 0) .. " armies", "playDecoy_" .. terrDetails.ID .. "_" .. getValue(numArmiesInput)))
 	game.Orders = orders;
 	if getAmountOfAvailableCards() > 0 then
 		showOptions();
