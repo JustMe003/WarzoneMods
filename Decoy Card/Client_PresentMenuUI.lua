@@ -38,7 +38,15 @@ function showDecoys()
 		destroyWindow(getCurrentWindow());
 		window(win);
 		local vert = newVerticalGroup("vert", "root");
-		
+		newLabel(win .. "decoys", vert, "Your active decoys", "Lime");
+		for i, decoy in pairs(Mod.PublicGameData.ActiveDecoys) do
+			if game.LatestStanding.Territories[i].OwnerPlayerID == game.Us.ID then
+				newLabel(win .. i .. "name", vert, "territory name: " .. game.Map.Territories[i].Name, "Sea Green");
+				newLabel(win .. i .. "armies", vert, "Actual (not visible) armies: " .. decoy.ActualArmies, "Sea Green");
+				newLabel(win .. i .. "duration", vert, "Runs out in turn: " .. decoy.MaxDuration, "Sea Green");
+			end
+		end
+	end
 end
 
 function showDescription()
