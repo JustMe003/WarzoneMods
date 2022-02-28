@@ -1,0 +1,7 @@
+Removes the advantage of being one of the last players to submit your orders
+
+What advantage?
+When players surrender and they are not taken over by an AI it will in the playerlist that they are out of the game. Players who do their turn after someone surrendered can see this player has surrendered and use this to their advantage
+
+How does this mod work?
+This mod overwrites the setting 'Surrendered players turn into AI' to remove this advantage and eliminates these players when the turn advances (thus when no one can make adjustments to their orders anymore)
