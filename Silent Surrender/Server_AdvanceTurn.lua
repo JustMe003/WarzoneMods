@@ -1,7 +1,7 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
 	for _, player in pairs(game.ServerGame.Game.PlayingPlayers) do
 		print(player.BootedDuration);
-		if player.HumanTurnedIntoAI and player.BootedDuration == nil then
+		if player.HumanTurnedIntoAI and player.Surrendered then
 			local modifications = {};
 			for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 				if terr.OwnerPlayerID == player.ID then
