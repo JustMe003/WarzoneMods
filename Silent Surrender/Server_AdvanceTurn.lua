@@ -8,7 +8,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		table.insert(prints, "turning into AI " .. v.TurningIntoAI);
 	end
 	for _, player in pairs(game.ServerGame.Game.PlayingPlayers) do
-		table.insert(prints, "booted ion " .. player.BootedDuration);
+		table.insert(prints, "booted ion " .. tostring(player.BootedDuration));
 		table.insert(prints, "surrendered " .. player.Surrendered);
 		table.insert(prints, "human turned into AI " .. player.HumanTurnedIntoAI);
 		if player.HumanTurnedIntoAI and player.Surrendered then
