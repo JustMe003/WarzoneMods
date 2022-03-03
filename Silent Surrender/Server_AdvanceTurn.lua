@@ -2,15 +2,15 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	local prints = {};
 	for _, v in pairs(game.ServerGame.PendingStateTransitions) do
-		table.insert(prints, v.NewState);
-		table.insert(prints, v.PlayerID);
-		table.insert(prints, v.TakingOverForAI);
-		table.insert(prints, v.TurningIntoAI);
+		table.insert(prints, "new state " .. v.NewState);
+		table.insert(prints, "playerID " .. v.PlayerID);
+		table.insert(prints, "taking over AI " .. v.TakingOverForAI);
+		table.insert(prints, "turning into AI " .. v.TurningIntoAI);
 	end
 	for _, player in pairs(game.ServerGame.Game.PlayingPlayers) do
-		table.insert(prints, player.BootedDuration);
-		table.insert(prints, player.Surrendered);
-		table.insert(prints, player.HumanTurnedIntoAI);
+		table.insert(prints, "booted ion " .. player.BootedDuration);
+		table.insert(prints, "surrendered " .. player.Surrendered);
+		table.insert(prints, "human turned into AI " .. player.HumanTurnedIntoAI);
 		if player.HumanTurnedIntoAI and player.Surrendered then
 			local modifications = {};
 			for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
