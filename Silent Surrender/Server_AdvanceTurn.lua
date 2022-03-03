@@ -8,6 +8,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		table.insert(prints, "turning into AI " .. tostring(v.TurningIntoAI));
 	end
 	for _, player in pairs(game.ServerGame.Game.PlayingPlayers) do
+		table.insert(prints, "player " .. tostring(player.DisplayName(nil, false)));
 		table.insert(prints, "booted duration " .. tostring(player.BootedDuration));
 		table.insert(prints, "surrendered " .. tostring(player.Surrendered));
 		table.insert(prints, "human turned into AI " .. tostring(player.HumanTurnedIntoAI));
