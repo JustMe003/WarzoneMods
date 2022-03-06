@@ -1,0 +1,1 @@
+Every player with the highest income will become visible for all the other players
