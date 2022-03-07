@@ -151,10 +151,11 @@ function AddOrdersConfirmes()
 		return;
 	end
 	
-	local maxDeployBonuses = {}; --aray with the bonuses
-	for _, bonus in pairs (Game.Map.Bonuses) do
-		maxDeployBonuses[bonus.ID] = bonusValue(bonus.ID); --store the bonus value
-	end
+	local maxDeployBonuses = Game.Us.Income(0, Game.LatestStanding, false, false).BonusRestrictions;
+--	local maxDeployBonuses = {}; --aray with the bonuses
+	-- for _, bonus in pairs (Game.Map.Bonuses) do
+		-- maxDeployBonuses[bonus.ID] = bonusValue(bonus.ID); --store the bonus value
+	-- end
 	
 	local newOrder;
 	
@@ -172,7 +173,7 @@ function AddOrdersConfirmes()
 						end
 					end
 					--make sure we deploy more then 0
-					if ownsBonus(bonusID) and order.NumArmies > 0 then
+					if ownsBonus(bonusID) and order.NumArmies > 0 and maxDeployBonuses[bonusID] ~= nil then
 						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
 							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false);
 							table.insert(orderTabel, newOrder);
