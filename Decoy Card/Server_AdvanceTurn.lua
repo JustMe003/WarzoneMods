@@ -69,7 +69,7 @@ end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
 	for i, decoy in pairs(data.ActiveDecoys) do
-		if decoy.MaxDuration <= game.ServerGame.Game.TurnNumber then
+		if decoy.MaxDuration <= game.ServerGame.Game.TurnNumber and game.ServerGame.LatestTurnStanding.Territories[i].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			local mod = WL.TerritoryModification.Create(i);
 			mod.SetArmiesTo = decoy.ActualArmies;
 			addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[i].OwnerPlayerID, "Decoy card on " .. game.Map.Territories[i].Name .. " ran out", {}, {mod}));
