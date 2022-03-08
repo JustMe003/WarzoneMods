@@ -30,14 +30,14 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 			addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Skipped attack / transfer order since " .. game.Map.Territories[order.From].Name .. " is a decoy", ""));
 		elseif data.ActiveDecoys[order.To] ~= nil then
 			if orderResult.ActualArmies.NumArmies > 0 then
-				if orderResult.IsAttack then
+				if orderResult.IsAttack and game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral then
 					local to = WL.TerritoryModification.Create(order.To)
 					local from = WL.TerritoryModification.Create(order.From);
 					to.SetArmiesTo = data.ActiveDecoys[order.To].ActualArmies;
 					to.SetOwnerOpt = game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID;
 					from.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.NumArmies;
 					addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID, "Sike!\n" .. game.Map.Territories[order.To].Name .. " was a decoy! Lets see what the attack actually does...", {}, {to, from}), true)
-					addNewOrder(order);
+					addNewOrder(order, true);
 				elseif order.PlayerID == game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID then
 					local mod = WL.TerritoryModification.Create(order.To);
 					mod.SetArmiesTo = data.ActiveDecoys[order.To].ActualArmies + orderResult.ActualArmies.NumArmies;
@@ -100,7 +100,7 @@ end
 function revealDecoy(game, order, addNewOrder, terrID, reason)
 	local mod = WL.TerritoryModification.Create(terrID);
 	mod.SetArmiesTo = data.ActiveDecoys[terrID].ActualArmies;
-	addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID, "decoy on " .. game.Map.Territories[terrID].Name .. " ran out due to an " .. reason, {}, {mod}))
-	addNewOrder(order);
+	addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID, "decoy on " .. game.Map.Territories[terrID].Name .. " ran out due to an " .. reason, {}, {mod}), true)
+	addNewOrder(order, true);
 	data.ActiveDecoys[terrID] = nil;
 end
