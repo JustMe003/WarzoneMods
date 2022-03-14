@@ -1,5 +1,5 @@
 function getMods()
-	return {"Buy Neutral", "Diplomacy", "Gift Armies", "Gift Gold", "Picks Swap", "Randomized Bonuses", "Randomized Wastelands", "Advanced Diplo Mod V4", "AIs don't deploy", "Buy Cards", "Commerce Plus", "Custom Card Package", "Diplomacy 2", "Late Airlifts", "Limited Attacks", "Limited Multiattacks", "Neutral Moves", "Safe Start", "Swap Territories", "Take Turns", "AI's don't play cards", "Better don't fail an attack", "Bonus Airlift", "BonusValue QuickOverrider", "Connected Commanders", "Deployment Limit", "Don't lose a territory", "Extended Randomized Bonuses", "Extended Winning Conditions", "Forts", "Gift Armies 2", "Hybrid Distribution", "Hybrid Distribution 2", "Infromations for spectaters", "King of the Hills", "Local Deployment Helper", "Lotto Mod -> Instant Random Winner", "More_Distributions", "One Way Connections", "Press This Button", "Random Starting Cities", "Runtime Wastelands", "Spawnbarriers", "Special units are Medics", "Stack Limit", "Transport Only Airlift"}
+	return {"Buy Neutral", "Diplomacy", "Gift Armies", "Gift Gold", "Picks Swap", "Randomized Bonuses", "Randomized Wastelands", "Advanced Diplo Mod V4", "AIs don't deploy", "Buy Cards", "Commerce Plus", "Custom Card Package", "Diplomacy 2", "Late Airlifts", "Limited Attacks", "Limited Multiattacks", "Neutral Moves", "Safe Start", "Swap Territories", "Take Turns", "AI's don't play cards", "Better don't fail an attack", "Bonus Airlift", "BonusValue QuickOverrider", "Connected Commanders", "Decoy Card", "Deployment Limit", "Don't lose a territory", "Extended Randomized Bonuses", "Extended Winning Conditions", "Forts", "Gift Armies 2", "Highest Income Disadvantage", "Hybrid Distribution", "Hybrid Distribution 2", "Infromations for spectaters", "King of the Hills", "Local Deployment Helper", "Lotto Mod -> Instant Random Winner", "More_Distributions", "One Way Connections", "Portals", "Press This Button", "Random Starting Cities", "Runtime Wastelands", "Spawnbarriers", "Special units are Medics", "Stack Limit", "Transport Only Airlift"}
 end
 
 function getStatus(mod)
@@ -133,12 +133,24 @@ function initManuals()
 	-- Bonus Airlift
 	-- BonusValue QuickOverrider
 	-- Connected Commanders
+	mods["Decoy Card"] = {};
+	mods["Decoy Card"]["Mod description"] = "Allows players to fake an army count on a territory\n\n[!] NOTE [!]\n\nThis mod is not compatible with some other mods and the army cap setting. Especially with Gift Armies you will allow players to generate infinite armies! To make sure you don't add incompatible mods include the mod Essentials, the mod will tell you with which settings and mods it is not compatible";
+	mods["Decoy Card"]["How to use"] = "This mod adds a custom made card, accessible via the mod menu. When you have enough card pieces you can click / tap a territory you own to play the card. The best part of these decoy cards are that the player itself can determine how many armies they will show. The mod will keep track of the actual army count on the territory and when the time is there, it will convert the territory back to what it was.\n\nWhen the turn advances you will need to control the territory you played a decoy on, otherwise the card will not get played (just like the emergency blockade card). Pick your territory therefore wisely, the card will get lost.\n\nWhen you deploy on a territory in decoy, the initial deployment order will get skipped. But don’t worry, the armies will get added to actual army count stored by the mod. When a decoy card runs out, it will revert the army numbers to what is was before playing the card + the total number of armies deployed on the territory in decoy.\n\nObviously, you can use a decoy card to show you have way more armies than actually are on that territory. Some actions therefore are disabled for every territory in decoy. These actions are:\n - Attacking and transferring FROM a territory in decoy\n - Airlifting armies FROM a territory in decoy\nThese actions are disabled to make sure this mod is not exploitable, otherwise players could play a decoy card for millions of armies and use them. Not really the intention of this mod xD\n\nNote that although the decoy cards have a configurable duration (set by the game creator) it doesn’t mean they always last this full duration. Some actions that meet a specific condition will trigger the card to run out, like using a blockade card on the territory. The following actions will trigger a decoy card to run out:\n - Attacking a territory in decoy\n - Transferring TO a territory in decoy\n - Airlifting TO a territory in decoy\n - Gifting a territory in decoy\n - Blockading a territory in decoy (both normal and emergencies blockades)\nThe most special case (and the most fun to watch) is when a territory in decoy gets attacked. The mod will show the initial attack, but then reverts the order back. It will then let the decoy card expire, resetting the army count to the actual armies. Thereafter, the attack will get played again, but now everyone who can see the attacking and defending territory will see the actual results of the attack.\n\nAll other cases above will expire the decoy card too. This is to prevent armies from being lost (transferring TO or airlifting TO a territory in decoy) or to prevent the mod from being exploited";
+	mods["Decoy Card"]["How to set up"] = "Note that this mod is quite incompatible with other mods, mostly because the effects can be enormous. More about this in the compatibility section.\n\nJust like most cards, the decoy card can be configured in duration, number of pieces a player needs for a whole card and how many starting pieces each player starts with. The only option that is not configurable is the amount of pieces a player gets each turn, this is defaulted to 1.";
+	mods["Decoy Card"]["Bugs"] = bugFreeMessage;
+	mods["Decoy Card"]["Compatibility"] = "Like I mentioned above, this mod is quite incompatible with other mods mostly because the effects can be enormous. Here below is a list of incompatible settings and mods:\n - Commanders (and other special units)\nSpecial units can be lost when a decoy card is played, and so far no one has found a perfect workaround for this.\n\n - Gift armies (1 and 2)!\nThis mod allows players to gift armies from a specific territory to other players, but these 2 mods make an enormous exploit where players can gift each other billions of armies. I highly recommend never use these mods in combination\n\n - Custom Card Package\nNote that only part of this mod is not compatible with the decoy card mod. Using the decoy card mod in a game with Pestilence cards can be incompatible, because a territory in decoy can turn neutral. This messes up the decoys, but might not occur. Nevertheless, I recommend not using these 2 cards together";
 	-- Deployment Limit
 	-- Don't lose a territory
 	-- Extended Randomized bonuses
 	-- Extended Winning Conditions
 	-- Forts
 	-- Gift Armies 2
+	mods["Highest Income Disadvantage"] = {};
+	mods["Highest Income Disadvantage"]["Mod description"] = "Every player with the highest income will become visible for all the other players";
+	mods["Highest Income Disadvantage"]["How does it work"] = "This mod is fairly simple, if you have the highest income at the end of the turn your opponents will all be able to see you.\n\nThe duration of how long they can see you is bound to the spy card itself.\n\nIf multiple players have the same, highest income they all will be made visible for every player";
+	mods["Highest Income Disadvantage"]["How to use"] = "Just adding the mod to the game will make it work. If the game does not use a spy card the mod will add it, making it not acquirable for players (0 weight, 0 pieces a turn, 0 starting pieces)";
+	mods["Highest Income Disadvantage"]["Bugs"] = bugFreeMessage;
+	mods["Highest Income Disadvantage"]["Compatibility"] = compatibilityAllMessage;
 	mods["Hybrid Distribution"] = {};
 	mods["Hybrid Distribution"]["Mod description"] = "Allows for some territories to be auto-distributed and some to be manual-distributed (picked).";
 	mods["Hybrid Distribution"]["How to use"] = "Normally you would have either an automatic distribution (get random territories) or a manual distribution where you could specify an order of picks to allow you to set yourself up. This mod combines the two, resulting in a ‘hybrid’ distribution.\n\nThe game creator can specify how many territories everyone gets before the distribution phase. You will have at least one territory on the map and everyone can see this. You can also see everyone else their auto-distributed territories so you can use this information in the distribution phase.";
@@ -153,6 +165,12 @@ function initManuals()
 	mods["Hybrid Distribution 2"]["Compatibility"] = compatibilityAllMessage;
 	-- Information for spectators
 	-- King of the Hills
+	mods["Local Deployment Helper"] = {};
+	mods["Local Deployment Helper"]["Mod description"] = "Credits to TBest who came up with this solution! \n - Takes your order from the previous turn and adds them to your order list\n - Automatic local deployment bonus overwriter\n - Recommended to play with 'can attack with percentage'!";
+	mods["Local Deployment Helper"]["How to use"] = "This mod adds 2 features to Warzone, both related to local deployment. The first and main feature is the order helper, which takes orders from the previous turn and adds this back into the players' order list. The other function helps game creators to create local deployment games by automatically overwriting the necessary bonuses.\n\nThe order helper allows players to re-add most of their orders from the previous turn back into their current order list. This is really helpful in local deployment, because most of the orders are just the same from the previous turn (deployments behind frontlines and transfers behind the front line). When you use the order helper, you can specify which orders you want to add back. This is also really helpful because you can add orders in stages. The way I prefer to make my turns is to add all the deployments from the previous turn and make changes to them if necessary. I then make attack / transfer orders that I want to occur as the first few orders, and re-add all the transfers from the previous turn via the mod.";
+	mods["Local Deployment Helper"]["How to set up"] = "The automatic bonus overwriter is handy but not perfect. It will ignore any manual overwritten bonuses for some reason. It will also leave every bonus as it is, not changing the value of it. You therefore have only bonuses equal to their normal (default) bonus value and those bonuses which require to be 0 to play local deployment on the map. But there is a workaround for this. You can create a game in singleplayer and let the bonus overwriter make the map local deployment ready. In the game, if you go back to settings it will actually show which bonuses have been overridden so you can make a template of it. When you create a multiplayer game you can then turn off the automatic bonus overwriter and alter those bonuses not equal to 0 to whichever value you want.\n\nTo use the order helper the best I recommend using percentage attacks / transfers. When orders are not percentage attacks / transfers it can occur that some orders do not move all troops on a territory.";
+	mods["Local Deployment Helper"]["Bugs"] = bugFreeMessage;
+	mods["Local Deployment Helper"]["Compatibility"] = "This mod is compatible with every other mod, except for Randomized Bonuses and BonusValue QuickOverrider if the automatic bonus overrider is being used. On a map with superbonuses it may occur that the automatic bonus overrider overrides a bonus that gets later overwritten again by one of these mods. This can be avoided by creating a singleplayer game with either of these mods, copy the template into multiplayer, remove the bonus overrider mod and add the Local Deployment Helper mod.";
 	-- Lotto Mod -> Instant Random Winner
 	-- More_Distributions
 	-- One Way Connections
@@ -177,14 +195,20 @@ end
 
 function initCompatibility()
 	comp = {};
-	comp["Late Airlifts"] = {};
 	comp["Connected Commanders"] = {};
-	comp["Late Airlifts"]["Connected Commanders"] = {};
-	comp["Late Airlifts"]["Connected Commanders"].Occurance = "rare";
-	comp["Late Airlifts"]["Connected Commanders"].Message = "There are a lot of requirements for the mod interference to occur, but when they it occurs the event player will not like it...\n\nPlease read more about this mod interference under [compatibility] to be sure you want both these mods into the game";
+	comp["Decoy Card"] = {};
 	comp["Connected Commanders"]["Late Airlifts"] = {};
 	comp["Connected Commanders"]["Late Airlifts"].Occurance = "rare";
 	comp["Connected Commanders"]["Late Airlifts"].Message = "There are a lot of requirements for the mod interference to occur, but when they it occurs the event player will not like it...\n\nPlease read more about this mod interference under [compatibility] to be sure you want both these mods into the game";
+	comp["Decoy Card"]["Gift Armies"] = {};
+	comp["Decoy Card"]["Gift Armies"].Occurance = "common";
+	comp["Decoy Card"]["Gift Armies"].Message = "These 2 mods in combination create an enormous exploit that players can abuse to gift millions of armies to eachother";
+	comp["Decoy Card"]["Gift Armies 2"] = {};
+	comp["Decoy Card"]["Gift Armies 2"].Occurance = "common";
+	comp["Decoy Card"]["Gift Armies 2"].Message = "These 2 mods in combination create an enormous exploit that players can abuse to gift millions of armies to eachother";
+	comp["Decoy Card"]["Custom Card Package"] = {};
+	comp["Decoy Card"]["Custom Card Package"].Occurance = "uncommon";
+	comp["Decoy Card"]["Custom Card Package"].Message = "Note: This mod interference only applies to the Pestilence card\nIt can occur that a territory in decoy turns neutral with the Pestilence card, meaning the player will lose the armies on that territory.";
 end
 
 function checkModInterference(mod1, mod2)
@@ -193,6 +217,11 @@ function checkModInterference(mod1, mod2)
 		if mod2 == nil then return true; end
 		if comp[mod1][mod2] ~= nil then
 			return comp[mod1][mod2];
+		end
+	elseif comp[mod2] ~= nil then
+		if mod1 == nil then return true; end
+		if comp[mod2][mod1] ~= nil then
+			return comp[mod2][mod1];
 		end
 	end
 	return false;
