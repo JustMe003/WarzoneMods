@@ -24,16 +24,16 @@ function showMainMenu()
 		window(win);
 		local vert = newVerticalGroup("vert", "root");
 		newLabel(win .. "Label1", vert, "Main Menu", "Electric Purple");
-		newButton(win .. "InGameMods", vert, "Mod manuals", inGameMods, "Lime");
-		newButton(win .. "NotInGameMods", vert, "Other Mod manuals", notInGameMods, "Orange Red");
+		newButton(win .. "InGameMods", vert, "Mod manuals", function() inGameMods(1) end, "Lime");
+		newButton(win .. "NotInGameMods", vert, "Other Mod manuals", function() notInGameMods(1) end, "Orange Red");
 		newButton("return", vert, "Return", routeBack, "Green");
 	end
 	currentPageIndex = currentPageIndex + 1;
 	route[currentPageIndex] = win;
 end
 
-function notInGameMods()
-	local win = "notInGameModsMain";
+function notInGameMods(n)
+	local win = "notInGameModsMain" .. n;
 	if windowExists(win) then
 		if getCurrentWindow() ~= win then
 			destroyWindow(getCurrentWindow());
@@ -43,20 +43,25 @@ function notInGameMods()
 		destroyWindow(getCurrentWindow());
 		window(win);
 		local vert = newVerticalGroup("vert", "root");
+		local count = 0;
 		for i, v in pairs(Mod.Settings.Mods) do
 			if not v then
-				local interactable = not (getContents(i) == nil);
-				newButton(win .. i, vert, i, function() seeContents(i); end, "Light Blue", interactable);
+				if count >= (n-1) * 10 and count < n * 10 then
+					local interactable = not (getContents(i) == nil);
+					newButton(win .. i, vert, i, function() seeContents(i); end, "Light Blue", interactable);
+				end
+				count = count + 1;
 			end
 		end
+		pageControlButtons(win, vert, notInGameMods, n, math.ceil(count / 10));
 		newButton("return", vert, "Return", routeBack, "Green");
 	end
 	currentPageIndex = currentPageIndex + 1;
 	route[currentPageIndex] = win;
 end
 
-function inGameMods()
-	local win = "inGameModsMain";
+function inGameMods(n)
+	local win = "inGameModsMain" .. n;
 	if windowExists(win) then
 		if getCurrentWindow() ~= win then
 			destroyWindow(getCurrentWindow());
@@ -66,12 +71,17 @@ function inGameMods()
 		destroyWindow(getCurrentWindow());
 		window(win);
 		local vert = newVerticalGroup("vert", "root");
+		local count = 0;
 		for i, v in pairs(Mod.Settings.Mods) do
 			if v then
-				local interactable = not (getContents(i) == nil);
-				newButton(win .. i, vert, i, function() seeContents(i); end, "Light Blue", interactable);
+				if count >= (n-1) * 10 and count < n * 10 then
+					local interactable = not (getContents(i) == nil);
+					newButton(win .. i, vert, i, function() seeContents(i); end, "Light Blue", interactable);
+				end
+				count = count + 1;
 			end
 		end
+		pageControlButtons(win, vert, inGameMods, n, math.ceil(count / 10));
 		newButton("return", vert, "Return", routeBack, "Green");
 	end
 	currentPageIndex = currentPageIndex + 1;
@@ -112,6 +122,22 @@ function routeBack()
 		restoreWindow(route[currentPageIndex]);
 	else
 		Close();
+	end
+end
+
+function pageControlButtons(win, vert, func, n, nPages)
+	if nPages <= 1 then return; end
+	local line = newHorizontalGroup(win .. "pageControlLine", vert);
+	if n == 1 then
+		newButton(win .. "pageDown", line, "Page down", function() func(nPages) end, "Orchid");
+	else
+		newButton(win .. "pageDown", line, "Page down", function() func(n - 1) end, "Orchid");
+	end
+	newLabel(win .. "pageNumber", line, n .. " / " .. nPages, "Deep Pink");
+	if n == nPages then
+		newButton(win .. "pageUp", line, "page up", function() func(1) end, "Orchid");
+	else
+		newButton(win .. "pageUp", line, "Page up", function() func(n + 1) end, "Orchid");
 	end
 end
 
