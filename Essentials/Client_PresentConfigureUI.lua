@@ -186,19 +186,17 @@ function showModManual(path)
 end
 
 function updateLabel(name)
-	if checkModInterference(name) then
-		for mod, bool in pairs(modsInit) do
-			if bool then
+	for mod, bool in pairs(modsInit) do
+		if bool then
+			local modInterference = checkModInterference(name, mod)
+			if type(modInterference) == type(table) then
+				UI.Alert("Mods: " .. name .. ", " .. mod .. "\nOccurance: " .. modInterference.Occurance .. "\n\n" .. modInterference.Message);
+			end
+		elseif objectExists(mod) then
+			if getIsChecked(mod) and getIsChecked(name) then
 				local modInterference = checkModInterference(name, mod)
 				if type(modInterference) == type(table) then
 					UI.Alert("Mods: " .. name .. ", " .. mod .. "\nOccurance: " .. modInterference.Occurance .. "\n\n" .. modInterference.Message);
-				end
-			elseif objectExists(mod) then
-				if getIsChecked(mod) then
-					local modInterference = checkModInterference(name, mod)
-					if type(modInterference) == type(table) then
-						UI.Alert("Mods: " .. name .. ", " .. mod .. "\nOccurance: " .. modInterference.Occurance .. "\n\n" .. modInterference.Message);
-					end
 				end
 			end
 		end
