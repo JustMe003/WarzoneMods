@@ -1,0 +1,5 @@
+Gives every player / team flags. When a team loses a certain amount of flags the whole team is eliminated
+
+ - (configurable) Specify how many flags each player / team gets
+ - (configurable) specify how many flags a player / team has to lose before it is eliminated
+ - (configurable) specify how much extra permanent income a player get when it captures a flag
