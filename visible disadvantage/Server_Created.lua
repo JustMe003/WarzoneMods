@@ -5,6 +5,7 @@ function Server_Created(game, settings)
 	end
 	for i, v in pairs(game.Settings.Cards) do
 		print(i, v);
+		cards[i] = v;
 	end
 	settings.Cards = cards;
 end
