@@ -1,5 +1,5 @@
 
-Server_AdvanceTurn_End(game, addNewOrder)
+function Server_AdvanceTurn_End(game, addNewOrder)
 	if game.Settings.BonusArmyPer == 0 then return; end
 	local terrCount = {};
 	for i,_ in pairs(game.Game.PlayingPlayers) do
