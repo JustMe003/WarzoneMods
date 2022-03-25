@@ -15,8 +15,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	local mods = {};
 	for i, v in pairs(terrCount) do
 		table.insert(mods, WL.IncomeMod.Create(i, math.floor(v / game.Settings.BonusArmyPer) * -2, "Reversed the bonus armies"))
-		print(mods[#mods], math.floor(v / game.Settings.BonusArmyPer) * -2);
 	end
-	print(mods);
 	addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Reversed bonus armies", nil, {}, {}, mods))
 end
