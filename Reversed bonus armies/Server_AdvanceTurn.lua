@@ -18,5 +18,5 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		print(mods[#mods], math.floor(v / game.Settings.BonusArmyPer) * -2);
 	end
 	print(mods);
-	addNewOrder(WL.PlayerID.Neutral, "Reversed bonus armies", nil, {}, {}, mods)
+	addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Reversed bonus armies", nil, {}, {}, mods))
 end
