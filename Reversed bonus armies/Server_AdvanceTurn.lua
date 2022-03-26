@@ -14,7 +14,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 
 	local mods = {};
 	for i, v in pairs(terrCount) do
-                local num = (math.min(game.Settings.MinimumArmyBonus, math.floor(v / game.Settings.BonusArmyPer)) * -1) - math.floor(math.max(v - (game.Settings.BonusArmyPer * game.Settings.MinimumArmyBonus), 0) / game.Settings.BonusArmyPer * 2);
+                local num = (math.min(game.Settings.MinimumArmyBonus, math.floor(v / game.Settings.BonusArmyPer)) * -1) - (math.floor(math.max(v - (game.Settings.BonusArmyPer * game.Settings.MinimumArmyBonus), 0) / game.Settings.BonusArmyPer) * 2);
                 table.insert(mods, WL.IncomeMod.Create(i, num, "Reversed the bonus armies"))
 	end
 	addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Reversed bonus armies", nil, {}, {}, mods))
