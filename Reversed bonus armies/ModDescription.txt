@@ -1,0 +1,6 @@
+Reverses the settings 'Give extra armies for territories (once base exceeded)', although it comes in effect even before the setting kicks in
+
+Ex.
+5 base income, 1+ army per 5 territories
+with 21 territories you get (apart from other stuff): 5 base income, but (21 / 5 floored = ) -4 for the amount of territories you own
+with 34 territories you get (apart from other stuff): 5 base income, +2 by the amount of territories but -2 to cancel this effect and (34 / 5 floored = ) -7 for the amount of territories you own
