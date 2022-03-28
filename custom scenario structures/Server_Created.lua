@@ -1,5 +1,5 @@
 function Server_Created(game, settings)
 	if not game.Settings.MultiPlayer and not Mod.Settings.Testing then
-		settings.FogLevel = 4;
+		settings.FogLevel = 1;
 	end
 end
