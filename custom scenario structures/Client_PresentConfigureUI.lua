@@ -1,7 +1,6 @@
 require("UI");
 function Client_PresentConfigureUI(rootParent)
 	init(rootParent);
-	print("hi")
 	local vert = newVerticalGroup("vert", "root");
 	newLabel("desc", vert, "Paste the string you copied from singleplayer");
 	local text = Mod.Settings.Data;
@@ -11,5 +10,4 @@ function Client_PresentConfigureUI(rootParent)
 	local testing = Mod.Settings.Testing;
 	if testing == nil then testing = false; end
 	testingScenario = newCheckbox("testingCheckBox", vert, "Check this checkbox if you want to test your scenario", testing)
-	print(testingScenario);
 end
