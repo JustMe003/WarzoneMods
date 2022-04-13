@@ -170,7 +170,12 @@ function initManuals()
 	-- Don't lose a territory
 	-- Extended Randomized bonuses
 	-- Extended Winning Conditions
-	-- Forts
+	mods["Forts"] = {};
+	mods["Forts"]["Mod description"] = "This mod allows players to build a fort. Any armies on a territory with a fort cannot be harmed by an incoming attack, but any incoming attack will destroy the fort. Therefore, as an attacker, it's a good idea to attack a fort with 1 army to destroy it with minimal losses. \n\nForts are represented on the map as an Army Camp icon. This mod assumes any Army Camp icons on the map are a fort, and therefore it is not compatible with any other mods that use the Army Camp icon.";
+	mods["Forts"]["How does it work"] = "Any territory with an army camp structure (the same image as the one in Idle) will successfully defend an attack without losing any armies. This will destroy the fort (represented by an army camp) though. So any follow up attacks that follow will kill defending armies like normal unless the territory in question has another (or more) forts.\n\nForts can be built using the mod menu. Here you can select which territory you want to place the fort on and commit the order. Note that these orders always are played at the very end of the turn.\n\nPlayers can build forts themselves after every X amount of turns. X is here a fixed number between 1 and infinity. If X is equal to 3 you’re able to build a fort while creating your orders for turn 4 and you’re able to build a second fort while creating your orders for turn 7. \n\nIf the explanation above is not clear enough, try to see the forts placement process as a new card. Every player starts with 0 pieces, always gets 1 piece a turn and needs X amount of pieces to get a full card. When you have enough pieces you’re able to play the card and so place a fort.";
+	mods["Forts"]["How to set up"] = "This mod does not need any extra settings and only has 1 setting itself. In the mod configuration you can configure after how many turns a player can build a fort.";
+	mods["Forts"]["Bugs"] = bugFreeMessage;
+	mods["Forts"]["Compatibility"] = "This mod is compatible with every mod and setting in Warzone, although it might cause strange behavior when paired with a mod that also uses army camps for something.";
 	-- Gift Armies 2
 	mods["Highest Income Disadvantage"] = {};
 	mods["Highest Income Disadvantage"]["Mod description"] = "Every player with the highest income will become visible for all the other players";
