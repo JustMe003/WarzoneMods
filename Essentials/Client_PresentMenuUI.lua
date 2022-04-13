@@ -56,7 +56,9 @@ function notInGameMods(n)
 		pageControlButtons(win, vert, notInGameMods, n, math.ceil(count / 10));
 		newButton("return", vert, "Return", routeBack, "Green");
 	end
-	currentPageIndex = currentPageIndex + 1;
+	if not string.find(route[currentPageIndex], win) then
+		currentPageIndex = currentPageIndex + 1;
+	end
 	route[currentPageIndex] = win;
 end
 
@@ -84,7 +86,9 @@ function inGameMods(n)
 		pageControlButtons(win, vert, inGameMods, n, math.ceil(count / 10));
 		newButton("return", vert, "Return", routeBack, "Green");
 	end
-	currentPageIndex = currentPageIndex + 1;
+	if not string.find(route[currentPageIndex], win) then
+		currentPageIndex = currentPageIndex + 1;
+	end
 	route[currentPageIndex] = win;
 end
 
