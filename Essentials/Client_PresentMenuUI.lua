@@ -86,6 +86,7 @@ function inGameMods(n)
 		pageControlButtons(win, vert, inGameMods, n, math.ceil(count / 10));
 		newButton("return", vert, "Return", routeBack, "Green");
 	end
+	print(route[currentPageIndex]);
 	if string.find(route[currentPageIndex], "inGameModsMain") == nil then
 		currentPageIndex = currentPageIndex + 1;
 	end
