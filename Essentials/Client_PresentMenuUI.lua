@@ -34,6 +34,7 @@ end
 
 function notInGameMods(n)
 	local win = "notInGameModsMain" .. n;
+	print(win);
 	if windowExists(win) then
 		if getCurrentWindow() ~= win then
 			destroyWindow(getCurrentWindow());
