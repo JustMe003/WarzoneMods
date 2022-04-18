@@ -1,0 +1,3 @@
+Allow players to use percentage based attacks with cannons (Warzone Idle attacks) and mortars (Warzone Idle mortars)
+The further the territory is, the less damage a artillery strike will do
+Cannons only deal damage to the target territory, mortars also deal (a little bit) of damage to the neighbouring territories
