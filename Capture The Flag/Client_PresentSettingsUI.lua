@@ -5,6 +5,9 @@ function Client_PresentSettingsUI(rootParent)
 	local vert = newVerticalGroup("vert", "root");
 	newLabel("intro", vert, "This are the settings for this game", "Lime");
 	local line = newHorizontalGroup("line1", vert);
-	newLabel("nFlags", line, "Number of flags each team starts with \n(note that this value might not be the true value)", "Lime"); 
+	newLabel("nFlags", line, "Number of flags each team starts with: ", "Lime"); 
 	newLabel("nFlagsInt", line, Mod.Settings.FlagsPerTeam, "Royal Blue");
+	newLabel("nFlags", line, "Teams are eliminated after losing X flags: ", "Lime"); 
+	newLabel("nFlagsInt", line, Mod.Settings.NFlagsForLose, "Royal Blue");
+
 end
