@@ -1,3 +1,11 @@
-Allow players to use percentage based attacks with cannons (Warzone Idle attacks) and mortars (Warzone Idle mortars)
-The further the territory is, the less damage a artillery strike will do
-Cannons only deal damage to the target territory, mortars also deal (a little bit) of damage to the neighbouring territories
+This mod adds 2 new, long-range attacks.
+
+When you control a territory with a Cannon or Mortar (same icons as in Idle) you're able to use it every X amount of turns, or when you pay enough gold.
+
+Cannons:
+ - Single target!
+ - The further the distance between the cannon and its target, the less damage it does (can be disabled)
+ 
+Mortars:
+ - Multi target!
+ - Same as for the cannon but instead of just dealing less damage to the target it deals more damage to connected territories

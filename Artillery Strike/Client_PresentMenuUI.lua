@@ -4,6 +4,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	init(rootParent);
 	Game = game;
 	setMaxSize(500, 400);
+	setSize = setMaxSize;
 	
 	showMenu();
 end
@@ -57,13 +58,16 @@ function artilleryStrikeMenu()
 		destroyWindow(getCurrentWindow());
 		window(win);
 		local vert = newVerticalGroup(win .. "vert", "root");
-		newLabel(win .. "label", vert, "Click / tap the territory you want to hit", "Orange")
+		newLabel(win .. "label", vert, "Click / tap the territory you want to hit\n", "Orange")
+		newLabel(win .. "label2", vert, "Cannons always deal the same amount of damage to territories at the same distance.\nMortars however also deal damage to connected territories.", "Lime");
 		UI.InterceptNextTerritoryClick(showArtilleryOptions);
+		setSize(100, 100);
 	end
 end
 
 function showArtilleryOptions(terrDetails)
 	if terrDetails == nil then return; end
+	setSize(500, 400);
 	local win = "showArtilleryOptions" .. terrDetails.ID .. Game.Game.TurnNumber;
 	if windowExists(win) then
 		if getCurrentWindow() ~= win then
@@ -90,8 +94,11 @@ function showArtilleryOptions(terrDetails)
 								end
 								return false;
 							end
+			local count = 0;
 			for i, v in pairs(filter(filter(getTerritoriesInRange(Game, terrDetails.ID, Mod.Settings.RangeOfCannons), func1), func2)) do
+				if count == 5 then break; end
 				newButton(win .. "cannon" .. i, vert, Game.Map.Territories[i].Name .. ": " .. Mod.PublicGameData.DamageCannons[v] .. "%", function() shootCannon(terrDetails.ID, i, Mod.PublicGameData.DamageCannons[v]); end, "Orange")
+				count = count + 1;
 			end
 		end
 		if Mod.Settings.Mortars then
@@ -104,8 +111,11 @@ function showArtilleryOptions(terrDetails)
 								end
 								return false;
 							end
+			local count = 0;
 			for i, v in pairs(filter(filter(getTerritoriesInRange(Game, terrDetails.ID, Mod.Settings.RangeOfMortars), func1), func2)) do
+				if count == 5 then break; end
 				newButton(win .. "cannon" .. i, vert, Game.Map.Territories[i].Name .. ": " .. Mod.Settings.MortarDamage .. " - " .. Mod.PublicGameData.MissPercentages[v] .. "%", function() shootMortar(terrDetails.ID, i, Mod.PublicGameData.MissPercentages[v]); end, "Orange")
+				count = count + 1;
 			end
 		end
 		newButton(win .. "return", vert, "Return", showMenu, "Green");

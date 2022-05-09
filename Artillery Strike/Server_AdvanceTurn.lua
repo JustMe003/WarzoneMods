@@ -49,7 +49,7 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 		local armies = getNumArmies(game, terrID);
 		mod.SetArmiesTo = armies - (armies * (per / 100));
 		armyCountChanges[terrID] = mod.SetArmiesTo;
-		addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a cannon at " .. game.Map.Territories[from].Name .. " for " .. per .. "% damage", nil, {mod}));
+		addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a cannon at " .. game.Map.Territories[from].Name .. " for " .. per .. "% damage", {}, {mod}));
 	elseif artillery == "Mortar" then
 		local mods = {};
 		local modTarget = WL.TerritoryModification.Create(terrID);
@@ -64,7 +64,7 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 			armyCountChanges[i] = mod.SetArmiesTo;
 			table.insert(mods, mod);
 		end
-		addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, nil, mods));
+		addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {}, mods));
 	end
 end
 

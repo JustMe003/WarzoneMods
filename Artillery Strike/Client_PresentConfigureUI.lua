@@ -35,9 +35,9 @@ function showDescription()
 		window(win);
 		showButtons();
 		local vert = newVerticalGroup(win .. " vert", "root");
-		newLabel(win .. " line 1", vert, "This mod adds 2 new attack features, both long range", "Orchid");
-		newLabel(win .. " line 2", vert, "Cannons:\n - Cannons are able to attack territories within a maximum range of (5?)\n - Cannons deal a percentage of damage, just like bomb cards do", "Electric Purple");
-		newLabel(win .. " line 3", vert, "Mortars:\n - Mortars are able to attack territories within a maximum range of (5?) and a minimum range\n - Mortars deal a percentage of damage, just like bomb cards\n - Mortars have some extra options that allows them to 'miss' the target territory and hit a connected territory", "Electric Purple")
+		newLabel(win .. " line 1", vert, "This mod adds 2 new attack features, both long range\n", "Lime");
+		newLabel(win .. " line 2", vert, "Cannons:\n - Cannons are able to attack territories within a maximum range\n - Cannons work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - The further the cannon is from its target, the less damage it does (can be avoided)\n", "Royal Blue");
+		newLabel(win .. " line 3", vert, "Mortars:\n - Mortars are able to attack territories within a maximum range\n - Mortars also work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - Mortars have some extra options that makes them 'miss' the target territory and hit a connected territory", "Royal Blue")
 	end
 end
 
@@ -56,7 +56,7 @@ function showCannons()
 		local vert = newVerticalGroup(win .. " vert", "root");
 		local line = newHorizontalGroup(win .. " line", vert);
 		addCannons = newCheckbox("addCannons", line, " ", cannons, true, updateCannons);
-		newLabel("addCanonsLabel", line, "Add cannons to the game", "Teal");
+		newLabel("addCanonsLabel", line, "Add cannons to the game", "Lime");
 		maxCannonsLabel = newLabel("maxCannonsLabel", vert, "Maximum amount of cannons\n(Note that the mod might overwrite this value depending on how many neutral territories there are)", getColorCannons());
 		maxCannons = newNumberField("maxCannons", vert, 1, 50, numberOfCannons, cannons);
 		minDamageCannonsLabel = newLabel("minDamageCannonsLabel", vert, "The minimum damage (in %) a cannon will inflict on a territory", getColorCannons());
@@ -182,7 +182,7 @@ end
 function getColorCannons()
 	if addCannons ~= nil then
 		if getIsChecked(addCannons) then
-			return "Aqua";
+			return "Lime";
 		end
 	end
 	return "#777777";
@@ -191,7 +191,7 @@ end
 function getColorMortars()
 	if addMortars ~= nil then
 		if getIsChecked(addMortars) then
-			return "Electric Purple";
+			return "Royal Blue";
 		end
 	end
 	return "#777777";
