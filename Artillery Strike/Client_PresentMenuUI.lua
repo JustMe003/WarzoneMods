@@ -61,7 +61,7 @@ function artilleryStrikeMenu()
 		newLabel(win .. "label", vert, "Click / tap the territory you want to hit\n", "Orange")
 		newLabel(win .. "label2", vert, "Cannons always deal the same amount of damage to territories at the same distance.\nMortars however also deal damage to connected territories.", "Lime");
 		UI.InterceptNextTerritoryClick(showArtilleryOptions);
-		setSize(100, 100);
+		setSize(300, 300);
 	end
 end
 

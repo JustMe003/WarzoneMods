@@ -36,8 +36,8 @@ function showDescription()
 		showButtons();
 		local vert = newVerticalGroup(win .. " vert", "root");
 		newLabel(win .. " line 1", vert, "This mod adds 2 new attack features, both long range\n", "Lime");
-		newLabel(win .. " line 2", vert, "Cannons:\n - Cannons are able to attack territories within a maximum range\n - Cannons work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - The further the cannon is from its target, the less damage it does (can be avoided)\n", "Royal Blue");
-		newLabel(win .. " line 3", vert, "Mortars:\n - Mortars are able to attack territories within a maximum range\n - Mortars also work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - Mortars have some extra options that makes them 'miss' the target territory and hit a connected territory", "Royal Blue")
+		newLabel(win .. " line 2", vert, "\nCannons:\n - Cannons are able to attack territories within a maximum range\n - Cannons work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - The further the cannon is from its target, the less damage it does (can be avoided)\n", "Royal Blue");
+		newLabel(win .. " line 3", vert, "\nMortars:\n - Mortars are able to attack territories within a maximum range\n - Mortars also work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - Mortars have some extra options that makes them 'miss' the target territory and hit a connected territory", "Royal Blue")
 	end
 end
 
