@@ -5,7 +5,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Game = game;
 	setMaxSize(500, 400);
 	setSize = setMaxSize;
-	
+	if game.Us == nil then return; end
 	showMenu();
 end
 
