@@ -5,3 +5,4 @@ Hospitals have a maximum range of 5 territories (This is already quite far...)
 [!]note[!]
 Be careful with this mod. It is very easy to create a scenario where income is inevitable due to the Hospitals reviving all armies back and generating more.
 Idealy you want to have a scenario where a party cannot get 100% of their lost armies back when attacking any territory.
+To help with this the mod will at most distribute 1/4 of the map with Hospitals.
