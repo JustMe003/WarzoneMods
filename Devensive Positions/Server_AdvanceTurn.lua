@@ -17,6 +17,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 			if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures ~= nil then
 				if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.MercenaryCamp] ~= nil then
 					local armiesKilled = round(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.AttackPower * (game.Settings.DefenseKillRate - Mod.Settings.ExtraDevKillrate));
+					print(armiesKilled);
 					orderResult.DefendingArmiesKilled = WL.Armies.Create(math.max(armiesKilled, 0), orderResult.DefendingArmiesKilled.SpecialUnits);
 				end
 			end

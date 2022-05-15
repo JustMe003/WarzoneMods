@@ -8,6 +8,4 @@ function Client_PresentSettingsUI(rootParent)
 	UI.CreateLabel(vert).SetText("Minimum recover percentage: " .. Mod.Settings.recoverPercentageMinimum).SetColor("#DDDDDD");
 	UI.CreateLabel(vert).SetText("Maximum recover percentage: " .. Mod.Settings.recoverPercentageMaximum).SetColor("#DDDDDD");
 	UI.CreateLabel(vert).SetText("Maximum recover range: " .. Mod.Settings.maximumHospitalRange).SetColor("#DDDDDD");
-	UI.CreateLabel(vert).SetText("Use the upgrade system: " .. tostring(Mod.Settings.upgradeSystem)).SetColor("#DDDDDD");
-	UI.CreateLabel(vert).SetText("Minimum amount of turns to level up as a hospital (level 1): " .. Mod.Settings.amountOfLevels).SetColor("#DDDDDD");
 end

@@ -1,134 +1,74 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
-	Game = game;
-	AddNewOrder = addNewOrder;
 	data = Mod.PublicGameData;
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
-	if order.proxyType == "GameOrderAttackTransfer" then
-		if orderResult.IsAttack and orderResult.IsSuccessful then
-			if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures ~= nil then
-				if game.ServerGame.LatestTurnStanding.Territories[order.To].Structures[WL.StructureType.Hospital] ~= nil then
-					if data.Hospitals[order.To] ~= nil then
-						if Mod.Settings.upgradeSystem then
-							data.Hospitals[order.To].Level = 1;
-							data.Hospitals[order.To].Progress = 0;
-							data.Hospitals[order.To].Territories = setTerritories(order.To);
-						end
-					else
-						data.Hospitals[order.To] = createHospital(order.To);
-					end
-				end
-			end
-			recoverArmies(game, data, addNewOrder, orderResult.AttackingArmiesKilled.NumArmies, order.To, order.PlayerID);
-			if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral then
-				recoverArmies(game, data, addNewOrder, orderResult.DefendingArmiesKilled.NumArmies, order.To);
-			end
+	if order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack then
+		if orderResult.DefendingArmiesKilled.NumArmies / 100 * data.Values[1] >= 1 then
+			reviveArmies(game, orderResult.DefendingArmiesKilled.NumArmies, order.To, order, orderResult, addNewOrder);
+		end
+		if orderResult.AttackingArmiesKilled.NumArmies / 100 * data.Values[1] >= 1 then
+			reviveArmies(game, orderResult.AttackingArmiesKilled.NumArmies, order.From, order, orderResult, addNewOrder);
 		end
 	end
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
-	if Mod.Settings.upgradeSystem then
-		for hosID,_ in pairs(data.Hospitals) do
-			if hospitalLeveledUp(data.Hospitals[hosID]) then
-				data.Hospitals[hosID].Level = data.Hospitals[hosID].Level + 1;
-				data.Hospitals[hosID].Progress = 0;
-				data.Hospitals[hosID].Territories = increaseRange(data.Hospitals[hosID].Territories);
-				addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID, "Hospital at " .. game.Map.Territories[hosID].Name .. " leveled up! It is now level " .. data.Hospitals[hosID].Level, {}, {WL.TerritoryModification.Create(hosID)}))
-			else
-				data.Hospitals[hosID].Progress = data.Hospitals[hosID].Progress + 1;
-			end
-		end
-	end
 	Mod.PublicGameData = data;
 end
 
-function setTerritories(terrID)
+function reviveArmies(game, armies, eventTerr, order, orderResult, addNewOrder)
+	local range = 1;
+	for i = 1, Mod.Settings.maximumHospitalRange do
+		if armies / 100 * data.Values[i] >= 1 then 
+			range = i; 
+		else 
+			break;
+		end
+	end
+	for terrID, dis in pairs(getTerritories(game, order.To, range)) do
+		local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
+		if terr.OwnerPlayerID == game.ServerGame.LatestTurnStanding.Territories[eventTerr].OwnerPlayerID and terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
+			if terr.Structures ~= nil and terr.Structures[WL.StructureType.Hospital] ~= nil then
+				local mod = WL.TerritoryModification.Create(terrID);
+				if order.From == terrID then
+					if orderResult.IsSuccessful then
+						mod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + math.floor(armies / 100 * data.Values[dis]) - orderResult.ActualArmies.NumArmies;
+					else
+						mod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + math.floor(armies / 100 * data.Values[dis]) - orderResult.AttackingArmiesKilled.NumArmies;
+					end
+				else
+					mod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + math.floor(armies / 100 * data.Values[dis]);
+				end
+				addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[eventTerr].OwnerPlayerID, "revived " .. data.Values[dis] .. "% armies at " .. game.Map.Territories[terrID].Name, {}, {mod}), true);
+			end
+		end
+	end
+end
+
+function getTerritories(game, terrID, range)
 	local t = {};
 	t[terrID] = -10;
-	for i = 1, Mod.Settings.maximumHospitalRange do
+	for i = 1, range do
 --		print(i, getValue(i), Mod.PublicGameData.Values[i])
 		if i == 1 then
-			for connID, _ in pairs(Game.Map.Territories[terrID].ConnectedTo) do
-				t[connID] = getValue(i);
---				print(Game.Map.Territories[connID].Name, t[connID]);
+			for connID, _ in pairs(game.Map.Territories[terrID].ConnectedTo) do
+				t[connID] = i;
+--				print(game.Map.Territories[connID].Name, t[connID]);
 			end
 		else
 			for j, v in pairs(t) do
-				for connID, _ in pairs(Game.Map.Territories[j].ConnectedTo) do
+				for connID, _ in pairs(game.Map.Territories[j].ConnectedTo) do
 					if t[connID] == nil then
-						if v == getValue(i-1) then
-							t[connID] = getValue(i);
---							print(Game.Map.Territories[connID].Name, t[connID]);
+						if v == i - 1 then
+							t[connID] = i;
+--							print(game.Map.Territories[connID].Name, t[connID]);
 						end
 					end
 				end
 			end
 		end
 	end
+	t[terrID] = nil;
 	return t;
-end
-
-function getValue(range)
-	if Mod.Settings.upgradeSystem then
-		return 2 - range;
-	else
-		return Mod.Settings.maximumHospitalRange - range + 1;
-	end
-end
-
-function createHospital(terrID)
-	local hospital = {};
-	hospital.Territories = setTerritories(terrID);
-	if Mod.Settings.upgradeSystem then
-		hospital.Progress = 0;
-		hospital.Level = 1;
-	end
-	return hospital;
-end
-
-function recoverArmies(game, Data, addNewOrder, armiesKilled, terrID, playerID)
-	playerID = playerID or game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
-	for hosID, hospital in pairs(Data.Hospitals) do
-		if hospital.Territories[terrID] ~= nil then
-			if hosID ~= terrID then
-				if game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID == playerID then
-				--	print(game.Map.Territories[terrID].Name, game.Map.Territories[hosID].Name, hospital.Territories[terrID])
-					if hospital.Territories[terrID] > 0 then
-						if math.floor(armiesKilled / 100 * data.Values[hospital.Territories[terrID]]) > 0 then
-							local numArmies = game.ServerGame.LatestTurnStanding.Territories[hosID].NumArmies.NumArmies
-							local mod = WL.TerritoryModification.Create(hosID);
-							mod.SetArmiesTo = numArmies + math.floor(armiesKilled / 100 * Data.Values[hospital.Territories[terrID]]);
-						--	print(mod.SetArmiesTo, tostring(Mod.PublicGameData.Values[hospital.Territories[order.To]]) .. "%")
-							addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID, "recovered " .. math.floor(armiesKilled / 100 * Data.Values[hospital.Territories[terrID]]) .. " (" .. Data.Values[hospital.Territories[terrID]] .. "%) armies at " .. game.Map.Territories[hosID].Name, {}, {mod}), false);
-							if Mod.Settings.upgradeSystem then
-								if hospitalLeveledUp(data.Hospitals[hosID]) then
-									data.Hospitals[hosID].Progress = 0;
-									data.Hospitals[hosID].Level = data.Hospitals[hosID].Level + 1;
-									data.Hospitals[hosID].Territories = increaseRange(data.Hospitals[hosID].Territories)
-									addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[hosID].OwnerPlayerID, "Hospital at " .. game.Map.Territories[hosID].Name .. " leveled up! It is now level " .. data.Hospitals[hosID].Level, {}, {WL.TerritoryModification.Create(hosID)}))
-								else
-									data.Hospitals[hosID].Progress = data.Hospitals[hosID].Progress + 1;
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-end
-
-function hospitalLeveledUp(hospital)
---	print(hospital.Progress + 1, math.pow(Mod.Settings.amountOfLevels, hospital.Level), hospital.Level < Mod.Settings.maximumHospitalRange - 1);
-	return hospital.Progress + 1 >= math.pow(Mod.Settings.amountOfLevels, hospital.Level) and hospital.Level < Mod.Settings.maximumHospitalRange;
-end
-
-function increaseRange(listOfTerr, int)
-	int = int or 1
-	for i,_ in pairs(listOfTerr) do
-		listOfTerr[i] = math.min(listOfTerr[i] + int, Mod.Settings.maximumHospitalRange);
-	end
-	return listOfTerr;
 end

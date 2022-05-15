@@ -1,8 +1,7 @@
-Adds (configurable) hospitals to the game
-!Recommended!
-Don't use high percentages (above 50%) with a lot of hospitals! Play either with high percentages or with a lot of hospitals, not both!
-Notes:
- - Minimum range = the territories directly connected to the territory with the hospital
- - Maximum range = the territories up to 5 territories away from the territory with the hospital (equal to the maximum range)
- - Its hard coded that only up to 25% of the remaining (neutral) territories can have a hospital
- - Its hard coded that the maximum range of the hospitals can be 5
+Hospitals are represented by the Hospital icon from Idle on the map. 
+Hospitals are able to revive a percentage of lost armies in an attack / defence in the allowed radius.
+Hospitals have a maximum range of 5 territories (This is already quite far...)
+
+[!]note[!]
+Be careful with this mod. It is very easy to create a scenario where income is inevitable due to the Hospitals reviving all armies back and generating more.
+Idealy you want to have a scenario where a party cannot get 100% of their lost armies back when attacking any territory.

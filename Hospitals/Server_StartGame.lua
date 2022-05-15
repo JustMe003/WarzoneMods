@@ -7,14 +7,12 @@ function Server_StartGame(game, standing)
 	end
 	
 	local data = Mod.PublicGameData;
-	data.Hospitals = {};
 	
 	if Mod.Settings.maximumHospitalRange > 1 then
 		local increment = (Mod.Settings.recoverPercentageMaximum - Mod.Settings.recoverPercentageMinimum) / (Mod.Settings.maximumHospitalRange - 1);
 		local values = {};
 		for i = 0, Mod.Settings.maximumHospitalRange - 1 do
-			values[i + 1] = Mod.Settings.recoverPercentageMinimum + i * increment
-			print(i + 1, values[i + 1])
+			values[i + 1] = Mod.Settings.recoverPercentageMaximum - (i * increment);
 		end
 		data.Values = values;
 	else
