@@ -67,8 +67,6 @@ function window(win)
 	if windows[win] == nil then 
 		windows[win] = {};
 		currentWindow = win;
-	else
-		print("Window " .. win .. " already exists! Please restore or reset the window");
 	end
 end
 

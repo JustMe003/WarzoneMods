@@ -21,11 +21,8 @@ function Client_PresentConfigureUI(rootParent)
 	
 	modsChecked = getTotalModsIncluded();
 	
-	pages = {pageOne, pageTwo, pageThree, pageFour, pageFive};
 	page = 1;
-		
-	allObjects = getAllObjects();
-	
+			
 	showDescription();
 end
 
@@ -127,35 +124,20 @@ end
 
 function showModInformation()
 	local win = "modInformation";
+	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
-		destroyWindow(getCurrentWindow());
 		resetWindow(win)
-		window(win);
-		local vert = newVerticalGroup("vert", "root");
-		showButtons(vert);
-		newLabel(win .. "descriptionLabel", vert, "Here below you will find every mod you've added so far as a button. When you click on a button it will take you to the mod manual where you can more information on how you can set the mod up, what bugs there currently are and what the compatibility of the mod is", "yellow");
-		for mod, bool in pairs(modsInit) do
-			if bool then
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	showButtons(vert);
+	newLabel(win .. "descriptionLabel", vert, "Here below you will find every mod you've added so far as a button. When you click on a button it will take you to the mod manual where you can more information on how you can set the mod up, what bugs there currently are and what the compatibility of the mod is", "yellow");
+	for mod, bool in pairs(modsInit) do
+		if bool then
+			newButton(mod .. "buttonInformation", vert, mod, function() showModManual(mod); end, getColorFromStatus(mod), getContents(mod) ~= nil)
+		elseif objectExists(mod) then
+			if getIsChecked(mod) then
 				newButton(mod .. "buttonInformation", vert, mod, function() showModManual(mod); end, getColorFromStatus(mod), getContents(mod) ~= nil)
-			elseif objectExists(mod) then
-				if getIsChecked(mod) then
-					newButton(mod .. "buttonInformation", vert, mod, function() showModManual(mod); end, getColorFromStatus(mod), getContents(mod) ~= nil)
-				end
-			end
-		end
-	else	
-		destroyWindow(getCurrentWindow());
-		window(win);
-		local vert = newVerticalGroup("vert", "root");
-		showButtons(vert);
-		newLabel(win .. "descriptionLabel", vert, "Here below you will find every mod you've added so far as a button. When you click on a button it will take you to the mod manual where you can more information on how you can set the mod up, what bugs there currently are and what the compatibility of the mod is", "yellow");
-		for mod, bool in pairs(modsInit) do
-			if bool then
-				newButton(mod .. "buttonInformation", vert, mod, function() showModManual(mod); end, getColorFromStatus(mod), getContents(mod) ~= nil)
-			elseif objectExists(mod) then
-				if getIsChecked(mod) then
-					newButton(mod .. "buttonInformation", vert, mod, function() showModManual(mod); end, getColorFromStatus(mod), getContents(mod) ~= nil)
-				end
 			end
 		end
 	end
@@ -203,7 +185,7 @@ function updateLabel(name)
 	end
 	if getIsChecked(name) then
 		modsChecked = modsChecked + 1;
-		updateColor(name .. "Label", "#3333FF");
+		updateColor(name .. "Label", "#3333AA");
 	else
 		modsChecked = modsChecked - 1;
 		updateColor(name .. "Label", getColorFromStatus(name));
