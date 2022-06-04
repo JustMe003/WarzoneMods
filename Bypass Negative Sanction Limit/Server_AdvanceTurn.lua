@@ -13,7 +13,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	for pid, v in pairs(t) do
-		local income = game.ServerGame.Game.PlayingPlayers[pid].Income().Total;
+		local income = game.ServerGame.Game.PlayingPlayers[pid].Income(0, game.ServerGame.LatestTurnStanding, true, true).Total;
 		print(income)
 		local mod = WL.IncomeMod.Create(pid, math.min(1000000, income * math.pow(game.Settings.Cards[WL.CardID.Sanctions].Percentage, v)) - 10000, "Bypass negative sanctions limit");
 		print(mod)
