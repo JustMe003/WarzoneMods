@@ -1,5 +1,5 @@
 function getMods()
-	return {"Essentials", "Buy Neutral", "Diplomacy", "Gift Armies", "Gift Gold", "Picks Swap", "Randomized Bonuses", "Randomized Wastelands", "Advanced Diplo Mod V4", "AIs don't deploy", "Buy Cards", "Commerce Plus", "Custom Card Package", "Diplomacy 2", "Late Airlifts", "Limited Attacks", "Limited Multiattacks", "Neutral Moves", "Safe Start", "Swap Territories", "Take Turns", "AI's don't play cards", "Better don't fail an attack", "Bonus Airlift", "BonusValue QuickOverrider", "Capture The Flag", "Connected Commanders", "Decoy Card", "Deployment Limit", "Don't lose a territory", "Extended Randomized Bonuses", "Extended Winning Conditions", "Forts", "Gift Armies 2", "Highest Income Disadvantage", "Hybrid Distribution", "Hybrid Distribution 2", "Infromations for spectaters", "King of the Hills", "Local Deployment Helper", "Lotto Mod -> Instant Random Winner", "More_Distributions", "One Way Connections", "Portals", "Press This Button", "Random Starting Cities", "Reversed Bonus Armies Per Territory", "Runtime Wastelands", "Spawnbarriers", "Special units are Medics", "Stack Limit", "Transport Only Airlift"}
+	return {"Essentials", "Buy Neutral", "Diplomacy", "Gift Armies", "Gift Gold", "Picks Swap", "Randomized Bonuses", "Randomized Wastelands", "Advanced Diplo Mod V4", "AIs don't deploy", "Buy Cards", "Commerce Plus", "Custom Card Package", "Diplomacy 2", "Late Airlifts", "Limited Attacks", "Limited Multiattacks", "Neutral Moves", "Safe Start", "Swap Territories", "Take Turns", "[Beta] BetterCities and Groupchat", "AI's don't play cards", "Better don't fail an attack", "Bomb Card+", "Bonus Airlift", "BonusValue QuickOverrider", "Capture The Flag", "Connected Commanders", "Decoy Card", "Deployment Limit", "Don't lose a territory", "Extended Randomized Bonuses", "Extended Winning Conditions", "Forts", "FreeExpansion", "Gift Armies 2", "Highest Income Disadvantage", "Hospitals", "Hybrid Distribution", "Hybrid Distribution 2", "Infromations for spectaters", "King of the Hills", "Local Deployment Helper", "Lotto Mod -> Instant Random Winner", "More_Distributions", "One Way Connections", "Portals", "Press This Button", "Random Starting Cities", "Reverse Income", "Reversed Bonus Armies Per Territory", "Runtime Wastelands", "Spawnbarriers", "Special units are Medics", "Stack Limit", "Transport Only Airlift"}
 end
 
 function getStatus(mod)
@@ -147,13 +147,39 @@ function initManuals()
 	mods["Advanced Diplo Mod V4"]["How to set up"]["Other Settings"] = "The last setting requires a spy card to be enabled in the game since it will allow you to see everyone you’re at peace with.";
 	mods["Advanced Diplo Mod V4"]["Bugs"] = bugFreeMessage;
 	mods["Advanced Diplo Mod V4"]["Compatibility"] = "Not compatible with other diplomacy mods:\n - Diplomacy\n - Diplomacy 2";
-	-- AI's don't deploy
-	-- Buy Cards
-	-- Commerce Plus
+	mods["AIs don't deploy"] = {};
+	mods["AIs don't deploy"]["Mod description"] = "This mod prevents AIs from deploying and is applicable for diplo games in combination with a mod that prevents AIs from attacking (e.g. Advanced Diplo Mod) in order to receive placeholder AI (just AIs that hold a spot for e.g. booted players).";
+	mods["AIs don't deploy"]["How does it work"] = "This is one of the easiest manuals I’ve written so far xD. This mod prevents any AI from deploying. These AIs are\n - Booted players turned into AI\n - Surrendered player turned into AI\n - AIs added to the game at the start by the game creator";
+	mods["AIs don't deploy"]["How to set up"] = "Just add the mod and you’re done :p";
+	mods["AIs don't deploy"]["Bugs"] = bugFreeMessage;
+	mods["AIs don't deploy"]["Compatibility"] = compatibilityAllMessage;
+	mods["Buy Cards"] = {};
+	mods["Buy Cards"]["Mod description"] = "This mod allows you to make cards purchasable. This mod requires Commerce.";
+	mods["Buy Cards"]["How to use"] = "This mod allows players to buy cards from the mod menu. When you open the mod menu, it should show some buttons with the cards. If you can interact with the button, the card can be purchased by just clicking the button. If a card cannot be purchased (e.g. the card is not in the game) you will not be able to interact with the button.\n\nWhen you click on a button, a custom order is added to your order list. This order contains the gold you have paid to purchase the card. If you regret your decision of buying the card, you can remove the order to get your gold back.\n\nWhen the turn advances, the order will get processed and you’ll get a card. So when you buy a card, you’ll have to wait 1 turn for it before you can actually use the card.";
+	mods["Buy Cards"]["How to set up"] = "When you add the mod to the game you get a number input field for every card, except for the reinforcement card. You can adjust the number input field however you want, just note that negative values are prohibited. \n\nIf you don’t want cards to be purchasable, you can leave / set their number input field to 0. The mod will not allow players to buy cards for 0 gold, so they are unpurchasable.\n\nThe game has to be a commerce game, otherwise this mod won’t do anything.";
+	mods["Buy Cards"]["Bugs"] = bugFreeMessage;
+	mods["Buy Cards"]["Compatibility"] = "This mod is compatible with every mod and setting, just note that you should add cards and set the game to be a commerce game";
+	mods["Commerce Plus"] = {};
+	mods["Commerce Plus"]["Mod description"] = "This Mod allows you to add other income forms than just holding bonuses for Commerce games. The money is calculated runtime (this means, for example, if someone captures a territory and then loses it to another player, both players get the money for capturing the territory. Same for bonuses). Be careful with the feature MoneyperCapturedBonus cause it is only usable without any risk for maps with less than 1000 territories, more territories are at your own risk (can happen that you can't commit any longer) to disable it set it to zero.";
+	mods["Commerce Plus"]["How does it work"] = "With this mod you (can) get extra gold for killing armies, capturing territories or capturing bonuses.\n\nAll these three methods can be configured to be disabled or enabled, and with which multiplier. The mod will keep track during the turn how many armies you kill and how many territories and bonuses you capture. At the end of the turn it will give you the extra gold you’ve earned. ";
+	mods["Commerce Plus"]["How to set up"] = "You can configure 3 settings. Each setting is a multiplier for the way to gain gold. You can configure the multiplier for the amount of armies killed, the total of territories captured and the total of bonuses captured.";
+	mods["Commerce Plus"]["Exploits"] = "This mod is easily exploitable. You can for example blockade a territory of 0 armies to get extra gold for ‘capturing a territory’ and ‘capturing a bonus’. \n\nThis mod also makes normal income easily redundant and even grows your income exponentially if you’re aggressive enough.";
+	mods["Commerce Plus"]["Bugs"] = "This mod is bug free, but does lack some updates. The mod won’t know if an order is skipped and will grant you the gold that you shouldn’t get. I therefore don’t encourage using this mod in combination with other mods.";
+	mods["Commerce Plus"]["Compatibility"] = "Not compatible with some mods due to the lack of updates / mod design. Read Bugs for more information. Here is a short but not complete list of mods that you shouldn’t use in combination with this mod:\n - Diplomacy\n - Diplomacy 2\n - Advanced Diplo Mod V4\n - Limited Attacks\n - Limited MultiAttacks";
 	mods["Custom Card Package"] = {};
 	mods["Custom Card Package"]["Bugs"] = "When a nuke is played the first attack / transfer gets skipped and added back when all the nukes have been played. This results in the fact that the player who has first move will have 2 attacks / transfers before any other attacks / transfers have been played."
-	-- Diplomacy 2
-	-- Late Airlifts
+	mods["Diplomacy 2"] = {};
+	mods["Diplomacy 2"]["Mod description"] = "Allows players to make alliances with each other. All alliances made are public -- to view them, open the diplomacy mod from the game's menu.\n\nTo propose an alliance, click Propose and select the player to make the alliance with. If they accept, both players will be unable to attack the other.\n\nEither player in an alliance can break it. Open the diplomacy mod menu and click the "Break" button to initiate a break. This inserts an order into your orders list. The alliance won't be broken until the end of the current turn.";
+	mods["Diplomacy 2"]["How to use"] = "This mod works very similar to the Diplomacy mod. When you open the mod menu, you can pick a player with whom you want to ally and press the [Propose alliance] button. The other player will then receive an alert with the message that you want to ally with him. He can then accept it or deny it. Keep in mind that the alliance is made when the other player accepts it.\n\nWhen you want to break your alliance you can then open the mod menu and click the [break] button next to the alliance text. The mod will add an order that will let the server know you have broken the alliance so it can tell the other player and the rest of the game. This will also give the other player a warning instead of being attacked the same turn.";
+	mods["Diplomacy 2"]["How to set up"] = "Just adding this mod to the game is enough.";
+	mods["Diplomacy 2"]["Bugs"] = "The mod crashes if you try to break an alliance with an AI added to the game by the game creator. This bug is reported to the mod creator but you should not combine this mod with AIs added from the start.";
+	mods["Diplomacy 2"]["Compatibility"] = "Compatible with every mod and setting, except for AIs added from the start of the game.";
+	mods["Late Airlifts"] = {};
+	mods["Late Airlifts"]["Mod description"] = "Airlifts will happen through this Mod as last order";
+	mods["Late Airlifts"]["How does it work"] = "The mod description tells it really. The mod cancels every airlift made by the players, stores the orders and adds them back again all the way at the end of the turn. This way you cannot use airlifts as a direct defensive mechanism, but only to move troops around over great distances.";
+	mods["Late Airlifts"]["How to set up"] = "Just adding the mod is enough. You do have to enable airlift yourself.";
+	mods["Late Airlifts"]["Bugs"] = bugFreeMessage;
+	mods["Late Airlifts"]["Compatibility"] = compatibilityAllMessage;
 	-- Limited Attacks
 	mods["Limited Multiattacks"] = {};
 	mods["Limited Multiattacks"]["Mod description"] = "This mod allows you to limit the attack range of multiattack. Furthermore, you can bind it to cards";
@@ -173,6 +199,7 @@ function initManuals()
 	mods["AI's don't play cards"]["Bugs"] = "This isn’t really a bug, but it did make the mod behave differently than I expected. Since the effect of a reinforcement card goes into play immediately after playing it can not be canceled. Doing so will result in the effect going through and the AI keeping the card, meaning the AI would be able to play the card again next turn with the same thing happening.";
 	mods["AI's don't play cards"]["Compatibility"] = compatibilityAllMessage;
 	-- Better don't fail an attack
+	-- Bomb Card+
 	-- Bonus Airlift
 	-- BonusValue QuickOverrider
 	-- Capture The Flag
@@ -235,6 +262,7 @@ function initManuals()
 	mods["Press This Button"]["Bugs"] = bugFreeMessage;
 	mods["Press This Button"]["Compatibility"] = compatibilityAllMessage;
 	-- Random Starting Cities
+	-- Reverse Income
 	-- Reversed Bonus Armies Per Territory
 	-- Runtime Wastelands
 	-- Spawnbarriers
@@ -276,6 +304,15 @@ function initSeeAlsoList()
 	table.insert(seeAlsoList["Advanced Diplo Mod V4"], "Essentials/Mod configuration");
 	table.insert(seeAlsoList["Advanced Diplo Mod V4"], "Diplomacy");
 	table.insert(seeAlsoList["Advanced Diplo Mod V4"], "Diplomacy 2");
+	seeAlsoList["Buy Cards"] = {};
+	table.insert(seeAlsoList["Buy Cards"], "Essentials/Mod menu");
+	table.insert(seeAlsoList["Buy Cards"], "Essentials/Mod configuration");
+	seeAlsoList["Commerce Plus"] = {};
+	table.insert(seeAlsoList["Commerce Plus"], "Essentials/Mod configuration");
+	seeAlsoList["Diplomacy 2"] = {};
+	table.insert(seeAlsoList["Diplomacy 2"], "Essentials/Mod menu");
+	table.insert(seeAlsoList["Diplomacy 2"], "Diplomacy");
+	table.insert(seeAlsoList["Diplomacy 2"], "Advanced Diplo Mod V4");
 	seeAlsoList["Limited Multiattacks"] = {};
 	table.insert(seeAlsoList["Limited Multiattacks"], "Essentials/Mod settings");
 	table.insert(seeAlsoList["Limited Multiattacks"], "Essentials/Mod configuration");
