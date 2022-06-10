@@ -255,19 +255,19 @@ function offerPeace(game, playerID, payload, setReturn)
 			data.Relations[payload.Opponent][playerID] = "InPeace";
 			setReturn(setReturnPayload("The AI accepted your offer", "Success"));
 		else
+			local playerData = Mod.PlayerGameData;
 			if playerData[playerID].Offers[payload.Opponent] == nil then
-				local playerData = Mod.PlayerGameData;
 				if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
 				if playerData[payload.Opponent].Notifications.PeaceOffers == nil then playerData[payload.Opponent].Notifications.PeaceOffers = {}; end
 				table.insert(playerData[payload.Opponent].Notifications.PeaceOffers, playerID);
 				table.insert(playerData[payload.Opponent].PendingOffers, playerID);
 				playerData[playerID].Offers[payload.Opponent] = true;
 				playerData[payload.Opponent].Offers[playerID] = true;
-				Mod.PlayerGameData = playerData;
 				setReturn(setReturnPayload("Successfully offered peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
 			else
 				setReturn(setReturnPayload("There already is a pending peace offer", "Error"));
 			end
+			Mod.PlayerGameData = playerData;
 		end
 	else
 		setReturn(setReturnPayload("You cannot offer peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false) .. " this player since you're not in war with them", "Error"));
