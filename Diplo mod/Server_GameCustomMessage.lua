@@ -146,10 +146,20 @@ function joinFaction(game, playerID, payload, setReturn)
 			if playerData[p].Notifications == nil then playerData[p].Notifications = setPlayerNotifications(); end
 			table.insert(playerData[p].Notifications.JoinedPlayers, playerID);
 		end
-		Mod.PlayerGameData = playerData;
 		table.insert(data.Factions[payload.Faction].FactionMembers, playerID);
 		data.IsInFaction[playerID] = true;
 		data.PlayerInFaction[playerID] = payload.Faction;
+		for i, bool in pairs(data.Factions[payload.Faction].AtWar) do
+			if bool then
+				for _, p in pairs(data.Factions[i].FactionMembers) do
+					table.insert(playerData[playerID].Notifications.WarDeclarations, p);
+					table.insert(playerData[p].Notifications.WarDeclarations, playerID);
+					data.Relations[p][playerID] = "AtWar";
+					data.Relations[playerID][p] = "AtWar";
+				end
+			end
+		end
+		Mod.PlayerGameData = playerData;
 		setReturn(setReturnPayload("Successfully joined faction '" .. payload.Faction .. "'!", "Success"));
 	else
 		setReturn(setReturnPayload("You're already in a Faction!", "Error"));
@@ -277,6 +287,10 @@ function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
 				if playerData[i].Notifications.FactionsPeaceConfirmed == nil then playerData[i].Notifications.FactionsPeaceConfirmed = {}; end
 				table.insert(playerData[i].Notifications.FactionsPeaceConfirmed, faction);
+				for _, p in pairs(data.Factions[faction].FactionMembers) do
+					data.Relations[i][p] = "InPeace";
+					data.Relations[p][i] = "InPeace";
+				end
 			end
 			for _, i in pairs(data.Factions[faction].FactionMembers) do
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
@@ -297,10 +311,14 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	if payload.Index <= #playerData[playerID].PendingOffers then
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
-		table.insert(playerData[playerID].PendingOffers, payload.Index);
-		table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
-		data.Relations[opponent][playerID] = "InPeace";
-		data.Relations[playerID][opponent] = "InPeace";
+		if not data.Factions[data.PlayerInFaction[playerID]].AtWar[data.PlayerInFaction[opponent]] then
+			table.insert(playerData[playerID].PendingOffers, payload.Index);
+			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+			data.Relations[opponent][playerID] = "InPeace";
+			data.Relations[playerID][opponent] = "InPeace";
+		else
+			setReturn(setReturnPayload("You cannot accept peace while your faction is in war with your opponents faction", "Error"));
+		end
 	else
 		setReturn(setReturnPayload("Something went wrong", "Error"));
 	end
