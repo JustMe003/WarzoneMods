@@ -14,6 +14,7 @@ function Server_StartGame(game, standing)
 			playerData[i] = {};
 			playerData[i].LastMessage = game.ServerGame.Game.ServerTime;
 			playerData[i].Notifications = setPlayerNotifications();
+			playerData[i].NumberOfNotifications = 0;
 		end
 	end
 	data.Relations = relations;

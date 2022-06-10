@@ -1,16 +1,13 @@
 require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
-	if Mod.PublicGameData.Relations == nil then return; end
-	if dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
-		if alert ~= nil then
-			print(alert);
-		end
-		alert = showAlert(game);
+	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
+	if dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) and Mod.PlayerGameData.NumberOfNotifications ~= count(playerData.Notifications, function(t) return #t; end) then
+		showAlert(game);
 		local payload = {};
 		payload.Type = "5MinuteAlert";
 		payload.NewTime = tableToDate(addTime(dateToTable(game.Game.ServerTime), "Seconds", 5));
-		game.SendGameCustomMessage("Updating Factions mod...", payload, function(reply) end);		
+		game.SendGameCustomMessage("Updating Factions mod...", payload, function(reply) end);
 	end
 end
 
@@ -157,4 +154,17 @@ function dateIsEarlier(date1, date2)
 		end
 	end
 	return false;
+end
+
+
+function count(t, func)
+	local c = 0;
+	for i, v in pairs(t) do
+		if func ~= nil then
+			c = c + func(v);
+		else
+			c = c + 1;
+		end
+	end
+	return c;
 end

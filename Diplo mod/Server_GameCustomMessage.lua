@@ -89,6 +89,7 @@ function fiveMinuteAlert(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	if playerData[playerID] == nil then playerData[playerID] = {}; end
 	playerData[playerID].LastMessage = payload.NewTime;
+	playerData[playerID].NumberOfNotifications = count(playerData.Notifications, function(t) return #t; end);
 	playerData[playerID].Notifications = resetPlayerNotifications(playerData[playerID].Notifications);
 	Mod.PlayerGameData = playerData;
 end
@@ -271,4 +272,16 @@ function resetPlayerNotifications(t)
 	t.WarDeclarations = {};
 	t.PeaceConfirmed = {};
 	return t;
+end
+
+function count(t, func)
+	local c = 0;
+	for i, v in pairs(t) do
+		if func ~= nil then
+			c = c + func(v);
+		else
+			c = c + 1;
+		end
+	end
+	return c;
 end
