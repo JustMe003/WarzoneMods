@@ -203,6 +203,7 @@ function showFactionChat()
 	newButton(win .. "sendMessage", line, "Send", sendMessage, "Blue");
 	newButton(win .. "refresh", line, "Refresh", showFactionChat, "Green");
 	newLabel(win .. "empty", vert, "\n");
+	print(Mod.PublicGameData.PlayerInFaction[game.Us.ID]);
 	for i = #Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat, 1, -1 do
 		local message = Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat[i];
 		local line = newHorizontalGroup("line" .. i, vert);
