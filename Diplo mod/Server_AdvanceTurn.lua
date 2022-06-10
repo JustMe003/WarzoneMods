@@ -15,6 +15,11 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	if game.ServerGame.Game.TurnNumber ~= 1 then
 		playDiploCards(game, addNewOrder);
 	end
+	local playerData = Mod.PlayerGameData;
+	for i, _ in pairs(game.Game.PlayingPlayers) do
+		playerData[i].NumberOfNotifications = 0;
+	end
+	Mod.PlayerGameData = playerData;
 end
 
 function playDiploCards(game, addNewOrder)
