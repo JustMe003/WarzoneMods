@@ -2,9 +2,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if game.Settings.FogLevel ~= 1 then
 		playSpyCards(game, addNewOrder);
 	end
-	if game.ServerGame.Game.TurnNumber == 1 then
-		playDiploCards(game, addNewOrder);
-	end
+	playDiploCards(game, addNewOrder);
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
@@ -12,9 +10,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
-	if game.ServerGame.Game.TurnNumber ~= 1 then
-		playDiploCards(game, addNewOrder);
-	end
 	local playerData = Mod.PlayerGameData;
 	for i, _ in pairs(game.Game.PlayingPlayers) do
 		playerData[i].NumberOfNotifications = 0;
