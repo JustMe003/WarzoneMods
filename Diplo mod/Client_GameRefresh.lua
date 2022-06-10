@@ -73,9 +73,7 @@ function showAlert(game)
 	if playerData.Notifications.Messages ~= nil and #playerData.Notifications.Messages > 0 then
 		s = s .. "You have " .. #playerData.Notifications.Messages .. " unread messages in the faction chat";
 	end
-	if #s > 0 then
-		UI.Alert(s);
-	end
+	UI.Alert(s);
 end
 
 function getDateIndexList() return {"Year", "Month", "Day", "Hours", "Minutes", "Seconds", "MiliSeconds"}; end
