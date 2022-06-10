@@ -128,7 +128,7 @@ function joinFaction(game, playerID, payload, setReturn)
 		end
 		table.insert(data.Factions[payload.Faction].FactionMembers, playerID);
 		data.IsInFaction[playerID] = true;
-		data.PlayerInFaction = payload.Faction;
+		data.PlayerInFaction[playerID] = payload.Faction;
 		setReturn(setReturnPayload("Successfully joined faction '" .. payload.Faction .. "'!", "Success"));
 	else
 		setReturn(setReturnPayload("You're already in a Faction!", "Error"));
