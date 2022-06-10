@@ -113,8 +113,7 @@ function sendMessage(game, playerID, payload, setReturn)
 				table.insert(playerData.Notifications.Messages, true);
 				print(playerData.Notifications.Messages);
 				Mod.PlayerGameData[i] = playerData;
-				print(Mod.PlayerGameData[i].Notifications.Messages);
-				Mod.K.I = true;
+				print(#Mod.PlayerGameData[i].Notifications.Messages);
 --			end
 		end
 		ret = setReturnPayload("Successfully send message!", "Success");
