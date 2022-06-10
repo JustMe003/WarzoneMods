@@ -109,6 +109,7 @@ function sendMessage(game, playerID, payload, setReturn)
 				if playerData.Notifications.Messages == nil then playerData.Notifications.Messages = {}; end
 				table.insert(playerData.Notifications.Messages, true);
 				Mod.PlayerGameData[i] = playerData;
+				print(#Mod.PlayerGameData[i].Notifications.Messages);
 			end
 		end
 		ret = setReturnPayload("Successfully send message!", "Success");
