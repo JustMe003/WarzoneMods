@@ -18,7 +18,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	local playerData = Mod.PlayerGameData;
 	for i, _ in pairs(game.Game.PlayingPlayers) do
 		playerData[i].NumberOfNotifications = 0;
-		playerData[i].PendingOffers = {};
+		playerData[i].PeaceOffers = {};
 	end
 	Mod.PlayerGameData = playerData;
 end
