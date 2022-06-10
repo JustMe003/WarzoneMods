@@ -33,6 +33,7 @@ function createFaction(game, playerID, payload, setReturn);
 	t.FactionLeader = playerID;
 	t.FactionMembers = {};
 	t.FactionChat = {};
+	t.PendingOffers = {};
 	t.AtWar = {};
 	for i, _ in pairs(data.Factions) do
 		if i ~= payload.Name then
@@ -181,6 +182,8 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 	if data.IsInFaction[playerID] and data.PlayerInFaction[playerID] == payload.PlayerFaction then
 		if data.Factions[payload.PlayerFaction].FactionLeader == playerID then
 			if data.Factions[payload.OpponentFaction] ~= nil then
+				table.insert(data.Factions[payload.PlayerFaction].PendingOffers, payload.OpponentFaction);
+				table.insert(data.Factions[payload.OpponentFaction].PendingOffers, payload.PlayerFaction);
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 					local playerData = Mod.PlayerGameData;
 					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end

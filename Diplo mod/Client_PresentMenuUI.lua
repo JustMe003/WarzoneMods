@@ -138,6 +138,8 @@ function factionSettings(factionName)
 	local vert = newVerticalGroup("vert", "root");
 	newButton(win .. "DeclareWar", vert, "Declare war", function() declareFactionWar(factionName) end, "Red", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return not(v); end) > 0);
 	newButton(win .. "PeaceOffer", vert, "Offer peace", function() offerFactionPeace(factionName) end, "Green", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return v; end) > 0);
+	newButton(win .. "pendingPeaceOffers", vert, "Pending offers", function() pendingFactionPeaceOffers(factionName) end, "Cyan", getTableLength(Mod.PublicGameData.Factions[factionName].PendingOffers) > 0);
+	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName) end, "Orange");
 end
 
 function declareFactionWar(factionName)
@@ -176,6 +178,22 @@ function offerFactionPeace(factionName)
 	end
 end
 
+function pendingFactionPeaceOffers(factionName)
+	local win = "pendingFactionPeaceOffers";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newLabel(win .. "n", vert, "You have " .. #Mod.PublicGameData.Factions[factionName].PendingOffers .. " peace offers");
+	for i, v in pairs() do
+		newButton(win .. i, vert, v, function() end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
+	end
+	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName) end, "Orange");
+end
+
+
 function confirmChoice(message, yesFunc, noFunc)
 	local win = "confirmOfferFactionPeace";
 	destroyWindow(getCurrentWindow());
@@ -207,7 +225,7 @@ function showFactionChat()
 	for i = #Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat, 1, -1 do
 		local message = Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat[i];
 		local line = newHorizontalGroup("line" .. i, vert);
-		newLabel(win .. "player" .. i, line, game.Game.Players[message.Player].DisplayName(nil, false) .. ": ", game.Game.Players[message.Player].Color.HtmlColor);
+		newLabel(win .. "player" .. i, line, game.Game.Players[message.Player].DisplayName(nil, false) .. ": ", game.Game.Players[message.Player].Color.HtmlColor, -1, -1, 1);
 		newLabel(win .. "text" .. i, line, message.Text, game.Game.Players[message.Player].Color.HtmlColor);
 	end
 end
