@@ -140,7 +140,7 @@ function joinFaction(game, playerID, payload, setReturn)
 		local playerData = Mod.PlayerGameData;
 		for _, p in pairs(data.Factions[payload.Faction].FactionMembers) do
 			if data.Relations[playerID][p] == "AtWar" then
-				setReturn(setReturnPayload("You cannot join the faction while you're at war with one of the factionmembers", "Error"));
+				setReturn(setReturnPayload("You cannot join the faction while you're at war with one of the factionmembers (" .. game.ServerGame.Game.Players[p].DisplayName(nil, false) .. ")", "Error"));
 				return;
 			end
 			if playerData[p].Notifications == nil then playerData[p].Notifications = setPlayerNotifications(); end
@@ -193,7 +193,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 				end
 				Mod.PlayerGameData = playerData;
 			else
-				setReturn(setReturnPayload("The opponent faction was not found", "Error"));
+				setReturn(setReturnPayload("The '" .. payload.OpponentFaction .. "' opponent faction was not found", "Error"));
 			end
 		else
 			setReturn(setReturnPayload("This action can only be done by faction leaders, and you're not one of them.", "Error"));
@@ -218,7 +218,7 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 				end
 				Mod.PlayerGameData = playerData;
 			else
-				setReturn(setReturnPayload("The opponent faction was not found", "Error"));
+				setReturn(setReturnPayload("The '" .. payload.OpponentFaction .. "' faction was not found", "Error"));
 			end
 		else
 			setReturn(setReturnPayload("This action can only be done by faction leaders, and you're not one of them.", "Error"));
@@ -238,9 +238,9 @@ function declareWar(game, playerID, payload, setReturn)
 			table.insert(playerData[payload.Opponent].Notifications.WarDeclarations, playerID);
 			Mod.PlayerGameData = playerData;
 		end
-		setReturn(setReturnPayload("Successfully declared war on this player", "Success"));
+		setReturn(setReturnPayload("Successfully declared war on " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
 	else
-		setReturn(setReturnPayload("You cannot declare war on this player", "Error"))
+		setReturn(setReturnPayload("You cannot declare war on " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Error"))
 	end
 end
 
@@ -259,10 +259,10 @@ function offerPeace(game, playerID, payload, setReturn)
 			playerData[playerID].Offers[payload.Opponent] = true;
 			playerData[payload.Opponent].Offers[playerID] = true;
 			Mod.PlayerGameData = playerData;
-			setReturn(setReturnPayload("Successfully offered peace to this player", "Success"));
+			setReturn(setReturnPayload("Successfully offered peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
 		end
 	else
-		setReturn(setReturnPayload("You cannot offer peace to this player since you're not in war with them", "Error"));
+		setReturn(setReturnPayload("You cannot offer peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false) .. " this player since you're not in war with them", "Error"));
 	end
 end
 

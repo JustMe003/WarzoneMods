@@ -91,7 +91,9 @@ function showPlayerDetails(playerID)
 	local isAtWarFromFaction = false;
 	newLabel(win .. "name", vert, game.Game.PlayingPlayers[playerID].DisplayName(nil, false));
 	if Mod.PublicGameData.IsInFaction[playerID] then
-		newLabel(win .. "factionName", vert, Mod.PublicGameData.PlayerInFaction[playerID], game.Game.Players[Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[playerID]].FactionLeader].Color.HtmlColor);
+		local line = newHorizontalGroup(win .. "line10", vert);
+		newLabel(win .. "factionNameText", line, "Faction: ");
+		newLabel(win .. "factionName", line, Mod.PublicGameData.PlayerInFaction[playerID], game.Game.Players[Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[playerID]].FactionLeader].Color.HtmlColor);
 		if Mod.PublicGameData.IsInFaction[game.Us.ID] then
 			local line = newHorizontalGroup(win .. "line", vert);
 			newLabel(win .. "factionRelation", line, "Relation between faction: ");
@@ -110,7 +112,7 @@ function showPlayerDetails(playerID)
 	newLabel(win .. "privateRelation", line, "Personal relation: ")
 	if Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" then
 		newLabel(win .. "relationStatus", line, "Hostile", "Red");
-	elseif Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" then
+	elseif Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InPeace" then
 		newLabel(win .. "relationStatus", line, "peaceful", "Yellow");
 	else
 		newLabel(win .. "relationStatus", line, "Friendly", "Green");
