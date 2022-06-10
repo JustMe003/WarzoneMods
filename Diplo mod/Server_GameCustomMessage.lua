@@ -114,6 +114,7 @@ function sendMessage(game, playerID, payload, setReturn)
 				print(Mod.PlayerGameData[i].Notifications.Messages);
 				Mod.PlayerGameData[i] = playerData;
 				print(Mod.PlayerGameData[i].Notifications.Messages);
+				Mod.K = true;
 			end
 		end
 		ret = setReturnPayload("Successfully send message!", "Success");
