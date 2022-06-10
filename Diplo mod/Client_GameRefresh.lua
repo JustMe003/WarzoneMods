@@ -1,6 +1,7 @@
 require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
+	if Mod.PublicGameData.Relations == nil then return; end
 	if dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
 		showAlert(game);
 		local payload = {};
