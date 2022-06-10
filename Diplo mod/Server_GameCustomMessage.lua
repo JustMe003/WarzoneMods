@@ -319,6 +319,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	if payload.Index <= #playerData[playerID].PendingOffers then
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
+		print(data.PlayerInFaction[opponent], data.PlayerInFaction[playerID]);
 		if not data.Factions[data.PlayerInFaction[playerID]].AtWar[data.PlayerInFaction[opponent]] then
 			table.insert(playerData[playerID].PendingOffers, payload.Index);
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
