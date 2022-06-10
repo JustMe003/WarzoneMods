@@ -146,6 +146,8 @@ function declareFactionWar(game, playerID, payload, setReturn)
 	if data.IsInFaction[playerID] and data.PlayerInFaction[playerID] == payload.PlayerFaction then
 		if data.Factions[payload.PlayerFaction].FactionLeader == playerID then
 			if data.Factions[payload.OpponentFaction] ~= nil then
+				data.Factions[payload.PlayerFaction].AtWar[payload.OpponentFaction] = true;
+				data.Factions[payload.OpponentFaction].AtWar[payload.PlayerFaction] = true;
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 					local playerData = Mod.PlayerGameData;
 					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
