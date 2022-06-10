@@ -44,6 +44,7 @@ function createFaction(game, playerID, payload, setReturn);
 	data.Factions = factions;
 	data.IsInFaction[playerID] = true;
 	data.PlayerInFaction[playerID] = payload.Name;
+	print(data.PlayerInFaction[playerID])
 	setReturn(setReturnPayload("Successfully created the faction '" .. payload.Name .. "'", "Success"));
 end
 
