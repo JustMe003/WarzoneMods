@@ -3,10 +3,10 @@ function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PublicGameData.Relations == nil then return; end
 	if dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
-		alert = showAlert(game);
 		if alert ~= nil then
 			print(alert);
 		end
+		alert = showAlert(game);
 		local payload = {};
 		payload.Type = "5MinuteAlert";
 		payload.NewTime = tableToDate(addTime(dateToTable(game.Game.ServerTime), "Seconds", 5));
