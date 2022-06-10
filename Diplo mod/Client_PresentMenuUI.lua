@@ -187,7 +187,7 @@ function pendingFactionPeaceOffers(factionName)
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	newLabel(win .. "n", vert, "You have " .. #Mod.PublicGameData.Factions[factionName].PendingOffers .. " peace offers");
-	for i, v in pairs() do
+	for i, v in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
 		newButton(win .. i, vert, v, function() end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
 	end
 	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName) end, "Orange");
