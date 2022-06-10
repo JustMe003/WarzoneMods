@@ -256,7 +256,7 @@ end
 
 function acceptPeaceOffer(game, playerID, payload, setReturn)
 	local faction = data.PlayerInFaction[playerID];
-	if payload.Index <= #data.Factions[acceptPeaceOffer].PendingOffers then
+	if payload.Index <= #data.Factions[data.PlayerInFaction[playerID]].PendingOffers then
 		local opponentFaction = data.Factions[acceptPeaceOffer].PendingOffers[payload.Index];
 		if data.Factions[opponentFaction] ~= nil then
 			table.remove(data.Factions[opponentFaction].PendingOffers, payload.Index);
