@@ -2,7 +2,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	data = Mod.PublicGameData;
 	local functions = {};
 	functions["CreateFaction"] = createFaction;
-	functions["LeaveFaction"] = leaveFaction;
+	functions["leaveFaction"] = leaveFaction;
 	functions["5MinuteAlert"] = fiveMinuteAlert;
 	functions["sendMessage"] = sendMessage;
 	functions["joinFaction"] = joinFaction;
