@@ -56,12 +56,27 @@ function showPlayerPage()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "PendingOffers", vert, "Pending offers", showPendingOffers, "Cyan", getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
 	for i, p in pairs(game.Game.PlayingPlayers) do
 		if i ~= game.Us.ID then
 			newButton(win .. i, vert, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
 		end
 	end
 	newButton(win .. "Return", vert, "Return", showMenu, "Orange");
+end
+
+function showPendingOffers()
+	local win = "showPendingOffers";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
+		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, ); showPlayerPage(); end, function() showPendingOffers(); end); end, game.Game.Players[v].Color.HtmlColor);
+	end
+	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
 end
 
 function showPlayerDetails(playerID)
@@ -108,8 +123,8 @@ function showFactionDetails(factionName)
 	local line = newHorizontalGroup(win .. "line", vert);
 	local bool = Mod.PublicGameData.PlayerInFaction[game.Us.ID] == factionName;
 	local color;
-	newButton(win .. "LeaveFaction", line, "Leave Faction", leaveFaction, "Red", bool);
-	newButton(win .. "JoinFaction", line, "Join Faction", function() joinFaction(factionName) end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil);
+	newButton(win .. "LeaveFaction", line, "Leave Faction", function() confirmChoice("Are you sure you want to leave the '" .. factionName .. "' faction?", function() game.SendGameCustomMessage("Leaving faction...", {Type="leaveFaction"}); Close(); end, function() showFactionDetails(factionName); end); end, "Red", bool);
+	newButton(win .. "JoinFaction", line, "Join Faction", function() confirmChoice("Do you wish to join the '" .. factionName .. "' faction?", function() game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", Faction=factionName}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil);
 	newButton(win .. "return", line, "Return", showFactions, "Orange");
 	if bool then 
 		color = "Lime"; 
@@ -188,7 +203,7 @@ function pendingFactionPeaceOffers(factionName)
 	local vert = newVerticalGroup("vert", "root");
 	newLabel(win .. "n", vert, "You have " .. #Mod.PublicGameData.Factions[factionName].PendingOffers .. " peace offers");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
-		newButton(win .. i, vert, v, function() confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end, function() factionSettings(factionName); end); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
+		newButton(win .. i, vert, v, function() confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end, function() factionSettings(factionName); end); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
 	end
 	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName) end, "Orange");
 end
@@ -235,20 +250,6 @@ function sendMessage()
 	payload.Type = "sendMessage";
 	payload.Text = getText("showFactionChattypeMessage");
 	game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
-end
-
-function leaveFaction()
-	local payload = {};
-	payload.Type = "LeaveFaction";
-	game.SendGameCustomMessage("Leaving faction...", payload, gameCustomMessageReturn);
-	Close();
-end
-
-function joinFaction(faction)
-	local payload = {};
-	payload.Type = "joinFaction";
-	payload.Faction = faction;
-	game.SendGameCustomMessage("Joining faction...", payload, gameCustomMessageReturn);
 end
 
 function createFaction()

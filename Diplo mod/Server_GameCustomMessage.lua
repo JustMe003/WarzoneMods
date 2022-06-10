@@ -11,6 +11,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["declareWar"] = declareWar;
 	functions["peaceOffer"] = offerPeace;
 	functions["openedChat"] = openedChat;
+	functions["acceptFactionPeaceOffer"] = acceptFactionPeaceOffer;
 	functions["acceptPeaceOffer"] = acceptPeaceOffer;
 	
 	print(payload.Type);
@@ -239,7 +240,8 @@ function offerPeace(game, playerID, payload, setReturn)
 		else
 			local playerData = Mod.PlayerGameData;
 			if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
-			table.insert(playerData[payload.Opponent].Notifications.WarDeclarations, playerID);
+			table.insert(playerData[payload.Opponent].Notifications.PeaceOffers, playerID);
+			table.insert(playerData[payload.Opponent].PendingOffers, playerID);
 			Mod.PlayerGameData = playerData;
 			setReturn(setReturnPayload("Successfully offered peace to this player", "Success"));
 		end
@@ -254,7 +256,7 @@ function openedChat(game, playerID, payload, setReturn)
 	Mod.PlayerGameData = playerData;
 end
 
-function acceptPeaceOffer(game, playerID, payload, setReturn)
+function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 	local faction = data.PlayerInFaction[playerID];
 	if payload.Index <= #data.Factions[faction].PendingOffers then
 		local opponentFaction = data.Factions[faction].PendingOffers[payload.Index];
@@ -272,6 +274,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
 				if playerData[i].Notifications.FactionsPeaceConfirmed == nil then playerData[i].Notifications.FactionsPeaceConfirmed = {}; end
 				table.insert(playerData[i].Notifications.FactionsPeaceConfirmed, opponentFaction);
+				table.remove(playerData[i].Notifications.FactionsPeaceOffers, payload.Index);
 			end
 			Mod.PlayerGameData = playerData;
 		else
@@ -280,6 +283,20 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 	else
 		setReturn(setReturnPayload("Something went wrong", "Error"));
 	end
+end
+
+function acceptPeaceOffer(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	if payload.Index <= #playerData[playerID].PendingOffers then
+		local opponent = playerData[playerID].PendingOffers[payload.Index];
+		table.insert(playerData[playerID].PendingOffers, payload.Index);
+		table.insert(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+		data.Relations[opponent][playerID] = "InPeace";
+		data.Relations[playerID][opponent] = "InPeace";
+	else
+		setReturn(setReturnPayload("Something went wrong", "Error"));
+	end
+	Mod.PlayerGameData = playerData;
 end
 
 function setPlayerNotifications()
