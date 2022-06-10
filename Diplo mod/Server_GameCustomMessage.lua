@@ -240,7 +240,7 @@ function offerPeace(game, playerID, payload, setReturn)
 		else
 			local playerData = Mod.PlayerGameData;
 			if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
-			if playerData[payload.Opponent.Notifications.PeaceOffers == nil then playerData[payload.Opponent.Notifications.PeaceOffers = {}; end
+			if playerData[payload.Opponent].Notifications.PeaceOffers == nil then playerData[payload.Opponent].Notifications.PeaceOffers = {}; end
 			table.insert(playerData[payload.Opponent].Notifications.PeaceOffers, playerID);
 			table.insert(playerData[payload.Opponent].PendingOffers, playerID);
 			Mod.PlayerGameData = playerData;
