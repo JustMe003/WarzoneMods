@@ -74,6 +74,7 @@ function showPendingOffers()
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
+		print(game.Game.Players[v].DisplayName(nil, false));
 		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); showPlayerPage(); end, function() showPendingOffers(); end); end, game.Game.Players[v].Color.HtmlColor);
 	end
 	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
