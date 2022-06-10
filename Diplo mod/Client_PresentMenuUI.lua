@@ -109,7 +109,7 @@ function showPlayerDetails(playerID)
 	newLabel(win .. "privateRelation", line, "Personal relation: ")
 	if Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" then
 		newLabel(win .. "relationStatus", line, "Hostile", "Red");
-	elseif Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar"
+	elseif Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" then
 		newLabel(win .. "relationStatus", line, "peaceful", "Yellow");
 	else
 		newLabel(win .. "relationStatus", line, "Friendly", "Green");
