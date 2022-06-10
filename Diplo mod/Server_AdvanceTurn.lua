@@ -30,12 +30,14 @@ function playDiploCards(game, addNewOrder)
 				table.insert(instances, WL.NoParameterCardInstance.Create(WL.CardID.Diplomacy));
 			end
 		end
-		addNewOrder(WL.GameOrderReceiveCard.Create(v, instances));
-		local count2 = 1;
-		for i = count, #a do
-			if Mod.PublicGameData.Relations[v][a[i]] ~= "AtWar" and not sameTeam(game.ServerGame.Game.PlayingPlayers[a[i]], game.ServerGame.Game.PlayingPlayers[v]) then
-				addNewOrder(WL.GameOrderPlayCardDiplomacy.Create(instances[count2].ID, v, v, a[i]));
-				count2 = count2 + 1;
+		if #instances > 0 then
+			addNewOrder(WL.GameOrderReceiveCard.Create(v, instances));
+			local count2 = 1;
+			for i = count, #a do
+				if Mod.PublicGameData.Relations[v][a[i]] ~= "AtWar" and not sameTeam(game.ServerGame.Game.PlayingPlayers[a[i]], game.ServerGame.Game.PlayingPlayers[v]) then
+					addNewOrder(WL.GameOrderPlayCardDiplomacy.Create(instances[count2].ID, v, v, a[i]));
+					count2 = count2 + 1;
+				end
 			end
 		end
 		count = count + 1;
@@ -53,9 +55,11 @@ function playSpyCards(game, addNewOrder)
 					table.insert(instances, WL.NoParameterCardInstance.Create(WL.CardID.Spy));
 				end
 			end
-			addNewOrder(WL.GameOrderReceiveCard.Create(p.ID, instances));
-			for i = 1, #a do
-				addNewOrder(WL.GameOrderPlayCardSpy.Create(instances[i].ID, p.ID, a[i]));
+			if #a > 0 then
+				addNewOrder(WL.GameOrderReceiveCard.Create(p.ID, instances));
+				for i = 1, #a do
+					addNewOrder(WL.GameOrderPlayCardSpy.Create(instances[i].ID, p.ID, a[i]));
+				end
 			end
 		end
 	end
