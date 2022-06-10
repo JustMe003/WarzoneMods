@@ -105,11 +105,11 @@ function sendMessage(game, playerID, payload, setReturn)
 		for _, i in pairs(data.Factions[faction].FactionMembers) do
 			if i ~= playerID then
 				local playerData = Mod.PlayerGameData[i];
-				print(type(playerData.Notifications));
+				print(playerData.Notifications);
 				if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-				print(type(playerData.Notifications));
+				print(playerData.Notifications);
 				if playerData.Notifications.Messages == nil then playerData.Notifications.Messages = {}; end
-				print(type(playerData.Notifications.Messages));
+				print(playerData.Notifications.Messages);
 				table.insert(playerData.Notifications.Messages, true);
 				print(Mod.PlayerGameData[i].Notifications.Messages);
 				Mod.PlayerGameData[i] = playerData;
