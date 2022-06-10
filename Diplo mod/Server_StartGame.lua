@@ -13,6 +13,7 @@ function Server_StartGame(game, standing)
 		if not p.IsAI then
 			playerData[i] = {};
 			playerData[i].LastMessage = game.ServerGame.Game.ServerTime;
+			playerData[i].Notifications = setPlayerNotifications();
 		end
 	end
 	data.Relations = relations;
@@ -20,4 +21,19 @@ function Server_StartGame(game, standing)
 	data.PlayerInFaction = playerInFaction;
 	Mod.PlayerGameData = playerData;
 	Mod.PublicGameData = data;
+end
+
+
+function setPlayerNotifications()
+	local t = {};
+	t.Messages = {};
+	t.LeftPlayers = {};
+	t.JoinedPlayers = {};
+	t.FactionWarDeclarations = {};
+	t.FactionsPeaceOffers = {};
+	t.FactionsPeaceConfirmed = {};
+	t.WarDeclarations = {};
+	t.PeaceOffers = {};
+	t.PeaceConfirmed = {};
+	return t;
 end
