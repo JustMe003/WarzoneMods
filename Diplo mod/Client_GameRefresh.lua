@@ -6,7 +6,7 @@ function Client_GameRefresh(game)
 		showAlert(game);
 		local payload = {};
 		payload.Type = "5MinuteAlert";
-		payload.NewTime = tableToDate(addTime(dateToTable(game.Game.ServerTime), "Minutes", 1));
+		payload.NewTime = tableToDate(addTime(dateToTable(game.Game.ServerTime), "Seconds", 5));
 		game.SendGameCustomMessage("Updating Factions mod...", payload, function(reply) end);		
 	end
 end
