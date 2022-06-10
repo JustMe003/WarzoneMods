@@ -207,16 +207,20 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 	if data.IsInFaction[playerID] and data.PlayerInFaction[playerID] == payload.PlayerFaction then
 		if data.Factions[payload.PlayerFaction].FactionLeader == playerID then
 			if data.Factions[payload.OpponentFaction] ~= nil then
-				table.insert(data.Factions[payload.OpponentFaction].PendingOffers, payload.PlayerFaction);
-				data.Factions[payload.PlayerFaction].Offers[payload.OpponentFaction] = true;
-				data.Factions[payload.OpponentFaction].Offers[payload.PlayerFaction] = true;
-				local playerData = Mod.PlayerGameData;
-				for _, i in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
-					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
-					if playerData[i].Notifications.FactionsPeaceOffers == nil then playerData[i].Notifications.FactionsPeaceOffers = {}; end
-					table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.PlayerFaction);
+				if data.Factions[payload.PlayerFaction].Offers[payload.OpponentFaction] == nil then
+					table.insert(data.Factions[payload.OpponentFaction].PendingOffers, payload.PlayerFaction);
+					data.Factions[payload.PlayerFaction].Offers[payload.OpponentFaction] = true;
+					data.Factions[payload.OpponentFaction].Offers[payload.PlayerFaction] = true;
+					local playerData = Mod.PlayerGameData;
+					for _, i in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
+						if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+						if playerData[i].Notifications.FactionsPeaceOffers == nil then playerData[i].Notifications.FactionsPeaceOffers = {}; end
+						table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.PlayerFaction);
+					end
+					Mod.PlayerGameData = playerData;
+				else
+					setReturn(setReturnPayload("There already is a pending peace offer.", "Error"));
 				end
-				Mod.PlayerGameData = playerData;
 			else
 				setReturn(setReturnPayload("The '" .. payload.OpponentFaction .. "' faction was not found", "Error"));
 			end
@@ -251,15 +255,19 @@ function offerPeace(game, playerID, payload, setReturn)
 			data.Relations[payload.Opponent][playerID] = "InPeace";
 			setReturn(setReturnPayload("The AI accepted your offer", "Success"));
 		else
-			local playerData = Mod.PlayerGameData;
-			if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
-			if playerData[payload.Opponent].Notifications.PeaceOffers == nil then playerData[payload.Opponent].Notifications.PeaceOffers = {}; end
-			table.insert(playerData[payload.Opponent].Notifications.PeaceOffers, playerID);
-			table.insert(playerData[payload.Opponent].PendingOffers, playerID);
-			playerData[playerID].Offers[payload.Opponent] = true;
-			playerData[payload.Opponent].Offers[playerID] = true;
-			Mod.PlayerGameData = playerData;
-			setReturn(setReturnPayload("Successfully offered peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
+			if playerData[playerID].Offers[payload.Opponent] == nil then
+				local playerData = Mod.PlayerGameData;
+				if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
+				if playerData[payload.Opponent].Notifications.PeaceOffers == nil then playerData[payload.Opponent].Notifications.PeaceOffers = {}; end
+				table.insert(playerData[payload.Opponent].Notifications.PeaceOffers, playerID);
+				table.insert(playerData[payload.Opponent].PendingOffers, playerID);
+				playerData[playerID].Offers[payload.Opponent] = true;
+				playerData[payload.Opponent].Offers[playerID] = true;
+				Mod.PlayerGameData = playerData;
+				setReturn(setReturnPayload("Successfully offered peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
+			else
+				setReturn(setReturnPayload("There already is a pending peace offer", "Error"));
+			end
 		end
 	else
 		setReturn(setReturnPayload("You cannot offer peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false) .. " this player since you're not in war with them", "Error"));
