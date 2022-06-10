@@ -191,6 +191,7 @@ function confirmChoice(message, yesFunc, noFunc)
 end
 
 function showFactionChat()
+	game.SendGameCustomMessage("updating mod...", { Type="openedChat" }, gameCustomMessageReturn);
 	local win = "showFactionChat";
 	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
@@ -250,7 +251,6 @@ function createFaction()
 end
 
 function verifyFactionName(name)
-	print(name);
 	for i, _ in pairs(Mod.PublicGameData.Factions) do
 		if i == name then
 			UI.Alert("This faction name already exists! Try a different name");

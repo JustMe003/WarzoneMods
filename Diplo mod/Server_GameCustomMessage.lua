@@ -10,6 +10,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["offerFactionPeace"] = offerFactionPeace;
 	functions["declareWar"] = declareWar;
 	functions["peaceOffer"] = offerPeace;
+	functions["openedChat"] = openedChat;
 	
 	print(payload.Type);
 	
@@ -63,6 +64,7 @@ function leaveFaction(game, playerID, payload, setReturn)
 				local playerData = Mod.PlayerGameData;
 				if playerData[v].Notifications == nil then playerData[v].Notifications = setPlayerNotifications(); end
 				table.insert(playerData[v].Notifications.LeftPlayers, playerID);
+				playerData[v].Notifications.Messages = {};
 				Mod.PlayerGameData = playerData;
 			end
 		end
@@ -232,6 +234,12 @@ function offerPeace(game, playerID, payload, setReturn)
 	else
 		setReturn(setReturnPayload("You cannot offer peace to this player since you're not in war with them", "Error"));
 	end
+end
+
+function openedChat(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	playerData[playerID].Notifications.Messages = {};
+	Mod.PlayerGameData = playerData;
 end
 
 function setPlayerNotifications()

@@ -16,42 +16,42 @@ function showAlert(game)
 	if playerData.Notifications == nil then return; end
 	local s = "";
 	if playerData.Notifications.FactionWarDeclarations ~= nil and #playerData.Notifications.FactionWarDeclarations > 0 then
-		s = s .. "Your faction is now at war with the following factions:";
+		s = s .. "Your faction is now at war with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionWarDeclarations) do
 			s = s .. " - " .. v .. "\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.WarDeclarations ~= nil and #playerData.Notifications.WarDeclarations > 0 then
-		s = s .. "You're now at war with the following players:";
+		s = s .. "You're now at war with the following players:\n";
 		for _, v in pairs(playerData.Notifications.WarDeclarations) do
 			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.FactionsPeaceOffers ~= nil and #playerData.Notifications.FactionsPeaceOffers > 0 then
-		s = s .. "Your faction received the following peace offers from other factions:";
+		s = s .. "Your faction received the following peace offers from other factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceOffers) do
 			s = s .. " - " .. v .. "\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.PeaceOffers ~= nil and #playerData.Notifications.PeaceOffers > 0 then
-		s = s .. "You received the following peace offers from players:";
+		s = s .. "You received the following peace offers from players:\n";
 		for _, v in pairs(playerData.Notifications.PeaceOffers) do
 			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.FactionsPeaceConfirmed ~= nil and #playerData.Notifications.FactionsPeaceConfirmed > 0 then
-		s = s .. "You're faction is now in peace with the following factions:";
+		s = s .. "You're faction is now in peace with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceConfirmed) do
 			s = s .. " - " .. v .. "\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.PeaceConfirmed ~= nil and #playerData.Notifications.PeaceConfirmed > 0 then
-		s = s .. "You're now in peace with the following players:";
+		s = s .. "You're now in peace with the following players:\n";
 		for _, v in pairs(playerData.Notifications.PeaceConfirmed) do
 			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
 		end
