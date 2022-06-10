@@ -319,14 +319,21 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	if payload.Index <= #playerData[playerID].PendingOffers then
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
-		print(data.PlayerInFaction[opponent], data.PlayerInFaction[playerID]);
-		if not data.Factions[data.PlayerInFaction[playerID]].AtWar[data.PlayerInFaction[opponent]] then
-			table.insert(playerData[playerID].PendingOffers, payload.Index);
+		if data.IsInFaction[playerID] and data.IsInFaction[opponent] then
+			if not data.Factions[data.PlayerInFaction[playerID]].AtWar[data.PlayerInFaction[opponent]] then
+				table.remove(playerData[playerID].PendingOffers, payload.Index);
+				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+				data.Relations[opponent][playerID] = "InPeace";
+				data.Relations[playerID][opponent] = "InPeace";
+			else
+				setReturn(setReturnPayload("You cannot accept peace while your faction is in war with your opponents faction", "Error"));
+			end
+		else
+			table.remove(playerData[playerID].PendingOffers, payload.Index);
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 			data.Relations[opponent][playerID] = "InPeace";
 			data.Relations[playerID][opponent] = "InPeace";
-		else
-			setReturn(setReturnPayload("You cannot accept peace while your faction is in war with your opponents faction", "Error"));
+			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID)
 		end
 	else
 		setReturn(setReturnPayload("Something went wrong", "Error"));
