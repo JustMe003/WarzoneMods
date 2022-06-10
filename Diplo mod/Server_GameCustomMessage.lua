@@ -111,7 +111,7 @@ function sendMessage(game, playerID, payload, setReturn)
 				if playerData.Notifications.Messages == nil then playerData.Notifications.Messages = {}; end
 				print(type(playerData.Notifications.Messages));
 				table.insert(playerData.Notifications.Messages, true);
-				print(Mod.PlayerGameData[i].Notifications.Messages);
+				print(playerData.Notifications.Messages);
 				Mod.PlayerGameData[i] = playerData;
 				print(Mod.PlayerGameData[i].Notifications.Messages);
 				Mod.K.I = true;
