@@ -13,7 +13,7 @@ end
 
 function showAlert(game)
 	local playerData = Mod.PlayerGameData;
-	print(type(playerData))
+	print(type(playerData.Notifications))
 	if playerData.Notifications == nil then return; end
 	local s = "";
 	if playerData.Notifications.FactionWarDeclarations ~= nil and #playerData.Notifications.FactionWarDeclarations > 0 then
