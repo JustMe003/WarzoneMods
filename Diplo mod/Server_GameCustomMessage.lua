@@ -184,12 +184,14 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 					local playerData = Mod.PlayerGameData;
 					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					if playerData[i].Notifications.FactionsPeaceOffers == nil then playerData[i].Notifications.FactionsPeaceOffers = {}; end
 					table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.OpponentFaction);
 					Mod.PlayerGameData = playerData;
 				end
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 					local playerData = Mod.PlayerGameData;
 					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					if playerData[i].Notifications.FactionsPeaceOffers == nil then playerData[i].Notifications.FactionsPeaceOffers = {}; end
 					table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.PlayerFaction);
 					Mod.PlayerGameData = playerData;
 				end
