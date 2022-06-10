@@ -109,7 +109,7 @@ function showFactionDetails(factionName)
 	local bool = Mod.PublicGameData.PlayerInFaction[game.Us.ID] == factionName;
 	local color;
 	newButton(win .. "LeaveFaction", line, "Leave Faction", leaveFaction, "Red", bool);
-	newButton(win .. "JoinFaction", line, "Join Faction", function() joinFaction(factionName) end, "Green", not(bool));
+	newButton(win .. "JoinFaction", line, "Join Faction", function() joinFaction(factionName) end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil);
 	newButton(win .. "return", line, "Return", showFactions, "Orange");
 	if bool then 
 		color = "Lime"; 
@@ -188,7 +188,7 @@ function pendingFactionPeaceOffers(factionName)
 	local vert = newVerticalGroup("vert", "root");
 	newLabel(win .. "n", vert, "You have " .. #Mod.PublicGameData.Factions[factionName].PendingOffers .. " peace offers");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
-		newButton(win .. i, vert, v, function() end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
+		newButton(win .. i, vert, v, function() confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); end, function() end); factionSettings(); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
 	end
 	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName) end, "Orange");
 end
