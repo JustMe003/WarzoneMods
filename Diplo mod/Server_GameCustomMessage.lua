@@ -89,8 +89,8 @@ function fiveMinuteAlert(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	if playerData[playerID] == nil then playerData[playerID] = {}; end
 	playerData[playerID].LastMessage = payload.NewTime;
-	playerData[playerID].NumberOfNotifications = count(playerData.Notifications, function(t) return #t; end);
 	playerData[playerID].Notifications = resetPlayerNotifications(playerData[playerID].Notifications);
+	playerData[playerID].NumberOfNotifications = count(playerData.Notifications, function(t) return #t; end);
 	Mod.PlayerGameData = playerData;
 end
 
