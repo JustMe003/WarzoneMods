@@ -291,7 +291,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 	if payload.Index <= #playerData[playerID].PendingOffers then
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
 		table.insert(playerData[playerID].PendingOffers, payload.Index);
-		table.insert(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+		table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 		data.Relations[opponent][playerID] = "InPeace";
 		data.Relations[playerID][opponent] = "InPeace";
 	else
