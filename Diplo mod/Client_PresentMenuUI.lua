@@ -56,7 +56,7 @@ function showPlayerPage()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "PendingOffers", vert, "Pending offers", showPendingOffers, "Cyan", getTableLength(Mod.PlayerGameData.PendingOffers, function(v) return Mod.PlayerGameData.Offers[v] == nil; end) > 0);
+	newButton(win .. "PendingOffers", vert, "Pending offers", showPendingOffers, "Cyan", getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
 	for i, p in pairs(game.Game.PlayingPlayers) do
 		if i ~= game.Us.ID then
 			newButton(win .. i, vert, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
@@ -117,7 +117,7 @@ function showPlayerDetails(playerID)
 	newLabel(win .. "EmptyAfterOpponentFaction", vert, "\n");
 	local line = newHorizontalGroup(win .. "line2", vert);
 	newButton(win .. "ToWar", line, "Declare war", function() confirmChoice("Do you really wish to go to war against" .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Declaring war...", { Type="declareWar", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID) end); end, "Red", Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InPeace");
-	newButton(win .. "offerPeace", line, "Offer peace", function() confirmChoice("Do you wish to offer peace to " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Offering peace...", { Type="peaceOffer", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID); end); end, "Green", not(isAtWarFromFaction) and Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar");
+	newButton(win .. "offerPeace", line, "Offer peace", function() confirmChoice("Do you wish to offer peace to " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Offering peace...", { Type="peaceOffer", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID); end); end, "Green", not(isAtWarFromFaction) and Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" and Mod.PlayerGameData.Offers[v] == nil);
 	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
 end
 
@@ -161,8 +161,8 @@ function factionSettings(factionName)
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	newButton(win .. "DeclareWar", vert, "Declare war", function() declareFactionWar(factionName) end, "Red", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return not(v); end) > 0);
-	newButton(win .. "PeaceOffer", vert, "Offer peace", function() offerFactionPeace(factionName) end, "Green", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return v; end) > 0);
-	newButton(win .. "pendingPeaceOffers", vert, "Pending offers", function() pendingFactionPeaceOffers(factionName) end, "Cyan", getTableLength(Mod.PublicGameData.Factions[factionName].PendingOffers, function(v) return Mod.PublicGameData.Factions[factionName].Offers[v] == nil; end) > 0);
+	newButton(win .. "PeaceOffer", vert, "Offer peace", function() offerFactionPeace(factionName) end, "Green", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return v and Mod.PublicGameData.Factions[factionName].Offers[v] == nil; end) > 0);
+	newButton(win .. "pendingPeaceOffers", vert, "Pending offers", function() pendingFactionPeaceOffers(factionName) end, "Cyan", getTableLength(Mod.PublicGameData.Factions[factionName].PendingOffers) > 0);
 	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName) end, "Orange");
 end
 
