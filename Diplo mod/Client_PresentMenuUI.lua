@@ -171,7 +171,7 @@ function offerFactionPeace(factionName)
 		if bool then
 			local line = newHorizontalGroup(faction .. "line", vert);
 			newLabel(win .. faction .. "name", line, faction, game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor);
-			newButton(win .. faction .. "button", line, "Peace", function() confirmChoice("Are you sure you want to offer peace to " .. faction .. "? All your faction members will be forced in peace with all of the players in " .. faction, function() game.SendGameCustomMessage("Offering peace to " .. faction .. "...", { Type="offerFactionPeace", OpponentFaction=faction, PlayerFaction=factionName }, gameCustomMessageReturn); factionSettings(FactionName); end, function() offerFactionPeace(factionName); end) end, "Green");
+			newButton(win .. faction .. "button", line, "Peace", function() confirmChoice("Are you sure you want to offer peace to " .. faction .. "? All your faction members will be forced in peace with all of the players in " .. faction, function() game.SendGameCustomMessage("Offering peace to " .. faction .. "...", { Type="offerFactionPeace", OpponentFaction=faction, PlayerFaction=factionName }, gameCustomMessageReturn); factionSettings(factionName); end, function() offerFactionPeace(factionName); end) end, "Green");
 		end
 	end
 end
