@@ -16,6 +16,7 @@ function Server_StartGame(game, standing)
 			playerData[i].Notifications = setPlayerNotifications();
 			playerData[i].NumberOfNotifications = 0;
 			playerData[i].PendingOffers = {};
+			playerData[i].Offers = {};
 		end
 	end
 	data.Relations = relations;

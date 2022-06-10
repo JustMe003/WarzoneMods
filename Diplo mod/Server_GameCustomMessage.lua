@@ -36,6 +36,7 @@ function createFaction(game, playerID, payload, setReturn);
 	t.FactionMembers = {};
 	t.FactionChat = {};
 	t.PendingOffers = {};
+	t.Offers = {};
 	t.AtWar = {};
 	for i, _ in pairs(data.Factions) do
 		if i ~= payload.Name then
@@ -197,6 +198,8 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 		if data.Factions[payload.PlayerFaction].FactionLeader == playerID then
 			if data.Factions[payload.OpponentFaction] ~= nil then
 				table.insert(data.Factions[payload.OpponentFaction].PendingOffers, payload.PlayerFaction);
+				data.Factions[payload.PlayerFaction].Offers[payload.OpponentFaction] = true;
+				data.Factions[payload.OpponentFaction].Offers[payload.PlayerFaction] = true;
 				local playerData = Mod.PlayerGameData;
 				for _, i in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
 					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
@@ -243,6 +246,8 @@ function offerPeace(game, playerID, payload, setReturn)
 			if playerData[payload.Opponent].Notifications.PeaceOffers == nil then playerData[payload.Opponent].Notifications.PeaceOffers = {}; end
 			table.insert(playerData[payload.Opponent].Notifications.PeaceOffers, playerID);
 			table.insert(playerData[payload.Opponent].PendingOffers, playerID);
+			playerData[playerID].Offers[payload.Opponent] = true;
+			playerData[payload.Opponent].Offers[playerID] = true;
 			Mod.PlayerGameData = playerData;
 			setReturn(setReturnPayload("Successfully offered peace to this player", "Success"));
 		end
@@ -265,6 +270,8 @@ function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 			table.remove(data.Factions[faction].PendingOffers, payload.Index);
 			data.Factions[faction].AtWar[opponentFaction] = false;
 			data.Factions[opponentFaction].AtWar[faction] = false;
+			data.Factions[opponentFaction].Offers[faction] = nil;
+			data.Factions[faction].Offers[opponentFaction] = nil;
 			local playerData = Mod.PlayerGameData;
 			for _, i in pairs(data.Factions[opponentFaction].FactionMembers) do
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
