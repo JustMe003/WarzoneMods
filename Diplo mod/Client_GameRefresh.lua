@@ -13,6 +13,7 @@ end
 
 function showAlert(game)
 	local playerData = Mod.PlayerGameData;
+	print(type(playerData))
 	if playerData.Notifications == nil then return; end
 	local s = "";
 	if playerData.Notifications.FactionWarDeclarations ~= nil and #playerData.Notifications.FactionWarDeclarations > 0 then
@@ -74,7 +75,9 @@ function showAlert(game)
 	if playerData.Notifications.Messages ~= nil and #playerData.Notifications.Messages > 0 then
 		s = s .. "You have " .. #playerData.Notifications.Messages .. " unread messages in the faction chat";
 	end
-	UI.Alert(s);
+	if #s > 0 then
+		UI.Alert(s);
+	end
 end
 
 function getDateIndexList() return {"Year", "Month", "Day", "Hours", "Minutes", "Seconds", "MiliSeconds"}; end
