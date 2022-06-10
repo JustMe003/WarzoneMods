@@ -9,6 +9,10 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	Close = close;
 	setMaxSize(500, 600);
 	
+	for i, v in pairs(Mod.PublicGameData.PlayerInFaction) do
+		print(i, v);
+	end
+	
 	showMenu();
 end
 
