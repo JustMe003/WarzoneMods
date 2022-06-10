@@ -109,7 +109,6 @@ function sendMessage(game, playerID, payload, setReturn)
 				if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
 				print(type(playerData.Notifications));
 				print(type(playerData.Notifications.Messages));
-				for i, v in pairs(playerData.Notifications) do print(i, v); end
 				table.insert(playerData.Notifications.Messages, true);
 				Mod.PlayerGameData[i] = playerData;
 			end
