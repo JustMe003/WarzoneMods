@@ -56,7 +56,7 @@ function showPlayerPage()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "PendingOffers", vert, "Pending offers", showPendingOffers, "Cyan", getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
+	newButton(win .. "PendingOffers", vert, "Pending offers", showPendingOffers, "Cyan", Mod.PlayerGameData.PendingOffers ~= nil and getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
 	for i, p in pairs(game.Game.PlayingPlayers) do
 		if i ~= game.Us.ID then
 			newButton(win .. i, vert, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
