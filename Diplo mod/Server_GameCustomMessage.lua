@@ -103,14 +103,14 @@ function sendMessage(game, playerID, payload, setReturn)
 		t.Player = playerID;
 		table.insert(data.Factions[faction].FactionChat, t);
 		for _, i in pairs(data.Factions[faction].FactionMembers) do
-			if i ~= playerID then
+--			if i ~= playerID then
 				local playerData = Mod.PlayerGameData;
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
 				if playerData[i].Notifications.Messages == nil then playerData[i].Notifications.Messages = {}; end
 				table.insert(playerData[i].Notifications.Messages, true);
 				Mod.PlayerGameData = playerData;
 				print(#Mod.PlayerGameData[i].Notifications.Messages);
-			end
+--			end
 		end
 		ret = setReturnPayload("Successfully send message!", "Success");
 		ret.Function = "showFactionChat";
