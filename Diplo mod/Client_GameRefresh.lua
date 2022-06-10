@@ -2,7 +2,7 @@ require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
-	if dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) and Mod.PlayerGameData.NumberOfNotifications ~= count(playerData.Notifications, function(t) return #t; end) then
+	if dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) and Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) return #t; end) then
 		showAlert(game);
 		local payload = {};
 		payload.Type = "5MinuteAlert";
