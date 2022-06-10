@@ -60,10 +60,10 @@ function leaveFaction(game, playerID, payload, setReturn)
 			if v == playerID then
 				index = i
 			else
-				local playerData = Mod.PlayerGameData[v];
-				if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-				table.insert(playerData.Notifications.LeftPlayers, playerID);
-				Mod.PlayerGameData[v] = playerData;
+				local playerData = Mod.PlayerGameData;
+				if playerData[v].Notifications == nil then playerData[v].Notifications = setPlayerNotifications(); end
+				table.insert(playerData[v].Notifications.LeftPlayers, playerID);
+				Mod.PlayerGameData = playerData;
 			end
 		end
 		table.remove(data.Factions[faction].FactionMembers, index);
@@ -109,7 +109,6 @@ function sendMessage(game, playerID, payload, setReturn)
 				if playerData[i].Notifications.Messages == nil then playerData[i].Notifications.Messages = {}; end
 				table.insert(playerData[i].Notifications.Messages, true);
 				Mod.PlayerGameData = playerData;
-				print(#Mod.PlayerGameData[i].Notifications.Messages);
 			end
 		end
 		ret = setReturnPayload("Successfully send message!", "Success");
@@ -123,10 +122,10 @@ end
 function joinFaction(game, playerID, payload, setReturn)
 	if data.PlayerInFaction[playerID] == nil then
 		for _, p in pairs(data.Factions[payload.Faction].FactionMembers) do
-			local playerData = Mod.PlayerGameData[p];
-			if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-			table.insert(playerData.Notifications.JoinedPlayers, playerID);
-			Mod.PlayerGameData[p] = playerData;
+			local playerData = Mod.PlayerGameData;
+			if playerData[p].Notifications == nil then playerData[p].Notifications = setPlayerNotifications(); end
+			table.insert(playerData[p].Notifications.JoinedPlayers, playerID);
+			Mod.PlayerGameData = playerData;
 		end
 		table.insert(data.Factions[payload.Faction].FactionMembers, playerID);
 		data.IsInFaction[playerID] = true;
@@ -146,22 +145,22 @@ function declareFactionWar(game, playerID, payload, setReturn)
 		if data.Factions[payload.PlayerFaction].FactionLeader == playerID then
 			if data.Factions[payload.OpponentFaction] ~= nil then
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-					local playerData = Mod.PlayerGameData[i];
-					if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-					table.insert(playerData.Notifications.FactionWarDeclarations, payload.OpponentFaction);
+					local playerData = Mod.PlayerGameData;
+					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					table.insert(playerData[i].Notifications.FactionWarDeclarations, payload.OpponentFaction);
 					for _, p in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
 						data.Relations[i][p] = "AtWar";
 					end
-					Mod.PlayerGameData[i] = playerData;
+					Mod.PlayerGameData = playerData;
 				end
 				for _, i in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
-					local playerData = Mod.PlayerGameData[i];
-					if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-					table.insert(playerData.Notifications.FactionWarDeclarations, payload.PlayerFaction);
+					local playerData = Mod.PlayerGameData;
+					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					table.insert(playerData[i].Notifications.FactionWarDeclarations, payload.PlayerFaction);
 					for _, p in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 						data.Relations[i][p] = "AtWar";
 					end
-					Mod.PlayerGameData[i] = playerData;
+					Mod.PlayerGameData = playerData;
 				end
 			else
 				setReturn(setReturnPayload("The opponent faction was not found", "Error"));
@@ -179,16 +178,16 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 		if data.Factions[payload.PlayerFaction].FactionLeader == playerID then
 			if data.Factions[payload.OpponentFaction] ~= nil then
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-					local playerData = Mod.PlayerGameData[i];
-					if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-					table.insert(playerData.Notifications.FactionsPeaceOffers, payload.OpponentFaction);
-					Mod.PlayerGameData[i] = playerData;
+					local playerData = Mod.PlayerGameData;
+					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.OpponentFaction);
+					Mod.PlayerGameData = playerData;
 				end
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-					local playerData = Mod.PlayerGameData[i];
-					if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-					table.insert(playerData.Notifications.FactionsPeaceOffers, payload.PlayerFaction);
-					Mod.PlayerGameData[i] = playerData;
+					local playerData = Mod.PlayerGameData;
+					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.PlayerFaction);
+					Mod.PlayerGameData = playerData;
 				end
 			else
 				setReturn(setReturnPayload("The opponent faction was not found", "Error"));
@@ -206,10 +205,10 @@ function declareWar(game, playerID, payload, setReturn)
 		data.Relations[playerID][payload.Opponent] = "AtWar";
 		data.Relations[payload.Opponent][playerID] = "AtWar";
 		if not game.ServerGame.Game.Players[payload.Opponent].IsAI then
-			local playerData = Mod.PlayerGameData[payload.Opponent];
-			if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-			table.insert(playerData.Notifications.WarDeclarations, playerID);
-			Mod.PlayerGameData[payload.Opponent] = playerData;
+			local playerData = Mod.PlayerGameData;
+			if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
+			table.insert(playerData[payload.Opponent].Notifications.WarDeclarations, playerID);
+			Mod.PlayerGameData = playerData;
 		end
 		setReturn(setReturnPayload("Successfully declared war on this player", "Success"));
 	else
@@ -224,10 +223,10 @@ function offerPeace(game, playerID, payload, setReturn)
 			data.Relations[payload.Opponent][playerID] = "InPeace";
 			setReturn(setReturnPayload("The AI accepted your offer", "Success"));
 		else
-			local playerData = Mod.PlayerGameData[payload.Opponent];
-			if playerData.Notifications == nil then playerData.Notifications = setPlayerNotifications(); end
-			table.insert(playerData.Notifications.WarDeclarations, playerID);
-			Mod.PlayerGameData[payload.Opponent] = playerData;
+			local playerData = Mod.PlayerGameData;
+			if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
+			table.insert(playerData[payload.Opponent].Notifications.WarDeclarations, playerID);
+			Mod.PlayerGameData = playerData;
 			setReturn(setReturnPayload("Successfully offered peace to this player", "Success"));
 		end
 	else
