@@ -1,7 +1,7 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	for _, t in pairs(data.Events) do
-		addNewOrder(WL.GameOrderCustom.Create(t.PlayerID, t.Message, "FactionsEventMessage"));
+		addNewOrder(WL.GameOrderEvent.Create(t.PlayerID, t.Message, nil, {}, {}, {}));
 	end
 	data.Events = {};
 	Mod.PublicGameData = data;
