@@ -22,6 +22,7 @@ function Server_StartGame(game, standing)
 	data.Relations = relations;
 	data.IsInFaction = isInFaction;
 	data.PlayerInFaction = playerInFaction;
+	data.Events = {};
 	Mod.PlayerGameData = playerData;
 	Mod.PublicGameData = data;
 end

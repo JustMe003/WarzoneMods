@@ -1,4 +1,10 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
+	local data = Mod.PublicGameData;
+	for _, t in pairs(data.Events) do
+		addNewOrder(WL.GameOrderCustom.Create(t.PlayerID, t.Message, "FactionsEventMessage"));
+	end
+	data.Events = {};
+	Mod.PublicGameData = data;
 	if game.Settings.FogLevel ~= 1 then
 		playSpyCards(game, addNewOrder);
 	end

@@ -51,6 +51,7 @@ function createFaction(game, playerID, payload, setReturn);
 	data.PlayerInFaction[playerID] = payload.Name;
 	print(data.PlayerInFaction[playerID])
 	setReturn(setReturnPayload("Successfully created the faction '" .. payload.Name .. "'", "Success"));
+	table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " created a new faction called '" .. payload.Name .. "'", playerID));
 end
 
 function leaveFaction(game, playerID, payload, setReturn)
@@ -91,6 +92,7 @@ function leaveFaction(game, playerID, payload, setReturn)
 			ret.Message = ret.Message .. "\nThe new faction leader is now " .. game.ServerGame.Game.PlayingPlayers[factions[faction].FactionLeader].DisplayName(nil, false);
 		end
 		data.Factions = factions;
+		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " left the faction '" .. faction .. "'", playerID));
 	else
 		ret = setReturnPayload("You are not in a faction!", "Error");
 	end
@@ -161,6 +163,7 @@ function joinFaction(game, playerID, payload, setReturn)
 		end
 		Mod.PlayerGameData = playerData;
 		setReturn(setReturnPayload("Successfully joined faction '" .. payload.Faction .. "'!", "Success"));
+		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " joined the faction '" .. payload.Faction .. "'", playerID));
 	else
 		setReturn(setReturnPayload("You're already in a Faction!", "Error"));
 	end
@@ -192,6 +195,8 @@ function declareFactionWar(game, playerID, payload, setReturn)
 					end
 				end
 				Mod.PlayerGameData = playerData;
+				table.insert(data.Events, "'" .. payload.PlayerFaction .. "' declared war on '" .. payload.OpponentFaction .. "'", playerID));
+				setReturn(setReturnPayload("Successfully declared war on '" .. payload.OpponentFaction .. "'", "Success"));
 			else
 				setReturn(setReturnPayload("The '" .. payload.OpponentFaction .. "' opponent faction was not found", "Error"));
 			end
@@ -218,6 +223,8 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 						table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.PlayerFaction);
 					end
 					Mod.PlayerGameData = playerData;
+					setReturn(setReturnPayload("Successfully offered peace to '" .. payload.OpponentFaction .. "'", "Success"));
+					table.insert(data.Events, "'" .. payload.PlayerFaction .. "' offered peace to '" .. payload.OpponentFaction .. "'", playerID));
 				else
 					setReturn(setReturnPayload("There already is a pending peace offer.", "Error"));
 				end
@@ -241,6 +248,7 @@ function declareWar(game, playerID, payload, setReturn)
 			if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
 			table.insert(playerData[payload.Opponent].Notifications.WarDeclarations, playerID);
 			Mod.PlayerGameData = playerData;
+			table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " declared war on " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), playerID));
 		end
 		setReturn(setReturnPayload("Successfully declared war on " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
 	else
@@ -264,10 +272,12 @@ function offerPeace(game, playerID, payload, setReturn)
 				playerData[playerID].Offers[payload.Opponent] = true;
 				playerData[payload.Opponent].Offers[playerID] = true;
 				setReturn(setReturnPayload("Successfully offered peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
+				table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " offered peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), playerID));
 			else
 				setReturn(setReturnPayload("There already is a pending peace offer", "Error"));
 			end
 			Mod.PlayerGameData = playerData;
+			setReturn(setReturnPayload("Successfully offered peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
 		end
 	else
 		setReturn(setReturnPayload("You cannot offer peace to " .. game.ServerGame.Game.Players[payload.Opponent].DisplayName(nil, false) .. " this player since you're not in war with them", "Error"));
@@ -307,6 +317,8 @@ function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 				table.remove(playerData[i].Notifications.FactionsPeaceOffers, payload.Index);
 			end
 			Mod.PlayerGameData = playerData;
+			table.insert(data.Events, "'" .. faction .. "' accepted the peace offer from '" .. opponentFaction .. "'", playerID));
+			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		else
 			setReturn(setReturnPayload("The '" .. opponentFaction .. "' faction has not been found", "Error"));
 		end
@@ -325,6 +337,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 				data.Relations[opponent][playerID] = "InPeace";
 				data.Relations[playerID][opponent] = "InPeace";
+				setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 			else
 				setReturn(setReturnPayload("You cannot accept peace while your faction is in war with your opponents faction", "Error"));
 			end
@@ -333,10 +346,13 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 			data.Relations[opponent][playerID] = "InPeace";
 			data.Relations[playerID][opponent] = "InPeace";
-			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID)
+			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
+			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		end
 	else
 		setReturn(setReturnPayload("Something went wrong", "Error"));
+		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID));
+		setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 	end
 	Mod.PlayerGameData = playerData;
 end
@@ -375,4 +391,8 @@ function count(t, func)
 		end
 	end
 	return c;
+end
+
+function createEvent(m, p);
+	return {Message=m, PlayerID=p};
 end
