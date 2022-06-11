@@ -195,7 +195,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 					end
 				end
 				Mod.PlayerGameData = playerData;
-				table.insert(data.Events, "'" .. payload.PlayerFaction .. "' declared war on '" .. payload.OpponentFaction .. "'", playerID));
+				table.insert(data.Events, createEvent("'" .. payload.PlayerFaction .. "' declared war on '" .. payload.OpponentFaction .. "'", playerID));
 				setReturn(setReturnPayload("Successfully declared war on '" .. payload.OpponentFaction .. "'", "Success"));
 			else
 				setReturn(setReturnPayload("The '" .. payload.OpponentFaction .. "' opponent faction was not found", "Error"));
@@ -224,7 +224,7 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 					end
 					Mod.PlayerGameData = playerData;
 					setReturn(setReturnPayload("Successfully offered peace to '" .. payload.OpponentFaction .. "'", "Success"));
-					table.insert(data.Events, "'" .. payload.PlayerFaction .. "' offered peace to '" .. payload.OpponentFaction .. "'", playerID));
+					table.insert(data.Events, createEvent("'" .. payload.PlayerFaction .. "' offered peace to '" .. payload.OpponentFaction .. "'", playerID));
 				else
 					setReturn(setReturnPayload("There already is a pending peace offer.", "Error"));
 				end
@@ -317,7 +317,7 @@ function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 				table.remove(playerData[i].Notifications.FactionsPeaceOffers, payload.Index);
 			end
 			Mod.PlayerGameData = playerData;
-			table.insert(data.Events, "'" .. faction .. "' accepted the peace offer from '" .. opponentFaction .. "'", playerID));
+			table.insert(data.Events, createEvent("'" .. faction .. "' accepted the peace offer from '" .. opponentFaction .. "'", playerID));
 			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		else
 			setReturn(setReturnPayload("The '" .. opponentFaction .. "' faction has not been found", "Error"));
