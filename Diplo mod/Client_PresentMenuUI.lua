@@ -251,7 +251,7 @@ function showFactionChat()
 	for i = #Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat, 1, -1 do
 		local message = Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat[i];
 		local line = newHorizontalGroup("line" .. i, vert);
-		newLabel(win .. "player" .. i, line, game.Game.Players[message.Player].DisplayName(nil, false) .. ": ", game.Game.Players[message.Player].Color.HtmlColor, -1, -1, 1);
+		newLabel(win .. "player" .. i, line, game.Game.Players[message.Player].DisplayName(nil, false) .. ": ", game.Game.Players[message.Player].Color.HtmlColor, 200);
 		newLabel(win .. "text" .. i, line, message.Text, game.Game.Players[message.Player].Color.HtmlColor);
 	end
 end
