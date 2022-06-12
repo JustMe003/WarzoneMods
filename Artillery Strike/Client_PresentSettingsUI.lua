@@ -10,6 +10,12 @@ function Client_PresentSettingsUI(rootParent)
 		window(win);
 		local vert = newVerticalGroup(win .. "vert", "root");
 		newLabel("amountOfStructuresNote", vert, "Note that the number of cannons and mortars actually in the game might be less than configured", "Red");
+		newLabel("ArtilleryShot", vert, "Players can shoot an artillery strike every " .. Mod.Settings.ArtilleryShot .. " times", "Orange");
+		newLabel("UseGold", vert, "Players can buy artillery strikes with gold: " .. tostring(Mod.Settings.UseGold), "Yellow");
+		if Mod.Settings.UseGold then
+			newLabel("GoldCost", vert, "An artillery strike costs " .. Mod.Settings.GoldCost .. " gold", "Orange");
+		end
+		newLabel("CustomScenario", vert, "The mod did not place any cannons and / or mortars: " .. tostring(Mod.Settings.CustomScenario));
 		newLabel("cannons", vert, "Cannons:", "Lime");
 		if Mod.Settings.Cannons then
 			newLabel("usesCannons", vert, "This game uses cannons", "Cyan");
