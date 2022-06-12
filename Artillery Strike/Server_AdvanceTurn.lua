@@ -9,8 +9,10 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 			if order.proxyType == "GameOrderDeploy" then
 				lastDeployorder[player.ID] = order.DeployOn;
 			elseif order.proxyType == "GameOrderCustom" then
-				table.insert(customOrders, order.Payload);
-				data.TotalArtilleryShots[order.PlayerID] = data.TotalArtilleryShots[order.PlayerID] + 1;
+				if string.find(order.Payload, "Artillery Strike") ~= nil then
+					table.insert(customOrders, order.Payload);
+					data.TotalArtilleryShots[order.PlayerID] = data.TotalArtilleryShots[order.PlayerID] + 1;
+				end
 			end
 		end
 	end
@@ -39,6 +41,11 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
+	for i, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
+		if math.floor((game.ServerGame.Game.TurnNumber - 1) / Mod.Settings.ArtilleryShot) - data.TotalArtilleryShots[i] < 0 then
+			data.TotalArtilleryShots[i] = math.floor((game.ServerGame.Game.TurnNumber - 1) / Mod.Settings.ArtilleryShot);
+		end
+	end
 	Mod.PublicGameData = data;
 end
 
