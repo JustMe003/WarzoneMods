@@ -13,6 +13,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["openedChat"] = openedChat;
 	functions["acceptFactionPeaceOffer"] = acceptFactionPeaceOffer;
 	functions["acceptPeaceOffer"] = acceptPeaceOffer;
+	functions["setFactionLeader"] = setFactionLeader;
 	
 	print(payload.Type);
 	
@@ -90,6 +91,7 @@ function leaveFaction(game, playerID, payload, setReturn)
 		elseif data.Factions[faction].FactionLeader == playerID then
 			factions[faction].FactionLeader = factions[faction].FactionMembers[1];
 			ret.Message = ret.Message .. "\nThe new faction leader is now " .. game.ServerGame.Game.PlayingPlayers[factions[faction].FactionLeader].DisplayName(nil, false);
+			setFactionLeader(game, playerID, {PlayerID=factions[faction].FactionLeader}, setReturn);
 		end
 		data.Factions = factions;
 		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " left the faction '" .. faction .. "'", playerID));
@@ -222,6 +224,13 @@ function offerFactionPeace(game, playerID, payload, setReturn)
 						if playerData[i].Notifications.FactionsPeaceOffers == nil then playerData[i].Notifications.FactionsPeaceOffers = {}; end
 						table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.PlayerFaction);
 					end
+					for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
+						if i ~= playerID then
+							if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+							if playerData[i].Notifications.FactionsPeaceOffers == nil then playerData[i].Notifications.FactionsPeaceOffers = {}; end
+							table.insert(playerData[i].Notifications.FactionsPeaceOffers, payload.PlayerFaction);
+						end
+					end
 					Mod.PlayerGameData = playerData;
 					setReturn(setReturnPayload("Successfully offered peace to '" .. payload.OpponentFaction .. "'", "Success"));
 					table.insert(data.Events, createEvent("'" .. payload.PlayerFaction .. "' offered peace to '" .. payload.OpponentFaction .. "'", playerID));
@@ -311,10 +320,12 @@ function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 				end
 			end
 			for _, i in pairs(data.Factions[faction].FactionMembers) do
-				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
-				if playerData[i].Notifications.FactionsPeaceConfirmed == nil then playerData[i].Notifications.FactionsPeaceConfirmed = {}; end
-				table.insert(playerData[i].Notifications.FactionsPeaceConfirmed, opponentFaction);
-				table.remove(playerData[i].Notifications.FactionsPeaceOffers, payload.Index);
+				if i ~= playerID then
+					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					if playerData[i].Notifications.FactionsPeaceConfirmed == nil then playerData[i].Notifications.FactionsPeaceConfirmed = {}; end
+					table.insert(playerData[i].Notifications.FactionsPeaceConfirmed, opponentFaction);
+					table.remove(playerData[i].Notifications.FactionsPeaceOffers, payload.Index);
+				end
 			end
 			Mod.PlayerGameData = playerData;
 			table.insert(data.Events, createEvent("'" .. faction .. "' accepted the peace offer from '" .. opponentFaction .. "'", playerID));
@@ -357,6 +368,26 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 	Mod.PlayerGameData = playerData;
 end
 
+function setFactionLeader(game, playerID, payload, setReturn)
+	if data.IsInFaction[playerID] then
+		if data.Factions[data.PlayerInFaction[playerID]].FactionLeader == playerID then
+			data.Factions[data.PlayerInFaction[playerID]].FactionLeader = payload.PlayerID;
+			local playerData = Mod.PlayerGameData;
+			for _, i in pairs(data.Factions[data.PlayerInFaction[playerID]].FactionMembers) do
+				if i ~= playerID then
+					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+					playerData[i].Notifications.NewFactionLeader = payload.PlayerID;
+				end
+			end
+			Mod.PlayerGameData = playerData;
+		else
+			setReturn(setReturnPayload("This action can only be done by faction leaders", "Error"));
+		end
+	else
+		setReturn(setReturnPayload("You're not in a faction!", "Error"));
+	end
+end
+
 function setPlayerNotifications()
 	local t = {};
 	t.Messages = {};
@@ -378,6 +409,7 @@ function resetPlayerNotifications(t)
 	t.FactionsPeaceConfirmed = {};
 	t.WarDeclarations = {};
 	t.PeaceConfirmed = {};
+	t.NewFactionLeader = nil;
 	return t;
 end
 

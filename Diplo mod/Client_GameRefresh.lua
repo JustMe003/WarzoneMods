@@ -57,6 +57,13 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	if playerData.Notifications.NewFactionLeader ~= nil then
+		if playerData.Notifications.NewFactionLeader == game.Us.ID then
+			s = s .. "You're now the leader of your faction \n\n";
+		else
+			s = s .. "The leader of your faction is now " .. game.Game.Players[playerData.Notifications.NewFactionLeader].DisplayName(nil, false) .. "\n\n";
+		end
+	end
 	if playerData.Notifications.LeftPlayers ~= nil and #playerData.Notifications.LeftPlayers > 0 then
 		s = s .. "The following players left the faction:\n";
 		for _, v in pairs(playerData.Notifications.LeftPlayers) do
