@@ -76,6 +76,7 @@ function leaveFaction(game, playerID, payload, setReturn)
 		Mod.PlayerGameData = playerData;
 		table.remove(data.Factions[faction].FactionMembers, index);
 		ret = setReturnPayload("Successfully left faction '" .. faction .. "'", "Success");
+		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " left the faction '" .. faction .. "'", playerID));
 		if #factions[faction].FactionMembers <= 0 then
 			factions[faction] = nil;
 			ret.Message = ret.Message .. "\nSince you were the last member the faction was deleted";
@@ -88,13 +89,13 @@ function leaveFaction(game, playerID, payload, setReturn)
 					end
 				end
 			end
+			table.insert(data.Events, createEvent("'" .. faction .. "' was deleted since it had no members", playerID));
 		elseif data.Factions[faction].FactionLeader == playerID then
 			factions[faction].FactionLeader = factions[faction].FactionMembers[1];
 			ret.Message = ret.Message .. "\nThe new faction leader is now " .. game.ServerGame.Game.PlayingPlayers[factions[faction].FactionLeader].DisplayName(nil, false);
 			setFactionLeader(game, playerID, {PlayerID=factions[faction].FactionLeader}, setReturn);
 		end
 		data.Factions = factions;
-		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " left the faction '" .. faction .. "'", playerID));
 	else
 		ret = setReturnPayload("You are not in a faction!", "Error");
 	end
