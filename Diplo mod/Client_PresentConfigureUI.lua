@@ -103,7 +103,7 @@ end
 function promptForAddingSlot(faction)
 	local payload = {};
 	for i = 0, 49 do
-		if config.SlotInFaction[i] == nil then
+		if config.SlotInFaction[i] == nil and config.Factions[faction].FactionLeader ~= i then
 			table.insert(payload, {text=getSlotName(i), selected=function() addSlotToFaction(faction, i); end});
 		end
 	end
@@ -118,8 +118,10 @@ end
 
 function promptForRemovingSlot(faction)
 local payload = {};
-	for i, v in pairs(config.Factions[faction].FactionMembers) do		
-		table.insert(payload, {text=getSlotName(v), selected=function() removeSlotFromFaction(faction, i, v); end});
+	for i, v in pairs(config.Factions[faction].FactionMembers) do
+		if i ~= config.Factions[faction].FactionLeader then
+			table.insert(payload, {text=getSlotName(v), selected=function() removeSlotFromFaction(faction, i, v); end});
+		end
 	end
 	UI.PromptFromList("Choose which slot will be removed from " .. faction, payload);
 end
