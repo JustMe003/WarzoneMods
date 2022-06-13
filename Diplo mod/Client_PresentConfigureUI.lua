@@ -97,7 +97,7 @@ end
 
 function promptForAddingSlot(faction)
 	local payload = {};
-	for i, 49 do
+	for i = 0, 49 do
 		if config.SlotInFaction[i] == nil then
 			table.insert(payload, {text=getSlotName(i), selected=function() addSlotToFaction(faction, i); end});
 		end
