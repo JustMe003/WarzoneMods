@@ -68,6 +68,7 @@ function showPlayerPage(relation)
 		if i ~= game.Us.ID then
 			if (relation == "All") or (relation == "Hostile" and Mod.PublicGameData.Relations[game.Us.ID][i] == "AtWar") or (relation == "Peaceful" and Mod.PublicGameData.Relations[game.Us.ID][i] == "InPeace") or (relation == "Friendly" and Mod.PublicGameData.Relations[game.Us.ID][i] == "InFaction") then
 				newButton(win .. i, vert, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
+			end
 		end
 	end
 end
