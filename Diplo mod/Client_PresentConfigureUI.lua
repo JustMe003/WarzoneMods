@@ -100,8 +100,9 @@ function showFactionRelationConfig(faction)
 	for i, bool in pairs(config.Factions) do
 		if i ~= faction then
 			local line = newHorizontalGroup(win .. i .. "line", vert);
+			print(bool);
 			if bool then
-				newButton(win .. i .. "Button", line, " War ", function() config.Factions[faction].AtWar[i] = false; showFactionRelationConfig(faction); end, "Red");
+				newButton(win .. i .. "Button", line, "War", function() config.Factions[faction].AtWar[i] = false; showFactionRelationConfig(faction); end, "Red");
 			else
 				newButton(win .. i .. "Button", line, "Peace", function() config.Factions[faction].AtWar[i] = true; showFactionRelationConfig(faction); end, "Green");
 			end
