@@ -36,6 +36,8 @@ function showFactions()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "return", vert, "Return", showMenu, "Orange");
+	newLabel(win .. "EmptyAfterReturn", vert, "");
 	if Mod.PublicGameData.IsInFaction[game.Us.ID] then
 		newLabel(win .. "PlayerFactionString", vert, "Your faction:");
 		newButton(win .. "PlayerFaction", vert, Mod.PublicGameData.PlayerInFaction[game.Us.ID], function() showFactionDetails(Mod.PublicGameData.PlayerInFaction[game.Us.ID]) end, game.Us.Color.HtmlColor);
@@ -48,21 +50,26 @@ function showFactions()
 	end
 end
 
-function showPlayerPage()
+function showPlayerPage(relation)
 	local win = "showPlayerPage";
+	if relation == nil then relation = "All"; end
 	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
 		resetWindow(win);
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "PendingOffers", vert, "Pending offers", showPendingOffers, "Cyan", Mod.PlayerGameData.PendingOffers ~= nil and getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
+	local line = newHorizontalGroup(win .. "Line1", vert);
+	newButton(win .. "PendingOffers", line, "Pending offers", showPendingOffers, "Cyan", Mod.PlayerGameData.PendingOffers ~= nil and getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
+	newButton(win .. "ChangeRelation", line, "Relation: " .. relation, function() changeRelationState(relation); end, "Ivory");
+	newButton(win .. "Return", line, "Return", showMenu, "Orange");
+	newLabel(win .. "EmptyAfterReturn", vert, " ");
 	for i, p in pairs(game.Game.PlayingPlayers) do
 		if i ~= game.Us.ID then
-			newButton(win .. i, vert, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
+			if (relation == "All") or (relation == "Hostile" and Mod.PublicGameData.Relations[game.Us.ID][i] == "AtWar") or (relation == "Peaceful" and Mod.PublicGameData.Relations[game.Us.ID][i] == "InPeace") or (relation == "Friendly" and Mod.PublicGameData.Relations[game.Us.ID][i] == "InFaction") then
+				newButton(win .. i, vert, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
 		end
 	end
-	newButton(win .. "Return", vert, "Return", showMenu, "Orange");
 end
 
 function showPendingOffers()
@@ -72,11 +79,12 @@ function showPendingOffers()
 		resetWindow(win);
 	end
 	window(win);
+	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
+	newLabel(win .. "EmptyAfterReturn", vert, " ");
 	local vert = newVerticalGroup("vert", "root");
 	for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
 		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); showPlayerPage(); end, function() showPendingOffers(); end); end, game.Game.Players[v].Color.HtmlColor);
 	end
-	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
 end
 
 function showPlayerDetails(playerID)
@@ -112,7 +120,7 @@ function showPlayerDetails(playerID)
 	if Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" then
 		newLabel(win .. "relationStatus", line, "Hostile", "Red");
 	elseif Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InPeace" then
-		newLabel(win .. "relationStatus", line, "peaceful", "Yellow");
+		newLabel(win .. "relationStatus", line, "Peaceful", "Yellow");
 	else
 		newLabel(win .. "relationStatus", line, "Friendly", "Green");
 	end
@@ -292,6 +300,19 @@ function verifyFactionName(name)
 	payload.Name = name;
 	game.SendGameCustomMessage("Creating Faction...", payload, gameCustomMessageReturn);
 	Close();
+end
+
+function changeRelationState(relation)
+	if relation == "All" then
+		relation = "Hostile";
+	elseif relation == "Hostile" then
+		relation = "Peaceful"
+	elseif relation == "Friendly" then
+		relation = "Friendly";
+	else
+		relation = "All";
+	end
+	showPlayerPage(relation);
 end
 
 function gameCustomMessageReturn(payload)
