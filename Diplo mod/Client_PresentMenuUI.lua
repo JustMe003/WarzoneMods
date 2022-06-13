@@ -308,7 +308,7 @@ function changeRelationState(relation)
 		relation = "Hostile";
 	elseif relation == "Hostile" then
 		relation = "Peaceful"
-	elseif relation == "Friendly" then
+	elseif relation == "Peaceful" then
 		relation = "Friendly";
 	else
 		relation = "All";
