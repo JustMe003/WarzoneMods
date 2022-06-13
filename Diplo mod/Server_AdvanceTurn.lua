@@ -16,6 +16,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
+	local data = Mod.PublicGameData;
+	for i, v in pairs(WL.GamePlayerState) do print(i,v); end
 	local playerData = Mod.PlayerGameData;
 	for i, _ in pairs(game.Game.PlayingPlayers) do
 		playerData[i].NumberOfNotifications = 0;
