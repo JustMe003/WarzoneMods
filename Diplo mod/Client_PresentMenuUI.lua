@@ -244,7 +244,7 @@ function showFactionChat()
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	local line = newHorizontalGroup("line", vert);
-	newTextField(win .. "typeMessage", line, "", "Type here your message", 300);
+	newTextField(win .. "typeMessage", line, "Type here your message", "Type here your message", 300, true, 300, -1, 1, 0);
 	newButton(win .. "sendMessage", line, "Send", sendMessage, "Blue");
 	newButton(win .. "refresh", line, "Refresh", showFactionChat, "Green");
 	newLabel(win .. "empty", vert, "\n");
