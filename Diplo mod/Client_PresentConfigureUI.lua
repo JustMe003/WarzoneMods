@@ -197,19 +197,16 @@ function PickForFactionLeader(faction)
 	local payload = {};
 	for i = 0, 49 do
 		if config.SlotInFaction[i] == nil then
-			table.insert(payload, {text=getSlotName(i), selected=function() config.SlotInFaction[i] = faction; config.Factions[faction].FactionLeader = i; initSlotRelations(slot); table.insert(config.Factions[faction].FactionMembers, i); showFactionConfig(faction); end});
+			table.insert(payload, {text=getSlotName(i), selected=function() config.SlotInFaction[i] = faction; config.Factions[faction].FactionLeader = i; initSlotRelations(i); table.insert(config.Factions[faction].FactionMembers, i); showFactionConfig(faction); end});
 		end
 	end
 	UI.PromptFromList("Which slot will be Faction leader?", payload);
 end
 
 function initSlotRelations(slot)
-	print(slot);
 	if config.Relations[slot] == nil then
-		print(config.Relations[slot])
 		config.Relations[slot] = {}; 
 		if config.SlotInFaction[slot] ~= nil then
-			print(config.SlotInFaction[slot]);
 			for _, v in pairs(config.Factions[config.SlotInFaction[slot]].FactionMembers) do
 				config.Relations[slot][v] = "InFaction";
 				config.Relations[v][slot] = "InFaction";
