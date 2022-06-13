@@ -119,7 +119,7 @@ end
 function promptForRemovingSlot(faction)
 local payload = {};
 	for i, v in pairs(config.Factions[faction].FactionMembers) do
-		if i ~= config.Factions[faction].FactionLeader then
+		if v ~= config.Factions[faction].FactionLeader then
 			table.insert(payload, {text=getSlotName(v), selected=function() removeSlotFromFaction(faction, i, v); end});
 		end
 	end
