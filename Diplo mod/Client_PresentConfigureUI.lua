@@ -54,6 +54,7 @@ function pickSlot()
 end
 
 function showSlotConfig(slot)
+	initSlotRelations(slot);
 	local win = "showSlotConfig";
 	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
@@ -203,9 +204,12 @@ function PickForFactionLeader(faction)
 end
 
 function initSlotRelations(slot)
-	if config.Relations[slot] == nil then 
+	print(slot);
+	if config.Relations[slot] == nil then
+		print(config.Relations[slot])
 		config.Relations[slot] = {}; 
 		if config.SlotInFaction[slot] ~= nil then
+			print(config.SlotInFaction[slot]);
 			for _, v in pairs(config.Factions[config.SlotInFaction[slot]].FactionMembers) do
 				config.Relations[slot][v] = "InFaction";
 				config.Relations[v][slot] = "InFaction";
