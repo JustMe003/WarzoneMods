@@ -97,16 +97,16 @@ function showPlayerDetails(playerID)
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	local isAtWarFromFaction = false;
-	newLabel(win .. "name", vert, game.Game.PlayingPlayers[playerID].DisplayName(nil, false));
+	newLabel(win .. "name", vert, game.Game.PlayingPlayers[playerID].DisplayName(nil, false), game.Game.PlayingPlayers[playerID].Color.HtmlColor);
 	if Mod.PublicGameData.IsInFaction[playerID] then
 		local line = newHorizontalGroup(win .. "line10", vert);
 		newLabel(win .. "factionNameText", line, "Faction: ");
 		newLabel(win .. "factionName", line, Mod.PublicGameData.PlayerInFaction[playerID], game.Game.Players[Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[playerID]].FactionLeader].Color.HtmlColor);
 		if Mod.PublicGameData.IsInFaction[game.Us.ID] then
 			local line = newHorizontalGroup(win .. "line", vert);
-			newLabel(win .. "factionRelation", line, "Relation between faction: ");
-			if Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InFaction" or not Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].AtWar[Mod.PublicGameData.PlayerInFaction[playerID]] then
-				newLabel(win .. "factionRelationPeace", line, "Friendly", "Green");
+			newLabel(win .. "factionRelation", line, "Relation between factions: ");
+			if not Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InFaction" or not Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].AtWar[Mod.PublicGameData.PlayerInFaction[playerID]] then
+				newLabel(win .. "factionRelationPeace", line, "Peaceful", "Yellow");
 			else
 				newLabel(win .. "factionRelationWar", line, "Hostile", "Red");
 				newLabel(win .. "peaceOfferExplanation", vert, "If you wish to be in peace with this player you have to first leave your faction or you're faction must be in peace with " .. Mod.PublicGameData.PlayerInFaction[playerID]);
@@ -142,16 +142,12 @@ function showFactionDetails(factionName)
 	local vert = newVerticalGroup("vert", "root");
 	local line = newHorizontalGroup(win .. "line", vert);
 	local bool = Mod.PublicGameData.PlayerInFaction[game.Us.ID] == factionName;
-	local color;
 	newButton(win .. "LeaveFaction", line, "Leave Faction", function() confirmChoice("Are you sure you want to leave the '" .. factionName .. "' faction?", function() game.SendGameCustomMessage("Leaving faction...", {Type="leaveFaction"}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Red", bool);
 	newButton(win .. "JoinFaction", line, "Join Faction", function() confirmChoice("Do you wish to join the '" .. factionName .. "' faction? If this faction is in war with any other faction you'll automatically declare war on them.", function() game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", Faction=factionName}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil);
 	newButton(win .. "return", line, "Return", showFactions, "Orange");
-	if bool then 
-		color = "Lime"; 
-	else 
-		color = "Orange Red"; 
-	end
-	newLabel(win .. "label", vert, factionName .. "\n", color);
+	newLabel(win .. "EmptyAfterButtonLine", vert, " ");
+	newLabel(win .. "label", vert, factionName, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
+	newLabel(win .. "EmptyAfterFactionName", vert, " ");
 	if game.Us.ID == Mod.PublicGameData.Factions[factionName].FactionLeader then
 		newButton(win .. "FactionSettings", vert, "Faction settings", function() factionSettings(factionName) end, "Tyrian Purple");
 		newLabel(win .. "EmptyAfterFactionsettings", vert, "\n");
@@ -185,12 +181,13 @@ function declareFactionWar(factionName)
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName); end, "Orange");
 	newLabel(win .. "text", vert, "Pick a faction to go to war with them:");
 	for faction, bool in pairs(Mod.PublicGameData.Factions[factionName].AtWar) do
 		if not(bool) then
 			local line = newHorizontalGroup(faction .. "line", vert);
-			newLabel(win .. faction .. "name", line, faction, game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor);
 			newButton(win .. faction .. "button", line, "War!", function() confirmChoice("Are you sure you want to declare war on " .. faction .. "? All your faction members will be forced to declare war on all of the players in " .. faction, function() game.SendGameCustomMessage("Declaring war on " .. faction .. "...", { Type="declareFactionWar", PlayerFaction=factionName, OpponentFaction=faction }, gameCustomMessageReturn); factionSettings(factionName); end, function() declareFactionWar(factionName); end) end, "Red");
+			newLabel(win .. faction .. "name", line, faction, game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor);
 		end
 	end
 end
@@ -203,6 +200,7 @@ function offerFactionPeace(factionName)
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName); end, "Orange");
 	newLabel(win .. "text", vert, "Pick a faction to ask for peace with them:");
 	for faction, bool in pairs(Mod.PublicGameData.Factions[factionName].AtWar) do
 		if bool and Mod.PublicGameData.Factions[factionName].Offers[faction] == nil then
@@ -221,11 +219,11 @@ function pendingFactionPeaceOffers(factionName)
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName); end, "Orange");
 	newLabel(win .. "n", vert, "You have " .. #Mod.PublicGameData.Factions[factionName].PendingOffers .. " peace offers");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
 		newButton(win .. i, vert, v, function() confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end, function() factionSettings(factionName); end); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
 	end
-	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName) end, "Orange");
 end
 
 
@@ -260,7 +258,7 @@ function showFactionChat()
 	for i = #Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat, 1, -1 do
 		local message = Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat[i];
 		local line = newHorizontalGroup("line" .. i, vert);
-		newLabel(win .. "player" .. i, line, game.Game.Players[message.Player].DisplayName(nil, false) .. ": ", game.Game.Players[message.Player].Color.HtmlColor, 200, -1, 1, 0);
+		newLabel(win .. "player" .. i, line, game.Game.Players[message.Player].DisplayName(nil, false) .. ": ", game.Game.Players[message.Player].Color.HtmlColor, 200, 20, 1, 1);
 		newLabel(win .. "text" .. i, line, message.Text, game.Game.Players[message.Player].Color.HtmlColor);
 	end
 end
