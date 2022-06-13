@@ -56,6 +56,7 @@ function createFaction()
 		local t = {}
 		for i, _ in pairs(config.Factions) do
 			t[i] = false;
+			config.Factions[i].AtWar[faction] = false;
 		end
 		config.Factions[faction] = {};
 		config.Factions[faction].FactionMembers = {};
