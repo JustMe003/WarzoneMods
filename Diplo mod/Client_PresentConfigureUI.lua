@@ -165,7 +165,7 @@ function addSlotToFaction(faction, slot)
 end
 
 function PickToRemoveSlot(faction)
-local payload = {};
+	local payload = {};
 	for i, v in pairs(config.Factions[faction].FactionMembers) do
 		if v ~= config.Factions[faction].FactionLeader then
 			table.insert(payload, {text=getSlotName(v), selected=function() removeSlotFromFaction(faction, i, v); end});
