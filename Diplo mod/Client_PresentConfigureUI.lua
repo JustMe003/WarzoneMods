@@ -20,7 +20,13 @@ function showMain()
 	end
 	window(win);
 	local vert = newVerticalGroup("Vert", "root");
-	newButton(win .. "AddFaction", vert, "Add Faction", addFaction, "Lime");
+	local line = newHorizontalGroup(win .. "line", vert);
+	newButton(win .. "AddFaction", line, "Add Faction", addFaction, "Lime");
+	newButton(win .. "AddSlotConfig", line, "Add slot", pickSlot, "Aqua");
+	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
+	for i, _ in pairs(config.Factions) do
+		newButton(win .. i, vert, i, function() showFactionConfig(faction); end);
+	end
 end
 
 function addFaction()
