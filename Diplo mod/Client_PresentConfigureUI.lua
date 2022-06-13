@@ -42,6 +42,10 @@ function addFaction()
 	newButton(win .. "CreateFaction", vert, "Create Faction", createFaction, "Lime");
 end
 
+function pickSlot()
+
+end
+
 function createFaction()
 	local faction = getText("addFactionFactionName");
 	destroyWindow(getCurrentWindow());
