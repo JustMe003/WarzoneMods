@@ -69,7 +69,7 @@ function showSlotConfig(slot)
 		newLabel(win .. "factionLabel", line, "Faction: ");
 		newButton(win .. "factionButton", line, config.SlotInFaction[slot], function() showFactionConfig(config.SlotInFaction[slot]); end);
 	end
-	for i, v in pairs(config.Relations[i]) do
+	for i, v in pairs(config.Relations[slot]) do
 		local line = newHorizontalGroup(win .. i .. "line", vert);
 		newLabel(win .. i .. "slotName", line, getSlotName(i) .. ": ");
 		if v == "AtWar" then
