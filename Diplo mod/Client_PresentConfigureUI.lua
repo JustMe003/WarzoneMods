@@ -202,30 +202,31 @@ function PickForFactionLeader(faction)
 	UI.PromptFromList("Which slot will be Faction leader?", payload);
 end
 
--- function initSlotRelations(slot)
-	-- if config.Relations[slot] == nil then 
-		-- config.Relations[slot] = {}; 
-		-- if config.SlotInFaction[slot] ~= nil then
-			-- for _, v in pairs(config.Factions[config.SlotInFaction[slot]].FactionMembers) do
-				-- config.Relations[slot][v] = "InFaction";
-				-- config.Relations[v][slot] = "InFaction";
-			-- end
-			-- for faction, bool in pairs(config.Factions[config.SlotInFaction[slot]].AtWar) do
-				-- if bool then
-					-- for _, v in pairs(config.Factions[faction].FactionMembers) do
-					-- config.Relations[slot][v] = "AtWar";
-					-- config.Relations[v][slot] = "AtWar";
-				-- end
-			-- end
-		-- end
-		-- for i, _ in pairs(config.Relations) do
-			-- if slot ~= i and config.Relations[slot][i] == nil then
-				-- config.Relations[slot][i] = "InPeace";
-				-- config.Relations[i][slot] = "InPeace";
-			-- end
-		-- end
-	-- end
--- end
+function initSlotRelations(slot)
+	if config.Relations[slot] == nil then 
+		config.Relations[slot] = {}; 
+		if config.SlotInFaction[slot] ~= nil then
+			for _, v in pairs(config.Factions[config.SlotInFaction[slot]].FactionMembers) do
+				config.Relations[slot][v] = "InFaction";
+				config.Relations[v][slot] = "InFaction";
+			end
+			for faction, bool in pairs(config.Factions[config.SlotInFaction[slot]].AtWar) do
+				if bool then
+					for _, v in pairs(config.Factions[faction].FactionMembers) do
+						config.Relations[slot][v] = "AtWar";
+						config.Relations[v][slot] = "AtWar";
+					end
+				end
+			end
+		end
+		for i, _ in pairs(config.Relations) do
+			if slot ~= i and config.Relations[slot][i] == nil then
+				config.Relations[slot][i] = "InPeace";
+				config.Relations[i][slot] = "InPeace";
+			end
+		end
+	end
+end
 
 function getFactionLeader(faction)
 	if config.Factions[faction].FactionLeader ~= nil then
