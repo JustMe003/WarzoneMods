@@ -19,8 +19,10 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	for i, v in pairs(WL.GamePlayerState) do print(i,v); end
 	local playerData = Mod.PlayerGameData;
-	for i, _ in pairs(game.Game.PlayingPlayers) do
-		playerData[i].NumberOfNotifications = 0;
+	for i, p in pairs(game.Game.PlayingPlayers) do
+		if not p.IsAI then
+			playerData[i].NumberOfNotifications = 0;
+		end
 	end
 	Mod.PlayerGameData = playerData;
 end
