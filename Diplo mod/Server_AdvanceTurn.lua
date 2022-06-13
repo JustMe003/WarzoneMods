@@ -22,8 +22,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		if not p.IsAI then
 			playerData[i].NumberOfNotifications = 0;
 		end
-		if p.State ~= WL.PlayerGameState.EndedByVote then
-			if (p.State == WL.PlayerGameState.Eliminated) or (p.State == WL.PlayerGameState.Booted and not game.Settings.BootedPlayersTurnIntoAIs) or (p.State == WL.PlayerGameState.SurrenderAccepted and not game.Settings.SurrenderedPlayersTurnIntoAIs) then
+		if p.State ~= WL.GamePlayerState.EndedByVote then
+			if (p.State == WL.GamePlayerState.Eliminated) or (p.State == WL.GamePlayerState.Booted and not game.Settings.BootedPlayersTurnIntoAIs) or (p.State == WL.GamePlayerState.SurrenderAccepted and not game.Settings.SurrenderedPlayersTurnIntoAIs) then
 				if data.IsInFaction[i] then
 					local index = 0;
 					for k, v in pairs(data.Factions[data.PlayerInFaction[i]].FactionMembers) do
