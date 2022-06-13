@@ -53,12 +53,13 @@ function createFaction()
 		UI.Alert(faction .. " already exists");
 		addFaction();
 	else
+		local t = {}
+		for i, _ in pairs(config.Factions) do
+			t[i] = false;
+		end
 		config.Factions[faction] = {};
 		config.Factions[faction].FactionMembers = {};
-		config.Factions[faction].AtWar = {};
-		for i, _ in pairs(config.Factions) do
-			config.Factions[faction].AtWar[i] = false;
-		end
+		config.Factions[faction].AtWar = t;
 		showFactionConfig(faction);
 	end
 end
@@ -97,10 +98,9 @@ function showFactionRelationConfig(faction)
 	local vert = newVerticalGroup("Vert", "root");
 	newButton(win .. "return", vert, "Return", function() showFactionConfig(faction); end, "Orange");
 	newLabel(win .. "FactionName", vert, faction .. " (relation configuration)\n");
-	for i, bool in pairs(config.Factions) do
+	for i, bool in pairs(config.Factions[faction].AtWar) do
 		if i ~= faction then
 			local line = newHorizontalGroup(win .. i .. "line", vert);
-			print(bool);
 			if bool then
 				newButton(win .. i .. "Button", line, "War", function() config.Factions[faction].AtWar[i] = false; showFactionRelationConfig(faction); end, "Red");
 			else
