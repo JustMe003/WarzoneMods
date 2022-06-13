@@ -7,6 +7,7 @@ function Client_PresentConfigureUI(rootParent)
 		config = {}; 
 		config.Factions = {};
 		config.SlotInFaction = {};
+		config.Relations = {};
 	end
 	
 	showMain();
@@ -43,7 +44,41 @@ function addFaction()
 end
 
 function pickSlot()
+	local payload = {};
+	for i = 0, 49 do
+		if config.Relations[i] == nil then
+			table.insert(payload, {text=getSlotName(i), selected=function() showSlotConfig(i); end});
+		end
+	end
+	UI.PromptFromList("Pick slot to configure", payload);
+end
 
+function showSlotConfig(slot)
+	local win = "showSlotConfig";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("Vert", "root");
+	newButton(win .. "return", vert, "Return", showMain, "Orange");
+	newLabel(win .. "SlotName", vert, getSlotName(slot) .. " (Relation configuration)\n");
+	if config.SlotInFaction[slot] ~= nil then
+		local line = newHorizontalGroup(win .. "line", vert);
+		newLabel(win .. "factionLabel", line, "Faction: ");
+		newButton(win .. "factionButton", line, config.SlotInFaction[slot], function() showFactionConfig(config.SlotInFaction[slot]); end);
+	end
+	for i, v in pairs(config.Relations[i]) do
+		local line = newHorizontalGroup(win .. i .. "line", vert);
+		newLabel(win .. i .. "slotName", line, getSlotName(i) .. ": ");
+		if v == "AtWar" then
+			newButton(win .. i .. "Button", line, "War", function() config.Relations[slot][i] = "InPeace"; config.Relations[i][slot] = "InPeace"; showSlotConfig(slot); end, "Red");
+		elseif v == "InPeace" then
+			newButton(win .. i .. "Button", line, "Peace", function() config.Relations[slot][i] = "AtWar"; config.Relations[i][slot] = "AtWar"; showSlotConfig(slot); end, "Green");
+		else
+			newButton(win .. i .. "Button", line, "In same faction", function() end, "Yellow", false);
+		end
+	end
 end
 
 function createFaction()
@@ -125,6 +160,7 @@ end
 function addSlotToFaction(faction, slot)
 	table.insert(config.Factions[faction].FactionMembers, slot);
 	config.SlotInFaction[slot] = faction;
+	initSlotRelations(slot);
 	showFactionConfig(faction);
 end
 
@@ -141,6 +177,18 @@ end
 function removeSlotFromFaction(faction, index, slot)
 	table.remove(config.Factions[faction].FactionMembers, index);
 	config.SlotInFaction[slot] = nil;
+	for _, v in pairs(config.Factions[faction].FactionMembers) do
+		config.Relations[slot][v] = "InPeace";
+		config.Relations[v][slot] = "InPeace";
+	end
+	for f, bool in pairs(config.Factions[faction].AtWar) do
+		if bool then
+			for _, v in pairs(config.Factions[f].FactionMembers) do
+				config.Relations[slot][v] = "InPeace";
+				config.Relations[v][slot] = "InPeace";
+			end
+		end
+	end
 	showFactionConfig(faction);
 end
 
@@ -148,10 +196,35 @@ function PickForFactionLeader(faction)
 	local payload = {};
 	for i = 0, 49 do
 		if config.SlotInFaction[i] == nil then
-			table.insert(payload, {text=getSlotName(i), selected=function() config.SlotInFaction[i] = faction; config.Factions[faction].FactionLeader = i; table.insert(config.Factions[faction].FactionMembers, i); showFactionConfig(faction); end});
+			table.insert(payload, {text=getSlotName(i), selected=function() config.SlotInFaction[i] = faction; config.Factions[faction].FactionLeader = i; initSlotRelations(slot); table.insert(config.Factions[faction].FactionMembers, i); showFactionConfig(faction); end});
 		end
 	end
 	UI.PromptFromList("Which slot will be Faction leader?", payload);
+end
+
+function initSlotRelations(slot)
+	if config.Relations[slot] == nil then 
+		config.Relations[slot] = {}; 
+		if config.SlotInFaction[slot] ~= nil then
+			for _, v in pairs(config.Factions[config.SlotInFaction[slot]].FactionMembers) do
+				config.Relations[slot][v] = "InFaction";
+				config.Relations[v][slot] = "InFaction";
+			end
+			for faction, bool in pairs(config.Factions[config.SlotInFaction[slot]].AtWar) do
+				if bool then
+					for _, v in pairs(config.Factions[faction].FactionMembers) do
+					config.Relations[slot][v] = "AtWar";
+					config.Relations[v][slot] = "AtWar";
+				end
+			end
+		end
+		for i, _ in pairs(config.Relations) do
+			if slot ~= i and config.Relations[slot][i] == nil then
+				config.Relations[slot][i] = "InPeace";
+				config.Relations[i][slot] = "InPeace";
+			end
+		end
+	end
 end
 
 function getFactionLeader(faction)
