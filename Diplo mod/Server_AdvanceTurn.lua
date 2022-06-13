@@ -17,13 +17,29 @@ end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
 	local data = Mod.PublicGameData;
-	for i, v in pairs(WL.GamePlayerState) do print(i,v); end
 	local playerData = Mod.PlayerGameData;
 	for i, p in pairs(game.Game.PlayingPlayers) do
 		if not p.IsAI then
 			playerData[i].NumberOfNotifications = 0;
 		end
+		if p.State ~= WL.PlayerGameState.EndedByVote then
+			if (p.State == WL.PlayerGameState.Eliminated) or (p.State == WL.PlayerGameState.Booted and not game.Settings.BootedPlayersTurnIntoAIs) or (p.State == WL.PlayerGameState.SurrenderAccepted and not game.Settings.SurrenderedPlayersTurnIntoAIs) then
+				if data.IsInFaction[i] then
+					local index = 0;
+					for k, v in pairs(data.Factions[data.PlayerInFaction[i]].FactionMembers) do
+						if v == i then
+							index = k;
+							break;
+						end
+					end
+					table.remove(data.Factions[data.PlayerInFaction[i]].FactionMembers, index);
+					data.PlayerInFaction[i] = nil;
+					data.IsInFaction[i] = false;
+				end
+			end
+		end
 	end
+	Mod.PublicGameData = data;
 	Mod.PlayerGameData = playerData;
 end
 
