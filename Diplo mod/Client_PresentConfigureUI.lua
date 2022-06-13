@@ -14,6 +14,7 @@ end
 
 function showMain()
 	local win = "showMain";
+	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
 		resetWindow(win);
 	end
@@ -24,6 +25,7 @@ end
 
 function addFaction()
 	local win = "addFaction";
+	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
 		resetWindow(win);
 	end
@@ -36,6 +38,7 @@ end
 
 function createFaction()
 	local faction = getText("addFactionFactionName");
+	destroyWindow(getCurrentWindow());
 	if config.Factions[faction] ~= nil then
 		UI.Alert(faction .. " already exists");
 		addFaction();
@@ -52,6 +55,7 @@ end
 
 function showFactionConfig(faction)
 	local win = "showFactionConfig";
+	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
 		resetWindow(win);
 	end
@@ -75,6 +79,7 @@ end
 
 function showFactionRelationConfig(faction)
 	local win = "showFactionConfig";
+	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
 		resetWindow(win);
 	end
