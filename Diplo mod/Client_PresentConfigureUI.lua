@@ -28,6 +28,10 @@ function showMain()
 	for i, _ in pairs(config.Factions) do
 		newButton(win .. i, vert, i, function() showFactionConfig(i); end);
 	end
+	newLabel(win .. "EmptyAfterFactions", vert, " ");
+	for i, _ in pairs(config.Relations) do
+		newButton(win .. i, vert, getSlotName(i), function() showSlotConfig(i); end);
+	end
 end
 
 function addFaction()
