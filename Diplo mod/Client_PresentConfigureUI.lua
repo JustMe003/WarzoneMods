@@ -74,9 +74,9 @@ function showSlotConfig(slot)
 		newButton(win .. "factionButton", line, config.SlotInFaction[slot], function() showFactionConfig(config.SlotInFaction[slot]); end);
 	end
 	for i, v in pairs(config.Relations[slot]) do
-		local line = newHorizontalGroup(win .. i .. "line", vert);
+		local line = newHorizontalGroup(win .. i .. "line", vert);	-- make this a button so the creator can browse to this page
 		newLabel(win .. i .. "slotName", line, getSlotName(i) .. ": ");
-		if v == "AtWar" then
+		if v == "AtWar" then	-- if is faction war, then set interactable to false
 			newButton(win .. i .. "Button", line, "War", function() config.Relations[slot][i] = "InPeace"; config.Relations[i][slot] = "InPeace"; showSlotConfig(slot); end, "Red");
 		elseif v == "InPeace" then
 			newButton(win .. i .. "Button", line, "Peace", function() config.Relations[slot][i] = "AtWar"; config.Relations[i][slot] = "AtWar"; showSlotConfig(slot); end, "Green");
