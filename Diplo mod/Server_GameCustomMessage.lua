@@ -532,6 +532,8 @@ function kickPlayer(game, playerID, payload, setReturn)
 						data.Relations[v][player] = "InPeace";
 						data.Relations[player][v] = "InPeace";
 					end
+					data.IsInFaction = false;
+					data.PlayerInFaction = nil;
 					table.insert(data.Events, createEvent("Kicked " .. game.Game.Players[player].DisplayName(nil, false) .. " from '" .. payload.Faction .. "'", playerID));
 					Mod.PlayerGameData = playerData;
 				else
