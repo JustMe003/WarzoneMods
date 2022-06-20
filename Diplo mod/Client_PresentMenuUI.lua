@@ -2,13 +2,18 @@ require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close, calledFromGameRefresh)
 	init(rootParent);
 	game = Game;
-	if game.Us == nil then return; end
+	if game.Us == nil then UI.Alert("You cannot use this mod since you're not playing in this game"); close(); return; end
+	if game.Us.State ~= WL.GamePlayerState.Playing then UI.Alert("You cannot use this mod anymore since you're not playing anymore"); close(); return; end
+	if game.Game.TurnNumber < 1 then UI.Alert("This mod can only be used after the distribution turn"); close(); return; end
 	if Close ~= nil and calledFromGameRefresh ~= nil then
 		Close();
 	end
 	Close = close;
-	setMaxSize(500, 600);
-
+	if Mod.PlayerGameData.PersonalSettings ~= nil then
+		setMaxSize(Mod.PlayerGameData.PersonalSettings.WindowWidth, Mod.PlayerGameData.PersonalSettings.WindowHeight);
+	else
+		setMaxSize(500, 600);
+	end
 	showMenu();
 end
 
@@ -25,6 +30,7 @@ function showMenu()
 		newButton(win .. "createFactionButton", vert, "Create Faction", createFaction, "Lime", not(Mod.PublicGameData.IsInFaction[game.Us.ID]));
 		newLabel(win .. "empty", vert, "\n");
 		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, game.Us.Color.HtmlColor);
+		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
 	end
 end
 
@@ -84,7 +90,7 @@ function showPendingOffers()
 	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
 	newLabel(win .. "EmptyAfterReturn", vert, " ");
 	for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
-		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); showPlayerPage(); end, function() showPendingOffers(); end); end, game.Game.Players[v].Color.HtmlColor);
+		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); showPlayerPage(); end, function() game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); showPendingOffers(); end); end, game.Game.Players[v].Color.HtmlColor);
 	end
 end
 
@@ -143,9 +149,16 @@ function showFactionDetails(factionName)
 	local line = newHorizontalGroup(win .. "line", vert);
 	local bool = Mod.PublicGameData.PlayerInFaction[game.Us.ID] == factionName;
 	newButton(win .. "LeaveFaction", line, "Leave Faction", function() confirmChoice("Are you sure you want to leave the '" .. factionName .. "' faction?", function() game.SendGameCustomMessage("Leaving faction...", {Type="leaveFaction"}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Red", bool);
-	newButton(win .. "JoinFaction", line, "Join Faction", function() confirmChoice("Do you wish to join the '" .. factionName .. "' faction? If this faction is in war with any other faction you'll automatically declare war on them.", function() game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", Faction=factionName}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil);
+	newButton(win .. "JoinFaction", line, "Join Faction", function() confirmChoice("Do you wish to join the '" .. factionName .. "' faction? If this faction is in war with any other faction you'll automatically declare war on them.", function() game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", PlayerID=game.Us.ID, Faction=factionName}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil and Mod.PlayerGameData.HasPendingRequest == nil and not(Mod.Settings.GlobalSettings.LockPreSetFactions and Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil));
 	newButton(win .. "return", line, "Return", showFactions, "Orange");
 	newLabel(win .. "EmptyAfterButtonLine", vert, " ");
+	if Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil and Mod.Settings.LockPreSetFactions then
+		newLabel(win .. "PreSetFactionText", vert, "This faction was made by the game creator. They have configured this mod so that you cannot join this faction");
+	end
+	if Mod.PlayerGameData.HasPendingRequest ~= nil and Mod.PlayerGameData.HasPendingRequest == factionName then
+		newLabel(win .. "HasPendingRequest", vert, "You currently have a pending join request for this faction");
+		newButton(win .. "PendingRequestCancelButton", vert, "Cancel request", function() confirmChoice("Do you want to cancel your join request?", function() game.SendGameCustomMessage("Cancelling request...", {Type="requestCancel", Faction=factionName}, gameCustomMessageReturn); showFactionDetails(factionName); end, function() showFactionDetails(factionName); end); end, game.Us.Color.HtmlColor);
+	end
 	newLabel(win .. "label", vert, factionName, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
 	newLabel(win .. "EmptyAfterFactionName", vert, " ");
 	if game.Us.ID == Mod.PublicGameData.Factions[factionName].FactionLeader then
@@ -155,7 +168,11 @@ function showFactionDetails(factionName)
 	newLabel(win .. "FactionLeader", vert, "Faction leader: " .. game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].DisplayName(nil, false) .. "\n", game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
 	newLabel(win .. "PlayersInFaction", vert, "The following players are in this faction: ");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].FactionMembers) do
-		newLabel(win .. i .. v, vert, i .. ". " .. game.Game.Players[v].DisplayName(nil, false), game.Game.Players[v].Color.HtmlColor);
+		local line = newHorizontalGroup(win .. "line" .. i, vert);
+		newLabel(win .. i .. v, line, i .. ". " .. game.Game.Players[v].DisplayName(nil, false), game.Game.Players[v].Color.HtmlColor);
+		if Mod.PublicGameData.Factions[factionName].FactionLeader == game.Us.ID and v ~= game.Us.ID then
+			newButton(win .. i .. "kick", line, "Kick", function() confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, false) .. " from your faction?", function() game.SendGameCustomMessage("Kicking player...", {Type="kickPlayer", Index=i, Player=v, Faction=factionName}, gameCustomMessageReturn); showFactions(); end, function() showFactions(); end); end, "Red");
+		end
 	end
 end
 
@@ -170,6 +187,7 @@ function factionSettings(factionName)
 	newButton(win .. "DeclareWar", vert, "Declare war", function() declareFactionWar(factionName) end, "Red", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return not(v); end) > 0);
 	newButton(win .. "PeaceOffer", vert, "Offer peace", function() offerFactionPeace(factionName) end, "Green", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return v and Mod.PublicGameData.Factions[factionName].Offers[v] == nil; end) > 0);
 	newButton(win .. "pendingPeaceOffers", vert, "Pending offers", function() pendingFactionPeaceOffers(factionName) end, "Cyan", getTableLength(Mod.PublicGameData.Factions[factionName].PendingOffers) > 0);
+	newButton(win .. "pendingJoinRequests", vert, "Join requests", function() pendingJoinRequests(factionName); end, "Royal Blue", #Mod.PublicGameData.Factions[factionName].JoinRequests > 0);
 	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName) end, "Orange");
 end
 
@@ -222,7 +240,7 @@ function pendingFactionPeaceOffers(factionName)
 	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName); end, "Orange");
 	newLabel(win .. "n", vert, "You have " .. #Mod.PublicGameData.Factions[factionName].PendingOffers .. " peace offers");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
-		newButton(win .. i, vert, v, function() confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end, function() factionSettings(factionName); end); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
+		newButton(win .. i, vert, v, function() confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end, function() game.SendGameCustomMessage("Declining peace offer...", {Type="declineFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
 	end
 end
 
@@ -263,6 +281,21 @@ function showFactionChat()
 	end
 end
 
+function pendingJoinRequests(factionName)
+	local win = "pendingJoinRequests";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName); end, "Orange");
+	newLabel(win .. "EmptyAfterReturn", vert, "");
+	for i, v in pairs(Mod.PublicGameData.Factions[factionName].JoinRequests) do
+		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to let " .. game.Game.Players[v].DisplayName(nil, false) .. " join your faction?", function() game.SendGameCustomMessage("Accepting request...", {Type="joinFaction", PlayerID=v, Faction=factionName, RequestApproved=true}, gameCustomMessageReturn); factionSettings(factionName); end, function() factionSettings(factionName); end); end, game.Game.Players[v].Color.HtmlColor);
+	end
+end 
+
 function sendMessage()
 	local payload = {};
 	payload.Type = "sendMessage";
@@ -285,6 +318,27 @@ function createFaction()
 	newTextField(win .. "FactionName", vert, "", "Enter your faction name here", 50, true, 300, -1, 1, 0);
 	newButton(win .. "CreateFaction", vert, "Create Faction", function() verifyFactionName(getText(win .. "FactionName")); end, "Lime");
 	newButton(win .. "Return", vert, "Return", showMenu, "Orange");
+end
+
+function showPlayerSettings()
+	local settings = Mod.PlayerGameData.PersonalSettings;
+	if settings == nil then
+		settings = {};
+		settings.WindowWidth = 500;
+		settings.WindowHeight = 600;
+	end
+	local win = "showPlayerSettings";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newLabel(win .. "windowWidthText", vert, "Your preferred window width");
+	local windowWidth = newNumberField(win .. "windowWidth", vert, 300, 1000, settings.WindowWidth);
+	newLabel(win .. "windowHeigthText", vert, "Your preferred window height");
+	local windowHeight = newNumberField(win .. "windowHeight", vert, 300, 1000, settings.WindowHeight);
+	newButton(win .. "UpdateSettings", vert, "Update settings", function() game.SendGameCustomMessage("Updating Settings...", {Type="updateSettings", WindowHeight=getValue(windowHeight), WindowWidth=getValue(windowWidth)}, gameCustomMessageReturn); end, "Green");
 end
 
 function verifyFactionName(name)
@@ -315,7 +369,7 @@ function changeRelationState(relation)
 end
 
 function gameCustomMessageReturn(payload)
-	if payload.Type == "Error" or payload.Type == "Success" then
+	if payload.Type == "Fail" or payload.Type == "Success" then
 		UI.Alert(payload.Type .. "\n" .. payload.Message);
 	end
 	local functions = {};

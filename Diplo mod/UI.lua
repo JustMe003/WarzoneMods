@@ -426,7 +426,7 @@ end
 
 function numberInputField(parent, sliderMin, sliderMax, value, interactable, wholeNumbers, boxPreferredWidth, sliderPreferredWidth, prefWidth, prefHeight, flexWidth, flexHeigth)
 	prefWidth = prefWidth or -1; prefHeight = prefHeight or -1; flexWidth = flexWidth or 0; flexHeigth = flexHeigth or 0; if interactable == nil then interactable = true; end; if wholeNumbers == nil then wholeNumbers = true; end; boxPreferredWidth = boxPreferredWidth or -1; sliderPreferredWidth = sliderPreferredWidth or -1;
-	return UI.CreateNumberInputField(parent).SetSliderMinValue(sliderMin).SetSliderMaxValue(sliderMax).SetValue(value).SetInteractable(interactable).SetWholeNumbers(wholeNumbers).SetBoxPreferredWidth(boxPreferredWidth).SetSliderPreferredWidth(sliderPreferredWidth).SetPreferredWidth(prefWidth).SetPreferredHeight(prefHeight).SetFlexibleWidth(flexWidth).SetFlexibleHeight(flexHeigth);
+	return UI.CreateNumberInputField(parent).SetWholeNumbers(wholeNumbers).SetSliderMinValue(sliderMin).SetSliderMaxValue(sliderMax).SetValue(value).SetInteractable(interactable).SetBoxPreferredWidth(boxPreferredWidth).SetSliderPreferredWidth(sliderPreferredWidth).SetPreferredWidth(prefWidth).SetPreferredHeight(prefHeight).SetFlexibleWidth(flexWidth).SetFlexibleHeight(flexHeigth);
 end
 
 

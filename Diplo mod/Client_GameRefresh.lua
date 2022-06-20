@@ -1,4 +1,4 @@
-require("Client_PresentMenuUI");
+require("utilities");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
@@ -15,6 +15,9 @@ function showAlert(game)
 	local playerData = Mod.PlayerGameData;
 	if playerData.Notifications == nil then return; end
 	local s = "";
+	if playerData.Notifications.GotKicked ~= nil then
+		s = s .. "You were kicked from '" .. playerData.Notifications.GotKicked .. "'\n\n";
+	end
 	if playerData.Notifications.FactionWarDeclarations ~= nil and #playerData.Notifications.FactionWarDeclarations > 0 then
 		s = s .. "Your faction is now at war with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionWarDeclarations) do
@@ -50,10 +53,23 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	if playerData.Notifications.FactionsPeaceDeclined ~= nil and #playerData.Notifications.FactionsPeaceDeclined > 0 then
+		s = s .. "The following faction peace offers were declined:\n";
+		for _, v in pairs(playerData.Notifications.FactionsPeaceDeclined) do
+			s = s .. " - " .. v .. "\n";
+		end
+	end
 	if playerData.Notifications.PeaceConfirmed ~= nil and #playerData.Notifications.PeaceConfirmed > 0 then
 		s = s .. "You're now in peace with the following players:\n";
 		for _, v in pairs(playerData.Notifications.PeaceConfirmed) do
 			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
+		end
+		s = s .. "\n";
+	end
+	if playerData.Notifications.PeaceDeclines ~= nil and #playerData.Notifications.PeaceDeclines > 0 then
+		s = s .. "The following peace offers were declined:\n";
+		for _, v in pairs(playerData.Notifications.PeaceDeclines) do
+			s = s .. " - " .. v .. "\n";
 		end
 		s = s .. "\n";
 	end
@@ -67,6 +83,13 @@ function showAlert(game)
 	if playerData.Notifications.LeftPlayers ~= nil and #playerData.Notifications.LeftPlayers > 0 then
 		s = s .. "The following players left the faction:\n";
 		for _, v in pairs(playerData.Notifications.LeftPlayers) do
+			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
+		end
+		s = s .. "\n";
+	end
+	if playerData.Notifications.FactionsKicks ~= nil and #playerData.Notifications.FactionsKicks > 0 then
+		s = s .. "The following players were kicked from your faction:\n";
+		for _, v in pairs(playerData.Notifications.FactionsKicks) do
 			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
 		end
 		s = s .. "\n";
@@ -161,17 +184,4 @@ function dateIsEarlier(date1, date2)
 		end
 	end
 	return false;
-end
-
-
-function count(t, func)
-	local c = 0;
-	for i, v in pairs(t) do
-		if func ~= nil then
-			c = c + func(v);
-		else
-			c = c + 1;
-		end
-	end
-	return c;
 end
