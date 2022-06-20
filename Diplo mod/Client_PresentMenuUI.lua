@@ -152,7 +152,7 @@ function showFactionDetails(factionName)
 	newButton(win .. "JoinFaction", line, "Join Faction", function() confirmChoice("Do you wish to join the '" .. factionName .. "' faction? If this faction is in war with any other faction you'll automatically declare war on them.", function() game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", PlayerID=game.Us.ID, Faction=factionName}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil and Mod.PlayerGameData.HasPendingRequest == nil and not(Mod.Settings.GlobalSettings.LockPreSetFactions and Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil));
 	newButton(win .. "return", line, "Return", showFactions, "Orange");
 	newLabel(win .. "EmptyAfterButtonLine", vert, " ");
-	if Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil and Mod.Settings.LockPreSetFactions then
+	if Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil and Mod.Settings.GlobalSettings.LockPreSetFactions then
 		newLabel(win .. "PreSetFactionText", vert, "This faction was made by the game creator. They have configured this mod so that you cannot join this faction");
 	end
 	if Mod.PlayerGameData.HasPendingRequest ~= nil and Mod.PlayerGameData.HasPendingRequest == factionName then
