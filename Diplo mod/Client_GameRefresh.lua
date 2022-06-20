@@ -69,7 +69,7 @@ function showAlert(game)
 	if playerData.Notifications.PeaceDeclines ~= nil and #playerData.Notifications.PeaceDeclines > 0 then
 		s = s .. "The following peace offers were declined:\n";
 		for _, v in pairs(playerData.Notifications.PeaceDeclines) do
-			s = s .. " - " .. v .. "\n";
+			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
 		end
 		s = s .. "\n";
 	end
