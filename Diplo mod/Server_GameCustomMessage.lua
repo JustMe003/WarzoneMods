@@ -588,10 +588,12 @@ function declineFactionPeaceOffer(game, playerID, payload, setReturn)
 				end
 			end
 			for _, i in pairs(data.Factions[faction].FactionMembers) do
-				if i ~= playerID and not game.Game.Players[i].IsAI then
+				if not game.Game.Players[i].IsAI then
 					if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
 					if playerData[i].Notifications.FactionsPeaceDeclined == nil then playerData[i].Notifications.FactionsPeaceDeclined = {}; end
-					table.insert(playerData[i].Notifications.FactionsPeaceDeclined, opponentFaction);
+					if i ~= playerID then
+						table.insert(playerData[i].Notifications.FactionsPeaceDeclined, opponentFaction);
+					end
 					table.remove(playerData[i].Notifications.FactionsPeaceOffers, payload.Index);
 				end
 			end
