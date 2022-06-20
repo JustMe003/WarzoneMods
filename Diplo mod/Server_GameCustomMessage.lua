@@ -521,6 +521,7 @@ function kickPlayer(game, playerID, payload, setReturn)
 					local playerData = Mod.PublicGameData;
 					table.remove(data.Factions[payload.Faction].FactionMembers, payload.Index);
 					if not game.ServerGame.Game.Players[player].IsAI then
+						print(player);
 						if playerData[player].Notifications == nil then playerData[player].Notifications = setPlayerNotifications(); end
 						playerData[player].Notifications.GotKicked = payload.Faction;
 					end
