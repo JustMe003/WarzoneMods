@@ -176,7 +176,7 @@ function joinFaction(game, playerID, payload, setReturn)		-- Create different fu
 						joinFaction(game, playerID, payload, setReturn);
 					else
 						playerData[payload.PlayerID].HasPendingRequest = payload.Faction;
-						table.insert(data.Factions[payload.Faction].JoinRequests, payload.PlayerID);
+						table.insert(data.Factions[payload.Faction].JoinRequests, payload.PlayerID);	-- crashes
 						if playerData[data.Factions[payload.Faction].FactionLeader].Notifications == nil then playerData[data.Factions[payload.Faction].FactionLeader].Notifications = setPlayerNotifications(); end
 						table.insert(playerData[data.Factions[payload.Faction].FactionLeader].Notifications.FactionsPendingJoins, payload.PlayerID);
 						table.insert(data.Events, createEvent(game.Game.Players[payload.PlayerID].DisplayName(nil, false) .. " requested to join '" .. payload.Faction .. "'", payload.PlayerID));
