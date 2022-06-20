@@ -12,5 +12,8 @@ function Client_SaveConfigureUI(alert)
 		globalSettings.FairFactionsModifier = 0.5;
 	end
 	Mod.Settings.GlobalSettings = globalSettings;
+	for i, v in pairs(Mod.Settings.GlobalSettings) do
+		print(i, v);
+	end
 	Mod.Settings.Configuration = config;
 end
