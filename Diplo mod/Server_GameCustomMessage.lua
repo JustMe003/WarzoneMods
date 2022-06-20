@@ -525,7 +525,7 @@ function kickPlayer(game, playerID, payload, setReturn)
 						playerData[player].Notifications.GotKicked = payload.Faction;
 					end
 					for _, v in pairs(data.Factions[payload.Faction].FactionMembers) do
-						if v ~= playerID then
+						if v ~= playerID and not game.ServerGame.Game.Players[v].IsAI then
 							if playerData[v].Notifications == nil then playerData[v].Notifications = setPlayerNotifications(); end
 							table.insert(playerData[v].Notifications.FactionsKicks, player);
 						end
