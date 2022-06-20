@@ -21,9 +21,6 @@ function Client_PresentConfigureUI(rootParent)
 		settings.ApproveFactionJoins = false;
 		settings.LockPreSetFactions = false;
 	end
-	for i, v in pairs(settings) do
-		print(i, v);
-	end
 	showSettings();
 	showMain();
 end
