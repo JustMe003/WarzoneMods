@@ -176,11 +176,6 @@ function joinFaction(game, playerID, payload, setReturn)		-- Create different fu
 						joinFaction(game, playerID, payload, setReturn);
 					else
 						playerData[payload.PlayerID].HasPendingRequest = payload.Faction;
-						print(tostring(data))
-						print(tostring(data.Factions))
-						print(tostring(payload.Faction))
-						print(tostring(data.Factions[payload.Faction]))
-						print(tostring(data.Factions[payload.Faction].JoinRequests))
 						table.insert(data.Factions[payload.Faction].JoinRequests, payload.PlayerID);
 						if playerData[data.Factions[payload.Faction].FactionLeader].Notifications == nil then playerData[data.Factions[payload.Faction].FactionLeader].Notifications = setPlayerNotifications(); end
 						table.insert(playerData[data.Factions[payload.Faction].FactionLeader].Notifications.FactionsPendingJoins, payload.PlayerID);

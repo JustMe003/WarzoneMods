@@ -14,7 +14,7 @@ function Server_StartGame(game, standing)
 			data.Factions[i].Offers = {};
 			data.Factions[i].PendingOffers = {};
 			data.Factions[i].FactionChat = {};
-			if Mod.Settings.ApproveFactionJoins then
+			if Mod.Settings.GlobalSettings.ApproveFactionJoins then
 				data.Factions[i].JoinRequests = {};
 			end
 			hasFactionLeader[i] = false;
