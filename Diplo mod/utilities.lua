@@ -10,6 +10,7 @@ function setPlayerNotifications()
 	t.FactionsPeaceDeclined = {};
 	t.FactionsKicks = {};
 	t.FactionsPendingJoins = {};
+	t.JoinRequests = {};
 	t.WarDeclarations = {};
 	t.PeaceOffers = {};
 	t.PeaceDeclines = {};
