@@ -518,6 +518,7 @@ function kickPlayer(game, playerID, payload, setReturn)
 			if data.Factions[payload.Faction].FactionMembers[payload.Index] ~= nil then
 				local player = data.Factions[payload.Faction].FactionMembers[payload.Index];
 				if player == payload.Player then
+					local playerData = Mod.PublicGameData;
 					table.remove(data.Factions[payload.Faction].FactionMembers, payload.Index);
 					if not game.Game.Players[player].IsAI then
 						if playerData[player].Notifications == nil then playerData[player].Notifications = setPlayerNotifications(); end
@@ -532,6 +533,7 @@ function kickPlayer(game, playerID, payload, setReturn)
 						data.Relations[player][v] = "InPeace";
 					end
 					table.insert(data.Events, createEvent("Kicked " .. game.Game.Players[player].DisplayName(nil, false) .. " from '" .. payload.Faction .. "'", playerID));
+					Mod.PlayerGameData = playerData;
 				else
 					setReturn(setReturnPayload("Something went wrong, please refresh the page and try again", "Fail"));
 				end
