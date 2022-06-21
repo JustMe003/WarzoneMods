@@ -215,8 +215,12 @@ function joinFaction(game, playerID, payload, setReturn)		-- Create different fu
 						if bool then
 							for _, p in pairs(data.Factions[i].FactionMembers) do
 								if data.Relations[p][payload.PlayerID] ~= "AtWar" then
-									table.insert(playerData[payload.PlayerID].Notifications.WarDeclarations, p);
-									table.insert(playerData[p].Notifications.WarDeclarations, payload.PlayerID);
+									if not game.ServerGame.Game.Players[payload.PlayerID].IsAI then
+										table.insert(playerData[payload.PlayerID].Notifications.WarDeclarations, p);
+									end
+									if not game.ServerGame.Game.Players[p].IsAI then
+										table.insert(playerData[p].Notifications.WarDeclarations, payload.PlayerID);
+									end
 									data.Relations[p][payload.PlayerID] = "AtWar";
 									data.Relations[payload.PlayerID][p] = "AtWar";
 								end
