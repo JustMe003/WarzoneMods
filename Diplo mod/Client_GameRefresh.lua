@@ -1,4 +1,5 @@
 require("utilities");
+require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
@@ -11,6 +12,7 @@ function Client_GameRefresh(game)
 	end
 	if Mod.PlayerGameData.Func ~= nil then
 		game.SendGameCustomMessage("Refreshing page...", {Type="RefreshWindow"}, function(reply) end);
+		game.CreateDialog(Client_PresentMenuUI);
 	end
 end
 
