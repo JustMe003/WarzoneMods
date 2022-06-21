@@ -45,6 +45,9 @@ function createFaction(game, playerID, payload, setReturn);
 	t.PendingOffers = {};
 	t.Offers = {};
 	t.AtWar = {};
+	if Mod.Settings.GlobalSettings.ApproveFactionJoins then
+		t.JoinRequests = {};
+	end
 	for i, _ in pairs(data.Factions) do
 		if i ~= payload.Name then
 			t.AtWar[i] = false;
