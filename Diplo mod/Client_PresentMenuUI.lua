@@ -6,16 +6,17 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	if game.Us.State ~= WL.GamePlayerState.Playing then UI.Alert("You cannot use this mod anymore since you're not playing anymore"); close(); return; end
 	if game.Game.TurnNumber < 1 then UI.Alert("This mod can only be used after the distribution turn"); close(); return; end
 	
-	Close = close;
+	Close = function() pageHasClosed = true; close(); end;
 	if Mod.PlayerGameData.PersonalSettings ~= nil then
 		setMaxSize(Mod.PlayerGameData.PersonalSettings.WindowWidth, Mod.PlayerGameData.PersonalSettings.WindowHeight);
 	else
 		setMaxSize(500, 600);
 	end
 	if calledFromGameRefresh ~= nil then
-		if func ~= nil 
+		if func ~= nil and pageHasClosed ~= nil then
 			func();
 			func = nil;
+			pageHasClosed = nil;
 		end
 	else
 		showMenu();
