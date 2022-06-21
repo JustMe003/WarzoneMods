@@ -46,6 +46,13 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	if playerData.Notifications.FactionsPendingJoins ~= nil and #playerData.Notifications.FactionsPendingJoins > 0 then
+		s = s .. "Your faction has the following join request from players:\n";
+		for _, v in pairs(playerData.Notifications.FactionsPendingJoins) do
+			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
+		end
+		s = s .. "\n";
+	end
 	if playerData.Notifications.FactionsPeaceConfirmed ~= nil and #playerData.Notifications.FactionsPeaceConfirmed > 0 then
 		s = s .. "You're faction is now in peace with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceConfirmed) do

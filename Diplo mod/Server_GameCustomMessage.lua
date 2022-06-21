@@ -179,13 +179,24 @@ function joinFaction(game, playerID, payload, setReturn)		-- Create different fu
 						joinFaction(game, playerID, payload, setReturn);
 					else
 						playerData[payload.PlayerID].HasPendingRequest = payload.Faction;
-						table.insert(data.Factions[payload.Faction].JoinRequests, payload.PlayerID);	-- crashes
+						table.insert(data.Factions[payload.Faction].JoinRequests, payload.PlayerID);
 						if playerData[data.Factions[payload.Faction].FactionLeader].Notifications == nil then playerData[data.Factions[payload.Faction].FactionLeader].Notifications = setPlayerNotifications(); end
 						table.insert(playerData[data.Factions[payload.Faction].FactionLeader].Notifications.FactionsPendingJoins, payload.PlayerID);
 						table.insert(data.Events, createEvent(game.Game.Players[payload.PlayerID].DisplayName(nil, false) .. " requested to join '" .. payload.Faction .. "'", payload.PlayerID));
 					end
 				else
 					playerData[payload.PlayerID].HasPendingRequest = nil;
+					if game.ServerGame.Game.PlayingPlayers[payload.PlayerID] == nil then
+						setReturn(setReturnPayload("This player is not in the game anymore", "Fail"));
+						for i, v in pairs(data.Factions[payload.Faction].JoinRequests) do
+							if v == payload.PlayerID then
+								table.remove(data.Factions[payload.Faction].JoinRequests, i);
+								break;
+							end
+						end
+						return;
+					end
+					local relations = data.Relations;
 					for _, p in pairs(data.Factions[payload.Faction].FactionMembers) do
 						if data.Relations[payload.PlayerID][p] == "AtWar" then
 							setReturn(setReturnPayload(game.ServerGame.Game.Players[payload.PlayerID].DisplayName(nil, false) .. " cannot join the faction since they are at war with one of the factionmembers (" .. game.ServerGame.Game.Players[p].DisplayName(nil, false) .. ")", "Fail"));
@@ -198,6 +209,7 @@ function joinFaction(game, playerID, payload, setReturn)		-- Create different fu
 						relations[payload.PlayerID][p] = "InFaction";
 						relations[p][payload.PlayerID] = "InFaction";
 					end
+					data.Relations = relations;
 					for i, bool in pairs(data.Factions[payload.Faction].AtWar) do
 						if bool then
 							for _, p in pairs(data.Factions[i].FactionMembers) do
@@ -211,10 +223,17 @@ function joinFaction(game, playerID, payload, setReturn)		-- Create different fu
 						end
 					end
 					table.insert(data.Factions[payload.Faction].FactionMembers, payload.PlayerID);
+					for i, v in pairs(data.Factions[payload.Faction].JoinRequests) do
+						if v == payload.PlayerID then
+							table.remove(data.Factions[payload.Faction].JoinRequests, i);
+							break;
+						end
+					end
 					data.IsInFaction[payload.PlayerID] = true;
 					data.PlayerInFaction[payload.PlayerID] = payload.Faction;
 					Mod.PlayerGameData = playerData;
 					setReturn(setReturnPayload("Join request approved", "Success"));
+					table.insert(data.Events, createEvent("Approved join request from " .. game.ServerGame.Game.Players[payload.PlayerID].DisplayName(nil, false), playerID));
 				end
 			else
 				for _, p in pairs(data.Factions[payload.Faction].FactionMembers) do
