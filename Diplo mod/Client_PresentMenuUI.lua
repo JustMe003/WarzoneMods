@@ -12,9 +12,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	else
 		setMaxSize(500, 600);
 	end
-	if calledFromGameRefresh ~= nil and func ~= nil then
-		func();
-		func = nil;
+	if calledFromGameRefresh ~= nil then
+		if func ~= nil 
+			func();
+			func = nil;
+		end
 	else
 		showMenu();
 	end
