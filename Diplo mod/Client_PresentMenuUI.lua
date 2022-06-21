@@ -142,6 +142,7 @@ function showPlayerDetails(playerID)
 end
 
 function showFactionDetails(factionName)
+	if Mod.PublicGameData.Factions[factionName] == nil then showFactions(); return; end
 	local win = "showFactionDetails" .. factionName;
 	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
