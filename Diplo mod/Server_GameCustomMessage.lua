@@ -27,6 +27,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	
 	local playerData = Mod.PlayerGameData;
 	playerData[playerID].NeedsRefresh = true;
+	if payload.Type == "openedChat" then playerData[playerID].NeedsRefresh = nil; end
 	Mod.PlayerGameData = playerData;
 	
 	functions[payload.Type](game, playerID, payload, setReturn);
