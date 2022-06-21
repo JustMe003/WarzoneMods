@@ -93,7 +93,7 @@ function showPendingOffers()
 	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
 	newLabel(win .. "EmptyAfterReturn", vert, " ");
 	for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
-		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); showPlayerPage(); end, function() game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); showPendingOffers(); end); end, game.Game.Players[v].Color.HtmlColor);
+		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() func = function() showPendingOffers() end; func = function() showPendingOffers(); end; confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); showPlayerPage(); end, function() game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); showPendingOffers(); end); end, game.Game.Players[v].Color.HtmlColor);
 	end
 end
 
@@ -136,8 +136,8 @@ function showPlayerDetails(playerID)
 	end
 	newLabel(win .. "EmptyAfterOpponentFaction", vert, "\n");
 	local line = newHorizontalGroup(win .. "line2", vert);
-	newButton(win .. "ToWar", line, "Declare war", function() confirmChoice("Do you really wish to go to war against " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Declaring war...", { Type="declareWar", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID) end); end, "Red", Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InPeace");
-	newButton(win .. "offerPeace", line, "Offer peace", function() confirmChoice("Do you wish to offer peace to " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() game.SendGameCustomMessage("Offering peace...", { Type="peaceOffer", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID); end); end, "Green", not(isAtWarFromFaction) and Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" and Mod.PlayerGameData.Offers[playerID] == nil);
+	newButton(win .. "ToWar", line, "Declare war", function() confirmChoice("Do you really wish to go to war against " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() func = function() showPlayerDetails(playerID); end; game.SendGameCustomMessage("Declaring war...", { Type="declareWar", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID) end); end, "Red", Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InPeace");
+	newButton(win .. "offerPeace", line, "Offer peace", function() confirmChoice("Do you wish to offer peace to " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() func = function() showPlayerDetails(playerID); end; game.SendGameCustomMessage("Offering peace...", { Type="peaceOffer", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID); end); end, "Green", not(isAtWarFromFaction) and Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" and Mod.PlayerGameData.Offers[playerID] == nil);
 	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
 end
 
@@ -151,8 +151,8 @@ function showFactionDetails(factionName)
 	local vert = newVerticalGroup("vert", "root");
 	local line = newHorizontalGroup(win .. "line", vert);
 	local bool = Mod.PublicGameData.PlayerInFaction[game.Us.ID] == factionName;
-	newButton(win .. "LeaveFaction", line, "Leave Faction", function() confirmChoice("Are you sure you want to leave the '" .. factionName .. "' faction?", function() game.SendGameCustomMessage("Leaving faction...", {Type="leaveFaction"}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Red", bool);
-	newButton(win .. "JoinFaction", line, "Join Faction", function() confirmChoice("Do you wish to join the '" .. factionName .. "' faction? If this faction is in war with any other faction you'll automatically declare war on them.", function() game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", PlayerID=game.Us.ID, Faction=factionName}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil and Mod.PlayerGameData.HasPendingRequest == nil and not(Mod.Settings.GlobalSettings.LockPreSetFactions and Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil));
+	newButton(win .. "LeaveFaction", line, "Leave Faction", function() confirmChoice("Are you sure you want to leave the '" .. factionName .. "' faction?", function() func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Leaving faction...", {Type="leaveFaction"}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Red", bool);
+	newButton(win .. "JoinFaction", line, "Join Faction", function() confirmChoice("Do you wish to join the '" .. factionName .. "' faction? If this faction is in war with any other faction you'll automatically declare war on them.", function() func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", PlayerID=game.Us.ID, Faction=factionName}, gameCustomMessageReturn); Close(); end, function() showFactionDetails(factionName); end); end, "Green", Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil and Mod.PlayerGameData.HasPendingRequest == nil and not(Mod.Settings.GlobalSettings.LockPreSetFactions and Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil));
 	newButton(win .. "return", line, "Return", showFactions, "Orange");
 	newLabel(win .. "EmptyAfterButtonLine", vert, " ");
 	if Mod.PublicGameData.Factions[factionName].PreSetFaction ~= nil and Mod.Settings.GlobalSettings.LockPreSetFactions then
@@ -160,7 +160,7 @@ function showFactionDetails(factionName)
 	end
 	if Mod.PlayerGameData.HasPendingRequest ~= nil and Mod.PlayerGameData.HasPendingRequest == factionName then
 		newLabel(win .. "HasPendingRequest", vert, "You currently have a pending join request for this faction");
-		newButton(win .. "PendingRequestCancelButton", vert, "Cancel request", function() confirmChoice("Do you want to cancel your join request?", function() game.SendGameCustomMessage("Cancelling request...", {Type="requestCancel", Faction=factionName}, gameCustomMessageReturn); showFactionDetails(factionName); end, function() showFactionDetails(factionName); end); end, game.Us.Color.HtmlColor);
+		newButton(win .. "PendingRequestCancelButton", vert, "Cancel request", function() confirmChoice("Do you want to cancel your join request?", function() func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Cancelling request...", {Type="requestCancel", Faction=factionName}, gameCustomMessageReturn); showFactionDetails(factionName); end, function() showFactionDetails(factionName); end); end, game.Us.Color.HtmlColor);
 	end
 	newLabel(win .. "label", vert, factionName, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
 	newLabel(win .. "EmptyAfterFactionName", vert, " ");
@@ -174,7 +174,7 @@ function showFactionDetails(factionName)
 		local line = newHorizontalGroup(win .. "line" .. i, vert);
 		newLabel(win .. i .. v, line, i .. ". " .. game.Game.Players[v].DisplayName(nil, false), game.Game.Players[v].Color.HtmlColor);
 		if Mod.PublicGameData.Factions[factionName].FactionLeader == game.Us.ID and v ~= game.Us.ID then
-			newButton(win .. i .. "kick", line, "Kick", function() confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, false) .. " from your faction?", function() game.SendGameCustomMessage("Kicking player...", {Type="kickPlayer", Index=i, Player=v, Faction=factionName}, gameCustomMessageReturn); showFactions(); end, function() showFactions(); end); end, "Red");
+			newButton(win .. i .. "kick", line, "Kick", function() confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, false) .. " from your faction?", function() func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Kicking player...", {Type="kickPlayer", Index=i, Player=v, Faction=factionName}, gameCustomMessageReturn); showFactions(); end, function() showFactions(); end); end, "Red");
 		end
 	end
 end
@@ -207,7 +207,7 @@ function declareFactionWar(factionName)
 	for faction, bool in pairs(Mod.PublicGameData.Factions[factionName].AtWar) do
 		if not(bool) then
 			local line = newHorizontalGroup(faction .. "line", vert);
-			newButton(win .. faction .. "button", line, "War!", function() confirmChoice("Are you sure you want to declare war on " .. faction .. "? All your faction members will be forced to declare war on all of the players in " .. faction, function() game.SendGameCustomMessage("Declaring war on " .. faction .. "...", { Type="declareFactionWar", PlayerFaction=factionName, OpponentFaction=faction }, gameCustomMessageReturn); factionSettings(factionName); end, function() declareFactionWar(factionName); end) end, "Red");
+			newButton(win .. faction .. "button", line, "War!", function() confirmChoice("Are you sure you want to declare war on " .. faction .. "? All your faction members will be forced to declare war on all of the players in " .. faction, function() func = function() declareFactionWar(factionName); end; game.SendGameCustomMessage("Declaring war on " .. faction .. "...", { Type="declareFactionWar", PlayerFaction=factionName, OpponentFaction=faction }, gameCustomMessageReturn); factionSettings(factionName); end, function() declareFactionWar(factionName); end) end, "Red");
 			newLabel(win .. faction .. "name", line, faction, game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor);
 		end
 	end
@@ -227,7 +227,7 @@ function offerFactionPeace(factionName)
 		if bool and Mod.PublicGameData.Factions[factionName].Offers[faction] == nil then
 			local line = newHorizontalGroup(faction .. "line", vert);
 			newLabel(win .. faction .. "name", line, faction, game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor);
-			newButton(win .. faction .. "button", line, "Peace", function() confirmChoice("Are you sure you want to offer peace to " .. faction .. "? All your faction members will be forced in peace with all of the players in " .. faction, function() game.SendGameCustomMessage("Offering peace to " .. faction .. "...", { Type="offerFactionPeace", OpponentFaction=faction, PlayerFaction=factionName }, gameCustomMessageReturn); factionSettings(factionName); end, function() offerFactionPeace(factionName); end) end, "Green");
+			newButton(win .. faction .. "button", line, "Peace", function() confirmChoice("Are you sure you want to offer peace to " .. faction .. "? All your faction members will be forced in peace with all of the players in " .. faction, function() func = function() offerFactionPeace(factionName); end; game.SendGameCustomMessage("Offering peace to " .. faction .. "...", { Type="offerFactionPeace", OpponentFaction=faction, PlayerFaction=factionName }, gameCustomMessageReturn); factionSettings(factionName); end, function() offerFactionPeace(factionName); end) end, "Green");
 		end
 	end
 end
@@ -243,7 +243,7 @@ function pendingFactionPeaceOffers(factionName)
 	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName); end, "Orange");
 	newLabel(win .. "n", vert, "You have " .. #Mod.PublicGameData.Factions[factionName].PendingOffers .. " peace offers");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
-		newButton(win .. i, vert, v, function() confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end, function() game.SendGameCustomMessage("Declining peace offer...", {Type="declineFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
+		newButton(win .. i, vert, v, function() func = function() pendingFactionPeaceOffers(factionName); end; confirmChoice("Do you wish to accept the peace offer from the '" .. v .. "' faction?", function() game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end, function() game.SendGameCustomMessage("Declining peace offer...", {Type="declineFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end); end, game.Game.Players[Mod.PublicGameData.Factions[v].FactionLeader].Color.HtmlColor);
 	end
 end
 
@@ -295,7 +295,7 @@ function pendingJoinRequests(factionName)
 	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName); end, "Orange");
 	newLabel(win .. "EmptyAfterReturn", vert, "");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].JoinRequests) do
-		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to let " .. game.Game.Players[v].DisplayName(nil, false) .. " join your faction?", function() game.SendGameCustomMessage("Accepting request...", {Type="joinFaction", PlayerID=v, Faction=factionName, RequestApproved=true}, gameCustomMessageReturn); factionSettings(factionName); end, function() game.SendGameCustomMessage("Declining request...", {Type="DeclineJoinRequest", Index=i, PlayerID=v, Faction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end); end, game.Game.Players[v].Color.HtmlColor);
+		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() func = function() pendingJoinRequests(factionName); end; confirmChoice("Do you wish to let " .. game.Game.Players[v].DisplayName(nil, false) .. " join your faction?", function() game.SendGameCustomMessage("Accepting request...", {Type="joinFaction", PlayerID=v, Faction=factionName, RequestApproved=true}, gameCustomMessageReturn); factionSettings(factionName); end, function() game.SendGameCustomMessage("Declining request...", {Type="DeclineJoinRequest", Index=i, PlayerID=v, Faction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end); end, game.Game.Players[v].Color.HtmlColor);
 	end
 end 
 
@@ -303,6 +303,7 @@ function sendMessage()
 	local payload = {};
 	payload.Type = "sendMessage";
 	payload.Text = getText("showFactionChattypeMessage");
+	func = function() showFactionChat(factionName); end; 
 	game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
 end
 
@@ -337,11 +338,12 @@ function showPlayerSettings()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "return", vert, "Return", showMenu(), "Orange");
 	newLabel(win .. "windowWidthText", vert, "Your preferred window width");
 	local windowWidth = newNumberField(win .. "windowWidth", vert, 300, 1000, settings.WindowWidth);
 	newLabel(win .. "windowHeigthText", vert, "Your preferred window height");
 	local windowHeight = newNumberField(win .. "windowHeight", vert, 300, 1000, settings.WindowHeight);
-	newButton(win .. "UpdateSettings", vert, "Update settings", function() game.SendGameCustomMessage("Updating Settings...", {Type="updateSettings", WindowHeight=getValue(windowHeight), WindowWidth=getValue(windowWidth)}, gameCustomMessageReturn); end, "Green");
+	newButton(win .. "UpdateSettings", vert, "Update settings", function() func = function() showPlayerSettings(); end; game.SendGameCustomMessage("Updating Settings...", {Type="updateSettings", WindowHeight=getValue(windowHeight), WindowWidth=getValue(windowWidth)}, gameCustomMessageReturn); end, "Green");
 end
 
 function verifyFactionName(name)
