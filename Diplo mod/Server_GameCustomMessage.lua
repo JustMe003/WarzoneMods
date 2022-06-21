@@ -591,6 +591,7 @@ function requestCancel(game, playerID, payload, setReturn)
 		else
 			setReturn(setReturnPayload("You do not have a pending join request for this faction", "Fail"));
 		end
+		Mod.PlayerGameData = playerData;
 	else
 		setReturn(setReturnPayload("This faction doesn't exists anymore", "Fail"));
 	end
