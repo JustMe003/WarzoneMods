@@ -11,8 +11,8 @@ function Client_GameRefresh(game)
 		game.SendGameCustomMessage("Updating Factions mod...", payload, function(reply) end);
 	end
 	if Mod.PlayerGameData.Func ~= nil then
+		game.CreateDialog(function(a, b, c, d) Client_PresentMenuUI(a, b, c, d, Mod.PlayerGameData.Func); end);
 		game.SendGameCustomMessage("Refreshing page...", {Type="RefreshWindow"}, function(reply) end);
-		game.CreateDialog(Client_PresentMenuUI);
 	end
 end
 
