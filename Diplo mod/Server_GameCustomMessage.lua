@@ -691,7 +691,9 @@ function updateSettings(game, playerID, payload, setReturn)
 end
 
 function RefreshWindow(game, playerID, payload, setReturn)
-	return;
+	local playerData = Mod.PlayerGameData
+	playerData[playerID].NeedsRefresh = nil;
+	Mod.PlayerGameData = playerData
 end
 
 function createEvent(m, p);
