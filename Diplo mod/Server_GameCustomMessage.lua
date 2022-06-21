@@ -26,7 +26,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	print(payload.Type);
 	
 	local playerData = Mod.PlayerGameData;
-	playerData[playerID].Func = payload.Func;
+	playerData[playerID].NeedsRefresh = true;
 	Mod.PlayerGameData = playerData;
 	
 	functions[payload.Type](game, playerID, payload, setReturn);

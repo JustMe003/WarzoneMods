@@ -1,12 +1,13 @@
 require("UI");
-function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close, func)
+function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close, calledFromGameRefresh)
 	init(rootParent);
 	game = Game;
 	if game.Us == nil then UI.Alert("You cannot use this mod since you're not playing in this game"); close(); return; end
 	if game.Us.State ~= WL.GamePlayerState.Playing then UI.Alert("You cannot use this mod anymore since you're not playing anymore"); close(); return; end
 	if game.Game.TurnNumber < 1 then UI.Alert("This mod can only be used after the distribution turn"); close(); return; end
-	if func ~= nil then
+	if calledFromGameRefresh ~= nil then
 		func();
+		func = nil;
 	end
 	Close = close;
 	if Mod.PlayerGameData.PersonalSettings ~= nil then
@@ -351,7 +352,7 @@ function verifyFactionName(name)
 	local payload = {};
 	payload.Type = "CreateFaction";
 	payload.Name = name;
-	payload.Func = function() showFactionDetails(name); end
+	func = function() showFactionDetails(name); end
 	game.SendGameCustomMessage("Creating Faction...", payload, gameCustomMessageReturn);
 	Close();
 end
