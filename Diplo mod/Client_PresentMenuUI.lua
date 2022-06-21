@@ -264,7 +264,6 @@ function confirmChoice(message, yesFunc, noFunc)
 end
 
 function showFactionChat()
-	func = nil;
 	game.SendGameCustomMessage("updating mod...", { Type="openedChat" }, gameCustomMessageReturn);
 	local win = "showFactionChat";
 	destroyWindow(getCurrentWindow());
