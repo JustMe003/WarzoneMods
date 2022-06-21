@@ -340,7 +340,7 @@ function showPlayerSettings()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "return", vert, "Return", showMenu(), "Orange");
+	newButton(win .. "return", vert, "Return", showMenu, "Orange");
 	newLabel(win .. "windowWidthText", vert, "Your preferred window width");
 	local windowWidth = newNumberField(win .. "windowWidth", vert, 300, 1000, settings.WindowWidth);
 	newLabel(win .. "windowHeigthText", vert, "Your preferred window height");
