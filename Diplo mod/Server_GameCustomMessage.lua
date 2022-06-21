@@ -657,6 +657,7 @@ function DeclineJoinRequest(game, playerID, payload, setReturn)
 				if not game.ServerGame.Game.Players[payload.PlayerID].IsAI then
 					if playerData[payload.PlayerID].Notifications == nil then playerData[payload.PlayerID].Notifications = setPlayerNotifications(); end
 					playerData[payload.PlayerID].Notifications.JoinRequestRejected = payload.Faction;
+					playerData[payload.PlayerID].HasPendingRequest = nil;
 				end
 			else
 				setReturn(setReturnPayload("Something went wrong", "Fail"));
