@@ -21,8 +21,13 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["declineFactionPeaceOffer"] = declineFactionPeaceOffer
 	functions["declinePeaceOffer"] = declinePeaceOffer;
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
+	functions["RefreshWindow"] = RefreshWindow;
 	
 	print(payload.Type);
+	
+	local playerData = Mod.PlayerGameData;
+	playerData[playerID].Func = payload.Func;
+	Mod.PlayerGameData = playerData;
 	
 	functions[payload.Type](game, playerID, payload, setReturn);
 	
@@ -683,6 +688,10 @@ function updateSettings(game, playerID, payload, setReturn)
 	playerData[playerID].PersonalSettings.WindowHeight = math.max(math.min(payload.WindowHeight, 1000), 300);
 	setReturn(setReturnPayload("Successfully updated your settings. To apply your changes close and re-open the menu", "Success"));
 	Mod.PlayerGameData = playerData;
+end
+
+function RefreshWindow(game, playerID, payload, setReturn)
+	return;
 end
 
 function createEvent(m, p);

@@ -9,6 +9,9 @@ function Client_GameRefresh(game)
 		payload.NewTime = tableToDate(addTime(dateToTable(game.Game.ServerTime), "Seconds", 5));
 		game.SendGameCustomMessage("Updating Factions mod...", payload, function(reply) end);
 	end
+	if Mod.PlayerGameData.Func ~= nil then
+		game.SendGameCustomMessage("Refreshing page...", {Type="RefreshWindow"}, function(reply) end);
+	end
 end
 
 function showAlert(game)
