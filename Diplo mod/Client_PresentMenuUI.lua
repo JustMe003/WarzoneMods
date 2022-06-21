@@ -292,7 +292,7 @@ function pendingJoinRequests(factionName)
 	newButton(win .. "Return", vert, "Return", function() factionSettings(factionName); end, "Orange");
 	newLabel(win .. "EmptyAfterReturn", vert, "");
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].JoinRequests) do
-		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to let " .. game.Game.Players[v].DisplayName(nil, false) .. " join your faction?", function() game.SendGameCustomMessage("Accepting request...", {Type="joinFaction", PlayerID=v, Faction=factionName, RequestApproved=true}, gameCustomMessageReturn); factionSettings(factionName); end, function() factionSettings(factionName); end); end, game.Game.Players[v].Color.HtmlColor);
+		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() confirmChoice("Do you wish to let " .. game.Game.Players[v].DisplayName(nil, false) .. " join your faction?", function() game.SendGameCustomMessage("Accepting request...", {Type="joinFaction", PlayerID=v, Faction=factionName, RequestApproved=true}, gameCustomMessageReturn); factionSettings(factionName); end, function() game.SendGameCustomMessage("Declining request...", {Type="DeclineJoinRequest", Index=i, PlayerID=v, Faction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end); end, game.Game.Players[v].Color.HtmlColor);
 	end
 end 
 

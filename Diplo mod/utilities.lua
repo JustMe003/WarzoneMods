@@ -30,6 +30,8 @@ function resetPlayerNotifications(t)
 	t.PeaceDeclines = {};
 	t.NewFactionLeader = nil;
 	t.GotKicked = nil;
+	t.JoinRequestApproved = nil;
+	t.JoinRequestRejected = nil;
 	return t;
 end
 

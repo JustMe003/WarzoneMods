@@ -20,6 +20,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["requestCancel"] = requestCancel;
 	functions["declineFactionPeaceOffer"] = declineFactionPeaceOffer
 	functions["declinePeaceOffer"] = declinePeaceOffer;
+	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	
 	print(payload.Type);
 	
@@ -231,6 +232,8 @@ function joinFaction(game, playerID, payload, setReturn)		-- Create different fu
 					end
 					data.IsInFaction[payload.PlayerID] = true;
 					data.PlayerInFaction[payload.PlayerID] = payload.Faction;
+					if playerData[payload.PlayerID].Notifications == nil then playerData[payload.PlayerID].Notifications = setPlayerNotifications(); end
+					playerData[payload.PlayerID].Notifications.JoinRequestApproved = payload.Faction;
 					Mod.PlayerGameData = playerData;
 					setReturn(setReturnPayload("Join request approved", "Success"));
 					table.insert(data.Events, createEvent("Approved join request from " .. game.ServerGame.Game.Players[payload.PlayerID].DisplayName(nil, false), playerID));
@@ -641,6 +644,28 @@ function declinePeaceOffer(game, playerID, payload, setReturn)
 		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " declined the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID));
 	else
 		setReturn(setReturnPayload("Something went wrong", "Fail"));
+	end
+	Mod.PlayerGameData = playerData;
+end
+
+function DeclineJoinRequest(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	if data.Factions[payload.Faction] ~= nil then
+		if payload.Index <= #data.Factions[payload.Faction].JoinRequests then
+			if data.Factions[payload.Faction].JoinRequests[payload.Index] == payload.PlayerID then
+				table.remove(data.Factions[payload.Faction].JoinRequests, payload.Index);
+				if not game.ServerGame.Game.Players[payload.PlayerID].IsAI then
+					if playerData[payload.PlayerID].Notifications == nil then playerData[payload.PlayerID].Notifications = setPlayerNotifications(); end
+					playerData[payload.PlayerID].Notifications.JoinRequestRejected = payload.Faction;
+				end
+			else
+				setReturn(setReturnPayload("Something went wrong", "Fail"));
+			end
+		else
+			setReturn(setReturnPayload("Something went wrong", "Fail"));
+		end
+	else
+		setReturn(setReturnPayload("The faction doesn't exists anymore", "Fail"));
 	end
 	Mod.PlayerGameData = playerData;
 end

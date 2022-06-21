@@ -18,6 +18,12 @@ function showAlert(game)
 	if playerData.Notifications.GotKicked ~= nil then
 		s = s .. "You were kicked from '" .. playerData.Notifications.GotKicked .. "'\n\n";
 	end
+	if playerData.Notifications.JoinRequestApproved ~= nil then
+		s = s .. "Your request to join '" .. playerData.Notifications.JoinRequestApproved .. "' was approved\n\n";
+	end
+	if playerData.Notifications.JoinRequestRejected ~= nil then
+		s = s .. "Your request to join '" .. playerData.Notifications.JoinRequestRejected .. "' was rejected\n\n";
+	end
 	if playerData.Notifications.FactionWarDeclarations ~= nil and #playerData.Notifications.FactionWarDeclarations > 0 then
 		s = s .. "Your faction is now at war with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionWarDeclarations) do
