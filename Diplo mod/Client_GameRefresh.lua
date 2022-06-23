@@ -3,6 +3,7 @@ require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
+	print("Client_GameRefresh " .. game.Us.DisplayName(nil, false));
 	if Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) return #t; end) and dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
 		showAlert(game);
 		local payload = {};
@@ -193,6 +194,7 @@ end
 function dateIsEarlier(date1, date2)
 	local list = getDateIndexList();
 	for _, v in pairs(list) do
+		print(date1[v], date2[v])
 		if date1[v] ~= date2[v] then
 			if date1[v] < date2[v] then
 				return true;
