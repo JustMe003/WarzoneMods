@@ -194,7 +194,7 @@ end
 function dateIsEarlier(date1, date2)
 	local list = getDateIndexList();
 	for _, v in pairs(list) do
-		print(date1[v], date2[v])
+		print(v, date1[v], date2[v])
 		if date1[v] ~= date2[v] then
 			if date1[v] < date2[v] then
 				return true;
