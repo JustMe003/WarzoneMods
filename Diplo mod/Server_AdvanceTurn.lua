@@ -29,10 +29,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	local playerData = Mod.PlayerGameData;
 	local count = 0;
 	for i, p in pairs(game.Game.Players) do
-		print(i, p.DisplayName(nil, false));
-		if not p.IsAI then
-			playerData[i].NumberOfNotifications = 0;
-		end
 		if p.State ~= WL.GamePlayerState.EndedByVote and p.State ~= WL.GamePlayerState.RemovedByHost and p.State ~= WL.GamePlayerState.Declined then
 			if (p.State == WL.GamePlayerState.Eliminated) or (p.State == WL.GamePlayerState.Booted and not game.Settings.GlobalSettings.BootedPlayersTurnIntoAIs) or (p.State == WL.GamePlayerState.SurrenderAccepted and not game.Settings.GlobalSettings.SurrenderedPlayersTurnIntoAIs) then
 				if data.Relations[i] ~= nil then
@@ -83,6 +79,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	for i, p in pairs(game.ServerGame.Game.PlayingPlayers) do
+		if not p.IsAI then
+			playerData[i].NumberOfNotifications = 0;
+		end
 		count = count + p.Income(0, game.ServerGame.LatestTurnStanding, true, true).Total;
 		if p.State == WL.GamePlayerState.Playing and p.IsAIOrHumanTurnedIntoAI and (Mod.Settings.GlobalSettings.AICanDeclareOnPlayer or Mod.Settings.GlobalSettings.AICanDeclareOnAI) then
 			local isAtWar = false;
