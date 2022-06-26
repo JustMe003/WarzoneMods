@@ -3,7 +3,7 @@ require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
-	print("Client_GameRefresh " .. game.Us.DisplayName(nil, false));
+	print(pcall(getSlotName, math.random(50)));
 	if Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) return #t; end) and dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
 		showAlert(game);
 		local payload = {};
@@ -21,15 +21,19 @@ function showAlert(game)
 	local playerData = Mod.PlayerGameData;
 	if playerData.Notifications == nil then return; end
 	local s = "";
+	print(s, playerData.Notifications.GotKicked);
 	if playerData.Notifications.GotKicked ~= nil then
 		s = s .. "You were kicked from '" .. playerData.Notifications.GotKicked .. "'\n\n";
 	end
+	print(s, 
 	if playerData.Notifications.JoinRequestApproved ~= nil then
 		s = s .. "Your request to join '" .. playerData.Notifications.JoinRequestApproved .. "' was approved\n\n";
 	end
+	print(s, 
 	if playerData.Notifications.JoinRequestRejected ~= nil then
 		s = s .. "Your request to join '" .. playerData.Notifications.JoinRequestRejected .. "' was rejected\n\n";
 	end
+	print(s, 
 	if playerData.Notifications.FactionWarDeclarations ~= nil and #playerData.Notifications.FactionWarDeclarations > 0 then
 		s = s .. "Your faction is now at war with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionWarDeclarations) do
@@ -37,6 +41,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.WarDeclarations ~= nil and #playerData.Notifications.WarDeclarations > 0 then
 		s = s .. "You're now at war with the following players:\n";
 		for _, v in pairs(playerData.Notifications.WarDeclarations) do
@@ -44,6 +49,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.FactionsPeaceOffers ~= nil and #playerData.Notifications.FactionsPeaceOffers > 0 then
 		s = s .. "Your faction received the following peace offers from other factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceOffers) do
@@ -51,6 +57,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.PeaceOffers ~= nil and #playerData.Notifications.PeaceOffers > 0 then
 		s = s .. "You received the following peace offers from players:\n";
 		for _, v in pairs(playerData.Notifications.PeaceOffers) do
@@ -58,6 +65,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.FactionsPendingJoins ~= nil and #playerData.Notifications.FactionsPendingJoins > 0 then
 		s = s .. "Your faction has the following join request from players:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPendingJoins) do
@@ -65,6 +73,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.FactionsPeaceConfirmed ~= nil and #playerData.Notifications.FactionsPeaceConfirmed > 0 then
 		s = s .. "You're faction is now in peace with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceConfirmed) do
@@ -72,12 +81,14 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.FactionsPeaceDeclined ~= nil and #playerData.Notifications.FactionsPeaceDeclined > 0 then
 		s = s .. "The following faction peace offers were declined:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceDeclined) do
 			s = s .. " - " .. v .. "\n";
 		end
 	end
+	print(s, 
 	if playerData.Notifications.PeaceConfirmed ~= nil and #playerData.Notifications.PeaceConfirmed > 0 then
 		s = s .. "You're now in peace with the following players:\n";
 		for _, v in pairs(playerData.Notifications.PeaceConfirmed) do
@@ -85,6 +96,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.PeaceDeclines ~= nil and #playerData.Notifications.PeaceDeclines > 0 then
 		s = s .. "The following peace offers were declined:\n";
 		for _, v in pairs(playerData.Notifications.PeaceDeclines) do
@@ -92,6 +104,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.NewFactionLeader ~= nil then
 		if playerData.Notifications.NewFactionLeader == game.Us.ID then
 			s = s .. "You're now the leader of your faction \n\n";
@@ -99,6 +112,7 @@ function showAlert(game)
 			s = s .. "The leader of your faction is now " .. game.Game.Players[playerData.Notifications.NewFactionLeader].DisplayName(nil, false) .. "\n\n";
 		end
 	end
+	print(s, 
 	if playerData.Notifications.LeftPlayers ~= nil and #playerData.Notifications.LeftPlayers > 0 then
 		s = s .. "The following players left the faction:\n";
 		for _, v in pairs(playerData.Notifications.LeftPlayers) do
@@ -106,6 +120,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.FactionsKicks ~= nil and #playerData.Notifications.FactionsKicks > 0 then
 		s = s .. "The following players were kicked from your faction:\n";
 		for _, v in pairs(playerData.Notifications.FactionsKicks) do
@@ -113,6 +128,7 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.JoinedPlayers ~= nil and #playerData.Notifications.JoinedPlayers > 0 then
 		s = s .. "The following players joined the faction:\n";
 		for _, v in pairs(playerData.Notifications.JoinedPlayers) do
@@ -120,9 +136,11 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
+	print(s, 
 	if playerData.Notifications.Messages ~= nil and #playerData.Notifications.Messages > 0 then
 		s = s .. "You have " .. #playerData.Notifications.Messages .. " unread messages in the faction chat";
 	end
+	print(s, 
 	if #s > 0 then
 		UI.Alert(s);
 	end
