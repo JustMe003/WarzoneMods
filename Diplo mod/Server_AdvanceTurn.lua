@@ -29,6 +29,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	local playerData = Mod.PlayerGameData;
 	local count = 0;
 	for i, p in pairs(game.Game.Players) do
+		print(i, p.DisplayName(nil, false);
 		if not p.IsAI then
 			playerData[i].NumberOfNotifications = 0;
 		end
