@@ -159,7 +159,7 @@ function getDataString()
 		window(win)
 		local vert = newVerticalGroup("vert", "root");
 		newLabel(win .. "desc", vert, "Copy the text below and paste it into the mod configuration");
-		data = newTextField("data", vert, " ", s);
+		data = newTextField("data", vert, " ", s, 0, true, 350, -1, 0, 0);
 	end
 end
 
