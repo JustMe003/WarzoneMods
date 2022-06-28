@@ -17,6 +17,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 			func();
 			func = nil;
 			pageHasClosed = nil;
+			print(func, pageHasClosed);
 		end
 	else
 		showMenu();
