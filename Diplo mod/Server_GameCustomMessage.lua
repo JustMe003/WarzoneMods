@@ -84,6 +84,8 @@ function leaveFaction(game, playerID, payload, setReturn)
 			if v == playerID then
 				index = i
 			else
+				data.Relations[v][playerID] = "InPeace";
+				data.Relations[playerID][v] = "InPeace";
 				if not game.Game.Players[v].IsAI then
 					if playerData[v].Notifications == nil then playerData[v].Notifications = setPlayerNotifications(); end
 					table.insert(playerData[v].Notifications.LeftPlayers, playerID);
