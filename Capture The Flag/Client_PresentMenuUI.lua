@@ -21,9 +21,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 			if teamGame then
 				newLabel(win .. i, vert, getTeamName(i) .. ": " .. math.min(Mod.Settings.NFlagsForLose - v, getTableLength(Mod.PublicGameData.Flags[i])), "Light Blue");
 			else
-				print(game.Game.PlayingPlayers[i].DisplayName(nil, false))
-				print(math.min(Mod.Settings.NFlagsForLose - v, getTableLength(Mod.PublicGameData.Flags[i])));
-				newLabel(win .. i, vert, game.Game.PlayingPlayers[i].DisplayName(nil, false) .. ": " .. math.min(Mod.Settings.NFlagsForLose - v, getTableLength(Mod.PublicGameData.Flags[i])), game.Game.PlayingPlayers[i].Color.HtmlColor);	
+				newLabel(win .. i, vert, game.Game.Players[i].DisplayName(nil, false) .. ": " .. math.min(Mod.Settings.NFlagsForLose - v, getTableLength(Mod.PublicGameData.Flags[i])), game.Game.Players[i].Color.HtmlColor);	
 			end
 		end
 	end
