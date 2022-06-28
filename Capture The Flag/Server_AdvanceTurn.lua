@@ -14,8 +14,8 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				local structures = game.ServerGame.LatestTurnStanding.Territories[order.To].Structures;
 				if structures ~= nil then
 					structures[team % 17 + 2] = 0;
+					mod.SetStructuresOpt = structures;
 				end
-				mod.SetStructuresOpt = structures;
 				addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Captured flag at " .. game.Map.Territories[order.To].Name, {}, {mod}), true);
 			end
 		end
