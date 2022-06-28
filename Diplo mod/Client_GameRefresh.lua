@@ -216,7 +216,7 @@ function dateIsEarlier(date1, date2)
 	for _, v in pairs(list) do
 		print(v);
 		if date1[v] ~= date2[v] then
-			print(date1[v] .. "\t" .. date2[v]);
+			print(tostring(date1[v]) .. "\t" .. tostring(date2[v]));
 			if date1[v] < date2[v] then
 				return true;
 			else
