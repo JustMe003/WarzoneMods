@@ -5,6 +5,7 @@ function Client_GameRefresh(game)
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
 	print(game.Us.ID, game.Us.DisplayName(nil, false));
 	if Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) return #t; end) and dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
+		print("showAlert");
 		showAlert(game);
 		local payload = {};
 		payload.Type = "5MinuteAlert";
