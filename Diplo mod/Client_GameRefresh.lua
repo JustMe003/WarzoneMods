@@ -213,6 +213,7 @@ end
 function dateIsEarlier(date1, date2)
 	print("dateIsEarlier");
 	local list = getDateIndexList();
+	print(1);
 	for _, v in pairs(list) do
 		print(v, date1[v], date2[v])
 		if date1[v] ~= date2[v] then
