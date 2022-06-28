@@ -152,6 +152,7 @@ function getDateIndexList() return {"Year", "Month", "Day", "Hours", "Minutes", 
 function getDateRestraints() return {99999999, 12, 30, 24, 60, 60, 1000} end;
 
 function dateToTable(s)
+	print("dateToTable");
 	local list = getDateIndexList();
 	local r = {};
 	local i = 1;
@@ -210,6 +211,7 @@ end
 
 
 function dateIsEarlier(date1, date2)
+	print("dateIsEarlier");
 	local list = getDateIndexList();
 	for _, v in pairs(list) do
 		print(v, date1[v], date2[v])
