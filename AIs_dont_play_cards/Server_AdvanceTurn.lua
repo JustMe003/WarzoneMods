@@ -3,9 +3,11 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	for i, p in pairs(game.ServerGame.Game.PlayingPlayers) do
 		if p.IsAIOrHumanTurnedIntoAI then
 			t[i] = {};
-			for instance, _ in pairs(game.ServerGame.LatestTurnStanding.Cards[i].WholeCards) do
-				print(instance);
-				t[i][instance] = true;
+			if(game.ServerGame.LatestTurnStanding.Cards ~= nil and game.ServerGame.LatestTurnStanding.Cards[i] ~= and game.ServerGame.LatestTurnStanding.Cards[i].WholeCards ~= nil) then
+				for instance, _ in pairs(game.ServerGame.LatestTurnStanding.Cards[i].WholeCards) do
+					print(instance);
+					t[i][instance] = true;
+				end
 			end
 		end
 	end
