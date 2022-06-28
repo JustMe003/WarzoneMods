@@ -215,7 +215,7 @@ function dateIsEarlier(date1, date2)
 	print("dateIsEarlier");
 	local list = getDateIndexList();
 	for _, v in pairs(list) do
-		print(v);
+		if v == "MiliSeconds" then return false; end
 		if date1[v] ~= date2[v] then
 			print(tostring(date1[v]) .. "\t" .. tostring(date2[v]));
 			if date1[v] < date2[v] then
