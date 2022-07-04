@@ -38,6 +38,7 @@ function showMenu()
 		newButton(win .. "createFactionButton", vert, "Create Faction", createFaction, "Lime", not(Mod.PublicGameData.IsInFaction[game.Us.ID]));
 		newLabel(win .. "empty", vert, "\n");
 		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, game.Us.Color.HtmlColor);
+		newButton(win .. "ModHistory", vert, "History", showHistory, "Yellow");
 		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
 	end
 end
@@ -358,6 +359,26 @@ function showPlayerSettings()
 	newButton(win .. "UpdateSettings", vert, "Update settings", function() Close(); func = function() showPlayerSettings(); end; game.SendGameCustomMessage("Updating Settings...", {Type="updateSettings", WindowHeight=getValue(windowHeight), WindowWidth=getValue(windowWidth)}, gameCustomMessageReturn); end, "Green");
 end
 
+function showHistory()
+	local win = "showHistory";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	if Mod.Settings.VisibleHistory then
+		newLabel(win .. "explanation", vert, "Here you can see all the events that took place between now and the previous turn.");
+	else
+		newLabel(win .. "explanation", vert, "Here you can see the events that took place between now and the previous turn. You can only see the events that have effect on you of on one of your faction members (if you're in a faction)");
+	end
+	newLabel(win .. "empty", vert, "The events have the same color of the player who triggered them\n");
+	for i = 1, #Mod.PublicGameData.Events do
+		if Mod.Settings.VisibleHistory or Mod.PublicGameData.Events[i].PlayerID == game.Us.ID or (Mod.PublicGameData.IsInFaction[game.Us.ID] and areInSameFaction(v.PlayerID)) then
+			newLabel(win .. i, vert, Mod.PublicGameData.Events[i].Message, game.Game.Players[Mod.PublicGameData.Events[i].PlayerID].Color.HtmlColor);
+		end
+	end
+end
+
 function verifyFactionName(name)
 	for i, _ in pairs(Mod.PublicGameData.Factions) do
 		if i == name then
@@ -410,4 +431,13 @@ function getTableLength(t, func)
 		end
 	end
 	return c;
+end
+
+function areInSameFaction(p)
+	if Mod.PublicGameData.IsInFaction[game.Us.ID] then
+		for _, v in pairs(Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionMembers) do
+			if v == p then return true; end
+		end
+	end
+	return false;
 end

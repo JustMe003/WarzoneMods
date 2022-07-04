@@ -6,6 +6,8 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		if not Mod.Settings.GlobalSettings.VisibleHistory then
 			if data.PlayerInFaction[data.Events[i].PlayerID] ~= nil then
 				group = data.Factions[data.PlayerInFaction[data.Events[i].PlayerID]].FactionMembers;
+			else
+				group = {data.Events[i].PlayerID};
 			end
 		else
 			group = nil;
