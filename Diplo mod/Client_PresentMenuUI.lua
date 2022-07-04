@@ -366,6 +366,7 @@ function showHistory()
 		resetWindow(win);
 	end
 	window(win);
+	local vert = newVerticalGroup("vert", "root");
 	if Mod.Settings.VisibleHistory then
 		newLabel(win .. "explanation", vert, "Here you can see all the events that took place between now and the previous turn.");
 	else
