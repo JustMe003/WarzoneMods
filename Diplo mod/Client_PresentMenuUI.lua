@@ -173,6 +173,10 @@ function showFactionDetails(factionName)
 	if game.Us.ID == Mod.PublicGameData.Factions[factionName].FactionLeader then
 		newButton(win .. "FactionSettings", vert, "Faction settings", function() factionSettings(factionName) end, "Tyrian Purple");
 		newLabel(win .. "EmptyAfterFactionsettings", vert, "\n");
+	elseif Mod.PublicGameData.IsInFaction[game.Us.ID] and Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionLeader == game.Us.ID then
+		local line = newHorizontalGroup(win .. "line10", vert);
+		newButton(win .. "ToWar", vert, "Declare war", function() confirmChoice("Are you sure you want to declare war on " .. factionName .. "? All your faction members will be forced to declare war on all of the players in " .. factionName, function() Close(); func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Declaring war on " .. factionName .. "...", { Type="declareFactionWar", PlayerFaction=Mod.PublicGameData.PlayerInFaction[game.Us.ID], OpponentFaction=factionName }, gameCustomMessageReturn); end, function() showFactionDetails(factionName); end) end, "Red", not(Mod.PublicGameData.Factions[factionName].AtWar[Mod.PublicGameData.PlayerInFaction[game.Us.ID]]));
+		newButton(win .. "OfferPeace", vert, "Offer peace", function() confirmChoice("Are you sure you want to offer peace to " .. factionName .. "? All your faction members will be forced in peace with all of the players in " .. factionName, function() Close(); func = function() offerFactionPeace(factionName); end; game.SendGameCustomMessage("Offering peace to " .. factionName .. "...", { Type="offerFactionPeace", OpponentFaction=factionName, PlayerFaction=Mod.PublicGameData.PlayerInFaction[game.Us.ID] }, gameCustomMessageReturn); end, function() offerFactionPeace(factionName); end) end, "Green", Mod.PublicGameData.Factions[factionName].AtWar[Mod.PublicGameData.PlayerInFaction[game.Us.ID]]);
 	end
 	newLabel(win .. "FactionLeader", vert, "Faction leader: " .. game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].DisplayName(nil, false) .. "\n", game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
 	newLabel(win .. "PlayersInFaction", vert, "The following players are in this faction: ");
@@ -180,7 +184,8 @@ function showFactionDetails(factionName)
 		local line = newHorizontalGroup(win .. "line" .. i, vert);
 		newLabel(win .. i .. v, line, i .. ". " .. game.Game.Players[v].DisplayName(nil, false), game.Game.Players[v].Color.HtmlColor);
 		if Mod.PublicGameData.Factions[factionName].FactionLeader == game.Us.ID and v ~= game.Us.ID then
-			newButton(win .. i .. "kick", line, "Kick", function() confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, false) .. " from your faction?", function() Close(); func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Kicking player...", {Type="kickPlayer", Index=i, Player=v, Faction=factionName}, gameCustomMessageReturn); showFactions(); end, function() showFactions(); end); end, "Red");
+			newButton(win .. i .. "kick", line, "Kick", function() confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, false) .. " from your faction?", function() Close(); func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Kicking player...", {Type="kickPlayer", Index=i, Player=v, Faction=factionName}, gameCustomMessageReturn); showFactions(); end, function() showFactionDetails(factionName); end); end, "Red");
+			newButton(win .. i .. "Promote", line, "Promote", function() confirmChoice("Do you really wish to promote " .. game.Game.Players[v].DisplayName(nil, false) .. "? You will lose your role as faction leader", function() Close(); func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Promoting player...", {Type="setFactionLeader", PlayerID=v}, gameCustomMessageReturn); end, function() showFactionDetails(factionName); end); end, "Orange");
 		end
 	end
 end
