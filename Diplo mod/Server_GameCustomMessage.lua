@@ -541,6 +541,8 @@ function setFactionLeader(game, playerID, payload, setReturn)
 				end
 			end
 			Mod.PlayerGameData = playerData;
+			table.insert(data.Events, createEvent(game.ServerGame.Game.Players[payload.PlayerID].DisplayName(nil, false) .. " is the new Faction leader of '" .. data.PlayerInFaction[payload.PlayerID] .. "'", playerID));
+			setReturn(setReturnPayload("Successfully made " .. game.ServerGame.Game.Players[payload.PlayerID].DisplayName(nil, false) .. " Faction leader", "Success"));
 		else
 			setReturn(setReturnPayload("This action can only be done by faction leaders", "Fail"));
 		end
