@@ -17,6 +17,8 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				end
 				result.ActualArmies = WL.Armies.Create(numArmies, {});
 				map[order.To] = map[order.From] - 1;
+			else
+				result.ActualArmies = WL.Armies.Create(0, {});
 			end
 		elseif result.IsSuccessful then
 			map[order.To] = Mod.Settings.MaxAttacks;
