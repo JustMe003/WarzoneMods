@@ -8,7 +8,6 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 	if order.proxyType == "GameOrderAttackTransfer" then
 		if not result.IsAttack then
 			if map[order.From] > 0 then
-				print(map[order.From])
 				local numArmies = 0;
 				if not order.ByPercent then
 					numArmies = order.NumArmies.NumArmies;
