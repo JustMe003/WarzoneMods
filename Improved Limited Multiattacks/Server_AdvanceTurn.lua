@@ -16,7 +16,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 					numArmies = round(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.NumArmies / 100 * order.NumArmies.NumArmies);
 				end
 				result.ActualArmies = WL.Armies.Create(numArmies, {});
-				map[order.To] = math.min(map[order.To], map[order.From] - 1);
+				map[order.To] = map[order.From] - 1;
 			end
 		elseif result.IsSuccessful then
 			map[order.To] = Mod.Settings.MaxAttacks;
