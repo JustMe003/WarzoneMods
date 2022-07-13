@@ -10,13 +10,21 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 			if not order.ByPercent then
 				numArmies = order.NumArmies.NumArmies;
 			else
-				numArmies = math.round(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.NumArmies / 100 * order.NumArmies.NumArmies);
+				numArmies = round(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.NumArmies / 100 * order.NumArmies.NumArmies);
 			end
-			result.ActualArmies = WL.Armies.Create(numArmies, order.SpecialUnits);
+			result.ActualArmies = WL.Armies.Create(numArmies, {});
 		end
 	end
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
 	Mod.PublicGameData = data;
+end
+
+function round(n)
+	if n % 1 > 0.5 then
+		return math.ceil(n);
+	else
+		return math.floor(n);
+	end
 end
