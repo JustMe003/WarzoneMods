@@ -32,7 +32,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	local count = 0;
 	for i, p in pairs(game.Game.Players) do
 		if p.State ~= WL.GamePlayerState.EndedByVote and p.State ~= WL.GamePlayerState.RemovedByHost and p.State ~= WL.GamePlayerState.Declined then
-			if (p.State == WL.GamePlayerState.Eliminated) or (p.State == WL.GamePlayerState.Booted and not game.Settings.GlobalSettings.BootedPlayersTurnIntoAIs) or (p.State == WL.GamePlayerState.SurrenderAccepted and not game.Settings.GlobalSettings.SurrenderedPlayersTurnIntoAIs) then
+			if (p.State == WL.GamePlayerState.Eliminated) or (p.State == WL.GamePlayerState.Booted and not game.Settings.BootedPlayersTurnIntoAIs) or (p.State == WL.GamePlayerState.SurrenderAccepted and not game.Settings.SurrenderedPlayersTurnIntoAIs) then
 				if data.Relations[i] ~= nil then
 					for k, _ in pairs(data.Relations[i]) do
 						data.Relations[k][i] = nil;
