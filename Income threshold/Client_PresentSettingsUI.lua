@@ -4,9 +4,9 @@ function Client_PresentSettingsUI(rootParent)
 	init(rootParent);
 	local vert = newVerticalGroup("vert", "root");
 	if Mod.Settings.Formula == "ax + c" then
-		newLabel("formula", vert, "Formula: " .. Mod.Settings.A .. "x + " .. Mod.Settings.C, "Royal Blue");
+		newLabel("formula", vert, "Formula: " .. round(Mod.Settings.A, 2) .. "x + " .. Mod.Settings.C, "Royal Blue");
 	else
-		newLabel("formula", vert, "Formula: " .. Mod.Settings.A .. "x² + " .. Mod.Settings.B .. "x + " .. Mod.Settings.C, "Royal Blue");
+		newLabel("formula", vert, "Formula: " .. round(Mod.Settings.A, 2) .. "x² + " .. round(Mod.Settings.B, 2) .. "x + " .. Mod.Settings.C, "Royal Blue");
 	end
 	newLabel("empty", vert, "\n");
 	for k = 0, 7 do
