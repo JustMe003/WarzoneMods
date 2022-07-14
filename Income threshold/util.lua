@@ -1,10 +1,8 @@
-function round(n)
-	if n % 1 > 0.5 then
-		return math.ceil(n);
-	else
-		return math.floor(n);
-	end
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
 end
+
 
 function getIncomeThreshold(n)
 	if Mod.Settings.Formula == "ax + c" then
