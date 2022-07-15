@@ -394,9 +394,9 @@ function showAbout()
 	newLabel(win .. "text1", vert, "Hello, good to see you've browsed to this page. Here you can find additional information about this mod, together with a bunch of other stuff.\n", "Orange");
 	newLabel(win .. "Essentials", vert, "Essentials", "Lime");
 	newLabel(win .. "text2", vert, "This mod is very large and can be complex for the first couple of times you use it. Luckily for you I've documented (almost) everyting, explaining how things work and how to use them. The easiest way to read the documentation is in the Essentials mod. The Essentials mod its only usage is the ability to read through mod manuals whenever you want. \n\nIs the Essentials mod not included in your game? You can help me and the community out by telling the game creator about it so they can included it into their next game. But I do have a link for you that will take you to a google document with the documentation for this mod");
-	newTextField(win .. "ProjectELink", vert, "", "https://docs.google.com/document/d/1qbUxFYOrLL-ZN-yzUpEqNfQjePixV675zwZwXhfhhFU/edit#heading=h.u26jcdcpnsdn", 0, true, 300, -1, 1, 0);
+	newTextField(win .. "ProjectELink", vert, "", "https://docs.google.com/document/d/1qbUxFYOrLL-ZN-yzUpEqNfQjePixV675zwZwXhfhhFU/edit#heading=h.u26jcdcpnsdn", 0, true, 300, -1, 1, 1);
 	newLabel(win .. "text3", vert, "\nIf there is anything else you want to contact me about (bugs, issues, questions, suggestions) you can message me via Warzone, with the link below:");
-	newTextField(win .. "SendMailToMe", vert, "", "https://www.warzone.com/Discussion/SendMail?PlayerID=1311724", 0, true, 300, -1, 1, 0);
+	newTextField(win .. "SendMailToMe", vert, "", "https://www.warzone.com/Discussion/SendMail?PlayerID=1311724", 0, true, 300, -1, 1, 1);
 	newLabel(win .. "text4", vert, "\nLastly, I want to shout out the players who helped me develop this mod. I couldn't do this without them:\n - JK_3\n - KingEridani\n - UnFairerOrb76\n - Zazzlegut\n - Tread\n - krinid\n - Lord Hotdog\n - Samek\n - καλλιστηι\n - SirFalse");
 end
 
