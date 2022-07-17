@@ -73,8 +73,7 @@ function seeContents(path)
 		window(win);
 		local contents = getContents(path);
 		local vert = newVerticalGroup("vert", "root");
-		local s = "";
-		newLabel(win .. "Path", vert, s .. "\n\n", "Cyan");
+		newLabel(win .. "Path", vert, path .. "\n\n", "Cyan");
 		if type(contents) == type(table) then
 			newLabel(win .. "ChoosePath", vert, "Choose from one of the options", "Orange");
 			for i, v in pairs(contents) do
