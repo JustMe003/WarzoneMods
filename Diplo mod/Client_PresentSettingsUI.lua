@@ -31,6 +31,6 @@ function Client_PresentSettingsUI(rootParent)
 end
 
 function getLine(vert)
-	return newHorizontalGroup("line" .. counter, vert);
 	counter = counter + 1;
+	return newHorizontalGroup("line" .. counter, vert);
 end
