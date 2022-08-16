@@ -78,6 +78,7 @@ function showHelperMenu()
 	addAttacks = createCheckBox(line, false, " ");
 	createLabel(line, "Add attacks", colors.TextColor);
 	createButton(line, "?", colors.Green, function() UI.Alert("When checked your attacks from the previous turn will be added if you still control the attacking territory") end)
+	createLabel(vert, "\n", colors.TextColor);
 	addOrdersButton = createButton(vert, "Add orders", colors.Green, function() AddOrdersHelper(); destroyAll(); showMenu(); end);
 	setToPercentage.SetInteractable(Game.Settings.AllowPercentageAttacks);
 end
