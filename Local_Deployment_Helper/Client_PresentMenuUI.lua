@@ -61,7 +61,7 @@ function showHelperMenu()
 	end
 	
 	init();
-	createLabel(vert, "[!] Sometimes it is not possible to commit your orders after using the deployment helper function [!]\nIf this is the case please make your deployments manually", colors.Red);
+	createLabel(vert, "\n");
 	line = getNewHorz(vert);
 	addDeployments = createCheckBox(line, true, " ");
 	createLabel(line, "Add deployments", colors.TextColor);
