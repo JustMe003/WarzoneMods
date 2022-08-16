@@ -39,8 +39,8 @@ function showMenu()
 			createLabel(vert, "You can not use the deploy / transfer helper since you're not in the game (anymore)", colors.FalseColor);
 		end
 	end
-	createButton(vert, "Settings", "#3333FF", showSettings);
-	createButton(vert, "Credits", "#88FF00", showCredits);
+	createButton(vert, "Settings", colors["Orange Red"], showSettings);
+	createButton(vert, "Credits", "colors.Orange showCredits);
 end
 
 function showCredits()
