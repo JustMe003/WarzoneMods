@@ -165,16 +165,15 @@ function AddOrdersConfirmes()
 					--check that we own the territory
 				if Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID then
 					--check that we have armies to deploy
-					local bonusID;
+					local bonusID = -1;
 					for i, bonus in ipairs(Game.Map.Territories[order.DeployOn].PartOfBonuses) do
 						if bonusValue(bonus) ~= 0 then
 							bonusID = bonus;
 							break;
 						end
 					end
-					print(bonusID);
 					--make sure we deploy more then 0
-					if ownsBonus(bonusID) and order.NumArmies > 0 and maxDeployBonuses[bonusID] ~= nil then
+					if bonusID ~= -1 and ownsBonus(bonusID) and order.NumArmies > 0 and maxDeployBonuses[bonusID] ~= nil then
 						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
 							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false);
 							table.insert(orderTabel, newOrder);
