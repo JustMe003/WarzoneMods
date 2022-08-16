@@ -172,6 +172,7 @@ function AddOrdersConfirmes()
 							break;
 						end
 					end
+					print(bonusID);
 					--make sure we deploy more then 0
 					if ownsBonus(bonusID) and order.NumArmies > 0 and maxDeployBonuses[bonusID] ~= nil then
 						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
