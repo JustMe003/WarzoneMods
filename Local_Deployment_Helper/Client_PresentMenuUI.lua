@@ -61,7 +61,7 @@ function showHelperMenu()
 	end
 	
 	init();
-	createLabel(vert, "\n");
+	createLabel(vert, "\n", colors.TextColor);
 	line = getNewHorz(vert);
 	addDeployments = createCheckBox(line, true, " ");
 	createLabel(line, "Add deployments", colors.TextColor);
