@@ -40,7 +40,7 @@ function showMenu()
 		end
 	end
 	createButton(vert, "Settings", colors["Orange Red"], showSettings);
-	createButton(vert, "Credits", "colors.Orange, showCredits);
+	createButton(vert, "Credits", colors.Orange, showCredits);
 end
 
 function showCredits()
