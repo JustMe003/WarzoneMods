@@ -1,0 +1,3 @@
+Move your armies multiple territories instead of the normal distance (1). This does not include special units like Commanders
+
+Note: I had to prevent an exploit to be included, this sometimes results in your armies not being transferred correctly. This is not a bug, but a necessairy prevention.
