@@ -1,0 +1,157 @@
+require("UI")
+function Client_PresentConfigureUI(rootParent)
+	init(rootParent);
+	
+	colorsList = {"Blue", "Light Blue", "Purple", "Dark Green", "Orange", "Red", "Dark Gray", "Green", "Hot Pink", "Brown", "Sea Green", "Orange Red", "Cyan", "Aqua", "Dark Magenta", "Deep Pink", "yellow", "Saddle Brown", "Ivory", "Copper Rose", "Electric Purple", "Tan", "Pink", "Lime", "Tan", "Tyrian Purple", "Smoky Black"};
+	
+	CardPiecesEachTurn = Mod.Settings.CardPiecesEachTurn;
+	CardPiecesFromStart = Mod.Settings.CardPiecesFromStart;
+	if CardPiecesEachTurn == nil then CardPiecesEachTurn = {}; end
+	if CardPiecesFromStart == nil then CardPiecesFromStart = {}; end
+	
+	showMain();
+end
+
+
+function showMain()
+	local win = "Main";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newLabel("NonIncludedCards", vert, "This mod does not give / take pieces if the card is not enabled!", "Orange Red");
+	newButton("AlterSlot", vert, "Alter a slot", chooseSlot, "Tyrian Purple");
+	newLabel("slotCardsAtStart", vert, "\n\nSlots that will receive extra / less cards during the game:");
+	local needsButton = {};
+	for i, v in pairs(CardPiecesFromStart) do
+		if v ~= nil and getTableLength(v) > 0 then
+			needsButton[i] = true;
+		end
+	end
+	for i, v in pairs(CardPiecesEachTurn) do
+		if v ~= nil and getTableLength(v) > 0 and needsButton[i] == nil then
+			needsButton[i] = true;
+		end
+	end
+	for i, _ in pairs(needsButton) do
+		print(i);
+		newButton(win .. "Slot" .. i, vert, "Slot " .. getSlotName(i), function() getConfig(i) end, colorsList[i + 1]);
+	end
+end
+
+function chooseSlot()
+	local list = {};
+	for i = 0, 49 do
+		local l = {};
+		l.text = "Slot " .. getSlotName(i);
+		l.selected = function() getConfig(i) end;
+		table.insert(list, l);
+	end
+	UI.PromptFromList("Choose which slot you want to alter", list);
+end
+
+function getConfig(slot)
+	local win = "getConfig" .. slot;
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then 
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newLabel(win .. "Slot", vert, "Slot " .. getSlotName(slot), "Lime")
+	newLabel("CardsStart" .. win, vert, "This slot has the following card piece modifications at the start of the game:", "Green");
+	local startVert = newVerticalGroup("StartVert", vert);
+	newButton(win .. "AddConfigStart", startVert, "Add card config", function() addCardConfig(startVert, "Start") end, "Green");
+	if CardPiecesFromStart[slot] == nil then CardPiecesFromStart[slot] = {}; end
+	for i, v in pairs(WL.CardID) do
+		if objectsID[win .. "StartCardLabel" .. v] ~= nil or getZeroOrValue("Start", slot, v) ~= 0 then
+			newLabel(win .. "StartCardLabel" .. v, startVert, i .. " card:", "Orange");
+			newNumberField(win .. "StartCardInput" .. v, startVert, -10, 10, getZeroOrValue("Start", slot, v));
+			newLabel(win .. "StartCardNewline" .. v, startVert, "\n");
+		end
+	end
+	newLabel("CardsEachTurn" .. win, vert, "This slot has the following card piece modifications in every turn:", "Green");
+	local turnVert = newVerticalGroup("TurnVert", vert);
+	newButton(win .. "AddConfigTurn", turnVert, "Add card config", function() addCardConfig(turnVert, "Turn") end, "Green");
+	if CardPiecesEachTurn[slot] == nil then CardPiecesEachTurn[slot] = {}; end
+	for i, v in pairs(WL.CardID) do
+		if objectsID[win .. "TurnCardLabel" .. v] ~= nil or getZeroOrValue("Turn", slot, v) ~= 0 then
+			newLabel(win .. "TurnCardLabel" .. v, turnVert, i .. " card:", "Orange");
+			newNumberField(win .. "TurnCardInput" .. v, turnVert, 0, 10, getZeroOrValue("Turn", slot, v));
+			newLabel(win .. "TurnCardNewline" .. v, turnVert, "\n");
+		end
+	end
+	newButton("return" .. win, vert, "Return", function() saveInputs(win, slot); showMain(); end, "Lime");
+end
+
+function saveInputs(win, slot)
+	for i, v in pairs(WL.CardID) do
+		if objectsID[win .. "StartCardInput" .. v] ~= nil and getZeroOrValue("Start", slot, v) then
+			CardPiecesFromStart[slot][v] = getValue(win .. "StartCardInput" .. v);
+		end
+		if objectsID[win .. "TurnCardLabel" .. v] ~= nil or getZeroOrValue("Turn", slot, v) ~= 0 then
+			CardPiecesEachTurn[slot][v] = getValue(win .. "TurnCardInput" .. v);
+		end
+	end
+end
+
+function addCardConfig(vert, s)
+	local list = {};
+	for i, v in pairs(WL.CardID) do
+		if v ~= WL.CardID.Reinforcement then
+			local l = {};
+			l.text = i .. " Card";
+			l.selected = function() if objectsID[getCurrentWindow() .. s .. "CardInput" .. v] == nil then 
+						newLabel(getCurrentWindow() .. s .. "CardLabel" .. v, vert, i .. " card:", "Orange");
+						newNumberField(getCurrentWindow() .. s .. "CardInput" .. v, vert, -10, 10, getZeroOrValue("Turn", slot, v));
+						newLabel(getCurrentWindow() .. s .. "CardNewline" .. v, vert, "\n");
+					else
+						UI.Alert("There already is a input for this");
+					end
+				end;
+			table.insert(list, l);
+		end
+	end
+	UI.PromptFromList("Choose which card you want to alter", list);
+end
+
+function getSlotName(i)
+	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+	local s = "";
+	if i > 26 then
+		s = s .. c[math.floor(i / 26)];
+		i = i - math.floor(i / 26);
+	end
+	return s .. c[i % 26 + 1];
+end
+
+function getZeroOrValue(s, slot, card)
+	if objectsID[getCurrentWindow() .. s .. "CardInput" .. card] ~= nil then
+		return getValue(getCurrentWindow() .. s .. "CardInput" .. card);
+	end
+	if s == "Turn" then
+		if CardPiecesEachTurn[slot] ~= nil then
+			if CardPiecesEachTurn[slot][card] ~= nil then
+				return CardPiecesEachTurn[slot][card];
+			end
+		end
+	elseif s == "Start" then
+		if CardPiecesFromStart[slot] ~= nil then
+			if CardPiecesFromStart[slot][card] ~= nil then
+				return CardPiecesFromStart[slot][card];
+			end
+		end
+	end
+	return 0;
+end
+
+function getTableLength(t)
+	local c = 0;
+	for i, _ in pairs(t) do
+		c = c + 1;
+	end
+	return c;
+end
