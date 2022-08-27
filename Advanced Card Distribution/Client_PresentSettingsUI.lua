@@ -27,6 +27,7 @@ function pickSlot()
 			local t = {};
 			t.text = "Slot " .. getSlotName(i);
 			t.selected = function() showConfig(i); end
+			table.insert(list, t);
 		end
 	end
 	if hasModifiedSlots then
@@ -65,6 +66,10 @@ function showConfig(slot)
 			end
 			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesEachTurn[slot][i]);
 		end
+	end
+	
+	if not hasPiecesFromstart and not hasPiecesEachTurn then
+		newLabel(win .. "Nothing", vert, "This slot does not have any card modification");
 	end
 end
 
