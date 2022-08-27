@@ -1,0 +1,1 @@
+This mod allows game creators to take full control over the card distribution in a Custom Scenario game. Note that the reinforcement card cannot be configured due to technical difficulties.
