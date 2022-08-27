@@ -18,9 +18,20 @@ function Server_StartGame(game, standing)
 				end
 				newPieces[card] = totalPieces % cardGame.NumPieces;
 			else
-				for i, v in pairs(game.ServerGame.TurnZeroStanding.Cards[p.ID]) do
-					print(i, v);
+				local armies = 0;
+				for i, v in pairs(game.ServerGame.TurnZeroStanding.Cards[p.ID].WholeCards) do
+					if v.CardID == WL.CardID.Reinforcement then
+						armies = v.Armies;
+						break;
+					end
 				end
+				if armies > 0 then
+					for k = 1, math.floor(cardGame.InitialPieces / cardGame.NumPieces) do
+						local instance = WL.ReinforcementCardInstance.Create(armies);
+						newCards[instance.ID] = instance;
+					end
+				end
+				newPieces[card] = cardGame.InitialPieces % cardGame.NumPieces;
 			end
 		end
 		playerCards.WholeCards = newCards;
