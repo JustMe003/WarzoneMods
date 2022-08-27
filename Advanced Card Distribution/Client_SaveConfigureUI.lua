@@ -2,15 +2,19 @@ function Client_SaveConfigureUI(alert)
 	Mod.Settings.CardPiecesEachTurn = CardPiecesEachTurn;
 	Mod.Settings.CardPiecesFromStart = CardPiecesFromStart;
 	for i = 0, 49 do
-		Mod.Settings.CardPiecesFromStart[i] = {};
+		if Mod.Settings.CardPiecesFromStart[i] == nil then
+			Mod.Settings.CardPiecesFromStart[i] = {};
+		end
 		for _, j in pairs(WL.CardID) do
-			if i == 0 then print(objectsID["getConfig" .. i .. "StartCardInput" .. j]); end
 			if objectsID["getConfig" .. i .. "StartCardInput" .. j] ~= nil then
 				Mod.Settings.CardPiecesFromStart[i][j] = getValue("getConfig" .. i .. "StartCardInput" .. j)
 			end
 		end
 	end
 	for i = 0, 49 do
+		if Mod.Settings.CardPiecesEachTurn[i] == nil then
+			Mod.Settings.CardPiecesEachTurn[i] = {};
+		end
 		Mod.Settings.CardPiecesEachTurn[i] = {};
 		for _, j in pairs(WL.CardID) do
 			if objectsID["getConfig" .. i .. "TurnCardInput" .. j] ~= nil then
