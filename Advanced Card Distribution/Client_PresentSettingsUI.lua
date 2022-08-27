@@ -52,7 +52,7 @@ function showConfig(slot)
 				newLabel(win .. "hasPiecesFromstart", vert, "Slot " .. getSlotName(slot) .. " gets the following card modifications at the start of the game:");
 				hasPiecesFromstart = true;
 			end
-			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesFromStart[slot][i]);
+			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesFromStart[slot][v]);
 		end
 	end
 	
@@ -63,7 +63,7 @@ function showConfig(slot)
 				newLabel(win .. "hasPiecesEachTurn", vert, "Slot " .. getSlotName(slot) .. " gets the following card modifications at the end of every turn:");
 				hasPiecesEachTurn = true;
 			end
-			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesEachTurn[slot][i]);
+			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesEachTurn[slot][v]);
 		end
 	end
 	

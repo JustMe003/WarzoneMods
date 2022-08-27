@@ -86,7 +86,7 @@ function getConfig(slot)
 	end
 	local line = newHorizontalGroup(win .. "line", vert);
 	newButton("return" .. win, line, "Return", function() saveInputs(win, slot); showMain(); end, "Lime");
-	newButton(win .. "CopyConfig", line, "Copy slot", function() saveInputs(win, slot); pickSlotToCopy(slot); end, "Royal Blue");
+	newButton(win .. "CopyConfig", line, "Copy configuration", function() saveInputs(win, slot); pickSlotToCopy(slot); end, "Royal Blue");
 end
 
 function saveInputs(win, slot)
@@ -108,7 +108,7 @@ function pickSlotToCopy(copy)
 		t.selected = function() copySlot(copy, i); getConfig(i); end
 		table.insert(list, t);
 	end
-	UI.PromptFromList("Pick a slot", list);
+	UI.PromptFromList("Pick a slot to paste the configuration to", list);
 end
 
 function copySlot(copy, slot)
