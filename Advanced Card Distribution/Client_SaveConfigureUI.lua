@@ -1,6 +1,6 @@
 function Client_SaveConfigureUI(alert)
-	Mod.Settings.CardPiecesEachTurn = {};
-	Mod.Settings.CardPiecesFromStart = {};
+	Mod.Settings.CardPiecesEachTurn = CardPiecesEachTurn;
+	Mod.Settings.CardPiecesFromStart = CardPiecesFromStart;
 	for i = 0, 49 do
 		Mod.Settings.CardPiecesFromStart[i] = {};
 		for _, j in pairs(WL.CardID) do
