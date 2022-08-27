@@ -41,7 +41,7 @@ function showConfig(slot)
 	for i, v in pairs(WL.CardID) do
 		if Mod.Settings.CardPiecesFromStart[slot][v] ~= nil then
 			if not hasPiecesFromstart then
-				newLabel(win .. "hasPiecesFromstart", vert, "Slot " getSlotName(slot) .. " gets the following card modifications at the start of the game:");
+				newLabel(win .. "hasPiecesFromstart", vert, "Slot " .. getSlotName(slot) .. " gets the following card modifications at the start of the game:");
 				hasPiecesFromstart = true;
 			end
 			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesFromStart[slot][i]);
@@ -52,7 +52,7 @@ function showConfig(slot)
 	for i, v in pairs(WL.CardID) do
 		if Mod.Settings.CardPiecesEachTurn[slot][v] ~= nil then
 			if not hasPiecesEachTurn then
-				newLabel(win .. "hasPiecesEachTurn", vert, "Slot " getSlotName(slot) .. " gets the following card modifications at the end of every turn:");
+				newLabel(win .. "hasPiecesEachTurn", vert, "Slot " .. getSlotName(slot) .. " gets the following card modifications at the end of every turn:");
 				hasPiecesEachTurn = true;
 			end
 			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesEachTurn[slot][i]);
