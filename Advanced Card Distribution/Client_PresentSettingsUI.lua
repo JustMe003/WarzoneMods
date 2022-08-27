@@ -26,6 +26,7 @@ function pickSlot()
 			t.selected = function() showConfig(i); end
 		end
 	end
+	UI.PromptFromList("Pick a slot", list);
 end
 
 function showConfig(slot)
