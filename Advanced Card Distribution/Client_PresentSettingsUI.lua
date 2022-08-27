@@ -22,7 +22,6 @@ function pickSlot()
 	local hasModifiedSlots = false;
 	for i = 0, 49 do
 		if Mod.Settings.CardPiecesFromStart[i] ~= nil or Mod.Settings.CardPiecesEachTurn[i] ~= nil then
-			print(i);
 			hasModifiedSlots = true;
 			local t = {};
 			t.text = "Slot " .. getSlotName(i);
@@ -71,6 +70,7 @@ function showConfig(slot)
 	if not hasPiecesFromstart and not hasPiecesEachTurn then
 		newLabel(win .. "Nothing", vert, "This slot does not have any card modification");
 	end
+	newButton(win .. "chooseSlot", vert, "Pick a slot", pickSlot, "Lime");
 end
 
 
