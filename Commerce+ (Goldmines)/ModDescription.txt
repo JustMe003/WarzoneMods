@@ -1,0 +1,2 @@
+Goldmines replaces the normal cities and are more customizable. They also take longer to build. The building process is indicated with cities, which decrease over time.
+Configure the amount of turns it takes to build a goldmine and how much income they give
