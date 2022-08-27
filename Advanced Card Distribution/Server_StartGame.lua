@@ -18,7 +18,9 @@ function Server_StartGame(game, standing)
 				end
 				newPieces[card] = totalPieces % cardGame.NumPieces;
 			else
-				
+				for i, v in pairs(game.ServerGame.TurnZeroStanding.Cards[p.ID]) do
+					print(i, v);
+				end
 			end
 		end
 		playerCards.WholeCards = newCards;
