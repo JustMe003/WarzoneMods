@@ -8,7 +8,6 @@ function Client_SaveConfigureUI(alert)
 				Mod.Settings.CardPiecesFromStart[i][j] = getValue("getConfig" .. i .. "StartCardInput" .. j)
 			end
 		end
---		print(i, getTableLength(Mod.Settings.CardPiecesFromStart[i]))
 	end
 	for i = 0, 49 do
 		Mod.Settings.CardPiecesEachTurn[i] = {};
@@ -19,6 +18,5 @@ function Client_SaveConfigureUI(alert)
 				end
 			end
 		end
---		print(i, getTableLength(Mod.Settings.CardPiecesEachTurn[i]))
 	end
 end
