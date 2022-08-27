@@ -84,7 +84,9 @@ function getConfig(slot)
 			newLabel(win .. "TurnCardNewline" .. v, turnVert, "\n");
 		end
 	end
-	newButton("return" .. win, vert, "Return", function() saveInputs(win, slot); showMain(); end, "Lime");
+	local line = newHorizontalGroup(win .. "line", vert);
+	newButton("return" .. win, line, "Return", function() saveInputs(win, slot); showMain(); end, "Lime");
+	newButton(win .. "CopyConfig", line, "Copy slot", function() saveInputs(win, slot); pickSlotToCopy(slot); end, "Royal Blue");
 end
 
 function saveInputs(win, slot)
@@ -95,6 +97,26 @@ function saveInputs(win, slot)
 		if objectsID[win .. "TurnCardLabel" .. v] ~= nil or getZeroOrValue("Turn", slot, v) ~= 0 then
 			CardPiecesEachTurn[slot][v] = getValue(win .. "TurnCardInput" .. v);
 		end
+	end
+end
+
+function pickSlotToCopy(copy)
+	local list = {};
+	for i = 0, 49 do
+		local t = {};
+		t.text = "Slot " .. getSlotName(i);
+		t.selected = function copySlot(copy, i); getConfig(i); end
+		table.insert(list, t);
+	end
+	UI.PromptFromList("Pick a slot", list);
+end
+
+function copySlot(copy, slot)
+	for i, v in pairs(CardPiecesFromStart[copy]) do
+		CardPiecesFromStart[slot][i] = v;
+	end
+	for i, v in pairs(CardPiecesEachTurn[copy]) do
+		CardPiecesEachTurn[slot][i] = v;
 	end
 end
 
