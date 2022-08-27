@@ -19,14 +19,20 @@ end
 
 function pickSlot()
 	local list = {};
+	local hasModifiedSlots = false;
 	for i = 0, 49 do
 		if Mod.Settings.CardPiecesFromStart[i] ~= nil or Mod.Settings.CardPiecesEachTurn[i] ~= nil then
+			hasModifiedSlots = true;
 			local t = {};
 			t.text = "Slot " .. getSlotName(i);
 			t.selected = function() showConfig(i); end
 		end
 	end
-	UI.PromptFromList("Pick a slot", list);
+	if hasModifiedSlots then
+		UI.PromptFromList("Pick a slot", list);
+	else
+		UI.Alert("It seems like the mod has not been configured.");
+	end
 end
 
 function showConfig(slot)
