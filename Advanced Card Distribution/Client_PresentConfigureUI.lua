@@ -105,7 +105,7 @@ function pickSlotToCopy(copy)
 	for i = 0, 49 do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
-		t.selected = function copySlot(copy, i); getConfig(i); end
+		t.selected = function() copySlot(copy, i); getConfig(i); end
 		table.insert(list, t);
 	end
 	UI.PromptFromList("Pick a slot", list);
