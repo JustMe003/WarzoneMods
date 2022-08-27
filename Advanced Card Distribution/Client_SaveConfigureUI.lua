@@ -4,6 +4,7 @@ function Client_SaveConfigureUI(alert)
 	for i = 0, 49 do
 		Mod.Settings.CardPiecesFromStart[i] = {};
 		for _, j in pairs(WL.CardID) do
+			if i == 0 then print(objectsID["getConfig" .. i .. "StartCardInput" .. j]); end
 			if objectsID["getConfig" .. i .. "StartCardInput" .. j] ~= nil then
 				Mod.Settings.CardPiecesFromStart[i][j] = getValue("getConfig" .. i .. "StartCardInput" .. j)
 			end
