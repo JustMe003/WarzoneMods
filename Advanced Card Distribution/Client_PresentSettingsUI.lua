@@ -38,10 +38,10 @@ end
 
 function showConfig(slot)
 	local win = "showConfig";
+	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
 		resetWindow(win);
 	end
-	destroyWindow(getCurrentWindow());
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	
@@ -70,7 +70,7 @@ function showConfig(slot)
 	if not hasPiecesFromstart and not hasPiecesEachTurn then
 		newLabel(win .. "Nothing", vert, "This slot does not have any card modification");
 	end
-	newButton(win .. "chooseSlot", vert, "Pick a slot", pickSlot, "Lime");
+	newButton(win .. "chooseSlot", vert, "Pick a slot", function() destroyWindow(getCurrentWindow()); pickSlot(); end, "Lime");
 end
 
 
