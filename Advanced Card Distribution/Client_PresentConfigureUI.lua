@@ -6,6 +6,7 @@ function Client_PresentConfigureUI(rootParent)
 	
 	CardPiecesEachTurn = Mod.Settings.CardPiecesEachTurn;
 	CardPiecesFromStart = Mod.Settings.CardPiecesFromStart;
+	print(CardPiecesEachTurn);
 	if CardPiecesEachTurn == nil then CardPiecesEachTurn = {}; end
 	if CardPiecesFromStart == nil then CardPiecesFromStart = {}; end
 	
