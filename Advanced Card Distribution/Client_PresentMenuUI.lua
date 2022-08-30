@@ -17,12 +17,13 @@ function showMenu()
 	
 	newLabel(win .. "label", vert, "These players have a modified card distribution");
 	local hasButton = {};
-	--newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
 	for i, v in pairs(WL.GamePlayerState) do
 		print(i, v);
 	end
 	for _, p in pairs(game.Game.Players) do
-		
+		if p.State ~= WL.GamePlayerState.RemovedByHost and p.State ~= WL.GamePlayerState.Declined and p.Slot ~= nil then
+			newButton(win .. p.ID .. "button", vert, p.DisplayName(nil, false) .. " (Slot " .. getSlotName(p.Slot) .. ")", function() showSlotSettings(p.Slot); end, p.Color.HtmlColor);
+		end
 	end
 end
 
@@ -60,23 +61,6 @@ function showSlotSettings(slot)
 	end
 end
 
-function getPlayerSlot(slot)
-	for _, p in pairs(game.Game.Players) do
-		if p.Slot == slot then 
-			return p.DisplayName(nil, false);
-		end
-	end
-end
-
-function getPlayerColor(slot)
-	for _, p in pairs(game.Game.Players) do
-		if p.Slot == slot then
-			return p.Color.HtmlColor;
-		end
-	end
-	return "None found";
-end
-
 function getCardName(c)
 	for i, v in pairs(WL.CardID) do
 		if v == c then return i; end
@@ -103,10 +87,12 @@ function readableString(s)
 	return ret;
 end
 
-function getTableLength(t)
-	local c = 0;
-	for i, _ in pairs(t) do
-		c = c + 1;
+function getSlotName(i)
+	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+	local s = "";
+	if i > 26 then
+		s = s .. c[math.floor(i / 26)];
+		i = i - math.floor(i / 26);
 	end
-	return c;
+	return s .. c[i % 26 + 1];
 end
