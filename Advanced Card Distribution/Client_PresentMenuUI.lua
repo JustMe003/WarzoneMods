@@ -17,7 +17,7 @@ function showMenu()
 	
 	print("All players:");
 	for _, p in pairs(game.Game.Players) do
-		print(p.DisplayName(nil, false);
+		print(p.DisplayName(nil, false));
 	end
 	print("\n")
 	
