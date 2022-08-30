@@ -18,6 +18,7 @@ function showMenu()
 	newLabel(win .. "label", vert, "These players have a modified card distribution");
 	local hasButton = {};
 	for i, v in pairs(Mod.Settings.CardPiecesFromStart) do
+		print(win .. i .. "button", vert, getPlayerSlot(i), showSlotConfig, getPlayerColor(i))
 		newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
 		table.insert(hasButton, i);
 	end
