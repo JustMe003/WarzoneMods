@@ -17,16 +17,12 @@ function showMenu()
 	
 	newLabel(win .. "label", vert, "These players have a modified card distribution");
 	local hasButton = {};
-	for i, v in pairs(Mod.Settings.CardPiecesFromStart) do
-		if getTableLength(v) > 0 then
-			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
-			table.insert(hasButton, i);
-		end
+	newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
+	for i, v in pairs(WL.GamePlayerState) do
+		print(i, v);
 	end
-	for i, v in pairs(Mod.Settings.CardPiecesEachTurn) do
-		if not valueInTable(hasButton, i)and getTableLength(v) > 0 then
-			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
-		end
+	for _, p in pairs(game.Game.Players) do
+		
 	end
 end
 
