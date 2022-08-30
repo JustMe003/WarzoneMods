@@ -64,12 +64,12 @@ end
 function getTable(s, layer);
 	local t = {};
 	if layer == nil then layer = 1; end
---	print(s, #s);
+	print(s, #s);
 	local value = "";
 	local i = 1;
 	while i < #s do
 		local c = string.sub(s, i, i);
---		print(i, c)
+		print(i, c)
 		if c == "{" then
 			if string.len(value) ~= 0 then
 				t[tonumber(value)], index = getTable(string.sub(s, i + 1, string.len(s)), layer + 1);
