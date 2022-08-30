@@ -6,7 +6,6 @@ function Client_PresentConfigureUI(rootParent)
 	
 	CardPiecesEachTurn = Mod.Settings.CardPiecesEachTurn;
 	CardPiecesFromStart = Mod.Settings.CardPiecesFromStart;
-	print(CardPiecesEachTurn);
 	if CardPiecesEachTurn == nil then CardPiecesEachTurn = {}; end
 	if CardPiecesFromStart == nil then CardPiecesFromStart = {}; end
 	
@@ -33,6 +32,7 @@ function showMain()
 		end
 	end
 	for i, v in pairs(CardPiecesEachTurn) do
+		print(v, getTableLength(v))
 		if v ~= nil and getTableLength(v) > 0 and needsButton[i] == nil then
 			needsButton[i] = true;
 		end
