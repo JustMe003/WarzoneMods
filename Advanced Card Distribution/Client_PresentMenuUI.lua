@@ -40,7 +40,7 @@ function showSlotSettings(p)
 	line = newHorizontalGroup("line112345543", vert);
 	newLabel(win .. "explanation1c", line, "Red", "Orange Red");
 	newLabel(win .. "explanation1d", line, ": Modifications from this mod");
-	newLabel(win .. "explanation1", line, p.DisplayName(nil, false) .. " will start with the following card pieces\n");
+	newLabel(win .. "explanation1", vert, p.DisplayName(nil, false) .. " will start with the following card pieces\n");
 	
 	for card, cardGame in pairs(game.Settings.Cards) do
 		local line = newHorizontalGroup(win .. "lineS" .. card, vert);
