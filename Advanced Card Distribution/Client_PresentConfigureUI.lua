@@ -68,7 +68,7 @@ function getConfig(slot)
 	if CardPiecesFromStart[slot] == nil then CardPiecesFromStart[slot] = {}; end
 	for i, v in pairs(WL.CardID) do
 		if objectsID[win .. "StartCardLabel" .. v] ~= nil or getZeroOrValue("Start", slot, v) ~= 0 then
-			newLabel(win .. "StartCardLabel" .. v, startVert, i .. " card:", "Orange");
+			newLabel(win .. "StartCardLabel" .. v, startVert, readableString(i) .. " card:", "Orange");
 			newNumberField(win .. "StartCardInput" .. v, startVert, -10, 10, getZeroOrValue("Start", slot, v));
 			newLabel(win .. "StartCardNewline" .. v, startVert, "\n");
 		end
@@ -79,7 +79,7 @@ function getConfig(slot)
 	if CardPiecesEachTurn[slot] == nil then CardPiecesEachTurn[slot] = {}; end
 	for i, v in pairs(WL.CardID) do
 		if objectsID[win .. "TurnCardLabel" .. v] ~= nil or getZeroOrValue("Turn", slot, v) ~= 0 then
-			newLabel(win .. "TurnCardLabel" .. v, turnVert, i .. " card:", "Orange");
+			newLabel(win .. "TurnCardLabel" .. v, turnVert, readableString(i) .. " card:", "Orange");
 			newNumberField(win .. "TurnCardInput" .. v, turnVert, 0, 10, getZeroOrValue("Turn", slot, v));
 			newLabel(win .. "TurnCardNewline" .. v, turnVert, "\n");
 		end
@@ -127,7 +127,7 @@ function addCardConfig(vert, s)
 			local l = {};
 			l.text = i .. " Card";
 			l.selected = function() if objectsID[getCurrentWindow() .. s .. "CardInput" .. v] == nil then 
-						newLabel(getCurrentWindow() .. s .. "CardLabel" .. v, vert, i .. " card:", "Orange");
+						newLabel(getCurrentWindow() .. s .. "CardLabel" .. v, vert, readableString(i) .. " card:", "Orange");
 						newNumberField(getCurrentWindow() .. s .. "CardInput" .. v, vert, -10, 10, getZeroOrValue("Turn", slot, v));
 						newLabel(getCurrentWindow() .. s .. "CardNewline" .. v, vert, "\n");
 					else
@@ -176,4 +176,16 @@ function getTableLength(t)
 		c = c + 1;
 	end
 	return c;
+end
+
+function readableString(s)
+	local ret = string.upper(string.sub(s, 1, 1));
+	for i = 2, #s do
+		if string.sub(s, i, i) == string.lower(string.sub(s, i, i)) then
+			ret = ret .. string.sub(s, i, i);
+		else
+			ret = ret .. " " .. string.lower(string.sub(s, i, i));
+		end
+	end
+	return ret;
 end

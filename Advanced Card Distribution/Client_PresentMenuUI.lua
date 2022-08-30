@@ -15,22 +15,70 @@ function showMenu()
 	window(win)
 	local vert = newVerticalGroup("vert", "root");
 	
-	print("All players:");
-	for _, p in pairs(game.Game.Players) do
-		print(p.DisplayName(nil, false));
+	newLabel(win .. "label", vert, "These players have a modified card distribution");
+	local hasButton = {};
+	for i, v in pairs(Mod.Settings.CardPiecesFromStart) do
+		newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
+		table.insert(hasButton, i);
 	end
-	print("\n")
-	
-	for i = 0, 49 do
-		getPlayerSlot(i);
+	for i, v in pairs(Mod.Settings.CardPiecesEachTurn) do
+		if not valueInTable(hasButton, i) then
+			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
+		end
 	end
 end
 
-function getPlayerSlot(n)
+function showSlotConfig(slot)
+	local win = "showSlotConfig";
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	destroyWindow(getCurrentWindow());
+	window(win)
+	local vert = newVerticalGroup("vert", "root");
+	
+	-- create layout for each modification
+end
+
+function getPlayerSlot(slot)
 	for _, p in pairs(game.Game.Players) do
-		if p.Slot == n then 
-			print(p.DisplayName(nil, false), p.Slot, p.State);
-			p.DisplayName(nil, false); 
+		if p.Slot == slot then 
+			return p.DisplayName(nil, false);
 		end
 	end
+end
+
+function getPlayerColor(slot)
+	for _, p in pairs(game.Game.Players) do
+		if p.Slot == slot then
+			return p.Color.HtmlColor;
+		end
+	end
+	return "None found";
+end
+
+function getCardName(c)
+	for i, v in pairs(WL.CardID) do
+		if v == c then return i; end
+	end
+	return "ERROR: card not found";
+end
+
+function valueInTable(t, v)
+	for _, i in pairs(t) do
+		if v == i then return true; end
+	end
+	return false;
+end
+
+function readableString(s)
+	local ret = string.upper(string.sub(s, 1, 1));
+	for i = 2, #s do
+		if string.sub(s, i, i) == string.lower(string.sub(s, i, i)) then
+			ret = ret .. string.sub(s, i, i);
+		else
+			ret = ret .. " " .. string.lower(string.sub(s, i, i));
+		end
+	end
+	return ret;
 end
