@@ -17,7 +17,6 @@ function showMenu()
 	local vert = newVerticalGroup("vert", "root");
 	
 	newLabel(win .. "label", vert, "These players have a modified card distribution");
-	local hasButton = {};
 	for _, p in pairs(game.Game.Players) do
 		if p.State ~= WL.GamePlayerState.RemovedByHost and p.State ~= WL.GamePlayerState.Declined and p.Slot ~= nil then
 			newButton(win .. p.ID .. "button", vert, p.DisplayName(nil, false) .. " (Slot " .. getSlotName(p.Slot) .. ")", function() showSlotSettings(p); end, p.Color.HtmlColor);
