@@ -15,6 +15,12 @@ function showMenu()
 	window(win)
 	local vert = newVerticalGroup("vert", "root");
 	
+	print("All players:");
+	for _, p in pairs(game.Game.Players) do
+		print(p.DisplayName(nil, false);
+	end
+	print("\n")
+	
 	for i = 0, 49 do
 		getPlayerSlot(i);
 	end
@@ -23,7 +29,7 @@ end
 function getPlayerSlot(n)
 	for _, p in pairs(game.Game.Players) do
 		if p.Slot == n then 
-			print(p.Slot, p.State);
+			print(p.DisplayName(nil, false), p.Slot, p.State);
 			p.DisplayName(nil, false); 
 		end
 	end
