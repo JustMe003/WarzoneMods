@@ -32,7 +32,6 @@ function showMain()
 		end
 	end
 	for i, v in pairs(CardPiecesEachTurn) do
-		print(v, getTableLength(v))
 		if v ~= nil and getTableLength(v) > 0 and needsButton[i] == nil then
 			needsButton[i] = true;
 		end
