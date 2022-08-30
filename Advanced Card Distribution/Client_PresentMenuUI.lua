@@ -44,6 +44,9 @@ function showSlotConfig(slot)
 		newLabel(win .. card .. "cardS", line, readableString(getCardName(card)) .. ": ", "Royal Blue");
 		newLabel(win .. card .. "initialPieces", line, cardGame.InitialPieces, "Green");
 		if Mod.Settings.CardPiecesFromStart[slot][card] ~= nil then
+			if Mod.Settings.CardPiecesFromStart[slot][card] > 0 then
+				newLabel(win .. card .. "equation", line, " + ", "Royal Blue");
+			end
 			newLabel(win .. card .. "S", line, Mod.Settings.CardPiecesFromStart[slot][card], "Orange Red");
 		end
 	end
