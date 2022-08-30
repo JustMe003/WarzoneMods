@@ -67,6 +67,8 @@ function showSlotSettings(p)
 			newLabel(win .. card .. "T", line, Mod.Settings.CardPiecesEachTurn[p.Slot][card], "Orange Red");
 		end
 	end
+	
+	newButton(win .. "retruN", vert, "Return", showMenu, "Orange");
 end
 
 function getCardName(c)
