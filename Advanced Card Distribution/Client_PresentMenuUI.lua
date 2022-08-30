@@ -78,13 +78,6 @@ function getCardName(c)
 	return "ERROR: card not found";
 end
 
-function valueInTable(t, v)
-	for _, i in pairs(t) do
-		if v == i then return true; end
-	end
-	return false;
-end
-
 function readableString(s)
 	local ret = string.upper(string.sub(s, 1, 1));
 	for i = 2, #s do
