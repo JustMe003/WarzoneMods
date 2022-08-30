@@ -19,19 +19,19 @@ function showMenu()
 	local hasButton = {};
 	for i, v in pairs(Mod.Settings.CardPiecesFromStart) do
 		if getTableLength(v) > 0 then
-			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
+			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
 			table.insert(hasButton, i);
 		end
 	end
 	for i, v in pairs(Mod.Settings.CardPiecesEachTurn) do
 		if not valueInTable(hasButton, i)and getTableLength(v) > 0 then
-			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
+			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
 		end
 	end
 end
 
-function showSlotConfig(slot)
-	local win = "showSlotConfig";
+function showSlotSettings(slot)
+	local win = "showSlotSettings";
 	if windowExists(win) then
 		resetWindow(win);
 	end
@@ -55,7 +55,6 @@ function showSlotConfig(slot)
 		local line = newHorizontalGroup(win .. "lineT" .. card, vert);
 		newLabel(win .. card .. "cardT", line, readableString(getCardName(card)) .. ": ", "Royal Blue");
 		newLabel(win .. card .. "MinimumPiecesPerTurn", line, cardGame.MinimumPiecesPerTurn, "Green");
-		print(Mod.Settings.CardPiecesEachTurn[slot]);
 		if Mod.Settings.CardPiecesEachTurn[slot][card] ~= nil then
 			if Mod.Settings.CardPiecesEachTurn[slot][card] > 0 then
 				newLabel(win .. card .. "equation", line, "+ ", "Royal Blue");
