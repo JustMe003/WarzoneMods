@@ -50,6 +50,18 @@ function showSlotConfig(slot)
 			newLabel(win .. card .. "S", line, Mod.Settings.CardPiecesFromStart[slot][card], "Orange Red");
 		end
 	end
+	
+	for card, cardGame in pairs(game.Settings.Cards) do
+		local line = newHorizontalGroup(win .. "lineT" .. card, vert);
+		newLabel(win .. card .. "cardT", line, readableString(getCardName(card)) .. ": ", "Royal Blue");
+		newLabel(win .. card .. "NumPieces", line, cardGame.NumPieces, "Green");
+		if Mod.Settings.CardPiecesEachTurn[slot][card] ~= nil then
+			if Mod.Settings.CardPiecesEachTurn[slot][card] > 0 then
+				newLabel(win .. card .. "equation", line, " + ", "Royal Blue");
+			end
+			newLabel(win .. card .. "T", line, Mod.Settings.CardPiecesEachTurn[slot][card], "Orange Red");
+		end
+	end
 end
 
 function getPlayerSlot(slot)
