@@ -125,7 +125,7 @@ function addCardConfig(vert, s)
 	for i, v in pairs(WL.CardID) do
 		if v ~= WL.CardID.Reinforcement then
 			local l = {};
-			l.text = i .. " Card";
+			l.text = readableString(i) .. " Card";
 			l.selected = function() if objectsID[getCurrentWindow() .. s .. "CardInput" .. v] == nil then 
 						newLabel(getCurrentWindow() .. s .. "CardLabel" .. v, vert, readableString(i) .. " card:", "Orange");
 						newNumberField(getCurrentWindow() .. s .. "CardInput" .. v, vert, -10, 10, getZeroOrValue("Turn", slot, v));
