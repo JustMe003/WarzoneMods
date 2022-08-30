@@ -18,13 +18,13 @@ function showMenu()
 	newLabel(win .. "label", vert, "These players have a modified card distribution");
 	local hasButton = {};
 	for i, v in pairs(Mod.Settings.CardPiecesFromStart) do
-		print(win .. i .. "button", vert, getPlayerSlot(i), showSlotConfig, getPlayerColor(i))
-		newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
-		table.insert(hasButton, i);
+		if getTableLength(v) > 0 then
+			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
+			table.insert(hasButton, i);
+		end
 	end
 	for i, v in pairs(Mod.Settings.CardPiecesEachTurn) do
-		if not valueInTable(hasButton, i) then
-			print(win .. i .. "button", vert, getPlayerSlot(i), showSlotConfig, getPlayerColor(i))
+		if not valueInTable(hasButton, i)and getTableLength(v) > 0 then
 			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
 		end
 	end
@@ -90,4 +90,12 @@ function readableString(s)
 		end
 	end
 	return ret;
+end
+
+function getTableLength(t)
+	local c = 0;
+	for i, _ in pairs(t) do
+		c = c + 1;
+	end
+	return c;
 end
