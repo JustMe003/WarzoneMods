@@ -15,7 +15,6 @@ function Client_SaveConfigureUI(alert)
 		if Mod.Settings.CardPiecesEachTurn[i] == nil then
 			Mod.Settings.CardPiecesEachTurn[i] = {};
 		end
-		Mod.Settings.CardPiecesEachTurn[i] = {};
 		for _, j in pairs(WL.CardID) do
 			if objectsID["getConfig" .. i .. "TurnCardInput" .. j] ~= nil then
 				if getValue("getConfig" .. i .. "TurnCardInput" .. j) ~= 0 then
