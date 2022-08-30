@@ -17,7 +17,7 @@ function showMenu()
 	
 	newLabel(win .. "label", vert, "These players have a modified card distribution");
 	local hasButton = {};
-	newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
+	--newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotSettings(i); end, getPlayerColor(i));
 	for i, v in pairs(WL.GamePlayerState) do
 		print(i, v);
 	end
