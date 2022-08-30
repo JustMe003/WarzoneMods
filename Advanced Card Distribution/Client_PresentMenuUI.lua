@@ -34,8 +34,13 @@ function showSlotSettings(p)
 	window(win)
 	local vert = newVerticalGroup("vert", "root");
 	
-	newLabel(win .. "explanation1", vert, "(Green numbers are standard Warzone settings, the red numbers are modifications from this mod", "Lime");
-	newLabel(win .. "explanation1", vert, p.DisplayName(nil, false) .. " will start with the following card pieces\n", "Lime");
+	local line = newHorizontalGroup("line112345", vert);
+	newLabel(win .. "explanation1a", line, "Green", "Green");
+	newLabel(win .. "explanation1b", line, ": Warzone card settings");
+	line = newHorizontalGroup("line112345543", vert);
+	newLabel(win .. "explanation1c", line, "Red", "Orange Red");
+	newLabel(win .. "explanation1d", line, ": Modifications from this mod");
+	newLabel(win .. "explanation1", line, p.DisplayName(nil, false) .. " will start with the following card pieces\n", "Lime");
 	
 	for card, cardGame in pairs(game.Settings.Cards) do
 		local line = newHorizontalGroup(win .. "lineS" .. card, vert);
