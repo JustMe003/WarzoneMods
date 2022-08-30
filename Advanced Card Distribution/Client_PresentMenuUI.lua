@@ -37,7 +37,14 @@ function showSlotConfig(slot)
 	window(win)
 	local vert = newVerticalGroup("vert", "root");
 	
-	-- create layout for each modification
+	for card, cardGame in pairs(game.Settings.Cards) do
+		local line = newHorizontalGroup(win .. "lineS" .. card);
+		newLabel(win .. card .. "cardS", line, readableString(getCardName(card)) .. ": ", "Royal Blue");
+		newLabel(win .. card .. "initialPieces", line, cardGame.InitialPieces, "Green");
+		if Mod.Settings.CardPiecesFromStart[slot][card] ~= nil then
+			newLabel(win .. card .. "S", line, Mod.Settings.CardPiecesFromStart[slot][card], "Orange Red");
+		end
+	end
 end
 
 function getPlayerSlot(slot)
