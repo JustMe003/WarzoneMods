@@ -22,7 +22,7 @@ end
 
 function getPlayerSlot(n)
 	for _, p in pairs(game.Game.Players) do
-		if p.Slot = n then 
+		if p.Slot == n then 
 			print(p.Slot, p.State);
 			p.DisplayName(nil, false); 
 		end
