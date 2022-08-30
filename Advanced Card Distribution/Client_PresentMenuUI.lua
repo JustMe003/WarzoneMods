@@ -40,7 +40,7 @@ function showSlotConfig(slot)
 	local vert = newVerticalGroup("vert", "root");
 	
 	for card, cardGame in pairs(game.Settings.Cards) do
-		local line = newHorizontalGroup(win .. "lineS" .. card);
+		local line = newHorizontalGroup(win .. "lineS" .. card, vert);
 		newLabel(win .. card .. "cardS", line, readableString(getCardName(card)) .. ": ", "Royal Blue");
 		newLabel(win .. card .. "initialPieces", line, cardGame.InitialPieces, "Green");
 		if Mod.Settings.CardPiecesFromStart[slot][card] ~= nil then
