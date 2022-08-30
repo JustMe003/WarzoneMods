@@ -11,7 +11,7 @@ function showMenu()
 	if windowExists(win) then
 		resetWindow(win);
 	end
-	destoyWindow(getCurrentWindow());
+	destroyWindow(getCurrentWindow());
 	window(win)
 	local vert = newVerticalGroup("vert", "root");
 	
