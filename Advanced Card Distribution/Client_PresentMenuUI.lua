@@ -23,6 +23,7 @@ function showMenu()
 	end
 	for i, v in pairs(Mod.Settings.CardPiecesEachTurn) do
 		if not valueInTable(hasButton, i) then
+			print(win .. i .. "button", vert, getPlayerSlot(i), showSlotConfig, getPlayerColor(i))
 			newButton(win .. i .. "button", vert, getPlayerSlot(i), function() showSlotConfig(i); end, getPlayerColor(i));
 		end
 	end
