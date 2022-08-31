@@ -21,6 +21,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 			close();
 		end
 	else
+		UI.Alert("It seems like this mod menu crashes sometimes. If this occurs, please reach out to me. You can find a link to mail me in under the [About] button. I mostly want to know what you were doing before the crash");
 		showMenu();
 	end
 end
