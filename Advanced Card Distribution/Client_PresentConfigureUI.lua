@@ -123,7 +123,7 @@ end
 function addCardConfig(vert, s)
 	local list = {};
 	for i, v in pairs(WL.CardID) do
-		if v ~= WL.CardID.Reinforcement then
+--		if v ~= WL.CardID.Reinforcement then
 			local l = {};
 			l.text = readableString(i) .. " Card";
 			l.selected = function() if objectsID[getCurrentWindow() .. s .. "CardInput" .. v] == nil then 
@@ -135,7 +135,7 @@ function addCardConfig(vert, s)
 					end
 				end;
 			table.insert(list, l);
-		end
+--		end
 	end
 	UI.PromptFromList("Choose which card you want to alter", list);
 end
