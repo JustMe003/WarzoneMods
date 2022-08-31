@@ -411,7 +411,7 @@ function verifyFactionName(name)
 		end
 	end
 	if string.len(name) < 2 or string.len(name) > 50 then
-		UI.Alert("'" .. name .. "' must be between 1 and 50 characters");
+		UI.Alert("'" .. name .. "' must be between 2 and 50 characters");
 		return;
 	end
 	local payload = {};
