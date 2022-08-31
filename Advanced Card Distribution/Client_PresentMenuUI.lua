@@ -2,9 +2,7 @@ require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
 	init(rootParent);
 	game = Game;
-	
-	for i, v in pairs(WL.ReinforcementCardMode) do print(i, v); end
-	
+		
 	setMaxSize(400, 500);
 	showMenu();
 end
