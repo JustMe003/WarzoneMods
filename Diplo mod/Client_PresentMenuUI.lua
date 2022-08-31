@@ -333,7 +333,7 @@ function createFaction()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	newTextField(win .. "FactionName", vert, "", "Enter your faction name here", 50, true, 300, -1, 1, 0);
+	newTextField(win .. "FactionName", vert, "Enter your faction name here", "", 50, true, 300, -1, 1, 0);
 	newButton(win .. "CreateFaction", vert, "Create Faction", function() verifyFactionName(getText(win .. "FactionName")); end, "Lime");
 	newButton(win .. "Return", vert, "Return", showMenu, "Orange");
 end
