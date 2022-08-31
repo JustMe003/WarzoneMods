@@ -203,7 +203,9 @@ function factionSettings(factionName)
 	newButton(win .. "DeclareWar", vert, "Declare war", function() declareFactionWar(factionName) end, "Red", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return not(v); end) > 0);
 	newButton(win .. "PeaceOffer", vert, "Offer peace", function() offerFactionPeace(factionName) end, "Green", getTableLength(Mod.PublicGameData.Factions[factionName].AtWar, function(v) return v and Mod.PublicGameData.Factions[factionName].Offers[v] == nil; end) > 0);
 	newButton(win .. "pendingPeaceOffers", vert, "Pending offers", function() pendingFactionPeaceOffers(factionName) end, "Cyan", getTableLength(Mod.PublicGameData.Factions[factionName].PendingOffers) > 0);
-	newButton(win .. "pendingJoinRequests", vert, "Join requests", function() pendingJoinRequests(factionName); end, "Royal Blue", #Mod.PublicGameData.Factions[factionName].JoinRequests > 0);
+	if Mod.Settings.GlobalSettings.ApproveFactionJoins then
+		newButton(win .. "pendingJoinRequests", vert, "Join requests", function() pendingJoinRequests(factionName); end, "Royal Blue", #Mod.PublicGameData.Factions[factionName].JoinRequests > 0);
+	end
 	newButton(win .. "Return", vert, "Return", function() showFactionDetails(factionName) end, "Orange");
 end
 
