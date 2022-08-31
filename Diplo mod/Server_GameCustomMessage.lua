@@ -23,7 +23,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	functions["RefreshWindow"] = RefreshWindow;
 	
-	print(payload.Type);
+	print(playerID, payload.Type);
 	
 	local playerData = Mod.PlayerGameData;
 	playerData[playerID].NeedsRefresh = true;
