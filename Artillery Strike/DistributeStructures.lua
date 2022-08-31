@@ -32,7 +32,7 @@ function distributeStructuresOnePerTerr(game, standing, structuresTable);			-- k
 	local overflow = math.min(math.floor(#listOfTerr / 4) / amountOfStructures, 1);
 	
 	for i, v in pairs(structuresTable) do
-		for j = 1, math.max(math.floor(v * overflow), 1) do
+		for j = 1, math.min(math.max(math.floor(v * overflow), 1), #listOfTerr) do
 			local rand = math.random(#listOfTerr);
 			local structure = {};
 			structure[i] = 1;
