@@ -1,6 +1,9 @@
 function Server_StartGame(game, standing)
+	print(1.1);
 	if not game.Settings.AutomaticTerritoryDistribution then return; end
+	print(1.2);
 	if game.Settings.CustomScenario == nil then return; end
+	print(1.3);
 	local s = Mod.Settings.Data;
 	print(1);
 	if string.len(s) == 0 then return; end
