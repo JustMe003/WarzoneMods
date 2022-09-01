@@ -1,5 +1,4 @@
 function Server_StartGame(game, standing)
-	print("test123");
 	if not game.Settings.AutomaticTerritoryDistribution then return; end
 	if game.Settings.CustomScenario == nil then return; end
 	local s = Mod.Settings.Data;
@@ -22,6 +21,7 @@ function Server_StartGame(game, standing)
 	else
 		return;
 	end
+	print(mapID);
 	if game.Map.ID == mapID then
 		print(game.Map.ID, mapID, game.Map.ID == mapID);
 	else
