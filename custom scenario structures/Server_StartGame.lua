@@ -16,12 +16,12 @@ function Server_StartGame(game, standing)
 		return;
 	end
 	local mapID = tonumber(string.sub(s, startID, endID));
+	print(mapID);
 	if mapID ~= nil then
 		print("valid ID")
 	else
 		return;
 	end
-	print(mapID);
 	if game.Map.ID == mapID then
 		print(game.Map.ID, mapID, game.Map.ID == mapID);
 	else
