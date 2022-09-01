@@ -2,6 +2,7 @@ function Server_StartGame(game, standing)
 	if not game.Settings.AutomaticTerritoryDistribution then return; end
 	if game.Settings.CustomScenario == nil then return; end
 	local s = Mod.Settings.Data;
+	print(1);
 	if string.len(s) == 0 then return; end
 	local startID = string.find(s, "%[");
 	if startID ~= nil then
@@ -9,12 +10,14 @@ function Server_StartGame(game, standing)
 	else
 		return;
 	end
+	print(2)
 	local endID = string.find(s, "%]");
 	if endID ~= nil then
 		endID = endID - 1;
 	else
 		return;
 	end
+	print(3);
 	local mapID = tonumber(string.sub(s, startID, endID));
 	print(mapID);
 	if mapID ~= nil then
@@ -22,6 +25,7 @@ function Server_StartGame(game, standing)
 	else
 		return;
 	end
+	print(4);
 	if game.Map.ID == mapID then
 		print(game.Map.ID, mapID, game.Map.ID == mapID);
 	else
