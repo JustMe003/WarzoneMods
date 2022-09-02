@@ -384,6 +384,8 @@ function showHistory()
 				newLabel(win .. i, vert, Mod.PublicGameData.Events[i].Message, game.Game.Players[Mod.PublicGameData.Events[i].PlayerID].Color.HtmlColor);
 			end
 		end
+	else
+		newLabel(win .. "VersionToLow", vert, "Due to an update this feature is not available till the update is done and your game has advanced a turn.");
 	end
 end
 
