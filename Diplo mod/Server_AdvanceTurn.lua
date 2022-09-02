@@ -1,18 +1,10 @@
 require("utilities");
 function Server_AdvanceTurn_Start(game, addNewOrder)
 	local data = Mod.PublicGameData;
-	for i = 1, #data.Events do
-		local group;
-		if not Mod.Settings.GlobalSettings.VisibleHistory then
-			if data.PlayerInFaction[data.Events[i].PlayerID] ~= nil then
-				group = data.Factions[data.PlayerInFaction[data.Events[i].PlayerID]].FactionMembers;
-			else
-				group = {data.Events[i].PlayerID};
-			end
-		else
-			group = nil;
+	if data.VersionNumber ~= nil and data.VersionNumber >= 5 then
+		for i = 1, #data.Events do
+			addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, data.Events[i].VisibleTo, {}, {}, {}));
 		end
-		addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, group, {}, {}, {}));
 	end
 	data.Events = {};
 	Mod.PublicGameData = data;
@@ -71,7 +63,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 									group = data.Factions[data.PlayerInFaction[t.PlayerID]].FactionMembers;
 								end
 							end
-							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), i));
+							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), data.Factions[data.PlayerInFaction[i]].FactionLeader, getArrayOfAllPlayers(game)));
 						end
 					end
 					data.PlayerInFaction[i] = nil;
@@ -113,7 +105,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					if not game.ServerGame.Game.PlayingPlayers[target].IsAI then
 						table.insert(playerData[target].Notifications.WarDeclarations, i);
 					end
-					table.insert(data.Events, createEvent(game.ServerGame.Game.Players[i].DisplayName(nil, false) .. " declared war on " .. game.ServerGame.Game.Players[target].DisplayName(nil, false), i));
+					table.insert(data.Events, createEvent(game.ServerGame.Game.Players[i].DisplayName(nil, false) .. " declared war on " .. game.ServerGame.Game.Players[target].DisplayName(nil, false), i, getPlayerHashMap(data, i, target)));
 				end
 			end
 		end

@@ -64,6 +64,33 @@ function concatArrays(t1, t2)
 	return t1;
 end
 
-function createEvent(m, p);
-	return {Message=m, PlayerID=p};
+function getPlayerHashMap(data, p, p2)
+	local t = {};
+	if data.PlayerInFaction[p] then
+		concatArrays(t, data.Factions[data.IsInFaction[p]].FactionMembers);
+	else
+		table.insert(t, p);
+	end
+	if data.PlayerInFaction[p2] then
+		concatArrays(t, data.Factions[data.IsInFaction[p2]].FactionMembers);
+	else
+		table.insert(t, p2);
+	end
+	return t;
+end
+
+function getArrayOfAllPlayers(game)
+	local t = {};
+	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
+		table.insert(t, p);
+	end
+	return t;
+end
+
+function createEvent(m, p, h);
+	local t = {Message=m, PlayerID=p};
+	if not Mod.Settings.GlobalSettings.VisibleHistory then
+		t.VisibleTo = h;
+	end
+	return t;
 end

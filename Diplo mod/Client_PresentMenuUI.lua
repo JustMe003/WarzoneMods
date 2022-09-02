@@ -372,7 +372,7 @@ function showHistory()
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	newButton(win .. "return", vert, "Return", showMenu, "Orange");
-	if Mod.PublicGameData.VersionNumber ~= nil and Mod.PublicGameData.VersionNumber == 5 then
+	if Mod.PublicGameData.VersionNumber ~= nil and Mod.PublicGameData.VersionNumber >= 5 then
 		if Mod.Settings.GlobalSettings.VisibleHistory then
 			newLabel(win .. "explanation", vert, "Here you can see all the events that took place between now and the previous turn.");
 		else
