@@ -57,6 +57,12 @@ function getSlotName(i)
 	return s .. c[i % 26 + 1];
 end
 
+function concatArrays(t1, t2)
+	for _, v in pairs(t2) do
+		table.insert(t1, v);
+	end
+	return t1;
+end
 
 function createEvent(m, p);
 	return {Message=m, PlayerID=p};

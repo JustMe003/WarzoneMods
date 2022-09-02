@@ -1,1 +1,2 @@
-This mod adds the wastelands in the game after the distribution. Requested by M. Poireau
+This mod adds the wastelands in the game after the distribution. This mod can be used to add wastelands to custom scenarios. 
+Requested by M. Poireau

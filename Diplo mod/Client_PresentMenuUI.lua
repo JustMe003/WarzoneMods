@@ -372,15 +372,17 @@ function showHistory()
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	newButton(win .. "return", vert, "Return", showMenu, "Orange");
-	if Mod.Settings.GlobalSettings.VisibleHistory then
-		newLabel(win .. "explanation", vert, "Here you can see all the events that took place between now and the previous turn.");
-	else
-		newLabel(win .. "explanation", vert, "Here you can see the events that took place between now and the previous turn. You can only see the events that have effect on you of on one of your faction members (if you're in a faction)");
-	end
-	newLabel(win .. "empty", vert, "The events have the same color of the player who triggered them\n");
-	for i = 1, #Mod.PublicGameData.Events do
-		if Mod.Settings.GlobalSettings.VisibleHistory or Mod.PublicGameData.Events[i].PlayerID == game.Us.ID or (Mod.PublicGameData.IsInFaction[game.Us.ID] and areInSameFaction(Mod.PublicGameData.Events[i].PlayerID)) then
-			newLabel(win .. i, vert, Mod.PublicGameData.Events[i].Message, game.Game.Players[Mod.PublicGameData.Events[i].PlayerID].Color.HtmlColor);
+	if Mod.PublicGameData.VersionNumber ~= nil and Mod.PublicGameData.VersionNumber == 5 then
+		if Mod.Settings.GlobalSettings.VisibleHistory then
+			newLabel(win .. "explanation", vert, "Here you can see all the events that took place between now and the previous turn.");
+		else
+			newLabel(win .. "explanation", vert, "Here you can see the events that took place between now and the previous turn. You can only see the events that have effect on you of on one of your faction members (if you're in a faction)");
+		end
+		newLabel(win .. "empty", vert, "The events have the same color of the player who triggered them\n");
+		for i = 1, #Mod.PublicGameData.Events do
+			if Mod.Settings.GlobalSettings.VisibleHistory or Mod.PublicGameData.Events[i].PlayerID == game.Us.ID or (Mod.PublicGameData.IsInFaction[game.Us.ID] and areInSameFaction(Mod.PublicGameData.Events[i].PlayerID)) then
+				newLabel(win .. i, vert, Mod.PublicGameData.Events[i].Message, game.Game.Players[Mod.PublicGameData.Events[i].PlayerID].Color.HtmlColor);
+			end
 		end
 	end
 end
