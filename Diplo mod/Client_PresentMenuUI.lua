@@ -62,7 +62,7 @@ function showFactions()
 	end
 	for factionName, faction in pairs(Mod.PublicGameData.Factions) do
 		if factionName ~= Mod.PublicGameData.PlayerInFaction[game.Us.ID] then
-			newButton(win .. factionName, vert, factionName, function() showFactionDetails(factionName) end, game.Game.PlayingPlayers[faction.FactionLeader].Color.HtmlColor);
+			newButton(win .. factionName, vert, factionName, function() showFactionDetails(factionName) end, game.Game.Players[faction.FactionLeader].Color.HtmlColor);
 		end
 	end
 end
