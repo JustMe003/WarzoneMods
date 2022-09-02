@@ -1,10 +1,7 @@
 require("UI");
 require("utilities");
-function Client_PresentConfigureUI(rootParent, CalledFromPresentSettings)
-	if CalledFromPresentSettings == nil then
-		init(rootParent);
-	end
-	calledFromPresentSettings = CalledFromPresentSettings;
+function Client_PresentConfigureUI(rootParent)
+	init(rootParent);
 	
 	config = Mod.Settings.Configuration
 	if config == nil then 
@@ -24,24 +21,20 @@ function Client_PresentConfigureUI(rootParent, CalledFromPresentSettings)
 		settings.ApproveFactionJoins = false;
 		settings.LockPreSetFactions = false;
 	end
-	if calledFromPresentSettings == nil then
-		showSettings();
-	end
+	showSettings();
 	showMain();
 end
 
 function showMain()
-	if calledFromPresentSettings == nil then
-		local win = "showMain";
-		destroyWindow(getCurrentWindow());
-		if windowExists(win) then
-			resetWindow(win);
-		end
-		window(win);
-		local vert = newVerticalGroup("Vert", "root");
-		local line = newHorizontalGroup(win .. "Line", vert);
-		newButton(win .. "Settings", line, "Settings", showSettings, "Aqua");
+	local win = "showMain";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
 	end
+	window(win);
+	local vert = newVerticalGroup("Vert", "root");
+	local line = newHorizontalGroup(win .. "Line", vert);
+	newButton(win .. "Settings", line, "Settings", showSettings, "Aqua");
 	newButton(win .. "Config", line, "Configuration", showMainConfig, "Lime");
 end
 
@@ -87,10 +80,8 @@ function showMainConfig()
 	window(win);
 	local vert = newVerticalGroup("Vert", "root");
 	local line = newHorizontalGroup(win .. "line", vert);
-	if calledFromPresentSettings == nil then
-		newButton(win .. "AddFaction", line, "Add Faction", addFaction, "Lime");
-		newButton(win .. "AddSlotConfig", line, "Add slot", pickSlot, "Aqua");
-	end
+	newButton(win .. "AddFaction", line, "Add Faction", addFaction, "Lime");
+	newButton(win .. "AddSlotConfig", line, "Add slot", pickSlot, "Aqua");
 	newButton(win .. "Return", line, "Return", showMain, "Orange");
 	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
 	for i, _ in pairs(config.Factions) do
@@ -145,9 +136,9 @@ function showSlotConfig(slot)
 		local line = newHorizontalGroup(win .. i .. "line", vert);
 		newButton(win .. i .. "slotName", line, getSlotName(i), function() showSlotConfig(i); end);
 		if v == "AtWar" then
-			newButton(win .. i .. "Button", line, "War", function() config.Relations[slot][i] = "InPeace"; config.Relations[i][slot] = "InPeace"; showSlotConfig(slot); end, "Red", not(isFactionWar(slot, i) and calledFromPresentSettings == nil));
+			newButton(win .. i .. "Button", line, "War", function() config.Relations[slot][i] = "InPeace"; config.Relations[i][slot] = "InPeace"; showSlotConfig(slot); end, "Red", not(isFactionWar(slot, i)));
 		elseif v == "InPeace" then
-			newButton(win .. i .. "Button", line, "Peace", function() config.Relations[slot][i] = "AtWar"; config.Relations[i][slot] = "AtWar"; showSlotConfig(slot); end, "Green", calledFromPresentSettings == nil);
+			newButton(win .. i .. "Button", line, "Peace", function() config.Relations[slot][i] = "AtWar"; config.Relations[i][slot] = "AtWar"; showSlotConfig(slot); end, "Green");
 		else
 			newButton(win .. i .. "Button", line, "In same faction", function() end, "Yellow", false);
 		end
@@ -184,24 +175,18 @@ function showFactionConfig(faction)
 	local vert = newVerticalGroup("Vert", "root");
 	local line = newHorizontalGroup(win .. "line3", vert);
 	newButton(win .. "return", line, "Return", showMainConfig, "Orange");
-	if calledFromPresentSettings == nil then
-		newButton(win .. "Delete", line, "Delete Faction", function() confirmChoice("Do you wish to delele Faction " .. faction .. "?", function() deleteFaction(faction); showMainConfig(); end, function() showMainConfig(); end); end, "Red");
-	end
+	newButton(win .. "Delete", line, "Delete Faction", function() confirmChoice("Do you wish to delele Faction " .. faction .. "?", function() deleteFaction(faction); showMainConfig(); end, function() showMainConfig(); end); end, "Red");
 	newLabel(win .. "FactionName", vert, faction .. " (configuration)\n");
 	local line = newHorizontalGroup(win .. "line", vert);
 	newLabel(win .. "FactionLeaderString", line, "Faction leader: ");
-	if calledFromPresentSettings == nil then
-		newButton(win .. "SetFactionLeader", line, getFactionLeader(faction), function() PickForFactionLeader(faction) end, "Yellow");
-	end
+	newButton(win .. "SetFactionLeader", line, getFactionLeader(faction), function() PickForFactionLeader(faction) end, "Yellow");
 	newLabel(win .. "EmptyAfterFactionLeader", vert, "\nFaction members:");
 	for i, v in pairs(config.Factions[faction].FactionMembers) do
 		newLabel(win .. i .. "Slot", vert, getSlotName(v));
 	end
 	local line = newHorizontalGroup(win .. "line2", vert);
-	if calledFromPresentSettings == nil then
-		newButton(win .. "AddSlots", line, "Add slot", function() PickToAddSlot(faction); end, "Green");
-		newButton(win .. "RemoveSlots", line, "Remove slot", function() PickToRemoveSlot(faction); end, "Red");
-	end
+	newButton(win .. "AddSlots", line, "Add slot", function() PickToAddSlot(faction); end, "Green");
+	newButton(win .. "RemoveSlots", line, "Remove slot", function() PickToRemoveSlot(faction); end, "Red");
 	newLabel(win .. "EmptyAfterSlotsConfig", vert, " ");
 	newButton(win .. "ShowFactionRelation", vert, "Relation configuration", function() showFactionRelationConfig(faction); end, "Aqua");
 end
@@ -220,9 +205,9 @@ function showFactionRelationConfig(faction)
 		if i ~= faction then
 			local line = newHorizontalGroup(win .. i .. "line", vert);
 			if bool then
-				newButton(win .. i .. "Button", line, "War", function() config.Factions[faction].AtWar[i] = false; config.Factions[i].AtWar[faction] = false; updateSlotRelation(faction, i, "Peace"); showFactionRelationConfig(faction); end, "Red", calledFromPresentSettings == nil);
+				newButton(win .. i .. "Button", line, "War", function() config.Factions[faction].AtWar[i] = false; config.Factions[i].AtWar[faction] = false; updateSlotRelation(faction, i, "Peace"); showFactionRelationConfig(faction); end, "Red");
 			else
-				newButton(win .. i .. "Button", line, "Peace", function() config.Factions[faction].AtWar[i] = true; config.Factions[i].AtWar[faction] = true; updateSlotRelation(faction, i, "War"); showFactionRelationConfig(faction); end, "Green", calledFromPresentSettings == nil);
+				newButton(win .. i .. "Button", line, "Peace", function() config.Factions[faction].AtWar[i] = true; config.Factions[i].AtWar[faction] = true; updateSlotRelation(faction, i, "War"); showFactionRelationConfig(faction); end, "Green");
 			end
 			newLabel(win .. i .. "text", line, i);
 		end

@@ -1,5 +1,4 @@
 require("UI");
-require("Client_PresentConfigureUI");
 function Client_PresentSettingsUI(rootParent)
 	init(rootParent);
 	showMain();
@@ -13,7 +12,7 @@ function showMain()
 	destroyWindow(getCurrentWindow());
 	counter = 0;
 	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "button", vert, "To slot configuration", function() Client_PresentConfigureUI(vert, true); end, "Orange");
+	newButton(win .. "button", vert, "To slot configuration", function() UI.Alert("Coming soon!") end, "Orange");
 	local line = getLine(vert);
 	newLabel(win .. line, line, "Visible history: " .. tostring(Mod.Settings.GlobalSettings.VisibleHistory));
 	newButton(win .. line .. "button", line, "?", function() UI.Alert("If this settings is on (true), then all the events that happen between the turns will be visible for anyone. If this setting is off, then only the events that have impact on you or a factionmember will be visible. Events can be Faction creations, joins, declaration of war, etc"); end, "Blue");
