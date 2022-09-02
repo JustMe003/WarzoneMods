@@ -63,7 +63,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 									group = data.Factions[data.PlayerInFaction[t.PlayerID]].FactionMembers;
 								end
 							end
-							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), data.Factions[data.PlayerInFaction[i]].FactionLeader, getArrayOfAllPlayers(game)));
+							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), data.Factions[data.PlayerInFaction[i]].FactionLeader));
 						end
 					end
 					data.PlayerInFaction[i] = nil;
@@ -111,6 +111,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	data.TotalIncomeOfAllPlayers = count;
+	data.VersionNumber = 5;
 	Mod.PublicGameData = data;
 	Mod.PlayerGameData = playerData;
 end
