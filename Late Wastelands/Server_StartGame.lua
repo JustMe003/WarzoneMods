@@ -1,7 +1,6 @@
 function Server_StartGame(game, standing)
 	local numOfWastelands = game.Settings.NumberOfWastelands;
 	local wastelandSize = game.Settings.WastelandSize;
-	print(numOfWastelands, wastelandSize);
 	if game.Settings.CustomScenario ~= nil and Mod.Settings.IsCustomScenario then numOfWastelands = Mod.Settings.NumOfWastelands; wastelandSize = Mod.Settings.WastelandSize;
 	elseif game.Settings.AutomaticTerritoryDistribution then return; end
 	
