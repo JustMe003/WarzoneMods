@@ -29,4 +29,5 @@ function refresh()
 	end
 	isCustomScenario = isCustomScenarioInput.GetIsChecked();
 	UI.Destroy(isCustomScenarioInput);
+	showConfig();
 end
