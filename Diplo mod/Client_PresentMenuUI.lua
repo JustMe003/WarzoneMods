@@ -78,7 +78,7 @@ function showPlayerPage(relation)
 	local vert = newVerticalGroup("vert", "root");
 	local line = newHorizontalGroup(win .. "Line1", vert);
 	newButton(win .. "PendingOffers", line, "Pending offers", showPendingOffers, "Cyan", Mod.PlayerGameData.PendingOffers ~= nil and getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
-	newButton(win .. "ChangeRelation", line, "Relation: " .. relation, function() changeRelationState(relation); end, "Ivory");
+	newButton(win .. "ChangeRelation", line, "Relation: " .. relation, function() showPlayerPage(changeRelationState(relation)); end, "Ivory");
 	newButton(win .. "Return", line, "Return", showMenu, "Orange");
 	newLabel(win .. "EmptyAfterReturn", vert, " ");
 	for i, p in pairs(game.Game.PlayingPlayers) do
@@ -143,10 +143,28 @@ function showPlayerDetails(playerID)
 		newLabel(win .. "relationStatus", line, "Friendly", "Green");
 	end
 	newLabel(win .. "EmptyAfterOpponentFaction", vert, "\n");
+	if Mod.Settings.GlobalSettings.VisibleHistory then
+		newButton(win .. "ViewPlayerRelations", vert, "View all relations of this player", function() viewPlayerRelations(playerID); end, "Royal Blue");
+	end
 	local line = newHorizontalGroup(win .. "line2", vert);
 	newButton(win .. "ToWar", line, "Declare war", function() confirmChoice("Do you really wish to go to war against " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() Close(); func = function() showPlayerDetails(playerID); end; game.SendGameCustomMessage("Declaring war...", { Type="declareWar", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID) end); end, "Red", Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InPeace");
 	newButton(win .. "offerPeace", line, "Offer peace", function() confirmChoice("Do you wish to offer peace to " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() Close(); func = function() showPlayerDetails(playerID); end; game.SendGameCustomMessage("Offering peace...", { Type="peaceOffer", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID); end); end, "Green", not(isAtWarFromFaction) and Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" and Mod.PlayerGameData.Offers[playerID] == nil);
 	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
+end
+
+function viewPlayerRelations(playerID, relation)
+	local win = "viewPlayerRelations" .. playerID;
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	if relation == nil then relation = "All"; end
+	newLabel(win .. "exp", vert, "Here you can see every relation of " .. game.Game.Players[playerID].DisplayName(nil, false))
+	local line = newHorizontalGroup("line0", vert);
+	newButton(win .. "RelationFilter", line, "Relation: " .. relation, function() viewPlayerRelations(playerID, changeRelationState(relation)); end, "Ivory");
+	newButton(win .. "return", line, "Return", function() showFactionDetails(playerID); end, "Orange");
 end
 
 function showFactionDetails(factionName)
@@ -436,7 +454,7 @@ function changeRelationState(relation)
 	else
 		relation = "All";
 	end
-	showPlayerPage(relation);
+	return relation;
 end
 
 function gameCustomMessageReturn(payload)
