@@ -165,6 +165,23 @@ function viewPlayerRelations(playerID, relation)
 	local line = newHorizontalGroup("line0", vert);
 	newButton(win .. "RelationFilter", line, "Relation: " .. relation, function() viewPlayerRelations(playerID, changeRelationState(relation)); end, "Ivory");
 	newButton(win .. "return", line, "Return", function() showPlayerDetails(playerID); end, "Orange");
+	newLabel(win .. "EmptyAfterReturn", vert, " ");
+	for i, p in pairs(game.Game.PlayingPlayers) do
+		if i ~= game.Us.ID then
+			if (relation == "All") or (relation == "Hostile" and Mod.PublicGameData.Relations[playerID][i] == "AtWar") or (relation == "Peaceful" and Mod.PublicGameData.Relations[playerID][i] == "InPeace") or (relation == "Friendly" and Mod.PublicGameData.Relations[playerID][i] == "InFaction") then
+				local line = newHorizontalGroup("line" .. i, vert);
+				newButton(win .. i, line, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
+				newLabel(win .. i .. ":", line, ": ");
+				if Mod.PublicGameData.Relations[i][playerID] == "AtWar" then
+					newLabel(win .. i .. "relationStatus", line, "Hostile", "Red");
+				elseif Mod.PublicGameData.Relations[i][playerID] == "InPeace" then
+					newLabel(win .. i .. "relationStatus", line, "Peaceful", "Yellow");
+				else
+					newLabel(win .. i .. "relationStatus", line, "Friendly", "Green");
+				end
+			end
+		end
+	end
 end
 
 function showFactionDetails(factionName)
