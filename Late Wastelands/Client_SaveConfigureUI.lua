@@ -10,6 +10,6 @@ function Client_SaveConfigureUI(alert)
 		Mod.Settings.WastelandSize = wastelandSizeInput.GetValue();
 		if Mod.Settings.WastelandSize < 1 then alert("The size of wastelands must be higher or equal than 0"); end
 	else
-		Mod.Settigns.WastelandSize = wastelandSize;
+		Mod.Settings.WastelandSize = wastelandSize;
 	end
 end
