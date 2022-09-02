@@ -66,13 +66,13 @@ end
 
 function getPlayerHashMap(data, p, p2)
 	local t = {};
-	if data.PlayerInFaction[p] then
-		concatArrays(t, data.Factions[data.IsInFaction[p]].FactionMembers);
+	if data.IsInFaction[p] then
+		concatArrays(t, data.Factions[data.PlayerInFaction[p]].FactionMembers);
 	else
 		table.insert(t, p);
 	end
-	if data.PlayerInFaction[p2] then
-		concatArrays(t, data.Factions[data.IsInFaction[p2]].FactionMembers);
+	if data.IsInFaction[p2] then
+		concatArrays(t, data.Factions[data.PlayerInFaction[p2]].FactionMembers);
 	else
 		table.insert(t, p2);
 	end
