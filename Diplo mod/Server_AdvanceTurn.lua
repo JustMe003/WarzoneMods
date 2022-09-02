@@ -71,7 +71,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 									group = data.Factions[data.PlayerInFaction[t.PlayerID]].FactionMembers;
 								end
 							end
-							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[i].DisplayName(nil, false), i));
+							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), i));
 						end
 					end
 					data.PlayerInFaction[i] = nil;
