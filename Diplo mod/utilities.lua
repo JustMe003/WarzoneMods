@@ -64,6 +64,20 @@ function concatArrays(t1, t2)
 	return t1;
 end
 
+function filterDeadPlayers(game, array)
+	if array == nil then return nil; end
+	local toBeRemoved = {};
+	for i = 1, #array do
+		if game.ServerGame.Game.PlayingPlayers[array[i]] == nil then
+			table.insert(toBeRemoved, i);
+		end
+	end
+	for _, index in pairs(toBeRemoved) do
+		table.remove(array, index);
+	end
+	return array;
+end
+
 function getPlayerHashMap(data, p, p2)
 	local t = {};
 	if data.IsInFaction[p] then
