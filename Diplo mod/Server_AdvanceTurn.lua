@@ -3,7 +3,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	if data.VersionNumber ~= nil and data.VersionNumber >= 5 then
 		for i = 1, #data.Events do
-			addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, data.Events[i].VisibleTo, {}, {}, {}));
+			addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, filterDeadPlayers(game, data.Events[i].VisibleTo), {}, {}, {}));
 		end
 	end
 	data.Events = {};
