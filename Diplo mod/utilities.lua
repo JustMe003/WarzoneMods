@@ -79,6 +79,13 @@ function getPlayerHashMap(data, p, p2)
 	return t;
 end
 
+function valueInTable(t, v)
+	for _, v2 in pairs(t) do
+		if v == v2 then return true; end
+	end
+	return false;
+end
+
 function getArrayOfAllPlayers(game)
 	local t = {};
 	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
