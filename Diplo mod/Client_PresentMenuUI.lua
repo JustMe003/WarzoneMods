@@ -164,7 +164,7 @@ function viewPlayerRelations(playerID, relation)
 	newLabel(win .. "exp", vert, "Here you can see every relation of " .. game.Game.Players[playerID].DisplayName(nil, false))
 	local line = newHorizontalGroup("line0", vert);
 	newButton(win .. "RelationFilter", line, "Relation: " .. relation, function() viewPlayerRelations(playerID, changeRelationState(relation)); end, "Ivory");
-	newButton(win .. "return", line, "Return", function() showFactionDetails(playerID); end, "Orange");
+	newButton(win .. "return", line, "Return", function() showPlayerDetails(playerID); end, "Orange");
 end
 
 function showFactionDetails(factionName)
