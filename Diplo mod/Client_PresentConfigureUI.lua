@@ -1,7 +1,9 @@
 require("UI");
 require("utilities");
 function Client_PresentConfigureUI(rootParent, CalledFromPresentSettings)
-	init(rootParent);
+	if CalledFromPresentSettings == nil then
+		init(rootParent);
+	end
 	calledFromPresentSettings = CalledFromPresentSettings;
 	
 	config = Mod.Settings.Configuration
