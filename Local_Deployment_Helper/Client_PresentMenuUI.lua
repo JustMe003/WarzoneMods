@@ -11,13 +11,13 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	
 	setMaxSize(500, 420);
 	
+	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	if (not game.Settings.LocalDeployments) then
 		return createLabel(vert, "This mod only works in Local Deployment games. This isn't a Local Deployment game", colors.ErrorColor)
 	elseif (not game.Us or game.Us.State ~= WL.GamePlayerState.Playing) then
 		return createLabel(vert, "You cannot do anything since you're not in the game.", colors.ErrorColor);
 	end
 
-	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	permanentLabel1 = UI.CreateHorizontalLayoutGroup(vert);
 	permanentLabel2 = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(permanentLabel1).SetText("Mod author:\t").SetColor(colors.TextColor);
