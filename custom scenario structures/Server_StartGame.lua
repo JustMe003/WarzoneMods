@@ -1,11 +1,7 @@
 function Server_StartGame(game, standing)
-	print(1.1);
 	if not game.Settings.AutomaticTerritoryDistribution then return; end
-	print(1.2);
 	if game.Settings.CustomScenario == nil then return; end
-	print(1.3);
 	local s = Mod.Settings.Data;
-	print(1);
 	if string.len(s) == 0 then return; end
 	local startID = string.find(s, "%[");
 	if startID ~= nil then
@@ -13,14 +9,12 @@ function Server_StartGame(game, standing)
 	else
 		return;
 	end
-	print(2)
 	local endID = string.find(s, "%]");
 	if endID ~= nil then
 		endID = endID - 1;
 	else
 		return;
 	end
-	print(3);
 	local mapID = tonumber(string.sub(s, startID, endID));
 	print(mapID);
 	if mapID ~= nil then
@@ -28,9 +22,8 @@ function Server_StartGame(game, standing)
 	else
 		return;
 	end
-	print(4);
 	if game.Map.ID == mapID then
-		print(game.Map.ID, mapID, game.Map.ID == mapID);
+		print(tostring(game.Map.ID), tostring(mapID), tostring(game.Map.ID == mapID));
 	else
 		return;
 	end
@@ -58,12 +51,12 @@ end
 
 function foreach(t, layer)
 	if layer == nil then layer = 0; end
-	print("layer", layer)
+	print("layer", tostring(layer))
 	for i, v in pairs(t) do
 		if type(v) == type(table) then
 			foreach(v, layer + 1);
 		else
-			print(v);
+			print(tostring(v));
 		end
 	end
 end
@@ -72,12 +65,12 @@ end
 function getTable(s, layer);
 	local t = {};
 	if layer == nil then layer = 1; end
-	print(s, #s);
+	print(s, tostring(#s));
 	local value = "";
 	local i = 1;
 	while i < #s do
 		local c = string.sub(s, i, i);
-		print(i, c)
+		print(tostring(i), tostring(c))
 		if c == "{" then
 			if string.len(value) ~= 0 then
 				t[tonumber(value)], index = getTable(string.sub(s, i + 1, string.len(s)), layer + 1);
