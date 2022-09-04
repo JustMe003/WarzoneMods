@@ -1,1 +1,2 @@
-This mod allows game creators to take full control over the card distribution in a Custom Scenario game. Note that the reinforcement card cannot be configured due to technical difficulties.
+This mod adds a second card distribution, on top of the Warzone card distribution. You can configure for each individual slot how many card pieces they receive when the game starts and after each turn (on top of the normal Warzone card distribution)
+Only works in custom scenario games with automatic distribution.
