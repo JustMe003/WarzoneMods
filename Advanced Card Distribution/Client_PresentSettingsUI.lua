@@ -23,13 +23,13 @@ function showMenu()
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	for i = pageNumber * 10 + 1, (pageNumber + 1) * 10 do
-		newButton(win .. i, vert, getSlotName(i), function() getConfig(i); end, colors[i]);
+		newButton(win .. i, vert, getSlotName(i), function() getConfig(i); end, colorsList[i]);
 	end
 	if #modifiedSlots > 10 then
 		local line = newHorizontalGroup("line", vert);
 		newButton(win .. "Previous", line, "Previous", function() pageNumber = pageNumber - 1; if pageNumber < 0 then pageNumber = #modifiedSlots; end showMenu(); end, "Royal Blue");
 		print(Math);
-		newLabel(win .. "PageNumber", line, pageNumber .. " / " .. Math.ceil(#modifiedSlots / 10), "Royal Blue");
+		newLabel(win .. "PageNumber", line, pageNumber .. " / " .. math.ceil(#modifiedSlots / 10), "Royal Blue");
 		newButton(win .. "Next", line, "Next", function() pageNumber = pageNumber + 1; if pageNumber > #modifiedSlots then pageNumber = 1; end showMenu(); end, "Royal Blue");
 	end
 end
