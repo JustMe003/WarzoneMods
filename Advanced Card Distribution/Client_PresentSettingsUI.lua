@@ -23,7 +23,7 @@ function showMenu()
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	for i = (pageNumber - 1) * 10 + 1, math.max(pageNumber * 10, #modifiedSlots) do
+	for i = (pageNumber - 1) * 10 + 1, math.min(pageNumber * 10, #modifiedSlots) do
 		print(i, modifiedSlots[i]);
 		newButton(win .. i, vert, getSlotName(modifiedSlots[i]), function() getConfig(modifiedSlots[i]); end, colorsList[i]);
 	end
