@@ -416,8 +416,7 @@ function showHistory()
 		newLabel(win .. "empty", vert, "The events have the same color of the player who triggered them\n");
 		for i = 1, #Mod.PublicGameData.Events do
 			if Mod.Settings.GlobalSettings.VisibleHistory or Mod.PublicGameData.Events[i].VisibleTo == nil or valueInTable(Mod.PublicGameData.Events[i].VisibleTo, game.Us.ID) then
-				print(Mod.PublicGameData.Events[i].Message, Mod.PublicGameData.Events[i].PlayerID)
-				newLabel(win .. i, vert, Mod.PublicGameData.Events[i].Message, game.Game.Players[Mod.PublicGameData.Events[i].PlayerID].Color.HtmlColor);
+				newLabel(win .. i, vert, Mod.PublicGameData.Events[i].Message, getColorPlayerIsNotNeutral(Mod.PublicGameData.Events[i].PlayerID));
 			end
 		end
 	else
@@ -508,4 +507,11 @@ function areInSameFaction(p)
 		end
 	end
 	return false;
+end
+
+function getColorPlayerIsNotNeutral(p)
+	if p == WL.PlayerID.Neutral then
+		return "#DDDDDD";
+	end
+	return game.Game.Players[p].Color.HtmlColor
 end
