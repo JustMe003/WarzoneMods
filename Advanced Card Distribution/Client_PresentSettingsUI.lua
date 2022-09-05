@@ -8,6 +8,7 @@ function Client_PresentSettingsUI(rootParent)
 	for i = 0, 49 do
 		if getTableLength(Mod.Settings.CardPiecesFromStart[i]) > 0 or getTableLength(Mod.Settings.CardPiecesEachTurn[i]) > 0 then
 			table.insert(modifiedSlots, i);
+			print(i);
 		end
 	end
 
@@ -16,10 +17,10 @@ end
 
 function showMenu()
 	local win = "showMenu";
+	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
 		resetWindow(win);
 	end
-	destroyWindow(getCurrentWindow());
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	for i = pageNumber * 10 + 1, (pageNumber + 1) * 10 do
@@ -28,7 +29,6 @@ function showMenu()
 	if #modifiedSlots > 10 then
 		local line = newHorizontalGroup("line", vert);
 		newButton(win .. "Previous", line, "Previous", function() pageNumber = pageNumber - 1; if pageNumber < 0 then pageNumber = #modifiedSlots; end showMenu(); end, "Royal Blue");
-		print(Math);
 		newLabel(win .. "PageNumber", line, pageNumber .. " / " .. math.ceil(#modifiedSlots / 10), "Royal Blue");
 		newButton(win .. "Next", line, "Next", function() pageNumber = pageNumber + 1; if pageNumber > #modifiedSlots then pageNumber = 1; end showMenu(); end, "Royal Blue");
 	end
