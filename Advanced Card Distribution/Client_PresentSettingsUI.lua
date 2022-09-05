@@ -1,7 +1,16 @@
 require("UI");
 function Client_PresentSettingsUI(rootParent)
 	init(rootParent);
-	
+
+	colorsList = {"Blue", "Light Blue", "Purple", "Dark Green", "Orange", "Red", "Dark Gray", "Green", "Hot Pink", "Brown", "Sea Green", "Orange Red", "Cyan", "Aqua", "Dark Magenta", "Deep Pink", "yellow", "Saddle Brown", "Ivory", "Copper Rose", "Electric Purple", "Tan", "Pink", "Lime", "Tan", "Tyrian Purple", "Smoky Black"};
+	pageNumber = 1;
+	modifiedSlots = {};
+	for i = 0, 49 do
+		if getTableLength(Mod.Settings.CardPiecesFromStart[i]) > 0 or getTableLength(Mod.Settings.CardPiecesEachTurn[i]) > 0 then
+			table.insert(modifiedSlots, i);
+		end
+	end
+
 	showMenu();
 end
 
@@ -13,26 +22,14 @@ function showMenu()
 	destroyWindow(getCurrentWindow());
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	
-	newButton(win .. "chooseSlot", vert, "Pick a slot", pickSlot, "Lime");
-end
-
-function pickSlot()
-	local list = {};
-	local hasModifiedSlots = false;
-	for i = 0, 49 do
-		if getTableLength(Mod.Settings.CardPiecesFromStart[i]) > 0 or getTableLength(Mod.Settings.CardPiecesEachTurn[i]) > 0 then
-			hasModifiedSlots = true;
-			local t = {};
-			t.text = "Slot " .. getSlotName(i);
-			t.selected = function() showConfig(i); end
-			table.insert(list, t);
-		end
+	for i = pageNumber * 10 + 1, (pageNumber + 1) * 10 do
+		newButton(win .. i, vert, getSlotName(i), function() getConfig(i); end, colors[i]);
 	end
-	if hasModifiedSlots then
-		UI.PromptFromList("Pick a slot", list);
-	else
-		UI.Alert("It seems like the mod has not been configured.");
+	if #modifiedSlots > 10 then
+		local line = newHorizontalGroup("line", vert);
+		newButton(win .. "Previous", line, "Previous", function() pageNumber = pageNumber - 1; if pageNumber < 0 then pageNumber = #modifiedSlots; end showMenu(); end, "Royal Blue");
+		newLabel(win .. "PageNumber", line, pageNumber .. " / " .. Math.ceil(#modifiedSlots / 10), "Cyan");
+		newButton(win .. "Next", line, "Next", function() pageNumber = pageNumber + 1; if pageNumber > #modifiedSlots then pageNumber = 1; end showMenu(); end, "Royal Blue");
 	end
 end
 
@@ -86,7 +83,7 @@ end
 
 function getTableLength(t)
 	local c = 0;
-	for i, _ in pairs(t) do
+	for _, _ in pairs(t) do
 		c = c + 1;
 	end
 	return c;
