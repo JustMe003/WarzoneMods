@@ -21,8 +21,7 @@ function pickSlot()
 	local list = {};
 	local hasModifiedSlots = false;
 	for i = 0, 49 do
-		if Mod.Settings.CardPiecesFromStart[i] ~= nil or Mod.Settings.CardPiecesEachTurn[i] ~= nil then
-			print(i);
+		if getTableLength(Mod.Settings.CardPiecesFromStart[i]) > 0 or getTableLength(Mod.Settings.CardPiecesEachTurn[i]) > 0 then
 			hasModifiedSlots = true;
 			local t = {};
 			t.text = "Slot " .. getSlotName(i);
@@ -83,4 +82,12 @@ function getSlotName(i)
 		i = i - math.floor(i / 26);
 	end
 	return s .. c[i % 26 + 1];
+end
+
+function getTableLength(t)
+	local c = 0;
+	for i, _ in pairs(t) do
+		c = c + 1;
+	end
+	return c;
 end
