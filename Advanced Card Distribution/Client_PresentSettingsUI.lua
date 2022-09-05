@@ -8,7 +8,6 @@ function Client_PresentSettingsUI(rootParent)
 	for i = 0, 49 do
 		if getTableLength(Mod.Settings.CardPiecesFromStart[i]) > 0 or getTableLength(Mod.Settings.CardPiecesEachTurn[i]) > 0 then
 			table.insert(modifiedSlots, i);
-			print(i);
 		end
 	end
 
@@ -24,7 +23,6 @@ function showMenu()
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	for i = (pageNumber - 1) * 10 + 1, math.min(pageNumber * 10, #modifiedSlots) do
-		print(i, modifiedSlots[i]);
 		newButton(win .. i, vert, getSlotName(modifiedSlots[i]), function() getConfig(modifiedSlots[i]); end, colorsList[i]);
 	end
 	if #modifiedSlots > 10 then
