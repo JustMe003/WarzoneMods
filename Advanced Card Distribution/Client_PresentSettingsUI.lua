@@ -31,7 +31,7 @@ function showMenu()
 		local line = newHorizontalGroup("line", vert);
 		newButton(win .. "Previous", line, "Previous", function() pageNumber = pageNumber - 1; if pageNumber < 0 then pageNumber = #modifiedSlots; end showMenu(); end, "Royal Blue");
 		newLabel(win .. "PageNumber", line, pageNumber .. " / " .. math.ceil(#modifiedSlots / 10), "Royal Blue");
-		newButton(win .. "Next", line, "Next", function() pageNumber = pageNumber + 1; if pageNumber > #modifiedSlots then pageNumber = 1; end showMenu(); end, "Royal Blue");
+		newButton(win .. "Next", line, "Next", function() pageNumber = pageNumber + 1; if pageNumber > math.ceil(#modifiedSlots / 10) then pageNumber = 1; end showMenu(); end, "Royal Blue");
 	end
 end
 
