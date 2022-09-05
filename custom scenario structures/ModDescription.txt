@@ -1,0 +1,6 @@
+Configure for every territory which structures they contain.
+
+How to use?
+1. Launch a singleplayer game with this mod and your scenario
+2. Use the mod menu to build the structures
+3. Copy and paste the data string into the mod configuration of your multiplayer game
