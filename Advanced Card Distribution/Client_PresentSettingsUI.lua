@@ -67,7 +67,7 @@ function showConfig(slot)
 	if not hasPiecesFromstart and not hasPiecesEachTurn then
 		newLabel(win .. "Nothing", vert, "This slot does not have any card modification");
 	end
-	newButton(win .. "chooseSlot", vert, "Pick a slot", function() destroyWindow(getCurrentWindow()); pickSlot(); end, "Lime");
+	newButton(win .. "chooseSlot", vert, "Pick a slot", showMenu, "Lime");
 end
 
 
