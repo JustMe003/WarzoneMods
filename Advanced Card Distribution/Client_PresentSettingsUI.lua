@@ -23,7 +23,7 @@ function showMenu()
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	for i = (pageNumber - 1) * 10 + 1, math.min(pageNumber * 10, #modifiedSlots) do
-		newButton(win .. i, vert, "Slot " .. getSlotName(modifiedSlots[i]), function() getConfig(modifiedSlots[i]); end, colorsList[i]);
+		newButton(win .. i, vert, "Slot " .. getSlotName(modifiedSlots[i]), function() showConfig(modifiedSlots[i]); end, colorsList[i]);
 	end
 	if #modifiedSlots > 10 then
 		local line = newHorizontalGroup("line", vert);
