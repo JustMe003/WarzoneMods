@@ -91,6 +91,7 @@ function Server_StartGame(game, standing)
 	data.IsInFaction = isInFaction;
 	data.PlayerInFaction = playerInFaction;
 	data.Events = {};
+	data.VersionNumber = 5;
 	Mod.PlayerGameData = playerData;
 	Mod.PublicGameData = data;
 end
