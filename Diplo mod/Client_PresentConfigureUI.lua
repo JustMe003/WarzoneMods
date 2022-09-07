@@ -102,7 +102,7 @@ function addFaction()
 	window(win);
 	local vert = newVerticalGroup("Vert", "root");
 	newButton(win .. "return", vert, "Return", showMainConfig, "Orange");
-	newTextField(win .. "FactionName", vert, "", "Enter Faction name here", 50, true, 300, -1, 1, 1);
+	newTextField(win .. "FactionName", vert, "Enter Faction name here", "", 50, true, 300, -1, 1, 1);
 	newButton(win .. "CreateFaction", vert, "Create Faction", createFaction, "Lime");
 end
 
