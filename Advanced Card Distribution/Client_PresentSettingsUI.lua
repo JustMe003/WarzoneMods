@@ -22,6 +22,7 @@ end
 
 function showFullSettings()
 	destroyWindow(getCurrentWindow());
+	print(getCurrentWindow());
 	for _, i in pairs(modifiedSlots) do
 		showConfig(i, false);
 	end
