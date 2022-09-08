@@ -21,6 +21,7 @@ function Client_PresentSettingsUI(rootParent)
 end
 
 function showFullSettings()
+	destroyWindow(getCurrentWindow());
 	for _, i in pairs(modifiedSlots) do
 		showConfig(i, false);
 	end
