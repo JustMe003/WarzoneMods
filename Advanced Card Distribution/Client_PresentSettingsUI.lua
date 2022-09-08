@@ -71,7 +71,10 @@ function showConfig(slot, showButton)
 			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesFromStart[slot][v], "Royal Blue");
 		end
 	end
-	
+	if hasPiecesFromstart then
+		newLabel(win .. "empty1", vert, " ");
+	end
+
 	local hasPiecesEachTurn = false;
 	for i, v in pairs(WL.CardID) do
 		if Mod.Settings.CardPiecesEachTurn[slot][v] ~= nil then
@@ -82,7 +85,11 @@ function showConfig(slot, showButton)
 			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesEachTurn[slot][v], "Royal Blue");
 		end
 	end
-	
+
+	if hasPiecesEachTurn then
+		newLabel(win .. "empty2", vert, " ");
+	end
+
 	if not hasPiecesFromstart and not hasPiecesEachTurn then
 		newLabel(win .. "Nothing", vert, "This slot does not have any card modification");
 	end
