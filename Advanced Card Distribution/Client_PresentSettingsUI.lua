@@ -3,14 +3,31 @@ function Client_PresentSettingsUI(rootParent)
 	init(rootParent);
 
 	colorsList = {"Blue", "Light Blue", "Purple", "Dark Green", "Orange", "Red", "Dark Gray", "Green", "Hot Pink", "Brown", "Sea Green", "Orange Red", "Cyan", "Aqua", "Dark Magenta", "Deep Pink", "yellow", "Saddle Brown", "Ivory", "Copper Rose", "Electric Purple", "Tan", "Pink", "Lime", "Tan", "Tyrian Purple", "Smoky Black"};
-	pageNumber = 1;
+	local win = "Main";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
 	modifiedSlots = {};
 	for i = 0, 49 do
 		if getTableLength(Mod.Settings.CardPiecesFromStart[i]) > 0 or getTableLength(Mod.Settings.CardPiecesEachTurn[i]) > 0 then
 			table.insert(modifiedSlots, i);
 		end
 	end
+	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "showMenu", vert, "Show options", initMenu, "Orange");
+	newButton(win .. "showFull", vert, "Show full settings", showFullSettings, "Royal Blue");
+end
 
+function showFullSettings()
+	for _, i in pairs(modifiedSlots) do
+		showConfig(i, false);
+	end
+end
+
+function initMenu()
+	pageNumber = 1;
 	showMenu();
 end
 
@@ -33,9 +50,11 @@ function showMenu()
 	end
 end
 
-function showConfig(slot)
+function showConfig(slot, showButton)
 	local win = "showConfig";
-	destroyWindow(getCurrentWindow());
+	if showButton == nil then
+		destroyWindow(getCurrentWindow());
+	end
 	if windowExists(win) then
 		resetWindow(win);
 	end
@@ -67,7 +86,9 @@ function showConfig(slot)
 	if not hasPiecesFromstart and not hasPiecesEachTurn then
 		newLabel(win .. "Nothing", vert, "This slot does not have any card modification");
 	end
-	newButton(win .. "chooseSlot", vert, "Pick a slot", showMenu, "Lime");
+	if showButton == nil then
+		newButton(win .. "chooseSlot", vert, "Pick a slot", showMenu, "Lime");
+	end
 end
 
 
