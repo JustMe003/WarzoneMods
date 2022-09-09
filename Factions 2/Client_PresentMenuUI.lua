@@ -35,7 +35,7 @@ function showMenu()
 		window(win);
 		local vert = newVerticalGroup("vert", "root");
 		newButton(win .. "showFactions", vert, "Factions", showFactions, "Cyan", getTableLength(Mod.PublicGameData.Factions) > 0);
-		newButton(win .. "showFactionChat", vert, "Faction chat", showFactionChat(), "Orange", Mod.PublicGameData.IsInFaction[game.Us.ID]);
+		newButton(win .. "showFactionChat", vert, "Faction chat", showFactionChat, "Orange", Mod.PublicGameData.IsInFaction[game.Us.ID]);
 		newButton(win .. "createFactionButton", vert, "Create Faction", createFaction, "Lime", not(Mod.PublicGameData.IsInFaction[game.Us.ID]));
 		newLabel(win .. "empty", vert, "\n");
 		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, game.Us.Color.HtmlColor);
