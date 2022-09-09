@@ -1,0 +1,6 @@
+An all-in-one Diplomacy mod
+ - Factions (custom teams)
+ - Faction chat (custom team chat)
+ - Forced diplomacy (using diplomacy cards)
+ - Tons of configurable settings
+ - Complete with a configuration where the game creator can configure every relation, every Faction and every relation between Factions
