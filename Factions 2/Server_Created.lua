@@ -9,7 +9,7 @@ function Server_Created(game, settings)
 		c = {};
 		c[WL.CardID.Spy] = WL.CardGameSpy.Create(1, 0, 0, 0, 1);
 	end
-	c[WL.CardID.Diplomacy] = WL.CardGameDiplomacy.Create(1, 0, 0, 0, 2);
+	c[WL.CardID.Diplomacy] = WL.CardGameDiplomacy.Create(1, 0, 0, 0, 1);
 	settings.Cards = c;
 	
 	local data = Mod.PublicGameData;
