@@ -21,7 +21,6 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 			close();
 		end
 	else
-		UI.Alert("It seems like this mod menu crashes sometimes. If this occurs, please reach out to me. You can find a link to mail me in under the [About] button. I mostly want to know what you were doing before the crash");
 		showMenu();
 	end
 end
@@ -351,12 +350,16 @@ function pendingJoinRequests(factionName)
 end
 
 function sendMessage()
-	local payload = {};
-	payload.Type = "sendMessage";
-	payload.Text = getText("showFactionChattypeMessage");
-	Close();
-	func = function() showFactionChat(factionName); end;
-	game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
+	if objectsID["showFactionChattypeMessage"] ~= nil and objects[objectsID["showFactionChattypeMessage"]].Object ~= nil then
+		local payload = {};
+		payload.Type = "sendMessage";
+		payload.Text = getText("showFactionChattypeMessage");
+		Close();
+		func = function() showFactionChat(factionName); end;
+		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
+	else
+		UI.Alert("Something went wrong. Please re-open the chat to try again. If this message keeps popping up, please contact me");
+	end
 end
 
 function createFaction()
