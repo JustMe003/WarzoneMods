@@ -21,7 +21,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if game.Settings.FogLevel ~= 1 then
 		playSpyCards(game, addNewOrder);
 	end
-	if game.Settings.Cards[WL.CardID.Diplomacy].Duration == 1 then
+	if game.Game.TurnNumber == 1 then
 		playDiploCards(game, addNewOrder);
 	end
 end
@@ -120,7 +120,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 	Mod.PublicGameData = data;
 	Mod.PlayerGameData = playerData;
-	if game.Settings.Cards[WL.CardID.Diplomacy].Duration >= 2 then
+	if game.Game.TurnNumber > 1 then
 		playDiploCards(game, addNewOrder);
 	end
 end
