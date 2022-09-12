@@ -5,7 +5,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	if game.Us == nil then UI.Alert("You cannot use this mod since you're not playing in this game"); close(); return; end
 	if game.Us.State ~= WL.GamePlayerState.Playing then UI.Alert("You cannot use this mod anymore since you're not playing anymore"); close(); return; end
 	if game.Game.TurnNumber < 1 then UI.Alert("This mod can only be used after the distribution turn"); close(); return; end
-	
+
 	Close = function() pageHasClosed = true; close(); end;
 	if Mod.PlayerGameData.PersonalSettings ~= nil then
 		setMaxSize(Mod.PlayerGameData.PersonalSettings.WindowWidth, Mod.PlayerGameData.PersonalSettings.WindowHeight);
@@ -348,14 +348,14 @@ function pendingJoinRequests(factionName)
 	for i, v in pairs(Mod.PublicGameData.Factions[factionName].JoinRequests) do
 		newButton(win .. i, vert, game.Game.Players[v].DisplayName(nil, false), function() func = function() pendingJoinRequests(factionName); end; confirmChoice("Do you wish to let " .. game.Game.Players[v].DisplayName(nil, false) .. " join your faction?", function() Close(); game.SendGameCustomMessage("Accepting request...", {Type="joinFaction", PlayerID=v, Faction=factionName, RequestApproved=true}, gameCustomMessageReturn); factionSettings(factionName); end, function() Close(); game.SendGameCustomMessage("Declining request...", {Type="DeclineJoinRequest", Index=i, PlayerID=v, Faction=factionName}, gameCustomMessageReturn); factionSettings(factionName); end); end, game.Game.Players[v].Color.HtmlColor);
 	end
-end 
+end
 
 function sendMessage()
 	local payload = {};
 	payload.Type = "sendMessage";
 	payload.Text = getText("showFactionChattypeMessage");
 	Close();
-	func = function() showFactionChat(factionName); end; 
+	func = function() showFactionChat(factionName); end;
 	game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
 end
 
@@ -480,7 +480,7 @@ function gameCustomMessageReturn(payload)
 	end
 	local functions = {};
 	functions["showFactionChat"] = showFactionChat;
-	
+
 	if payload.Function ~= nil then
 		functions[payload.Function]();
 	end
@@ -491,7 +491,7 @@ function getTableLength(t, func)
 	for i, v in pairs(t) do
 		if func ~= nil then
 			if func(v) then
-				c = c + 1;			
+				c = c + 1;
 			end
 		else
 			c = c + 1;
