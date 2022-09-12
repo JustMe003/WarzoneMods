@@ -112,9 +112,11 @@ function pickSlotToCopy(copy)
 end
 
 function copySlot(copy, slot)
+	CardPiecesFromStart[slot] = {};
 	for i, v in pairs(CardPiecesFromStart[copy]) do
 		CardPiecesFromStart[slot][i] = v;
 	end
+	CardPiecesEachTurn[slot] = {};
 	for i, v in pairs(CardPiecesEachTurn[copy]) do
 		CardPiecesEachTurn[slot][i] = v;
 	end
