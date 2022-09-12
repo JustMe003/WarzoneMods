@@ -3,9 +3,13 @@ require("util");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, calledFromGameRefresh)
 	print(1);
 	if not templateIsTutorial(game.Settings.TemplateIDUsed) then close(); UI.Alert("This template is not a tutorial!"); return; end
+	print(2);
 	Init();
+	print(3);
 	if Close ~= nil then Close(); end
+	print(4);
 	Colors = GetColors();
+	print(5);
 	Game = game;
 	SetWindow("Main");
 	Vert = CreateVert(rootParent);
