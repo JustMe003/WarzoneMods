@@ -16,8 +16,8 @@ function Client_PresentSettingsUI(rootParent)
 		end
 	end
 	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "showMenu", vert, "Show options", initMenu, "Orange");
-	newButton(win .. "showFull", vert, "Show full settings", showFullSettings, "Royal Blue");
+	newButton(win .. "showMenu", vert, "Show slot settings (one by one)", initMenu, "Orange");
+	newButton(win .. "showFull", vert, "Show all slot settings", showFullSettings, "Royal Blue");
 end
 
 function showFullSettings()
