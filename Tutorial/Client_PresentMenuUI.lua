@@ -3,17 +3,21 @@ require("util");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, calledFromGameRefresh)
 	if not templateIsTutorial(game.Settings.TemplateIDUsed) then close(); UI.Alert("This template is not a tutorial!"); return; end
 	Init();
---	if Close ~= nil then Close(); end
 	Colors = GetColors();
 	Game = game;
 	SetWindow("Main");
 	Vert = CreateVert(rootParent);
-	Close = function() close(); Close = nil; end;
+	Close = function() pageHasClosed = true; close(); end;
 	setMaxSize(400, 500);
-	
-	if Mod.PlayerGameData.StartedTutorial ~= nil then
-		require(Mod.PlayerGameData.Tutorial);
-		initTutorial();
+
+	if calledFromGameRefresh ~= nil then
+		if pageHasClosed ~= nil then
+			pageHasClosed = nil;
+			require(Mod.PlayerGameData.Tutorial);
+			initTutorial();
+		else
+			close();
+		end
 	else
 		tutorialChoice();
 	end
