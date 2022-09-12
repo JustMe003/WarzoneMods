@@ -8,6 +8,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Game = game;
 	SetWindow("Main");
 	Vert = CreateVert(rootParent);
+	print(1);
 	Close = function() close(); Close = nil; end;
 	setMaxSize(400, 500);
 	
