@@ -1,6 +1,7 @@
 require("UI");
 require("util");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, calledFromGameRefresh)
+	print(1);
 	if not templateIsTutorial(game.Settings.TemplateIDUsed) then close(); UI.Alert("This template is not a tutorial!"); return; end
 	Init();
 	if Close ~= nil then Close(); end
@@ -8,7 +9,6 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Game = game;
 	SetWindow("Main");
 	Vert = CreateVert(rootParent);
-	print(1);
 	Close = function() close(); Close = nil; end;
 	setMaxSize(400, 500);
 	
