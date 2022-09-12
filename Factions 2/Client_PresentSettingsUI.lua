@@ -72,8 +72,10 @@ function showSlotConfig(slot)
 	newLabel(win .. "SlotName", vert, getSlotName(slot) .. " (Relation configuration)\n");
 	if Mod.Settings.Configuration.SlotInFaction[slot] ~= nil then
 		local line = newHorizontalGroup(win .. "line", vert);
-		newLabel(win .. "factionLabel", line, "Faction: ");
-		newButton(win .. "factionButton", line, Mod.Settings.Configuration.SlotInFaction[slot], function() showFactionConfig(Mod.Settings.Configuration.SlotInFaction[slot]); end);
+		newLabel(win .. "factionLabel", line, "Faction(s): ");
+		for _, f in pairs(Mod.Settings.Configuration.SlotInFaction[slot]) do
+			newButton(win .. "factionButton", line, f, function() showFactionConfig(f); end);
+		end
 	end
 	for i, v in pairs(Mod.Settings.Configuration.Relations[slot]) do
 		local line = newHorizontalGroup(win .. i .. "line", vert);
