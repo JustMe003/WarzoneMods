@@ -221,7 +221,7 @@ function joinFaction(game, playerID, payload, setReturn)
 					table.insert(data.Events, createEvent(game.Game.Players[payload.PlayerID].DisplayName(nil, false) .. " requested to join '" .. payload.Faction .. "'", payload.PlayerID, getPlayerHashMap(data, payload.PlayerID, data.Factions[payload.Faction].FactionLeader)));
 				end
 			else
-				if playerData[payload.PlayerID].HasPendingRequest ~= nil then
+				if playerData[payload.PlayerID].HasPendingRequest ~= nil and getKeyFromValue(playerData[payload.PlayerID].HasPendingRequest, payload.Faction) ~= nil then
 					table.remove(playerData[payload.PlayerID].HasPendingRequest, getKeyFromValue(playerData[payload.PlayerID].HasPendingRequest, payload.Faction));
 				end
 				if game.Game.PlayingPlayers[payload.PlayerID] == nil then
