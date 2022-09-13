@@ -383,10 +383,6 @@ function sendMessage(faction)
 end
 
 function createFaction()
-	if Mod.PublicGameData.IsInFaction[game.Us.ID] then
-		UI.Alert("You're already in a faction! You can only be in 1 faction at the time");
-		return;
-	end
 	local win = "createFaction";
 	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
