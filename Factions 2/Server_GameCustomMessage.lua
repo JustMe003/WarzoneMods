@@ -2,9 +2,6 @@ require("utilities");
 function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	data = Mod.PublicGameData;
 	local functions = {};
-
-	print("started");
-
 	functions["CreateFaction"] = createFaction;
 	functions["leaveFaction"] = leaveFaction;
 	functions["5MinuteAlert"] = fiveMinuteAlert;
@@ -28,7 +25,6 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["updateData"] = updateData;
 	
 	print(playerID, payload.Type);
-	print("Does this print?");
 	local playerData = Mod.PlayerGameData;
 	if not game.Game.Players[playerID].IsAI then
 		playerData[playerID].NeedsRefresh = true;
@@ -36,7 +32,6 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	end
 	Mod.PlayerGameData = playerData;
 
-	print("About to invoke function");
 	functions[payload.Type](game, playerID, payload, setReturn);
 	
 	Mod.PublicGameData = data;
@@ -531,12 +526,7 @@ end
 
 function openedChat(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
-	for _, f in pairs(playerData[playerID].Notifications.Messages) do
-		print(#f);
-	end
-	print("started   " .. #playerData[playerID].Notifications.Messages[payload.Faction]);
 	playerData[playerID].Notifications.Messages[payload.Faction] = {};
-	print("ended   " .. #playerData[playerID].Notifications.Messages[payload.Faction]);
 	Mod.PlayerGameData = playerData;
 end
 
