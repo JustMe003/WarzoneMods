@@ -531,6 +531,9 @@ end
 
 function openedChat(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
+	for _, f in pairs(playerData[playerID].Notifications.Messages) do
+		print(#f);
+	end
 	print("started   " .. #playerData[playerID].Notifications.Messages[payload.Faction]);
 	playerData[playerID].Notifications.Messages[payload.Faction] = {};
 	print("ended   " .. #playerData[playerID].Notifications.Messages[payload.Faction]);
