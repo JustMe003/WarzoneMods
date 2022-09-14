@@ -339,8 +339,7 @@ function showFactionChatOptions()
 end
 
 function showFactionChat(faction)
-	game.SendGameCustomMessage("updating mod...", { Type="openedChat", Faction=faction }, gameCustomMessageReturn);
-	print("updated chat messages thingy of " .. faction);
+
 	local win = "showFactionChat";
 	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
