@@ -331,6 +331,7 @@ function showFactionChatOptions()
 	if windowExists(win) then
 		resetWindow(win);
 	end
+	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	newLabel(win .. "pickFaction", vert, "Choose the faction you want to read the messages from");
 	for _, faction in pairs(Mod.PublicGameData.PlayerInFaction[game.Us.ID]) do
