@@ -347,7 +347,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 				data.Factions[payload.PlayerFaction].AtWar[payload.OpponentFaction] = true;
 				data.Factions[payload.OpponentFaction].AtWar[payload.PlayerFaction] = true;
 				for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction]) do
+					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
 						if playerMember == opponentMember then
 							kickPlayer(game, playerID, {Faction=payload.PlayerFaction, Index=i, Player=playerMember}, setReturn);
 						end
