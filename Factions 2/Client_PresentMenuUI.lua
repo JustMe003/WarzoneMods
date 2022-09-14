@@ -223,6 +223,7 @@ function showFactionDetails(factionName)
 	newLabel(win .. "EmptyAfterFactionName", vert, " ");
 	if game.Us.ID == Mod.PublicGameData.Factions[factionName].FactionLeader then
 		newButton(win .. "FactionSettings", vert, "Faction settings", function() factionSettings(factionName) end, "Tyrian Purple");
+		newButton(win .. "pendingJoinRequests", vert, "Join requests", function() pendingJoinRequests(factionName); end, "Royal Blue", #Mod.PublicGameData.Factions[factionName].JoinRequests > 0);
 		newLabel(win .. "EmptyAfterFactionsettings", vert, "\n");
 	end
 	newLabel(win .. "FactionLeader", vert, "Faction leader: " .. game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].DisplayName(nil, false) .. "\n", game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
