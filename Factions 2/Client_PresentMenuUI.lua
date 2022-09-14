@@ -23,7 +23,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 			close();
 		end
 	else
-		UI.Alert("Factions has been updated to 1.6! You're now able to join multiple Factions, as long as you're not in war with any of the Faction members.\nSince this is brand new, some problems might arise. If you encounter any problem, please send me a message. You can find my playerlink under [About]");
+	--	UI.Alert("Factions has been updated to 1.6! You're now able to join multiple Factions, as long as you're not in war with any of the Faction members.\nSince this is brand new, some problems might arise. If you encounter any problem, please send me a message. You can find my playerlink under [About]");
 		showMenu();
 	end
 end
