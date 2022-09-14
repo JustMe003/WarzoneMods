@@ -339,7 +339,6 @@ function showFactionChatOptions()
 end
 
 function showFactionChat(faction)
-
 	local win = "showFactionChat";
 	destroyWindow(getCurrentWindow());
 	if windowExists(win) then
