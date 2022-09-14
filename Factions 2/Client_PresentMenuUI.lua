@@ -376,13 +376,17 @@ function pendingJoinRequests(factionName)
 end 
 
 function sendMessage(faction)
-	local payload = {};
-	payload.Type = "sendMessage";
-	payload.Faction = faction;
-	payload.Text = getText("showFactionChattypeMessage");
-	Close();
-	func = function() showFactionChatOptions(factionName); end;
-	game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
+	if objectsID["showFactionChattypeMessage"] ~= nil and objects[objectsID["showFactionChattypeMessage"]].Object ~= nil then
+		local payload = {};
+		payload.Type = "sendMessage";
+		payload.Faction = faction;
+		payload.Text = getText("showFactionChattypeMessage");
+		Close();
+		func = function() showFactionChatOptions(factionName); end;
+		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
+	else
+		UI.Alert("Something went wrong. Please re-open the chat to try again. If this message keeps popping up, please contact me");
+	end
 end
 
 function createFaction()
