@@ -527,9 +527,9 @@ end
 
 function openedChat(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
-	print(#playerData[playerID].Notifications.Messages[payload.Faction]);
+	print("started   " .. #playerData[playerID].Notifications.Messages[payload.Faction]);
 	playerData[playerID].Notifications.Messages[payload.Faction] = {};
-	print(#playerData[playerID].Notifications.Messages[payload.Faction]);
+	print("ended   " .. #playerData[playerID].Notifications.Messages[payload.Faction]);
 	Mod.PlayerGameData = playerData;
 end
 
