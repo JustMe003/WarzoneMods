@@ -303,7 +303,6 @@ end
 
 function newVerticalGroup(name, parent)
 	local vert = verticalLayoutGroup(getParent(parent));
-	print(vert);
 	createNewObject(vert.id, vert, parent, "Vert", name);
 	table.insert(windows[getCurrentWindow()], name);
 	objectsID[name] = vert.id;
