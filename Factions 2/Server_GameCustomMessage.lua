@@ -283,7 +283,7 @@ function joinFaction(game, playerID, payload, setReturn)
 				table.insert(playerData[payload.PlayerID].Notifications.JoinRequestApproved, payload.Faction);
 				Mod.PlayerGameData = playerData;
 				setReturn(setReturnPayload("Join request approved", "Success"));
-				table.insert(data.Events, createEvent("Approved join request from " .. game.Game.Players[payload.PlayerID].DisplayName(nil, false), playerID) .. " to join '" .. payload.Faction .. "'");
+				table.insert(data.Events, createEvent("Approved join request from " .. game.Game.Players[payload.PlayerID].DisplayName(nil, false), playerID) .. " to join '" .. tostring(payload.Faction) .. "'");
 			end
 		else
 			for f, b in pairs(data.Factions[payload.Faction].AtWar) do
