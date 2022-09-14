@@ -36,6 +36,7 @@ function resetPlayerNotifications(t)
 	t.GotKicked = {};
 	t.JoinRequestApproved = {};
 	t.JoinRequestRejected = {};
+	t.Messages = {};
 	return t;
 end
 
