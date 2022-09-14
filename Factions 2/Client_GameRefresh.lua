@@ -135,7 +135,7 @@ function showAlert(game)
 	end
 	print(count(playerData.Notifications.Messages, function(t) return #t; end));
 	if playerData.Notifications.Messages ~= nil and count(playerData.Notifications.Messages, function(t) return #t; end) > 0 then
-		s = s .. "You have " .. count(playerData.Notifications.Messages, function(t) return #t; end) .. " unread messages in faction chats";
+		s = s .. "You have unread messages in faction chats";
 	end
 	if #s > 0 then
 		UI.Alert(s);
