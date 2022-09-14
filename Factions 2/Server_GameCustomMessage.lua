@@ -2,6 +2,9 @@ require("utilities");
 function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	data = Mod.PublicGameData;
 	local functions = {};
+
+	print("started");
+
 	functions["CreateFaction"] = createFaction;
 	functions["leaveFaction"] = leaveFaction;
 	functions["5MinuteAlert"] = fiveMinuteAlert;
@@ -25,14 +28,15 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["updateData"] = updateData;
 	
 	print(playerID, payload.Type);
-	
+	print("Does this print?");
 	local playerData = Mod.PlayerGameData;
 	if not game.Game.Players[playerID].IsAI then
 		playerData[playerID].NeedsRefresh = true;
 		if payload.Type == "openedChat" then playerData[playerID].NeedsRefresh = nil; end
 	end
 	Mod.PlayerGameData = playerData;
-	
+
+	print("About to invoke function");
 	functions[payload.Type](game, playerID, payload, setReturn);
 	
 	Mod.PublicGameData = data;
