@@ -681,7 +681,6 @@ function kickPlayer(game, playerID, payload, setReturn)
 						data.Relations[player][v] = "InPeace";
 					end
 					for i = 1, #data.PlayerInFaction[player] do
-						print(i, data.PlayerInFaction[player][i]);
 						if data.PlayerInFaction[player][i] == payload.Faction then
 							table.remove(data.PlayerInFaction[player], i);
 							break;
