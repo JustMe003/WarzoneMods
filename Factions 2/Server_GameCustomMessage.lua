@@ -216,8 +216,8 @@ function joinFaction(game, playerID, payload, setReturn)
 					end
 					table.insert(playerData[payload.PlayerID].HasPendingRequest, payload.Faction);
 					table.insert(data.Factions[payload.Faction].JoinRequests, payload.PlayerID);
-				--	if playerData[data.Factions[payload.Faction].FactionLeader].Notifications == nil then playerData[data.Factions[payload.Faction].FactionLeader].Notifications = setPlayerNotifications(); end
-				--	table.insert(playerData[data.Factions[payload.Faction].FactionLeader].Notifications.FactionsPendingJoins, {Player=payload.PlayerID, Faction=payload.Faction});
+					if playerData[data.Factions[payload.Faction].FactionLeader].Notifications == nil then playerData[data.Factions[payload.Faction].FactionLeader].Notifications = setPlayerNotifications(); end
+					table.insert(playerData[data.Factions[payload.Faction].FactionLeader].Notifications.FactionsPendingJoins, {Player=payload.PlayerID, Faction=payload.Faction});
 					table.insert(data.Events, createEvent(game.Game.Players[payload.PlayerID].DisplayName(nil, false) .. " requested to join '" .. payload.Faction .. "'", payload.PlayerID, getPlayerHashMap(data, payload.PlayerID, data.Factions[payload.Faction].FactionLeader)));
 				end
 			else
