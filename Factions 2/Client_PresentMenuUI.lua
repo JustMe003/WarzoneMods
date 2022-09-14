@@ -336,6 +336,8 @@ function showFactionChatOptions()
 	for _, faction in pairs(Mod.PublicGameData.PlayerInFaction[game.Us.ID]) do
 		newButton(win .. faction, vert, faction .. " (" .. getAmountOfChatMessages(faction) .. ")", function() showFactionChat(faction); end, game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor);
 	end
+	newLabel(win .. "empty", vert, " ");
+	newButton(win .. "Return", vert, "Return", showMenu, "Orange");
 end
 
 function showFactionChat(faction)
@@ -350,6 +352,7 @@ function showFactionChat(faction)
 	newTextField(win .. "typeMessage", line, "Type here your message", "", 300, true, 300, -1, 1, 0);
 	newButton(win .. "sendMessage", line, "Send", function() sendMessage(faction); end, "Blue");
 	newButton(win .. "refresh", line, "Refresh", function() showFactionChat(faction); end, "Green");
+	newButton(win .. "Return", line, "Return", showFactionChatOptions, "Orange");
 	newLabel(win .. "empty", vert, "\n");
 	for i = #Mod.PublicGameData.Factions[faction].FactionChat, 1, -1 do
 		local message = Mod.PublicGameData.Factions[faction].FactionChat[i];
@@ -381,7 +384,7 @@ function sendMessage(faction)
 		payload.Faction = faction;
 		payload.Text = getText("showFactionChattypeMessage");
 		Close();
-		func = function() showFactionChatOptions(factionName); end;
+		func = function() showFactionChat(factionName); end;
 		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
 	else
 		UI.Alert("Something went wrong. Please re-open the chat to try again. If this message keeps popping up, please contact me");
