@@ -68,7 +68,7 @@ function showSlotConfig(slot)
 	end
 	window(win);
 	local vert = newVerticalGroup("Vert", "root");
-	if slot == "???" then showMenu(); return; end
+	if slot == "???" then showMainConfig(); return; end
 	newButton(win .. "return", vert, "Return", showMainConfig, "Orange");
 	newLabel(win .. "SlotName", vert, getSlotName(slot) .. " (Relation configuration)\n");
 	if Mod.Settings.Configuration.SlotInFaction[slot] ~= nil then
