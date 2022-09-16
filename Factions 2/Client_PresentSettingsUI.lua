@@ -167,6 +167,6 @@ function getSlotColor(slot)
 end
 
 function getFactionColor(faction)
-	if config.Factions[faction].FactionLeader ~= nil then return getSlotColor(config.Factions[faction].FactionLeader); end
+	if Mod.Settings.Configuration.Factions[faction].FactionLeader ~= nil then return getSlotColor(Mod.Settings.Configuration.Factions[faction].FactionLeader); end
 	return "Dark Gray";
 end
