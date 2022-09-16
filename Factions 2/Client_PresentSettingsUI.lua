@@ -68,6 +68,7 @@ function showSlotConfig(slot)
 	end
 	window(win);
 	local vert = newVerticalGroup("Vert", "root");
+	if slot == "???" then showMenu(); return; end
 	newButton(win .. "return", vert, "Return", showMainConfig, "Orange");
 	newLabel(win .. "SlotName", vert, getSlotName(slot) .. " (Relation configuration)\n");
 	if Mod.Settings.Configuration.SlotInFaction[slot] ~= nil then
@@ -103,7 +104,7 @@ function showFactionConfig(faction)
 	newLabel(win .. "FactionName", vert, faction .. " (configuration)\n");
 	local line = newHorizontalGroup(win .. "line", vert);
 	newLabel(win .. "FactionLeaderString", line, "Faction leader: ");
-	newButton(win .. "SetFactionLeader", line, getFactionLeader(faction), function() showSlotConfig(getFactionLeader(faction)); end, getFactionColor(faction));
+	newButton(win .. "SetFactionLeader", line, getSlotName(getFactionLeader(faction)), function() showSlotConfig(getFactionLeader(faction)); end, getFactionColor(faction));
 	newLabel(win .. "EmptyAfterFactionLeader", vert, "\nFaction members:");
 	for i, v in pairs(Mod.Settings.Configuration.Factions[faction].FactionMembers) do
 		newButton(win .. i .. "Slot", vert, getSlotName(v), function() showSlotConfig(v); end, getSlotColor(v));
@@ -143,7 +144,7 @@ end
 
 function getFactionLeader(faction)
 	if Mod.Settings.Configuration.Factions[faction].FactionLeader ~= nil then
-		return getSlotName(Mod.Settings.Configuration.Factions[faction].FactionLeader);
+		return Mod.Settings.Configuration.Factions[faction].FactionLeader;
 	else
 		return "???";
 	end
