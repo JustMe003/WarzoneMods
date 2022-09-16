@@ -103,10 +103,10 @@ function showFactionConfig(faction)
 	newLabel(win .. "FactionName", vert, faction .. " (configuration)\n");
 	local line = newHorizontalGroup(win .. "line", vert);
 	newLabel(win .. "FactionLeaderString", line, "Faction leader: ");
-	newLabel(win .. "SetFactionLeader", line, getFactionLeader(faction), getFactionColor(faction));
+	newButton(win .. "SetFactionLeader", line, getFactionLeader(faction), function() showSlotConfig(getFactionLeader(faction)); end, getFactionColor(faction));
 	newLabel(win .. "EmptyAfterFactionLeader", vert, "\nFaction members:");
 	for i, v in pairs(Mod.Settings.Configuration.Factions[faction].FactionMembers) do
-		newLabel(win .. i .. "Slot", vert, getSlotName(v), getSlotColor(v));
+		newButton(win .. i .. "Slot", vert, getSlotName(v), function() showSlotConfig(v); end, getSlotColor(v));
 	end
 	local line = newHorizontalGroup(win .. "line2", vert);
 	newLabel(win .. "EmptyAfterSlotsConfig", vert, " ");
@@ -131,7 +131,7 @@ function showFactionRelationConfig(faction)
 			else
 				newLabel(win .. i .. "Button", line, "Peace", "Green");
 			end
-			newLabel(win .. i .. "text", line, i, getFactionColor(i));
+			newButton(win .. i .. "text", line, i, function() showFactionConfig(i); end, getFactionColor(i));
 		end
 	end
 end
