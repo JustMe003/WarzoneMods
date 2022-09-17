@@ -1,1 +1,3 @@
+[!] WARNING [!]
+
 This mod is meant for chaos. Every player gets a Boss 3 unit randomly distributed on one of his territories. This unit has 100 health and must be killed in 1 attack. If it dies, it will split into 4 bosses, each with 90 health which get randomly distributed on ANY territory. If this unit dies it will split for 1 last time, 80 health and only killable in one attack
