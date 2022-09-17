@@ -1,11 +1,13 @@
 function Server_GameStart(game, standing)
     local t = {};
-    for _, v in pairs(standing.Territories) do
+    local s = standing;
+    for _, v in pairs(s.Territories) do
         if not v.IsNeutral and t[v.OwnerPlayerID] == nil then
-            armies = standing.Territories[v.ID].NumArmies;
-            armies = WL.Armies.Create(WL.Armies.Create(standing.Territories[v.ID].NumArmies.NumArmies, {WL.Boss1.Create(v.OwnerPlayerID)})
-            WL.Armies.Create(standing.Territories[v.ID].NumArmies = armies;
+            armies = s.Territories[v.ID].NumArmies;
+            armies = WL.Armies.Create(WL.Armies.Create(s.Territories[v.ID].NumArmies.NumArmies, {WL.Boss1.Create(v.OwnerPlayerID)})
+            WL.Armies.Create(s.Territories[v.ID].NumArmies = armies;
             t[v.OwnerPlayerID] = true;
         end
     end
+    standing = s;
 end
