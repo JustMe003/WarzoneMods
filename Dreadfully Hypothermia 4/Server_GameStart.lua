@@ -1,4 +1,4 @@
-function Server_StartGame(game, standing)
+function Server_GameStart(game, standing)
     local t = {};
     for _, v in pairs(standing.Territories) do
         if not v.IsNeutral and t[v.OwnerPlayerID] == nil then
