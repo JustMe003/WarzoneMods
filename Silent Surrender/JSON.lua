@@ -1,6 +1,7 @@
+print(3)
 function getJSON(t)
   local result = {};
-  print(2);
+  print(10);
   for key, value in pairs(tableWithData) do 
     if type(value) ~= type({}) then
       table.insert(result, string.format("%s:%s", key, value)) 
@@ -10,7 +11,7 @@ function getJSON(t)
   end
   return "{" .. table.concat(result, ",") .. "}";
 end
-
+print(4)
 function getObjectFromJSON(s)
   local t = {};
   while #s > 1 do
