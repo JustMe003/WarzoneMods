@@ -1,6 +1,6 @@
 function getJSON(t)
   local result = {};
-  for key, value in ipairs(tableWithData) do 
+  for key, value in pairs(tableWithData) do 
     if type(value) ~= type({}) then
       table.insert(result, string.format("%s:%s", key, value)) 
     else
