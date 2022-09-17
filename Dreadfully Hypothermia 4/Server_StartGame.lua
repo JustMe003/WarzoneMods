@@ -1,4 +1,4 @@
-function Server_GameStart(game, standing)
+function Server_StartGame(game, standing)
     local t = {};
     local s = standing;
     for _, v in pairs(s.Territories) do
