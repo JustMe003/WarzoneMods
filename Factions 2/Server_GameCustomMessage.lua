@@ -857,6 +857,7 @@ function updateData(game, playerID, payload, setReturn)
 	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
 		if data.PlayerInFaction[p] ~= nil and type(data.PlayerInFaction[p]) ~= type({}) then
 			data.PlayerInFaction[p] = {data.PlayerInFaction[p]};
+			print(data.PlayerInFaction[p][1]);
 		else
 			data.PlayerInFaction[p] = {};
 		end
