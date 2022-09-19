@@ -3,7 +3,10 @@ require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
-	if Mod.PublicGameData.VersionNumber == nil or Mod.PublicGameData.VersionNumber < 6 then game.SendGameCustomMessage("Refreshing page...", {Type="updateData"}, function(payload) UI.Alert(payload); end); return; end
+	if Mod.PublicGameData.VersionNumber == nil or Mod.PublicGameData.VersionNumber < 6 then
+		-- game.SendGameCustomMessage("Refreshing page...", {Type="updateData"}, function(payload) UI.Alert(payload); end);
+		return;
+	end
 	if Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) if type(t) == type({}) then return #t; else return 1; end end) and dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
 		showAlert(game);
 		local payload = {};
