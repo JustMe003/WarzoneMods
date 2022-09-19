@@ -350,28 +350,27 @@ function declareFactionWar(game, playerID, payload, setReturn)
 				for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
 						print(playerMember, opponentMember);
-						if #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
+						if playerMember == opponentMember then
+							table.insert(kickPlayers, {Player=playerMember, Faction=payload.PlayerFaction, Index=i});
+						elseif #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
 							for i, f in pairs(data.PlayerInFaction[playerMember]) do
 								for j, f2 in pairs(data.PlayerInFaction[opponentMember]) do
 									if f == f2 and payload.PlayerInFaction ~= f and payload.OpponentFaction ~= f then
 										print(f, f2);
 										if data.Factions[f].FactionLeader ~= playerMember then
-											kickPlayer(game, playerID, {Faction=f, Index=i, Player=playerMember}, setReturn);
+											table.insert(kickPlayers, {Player=playerMember, Faction=f, Index=getKeyFromValue(data.Factions[f].FactionMembers, playerMember)});
 										end
-										if data.Factions[f2].FactionLeader ~= opponentMember then
-											kickPlayer(game, playerID, {Faction=f, Index=j, Player=opponentMember}, setReturn);
+										if data.Factions[f].FactionLeader ~= opponentMember then
+											table.insert(kickPlayers, {Player=opponentMember, Faction=f, Index=getKeyFromValue(data.Factions[f].FactionMembers, opponentMember)});
 										end
 									end
 								end
 							end
 						end
-						if playerMember == opponentMember then
-							kickPlayers[i] = playerMember;
-						end
 					end
 				end
 				for i, p in pairs(kickPlayers) do
-					kickPlayer(game, playerID, {Faction=payload.PlayerFaction, Index=i, Player=p}, setReturn);
+					kickPlayer(game, data.Factions[p.Faction].FactionLeader, p, setReturn);
 				end
 				local playerData = Mod.PlayerGameData;
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
