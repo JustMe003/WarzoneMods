@@ -352,17 +352,17 @@ function declareFactionWar(game, playerID, payload, setReturn)
 						print(#kickPlayers);
 						if playerMember == opponentMember then
 							print("Kicked " .. playerMember);
-							table.insert(kickPlayers, {Player=playerMember, Faction=payload.PlayerFaction, Index=i});
+							table.insert(kickPlayers, {Player=playerMember, Faction=payload.PlayerFaction});
 						elseif #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
 							for i, f in pairs(data.PlayerInFaction[playerMember]) do
 								for j, f2 in pairs(data.PlayerInFaction[opponentMember]) do
 									if f == f2 and payload.PlayerInFaction ~= f and payload.OpponentFaction ~= f then
 										print(f, f2);
 										if data.Factions[f].FactionLeader ~= playerMember then
-											table.insert(kickPlayers, {Player=playerMember, Faction=f, Index=getKeyFromValue(data.Factions[f].FactionMembers, playerMember)});
+											table.insert(kickPlayers, {Player=playerMember, Faction=f});
 										end
 										if data.Factions[f].FactionLeader ~= opponentMember then
-											table.insert(kickPlayers, {Player=opponentMember, Faction=f, Index=getKeyFromValue(data.Factions[f].FactionMembers, opponentMember)});
+											table.insert(kickPlayers, {Player=opponentMember, Faction=f});
 										end
 									end
 								end
@@ -371,7 +371,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 					end
 				end
 				for _, p in pairs(kickPlayers) do
-					kickPlayer(game, data.Factions[p.Faction].FactionLeader, p, setReturn);
+					kickPlayer(game, data.Factions[p.Faction].FactionLeader, {Player=p.Player, Faction=p.Faction, Index=getKeyFromValue(data.Factions[p.Faction].FactionMembers, p.Player)}, setReturn);
 				end
 				local playerData = Mod.PlayerGameData;
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
