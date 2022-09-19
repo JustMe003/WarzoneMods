@@ -95,7 +95,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					if terr.OwnerPlayerID == i then
 						for connID, _ in pairs(game.Map.Territories[terrID].ConnectedTo) do
 							if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= WL.PlayerID.Neutral and game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= i then
-								if data.Relations[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID][i] ~= "InFaction" and ((Mod.Settings.GlobalSettings.AICanDeclareOnPlayer and not game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI) or (Mod.Settings.GlobalSettings.AICanDeclareOnAI and game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI)) then
+								if data.Relations[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID][i] ~= "InFaction" and ((Mod.Settings.GlobalSettings.AICanDeclareOnPlayer and not game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI) or (Mod.Settings.GlobalSettings.AICanDeclareOnAI and game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI)) and (playerData[i] == nil or playerData[i].Cooldowns == nil or playerData[i].Cooldowns.WarDeclarations == nil or playerData[i].Cooldowns[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID] == nil) then
 									table.insert(potentialTargets, game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID);
 								end
 							end
@@ -112,6 +112,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					table.insert(data.Events, createEvent(game.ServerGame.Game.Players[i].DisplayName(nil, false) .. " declared war on " .. game.ServerGame.Game.Players[target].DisplayName(nil, false), i, getPlayerHashMap(data, i, target)));
 				end
 			end
+		end
+		if playerData[i] ~= nil then
+			playerData[i].Cooldowns = nil;
 		end
 	end
 	data.TotalIncomeOfAllPlayers = count;
