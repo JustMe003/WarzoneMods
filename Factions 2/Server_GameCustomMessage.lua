@@ -351,6 +351,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
 						print(playerMember, opponentMember);
 						if playerMember == opponentMember then
+							print("Kicked " .. playerMember);
 							table.insert(kickPlayers, {Player=playerMember, Faction=payload.PlayerFaction, Index=i});
 						elseif #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
 							for i, f in pairs(data.PlayerInFaction[playerMember]) do
