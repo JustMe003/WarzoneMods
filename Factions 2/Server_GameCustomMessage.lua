@@ -353,7 +353,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 						if #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
 							for i, f in pairs(data.PlayerInFaction[playerMember]) do
 								for j, f2 in pairs(data.PlayerInFaction[opponentMember]) do
-									if f == f2 then
+									if f == f2 and payload.PlayerInFaction ~= f and payload.OpponentFaction ~= f then
 										if data.Factions[f].FactionLeader ~= playerMember then
 											kickPlayer(game, playerID, {Faction=f, Index=i, Player=playerMember}, setReturn);
 										end
@@ -370,7 +370,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 					end
 				end
 				for i, p in pairs(kickPlayers) do
-					kickPlayer(game, p, {Faction=payload.PlayerFaction, Index=i, Player=p}, setReturn);
+					kickPlayer(game, playerID, {Faction=payload.PlayerFaction, Index=i, Player=p}, setReturn);
 				end
 				local playerData = Mod.PlayerGameData;
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
