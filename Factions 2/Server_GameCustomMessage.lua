@@ -349,15 +349,13 @@ function declareFactionWar(game, playerID, payload, setReturn)
 				local kickPlayers = {};
 				for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
-						print(#kickPlayers);
 						if playerMember == opponentMember then
-							print("Kicked " .. playerMember);
 							table.insert(kickPlayers, {Player=playerMember, Faction=payload.PlayerFaction});
 						elseif #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
+							print(playerMember, opponentMember);
 							for i, f in pairs(data.PlayerInFaction[playerMember]) do
 								for j, f2 in pairs(data.PlayerInFaction[opponentMember]) do
 									if f == f2 and payload.PlayerInFaction ~= f and payload.OpponentFaction ~= f then
-										print(f, f2);
 										if data.Factions[f].FactionLeader ~= playerMember then
 											table.insert(kickPlayers, {Player=playerMember, Faction=f});
 										end
