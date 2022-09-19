@@ -86,6 +86,8 @@ function leaveFaction(game, playerID, payload, setReturn)
 		data.IsInFaction[playerID] = #data.PlayerInFaction[playerID] > 0;
 		local index = 0;
 		local playerData = Mod.PlayerGameData;
+		if playerData[playerID].Cooldowns == nil then playerData[playerID].Cooldowns = {}; end
+		if playerData[playerID].Cooldowns.WarDeclarations == nil then playerData[playerID].Cooldowns.WarDeclarations = {}; end
 		for i, v in pairs(factions[faction].FactionMembers) do
 			if v == playerID then
 				index = i
@@ -103,6 +105,10 @@ function leaveFaction(game, playerID, payload, setReturn)
 				end
 				data.Relations[v][playerID] = relationState;
 				data.Relations[playerID][v] = relationState;
+				playerData[playerID].Cooldowns.WarDeclarations[v] = true;
+				if playerData[v].Cooldowns == nil then playerData[v].Cooldowns = {}; end
+				if playerData[v].Cooldowns.WarDeclarations == nil then playerData[v].Cooldowns.WarDeclarations = {}; end
+				playerData[v].Cooldowns.WarDeclarations[playerID] = true;
 				if not game.Game.Players[v].IsAI then
 					if playerData[v].Notifications == nil then playerData[v].Notifications = setPlayerNotifications(); end
 					table.insert(playerData[v].Notifications.LeftPlayers, {Player=playerID, Faction=faction});
@@ -680,6 +686,9 @@ function kickPlayer(game, playerID, payload, setReturn)
 				if player ~= nil and player == payload.Player then
 					local playerData = Mod.PlayerGameData;
 					table.remove(data.Factions[payload.Faction].FactionMembers, payload.Index);
+					if playerData[player].Cooldowns == nil then playerData[player].Cooldowns = {}; end
+					if playerData[player].Cooldowns.FactionJoins == nil then playerData[player].Cooldowns.FactionJoins = {}; end
+					playerData[player].Cooldowns.FactionJoins[payload.Faction] = true;
 					if not game.Game.Players[player].IsAI then
 						if playerData[player].Notifications == nil then playerData[player].Notifications = setPlayerNotifications(); end
 						if playerData[player].Notifications.GotKicked == nil then playerData[player].Notifications.GotKicked = {}; end
@@ -796,6 +805,9 @@ function DeclineJoinRequest(game, playerID, payload, setReturn)
 		if payload.Index <= #data.Factions[payload.Faction].JoinRequests then
 			if data.Factions[payload.Faction].JoinRequests[payload.Index] == payload.PlayerID then
 				table.remove(data.Factions[payload.Faction].JoinRequests, payload.Index);
+				if playerData[payload.PlayerID].Cooldowns == nil then playerData[payload.PlayerID].Cooldowns = {}; end
+				if playerData[payload.PlayerID].Cooldowns.FactionJoins == nil then playerData[payload.PlayerID].Cooldowns.FactionJoins = {}; end
+				playerData[payload.PlayerID].Cooldowns.FactionJoins[payload.Faction] = true;
 				if not game.Game.Players[payload.PlayerID].IsAI then
 					if playerData[payload.PlayerID].Notifications == nil then playerData[payload.PlayerID].Notifications = setPlayerNotifications(); end
 					table.insert(playerData[payload.PlayerID].Notifications.JoinRequestRejected, payload.Faction);
