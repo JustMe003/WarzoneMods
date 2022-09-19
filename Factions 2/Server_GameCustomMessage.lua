@@ -353,8 +353,8 @@ function declareFactionWar(game, playerID, payload, setReturn)
 						if #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
 							for i, f in pairs(data.PlayerInFaction[playerMember]) do
 								for j, f2 in pairs(data.PlayerInFaction[opponentMember]) do
-									print(f, f2);
 									if f == f2 and payload.PlayerInFaction ~= f and payload.OpponentFaction ~= f then
+										print(f, f2);
 										if data.Factions[f].FactionLeader ~= playerMember then
 											kickPlayer(game, playerID, {Faction=f, Index=i, Player=playerMember}, setReturn);
 										end
