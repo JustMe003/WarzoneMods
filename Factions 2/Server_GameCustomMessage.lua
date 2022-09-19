@@ -346,6 +346,7 @@ function declareFactionWar(game, playerID, payload, setReturn)
 			if data.Factions[payload.OpponentFaction] ~= nil then
 				data.Factions[payload.PlayerFaction].AtWar[payload.OpponentFaction] = true;
 				data.Factions[payload.OpponentFaction].AtWar[payload.PlayerFaction] = true;
+				local kickPlayers = {};
 				for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
 					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
 						print(playerMember, opponentMember);
@@ -364,9 +365,12 @@ function declareFactionWar(game, playerID, payload, setReturn)
 							end
 						end
 						if playerMember == opponentMember then
-							kickPlayer(game, playerID, {Faction=payload.PlayerFaction, Index=i, Player=playerMember}, setReturn);
+							kickPlayers[i] = playerMember;
 						end
 					end
+				end
+				for i, p in pairs(kickPlayers) do
+					kickPlayer(game, p, {Faction=payload.PlayerFaction, Index=i, Player=p}, setReturn);
 				end
 				local playerData = Mod.PlayerGameData;
 				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
