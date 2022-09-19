@@ -20,6 +20,7 @@ function Client_PresentConfigureUI(rootParent)
 		settings.FairFactionsModifier = 0.5;
 		settings.ApproveFactionJoins = false;
 		settings.LockPreSetFactions = false;
+		settings.PlaySpyOnFactionMembers = true;
 	end
 	showSettings();
 	showMain();
@@ -69,6 +70,9 @@ function showSettings()
 	line = newHorizontalGroup("line6", vert);
 	LockPreSetFactions = newCheckbox(win .. "LockPreSetFactions", line, " ", settings.LockPreSetFactions, true, function() settings.LockPreSetFactions = getIsChecked("showSettingsLockPreSetFactions"); end);
 	newLabel(win .. "LockPreSetFactionsText", line, "Don't allow players to join factions created in this mod configuration");
+	line = newHorizontalGroup("line7", vert);
+	PlaySpyOnFactionMembers = newCheckbox(win .. "PlaySpyCard", line, " ", settings.PlaySpyOnFactionMembers, true, function() settings.PlaySpyOnFactionMembers = getIsChecked("showSettingsPlaySpyCard");  end);
+	newLabel(win .. "PlaySpyCardText", line, "Play spy cards between every player if they are in the same faction");
 end
 
 function showMainConfig()
