@@ -687,6 +687,7 @@ function kickPlayer(game, playerID, payload, setReturn)
 				if player ~= nil and player == payload.Player then
 					local playerData = Mod.PlayerGameData;
 					table.remove(data.Factions[payload.Faction].FactionMembers, payload.Index);
+					if playerData[player] == nil then playerData[player] = {}; end
 					if playerData[player].Cooldowns == nil then playerData[player].Cooldowns = {}; end
 					if playerData[player].Cooldowns.FactionJoins == nil then playerData[player].Cooldowns.FactionJoins = {}; end
 					playerData[player].Cooldowns.FactionJoins[payload.Faction] = true;
@@ -806,6 +807,7 @@ function DeclineJoinRequest(game, playerID, payload, setReturn)
 		if payload.Index <= #data.Factions[payload.Faction].JoinRequests then
 			if data.Factions[payload.Faction].JoinRequests[payload.Index] == payload.PlayerID then
 				table.remove(data.Factions[payload.Faction].JoinRequests, payload.Index);
+				if playerData[payload.PlayerID] == nil then playerData[payload.PlayerID] = {}; end
 				if playerData[payload.PlayerID].Cooldowns == nil then playerData[payload.PlayerID].Cooldowns = {}; end
 				if playerData[payload.PlayerID].Cooldowns.FactionJoins == nil then playerData[payload.PlayerID].Cooldowns.FactionJoins = {}; end
 				playerData[payload.PlayerID].Cooldowns.FactionJoins[payload.Faction] = true;
