@@ -106,6 +106,7 @@ function leaveFaction(game, playerID, payload, setReturn)
 				data.Relations[v][playerID] = relationState;
 				data.Relations[playerID][v] = relationState;
 				playerData[playerID].Cooldowns.WarDeclarations[v] = true;
+				if playerData[v] == nil then playerData[v] = {}; end
 				if playerData[v].Cooldowns == nil then playerData[v].Cooldowns = {}; end
 				if playerData[v].Cooldowns.WarDeclarations == nil then playerData[v].Cooldowns.WarDeclarations = {}; end
 				playerData[v].Cooldowns.WarDeclarations[playerID] = true;
