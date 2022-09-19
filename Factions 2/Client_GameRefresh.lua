@@ -3,6 +3,10 @@ require("Client_PresentMenuUI");
 function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
+	if Mod.PublicGameData.VersionNumber == nil or Mod.PublicGameData.VersionNumber < 6 then
+		-- game.SendGameCustomMessage("Refreshing page...", {Type="updateData"}, function(payload) UI.Alert(payload); end);
+		return;
+	end
 	if Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) if type(t) == type({}) then return #t; else return 1; end end) and dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
 		showAlert(game);
 		local payload = {};
@@ -10,7 +14,7 @@ function Client_GameRefresh(game)
 		payload.NewTime = tableToDate(addTime(dateToTable(game.Game.ServerTime), "Seconds", 5));
 		game.SendGameCustomMessage("Updating Factions mod...", payload, function(reply) end);
 	end
-	if Mod.PlayerGameData.NeedsRefresh ~= nil and pageHasClosed ~= nil then
+	if Mod.PlayerGameData.NeedsRefresh ~= nil then
 		game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, true); end);
 		game.SendGameCustomMessage("Refreshing page...", {Type="RefreshWindow"}, function(reply) end);
 	end
@@ -20,19 +24,29 @@ function showAlert(game)
 	local playerData = Mod.PlayerGameData;
 	if playerData.Notifications == nil then return; end
 	local s = "";
-	if playerData.Notifications.GotKicked ~= nil then
-		s = s .. "You were kicked from '" .. playerData.Notifications.GotKicked .. "'\n\n";
+	if playerData.Notifications.GotKicked ~= nil and #playerData.Notifications.GotKicked > 0 then
+		for _, v in pairs(playerData.Notifications.GotKicked) do
+			s = s .. "You were kicked from '" .. v .. "'\n";
+		end
+		s = s .. "\n";
 	end
-	if playerData.Notifications.JoinRequestApproved ~= nil then
-		s = s .. "Your request to join '" .. playerData.Notifications.JoinRequestApproved .. "' was approved\n\n";
+	if playerData.Notifications.JoinRequestApproved ~= nil and #playerData.Notifications.JoinRequestApproved > 0  then
+		s = s .. "Your following join requests were approved:\n"
+		for _, v in pairs(playerData.Notifications.JoinRequestApproved) do
+			s = s .. " - '" .. v .. "'\n";
+		end
+		s = s .. "\n";
 	end
-	if playerData.Notifications.JoinRequestRejected ~= nil then
-		s = s .. "Your request to join '" .. playerData.Notifications.JoinRequestRejected .. "' was rejected\n\n";
+	if playerData.Notifications.JoinRequestRejected ~= nil and #playerData.Notifications.JoinRequestRejected > 0 then
+		for _, v in pairs(playerData.Notifications.JoinRequestRejected) do
+			s = s .. " - Your request to join '" .. v .. "' was rejected\n";
+		end
+		s = s .. "\n";
 	end
 	if playerData.Notifications.FactionWarDeclarations ~= nil and #playerData.Notifications.FactionWarDeclarations > 0 then
 		s = s .. "Your faction is now at war with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionWarDeclarations) do
-			s = s .. " - " .. v .. "\n";
+			s = s .. " - " .. v.PlayerFaction .. " and " .. v.OpponentFaction .. "\n";
 		end
 		s = s .. "\n";
 	end
@@ -46,7 +60,7 @@ function showAlert(game)
 	if playerData.Notifications.FactionsPeaceOffers ~= nil and #playerData.Notifications.FactionsPeaceOffers > 0 then
 		s = s .. "Your faction received the following peace offers from other factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceOffers) do
-			s = s .. " - " .. v .. "\n";
+			s = s .. " - " .. v.PlayerFaction .. " and " .. v.OpponentFaction .. "\n";
 		end
 		s = s .. "\n";
 	end
@@ -60,21 +74,21 @@ function showAlert(game)
 	if playerData.Notifications.FactionsPendingJoins ~= nil and #playerData.Notifications.FactionsPendingJoins > 0 then
 		s = s .. "Your faction has the following join request from players:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPendingJoins) do
-			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
+			s = s .. " - " .. game.Game.Players[v.Player].DisplayName(nil, false) .. " ('" .. v.Faction .. "')\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.FactionsPeaceConfirmed ~= nil and #playerData.Notifications.FactionsPeaceConfirmed > 0 then
 		s = s .. "You're faction is now in peace with the following factions:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceConfirmed) do
-			s = s .. " - " .. v .. "\n";
+			s = s .. " - " .. v.PlayerFaction .. " and " .. v.OpponentFaction .. "\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.FactionsPeaceDeclined ~= nil and #playerData.Notifications.FactionsPeaceDeclined > 0 then
 		s = s .. "The following faction peace offers were declined:\n";
 		for _, v in pairs(playerData.Notifications.FactionsPeaceDeclined) do
-			s = s .. " - " .. v .. "\n";
+			s = s .. " - " .. v.PlayerFaction .. " and " .. v.OpponentFaction .. "\n";
 		end
 	end
 	if playerData.Notifications.PeaceConfirmed ~= nil and #playerData.Notifications.PeaceConfirmed > 0 then
@@ -91,36 +105,40 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
-	if playerData.Notifications.NewFactionLeader ~= nil then
-		if playerData.Notifications.NewFactionLeader == game.Us.ID then
-			s = s .. "You're now the leader of your faction \n\n";
-		else
-			s = s .. "The leader of your faction is now " .. game.Game.Players[playerData.Notifications.NewFactionLeader].DisplayName(nil, false) .. "\n\n";
+	if playerData.Notifications.NewFactionLeader ~= nil and #playerData.Notifications.NewFactionLeader > 0 then
+		s = s .. "The following players are now Faction leaders:\n";
+		for _, v in pairs(playerData.Notifications.NewFactionLeader) do
+			if v.Player == game.Us.ID then
+				s = s .. " - You're now the leader of '" .. v.Faction .. "'\n";
+			else
+				s = s .. " - The leader of '" .. v.Faction .. " is now " .. game.Game.Players[v.Player].DisplayName(nil, false) .. "\n\n";
+			end
 		end
 	end
 	if playerData.Notifications.LeftPlayers ~= nil and #playerData.Notifications.LeftPlayers > 0 then
-		s = s .. "The following players left the faction:\n";
+		s = s .. "The following players left (one of) your faction(s):\n";
 		for _, v in pairs(playerData.Notifications.LeftPlayers) do
-			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
+			s = s .. " - " .. game.Game.Players[v.Player].DisplayName(nil, false) .. " (" .. v.Faction .. "\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.FactionsKicks ~= nil and #playerData.Notifications.FactionsKicks > 0 then
-		s = s .. "The following players were kicked from your faction:\n";
+		s = s .. "The following players were kicked from (one of) your faction(s):\n";
 		for _, v in pairs(playerData.Notifications.FactionsKicks) do
-			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
+			s = s .. " - " .. game.Game.Players[v.Player].DisplayName(nil, false) .. " from '" .. v.Faction .. "'\n";
 		end
 		s = s .. "\n";
 	end
 	if playerData.Notifications.JoinedPlayers ~= nil and #playerData.Notifications.JoinedPlayers > 0 then
 		s = s .. "The following players joined the faction:\n";
 		for _, v in pairs(playerData.Notifications.JoinedPlayers) do
-			s = s .. " - " .. game.Game.Players[v].DisplayName(nil, false) .. "\n";
+			s = s .. " - " .. game.Game.Players[v.Player].DisplayName(nil, false) .. " ('" .. v.Faction .. "')\n";
 		end
 		s = s .. "\n";
 	end
-	if playerData.Notifications.Messages ~= nil and #playerData.Notifications.Messages > 0 then
-		s = s .. "You have " .. #playerData.Notifications.Messages .. " unread messages in the faction chat";
+	print(count(playerData.Notifications.Messages, function(t) return #t; end));
+	if playerData.Notifications.Messages ~= nil and count(playerData.Notifications.Messages, function(t) return #t; end) > 0 then
+		s = s .. "You have unread messages in faction chats";
 	end
 	if #s > 0 then
 		UI.Alert(s);
