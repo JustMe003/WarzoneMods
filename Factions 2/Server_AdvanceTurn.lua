@@ -18,7 +18,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	end
 	data.Events = {};
 	Mod.PublicGameData = data;
-	if game.Settings.FogLevel ~= 1 then
+	if Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers ~= nil and Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers and game.Settings.FogLevel ~= 1 then
 		playSpyCards(game, addNewOrder);
 	end
 	if game.Game.TurnNumber == 1 then
