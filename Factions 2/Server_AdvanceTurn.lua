@@ -7,9 +7,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		end
 	end
 	if data.VersionNumber ~= nil and data.VersionNumber <= 5 then
-		print("VersionNumber = " .. data.VersionNumber)
 		for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
-			print(data.PlayerInFaction[p], type(data.PlayerInFaction[p]));
 			if data.PlayerInFaction[p] ~= nil then
 				if type(data.PlayerInFaction[p]) ~= type({}) then
 					local f = data.PlayerInFaction[p];
@@ -19,7 +17,6 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 			else
 				data.PlayerInFaction[p] = {};
 			end
-			print(data.PlayerInFaction[p], type(data.PlayerInFaction[p]));
 		end
 		data.VersionNumber = 6;
 	end
