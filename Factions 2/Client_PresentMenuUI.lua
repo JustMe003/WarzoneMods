@@ -60,6 +60,7 @@ function showFactions()
 	if Mod.PublicGameData.IsInFaction[game.Us.ID] then
 		newLabel(win .. "PlayerFactionString", vert, "Your faction(s):");
 		for _, faction in pairs(Mod.PublicGameData.PlayerInFaction[game.Us.ID]) do
+			print(type(faction));
 			newButton(win .. "PF" .. faction, vert, faction, function() showFactionDetails(faction) end, game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor);
 		end
 		newLabel(win .. "EmptyAfterPlayerFaction", vert, "\n\nOther factions");
