@@ -23,6 +23,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	functions["RefreshWindow"] = RefreshWindow;
 	functions["updateData"] = updateData;
+	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
 	
 	print(playerID, payload.Type);
 	local playerData = Mod.PlayerGameData;
@@ -862,4 +863,10 @@ function updateData(game, playerID, payload, setReturn)
 		end
 	end
 	setReturnPayload("This mod has been updated! You are now able to be in multiple Factions", "Success");
+end
+
+function hasSeenUpdateWindow(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	playerData[playerID].HasSeenUpdateWindow = true;
+	Mod.PlayerGameData = playerData;
 end
