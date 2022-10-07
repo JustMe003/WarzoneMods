@@ -4,8 +4,12 @@ function Client_GameRefresh(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
 	if Mod.PublicGameData.VersionNumber == nil or Mod.PublicGameData.VersionNumber < 6 then
-		-- game.SendGameCustomMessage("Refreshing page...", {Type="updateData"}, function(payload) UI.Alert(payload); end);
+		UI.Alert("The mod has been updated to 2.0! Unfortunately you'll have to wait untill the game advances a turn before you can use it again");
 		return;
+	end
+	if Mod.PublicGameData.VersionNumber ~= nil and Mod.PlayerGameData.HasSeenUpdateWindow == nil then
+		game.CreateDialog(function(root, size, scroll, game, Close) local vert = UI.CreateVerticalLayoutGroup(root); UI.CreateLabel(vert).SetText("Factions 2.0!\n\nWelcome to the new Factions mod update. Although it might seem as a small change, this has been in the works for 3 months now...\nYou are now able to join multiple Factions. This does come with some new rules which you can access in the mod settings").SetColor("#FFA500"); end);
+		game.SendGameCustomMessage("Updating mod...", {Type="hasSeenUpdateWindow"}, function(t) end);
 	end
 	if Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) if type(t) == type({}) then return #t; else return 1; end end) and dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
 		showAlert(game);
