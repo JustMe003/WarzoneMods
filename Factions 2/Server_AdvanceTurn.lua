@@ -9,11 +9,17 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if data.VersionNumber ~= nil and data.VersionNumber <= 5 then
 		print("VersionNumber = " .. data.VersionNumber)
 		for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
+			print(data.PlayerInFaction[p], type(data.PlayerInFaction[p]));
 			if data.PlayerInFaction[p] ~= nil then
-				data.PlayerInFaction[p] = {data.PlayerInFaction[p]};
+				if type(data.PlayerInFaction[p]) ~= type({}) then
+					local f = data.PlayerInFaction[p];
+					data.PlayerInFaction[p] = {};
+					table.insert(data.PlayerInFaction[p], f);
+				end
 			else
 				data.PlayerInFaction[p] = {};
 			end
+			print(data.PlayerInFaction[p], type(data.PlayerInFaction[p]));
 		end
 	end
 	data.Events = {};
