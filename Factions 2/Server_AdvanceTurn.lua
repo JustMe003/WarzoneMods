@@ -21,6 +21,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 			end
 			print(data.PlayerInFaction[p], type(data.PlayerInFaction[p]));
 		end
+		data.VersionNumber = 6;
 	end
 	data.Events = {};
 	Mod.PublicGameData = data;
