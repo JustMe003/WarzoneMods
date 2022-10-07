@@ -14,6 +14,10 @@ function setPlayerNotifications()
 	t.PeaceOffers = {};
 	t.PeaceDeclines = {};
 	t.PeaceConfirmed = {};
+	t.NewFactionLeader = {};
+	t.GotKicked = {};
+	t.JoinRequestApproved = {};
+	t.JoinRequestRejected = {};
 	return t;
 end
 
@@ -28,16 +32,17 @@ function resetPlayerNotifications(t)
 	t.WarDeclarations = {};
 	t.PeaceConfirmed = {};
 	t.PeaceDeclines = {};
-	t.NewFactionLeader = nil;
-	t.GotKicked = nil;
-	t.JoinRequestApproved = nil;
-	t.JoinRequestRejected = nil;
+	t.NewFactionLeader = {};
+	t.GotKicked = {};
+	t.JoinRequestApproved = {};
+	t.JoinRequestRejected = {};
+	t.Messages = {};
 	return t;
 end
 
 function count(t, func)
 	local c = 0;
-	for i, v in pairs(t) do
+	for _, v in pairs(t) do
 		if func ~= nil then
 			c = c + func(v);
 		else
@@ -81,12 +86,16 @@ end
 function getPlayerHashMap(data, p, p2)
 	local t = {};
 	if data.IsInFaction[p] then
-		concatArrays(t, data.Factions[data.PlayerInFaction[p]].FactionMembers);
+		for _, faction in pairs(data.PlayerInFaction[p]) do
+			concatArrays(t, data.Factions[faction].FactionMembers);
+		end
 	else
 		table.insert(t, p);
 	end
 	if data.IsInFaction[p2] then
-		concatArrays(t, data.Factions[data.PlayerInFaction[p2]].FactionMembers);
+		for _, faction in pairs(data.PlayerInFaction[p2]) do
+			concatArrays(t, data.Factions[faction].FactionMembers);
+		end
 	else
 		table.insert(t, p2);
 	end
@@ -98,6 +107,12 @@ function valueInTable(t, v)
 		if v == v2 then return true; end
 	end
 	return false;
+end
+
+function getKeyFromValue(t, v)
+	for i, v2 in pairs(t) do
+		if v == v2 then return i; end
+	end
 end
 
 function getArrayOfAllPlayers(game)
@@ -114,4 +129,18 @@ function createEvent(m, p, h);
 		t.VisibleTo = h;
 	end
 	return t;
+end
+
+function isFactionLeader(p)
+	if Mod.PublicGameData.IsInFaction[p] then
+		for _, faction in pairs(Mod.PublicGameData.PlayerInFaction[p]) do
+			if type(faction) == type(table) then
+				for i, v in pairs(faction) do print(i, v); end
+			end
+			if Mod.PublicGameData.Factions[faction].FactionLeader == p then
+				return true;
+			end
+		end
+	end
+	return false;
 end
