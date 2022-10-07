@@ -124,20 +124,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	data.TotalIncomeOfAllPlayers = count;
-	if data.VersionNumber == nil or data.VersionNumber <= 5 then
-		data.VersionNumber = 6;
-		for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
-			print(data.PlayerInFaction[p]);
-			if data.PlayerInFaction[p] ~= nil and type(data.PlayerInFaction[p]) ~= type({}) then
-				print(data.PlayerInFaction[p]);
-				local f = data.PlayerInFaction[p];
-				data.PlayerInFaction[p] = {};
-				table.insert(data.PlayerInFaction[p], f);
-			else
-				data.PlayerInFaction[p] = {};
-			end
-		end
-	end
 	Mod.PublicGameData = data;
 	Mod.PlayerGameData = playerData;
 	if game.Game.TurnNumber > 1 then
