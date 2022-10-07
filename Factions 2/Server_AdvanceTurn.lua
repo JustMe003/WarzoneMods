@@ -12,6 +12,9 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		playSpyCards(game, addNewOrder);
 	end
 	playDiploCards(game, addNewOrder);
+	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
+		print(data.PlayerInFaction[p], type(data.PlayerInFaction[p]));
+	end
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
