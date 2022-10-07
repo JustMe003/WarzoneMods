@@ -6,19 +6,24 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 			addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, filterDeadPlayers(game, data.Events[i].VisibleTo), {}, {}, {}));
 		end
 	end
+	if data.VersionNumber ~= nil and data.VersionNumber <= 5 then
+		print("VersionNumber = " .. data.VersionNumber)
+		for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
+			if data.PlayerInFaction[p] ~= nil then
+				data.PlayerInFaction[p] = {data.PlayerInFaction[p]};
+			else
+				data.PlayerInFaction[p] = {};
+			end
+		end
+	end
 	data.Events = {};
 	Mod.PublicGameData = data;
-	if game.Settings.FogLevel ~= 1 then
+	if Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers ~= nil and Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers and game.Settings.FogLevel ~= 1 then
 		playSpyCards(game, addNewOrder);
 	end
-	playDiploCards(game, addNewOrder);
-	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
-		print(data.PlayerInFaction[p], type(data.PlayerInFaction[p]));
+	if game.Game.TurnNumber == 1 then
+		playDiploCards(game, addNewOrder);
 	end
-end
-
-function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
-	
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
@@ -36,37 +41,33 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 				end
 				if data.IsInFaction[i] then
 					local index = 0;
-					for k, v in pairs(data.Factions[data.PlayerInFaction[i]].FactionMembers) do
-						if v == i then
-							index = k;
-							break;
+					for _, faction in pairs(data.PlayerInFaction[i]) do
+						for k, v in pairs(data.Factions[faction].FactionMembers) do
+							if v == i then
+								index = k;
+								break;
+							end
 						end
-					end
-					table.remove(data.Factions[data.PlayerInFaction[i]].FactionMembers, index);
-					if data.Factions[data.PlayerInFaction[i]].FactionLeader == i then
-						if #data.Factions[data.PlayerInFaction[i]].FactionMembers <= 0 then
-							data.Factions[data.PlayerInFaction[i]] = nil;
-							for faction, _ in pairs(data.Factions) do
-								if faction ~= data.PlayerInFaction[i] then
-									data.Factions[faction].AtWar[data.PlayerInFaction[i]] = nil;
-									for k, v in pairs(data.Factions[faction].PendingOffers) do
-										if faction == v then
-											table.remove(data.Factions[faction].PendingOffers, k);
-											data.Factions[faction].Offers[data.PlayerInFaction[i]] = nil;
+						table.remove(data.Factions[faction].FactionMembers, index);
+						if data.Factions[faction].FactionLeader == i then
+							if #data.Factions[faction].FactionMembers <= 0 then
+								data.Factions[faction] = nil;
+								for faction2, _ in pairs(data.Factions) do
+									if faction ~= faction2 then
+										data.Factions[faction2].AtWar[faction] = nil;
+										for k, v in pairs(data.Factions[faction2].PendingOffers) do
+											if faction2 == v then
+												table.remove(data.Factions[faction2].PendingOffers, k);
+												data.Factions[faction2].Offers[faction] = nil;
+											end
 										end
 									end
 								end
+								table.insert(data.Events, createEvent("'" .. faction .. "' was deleted since it had no more members", WL.PlayerID.Neutral));
+							else
+								data.Factions[faction].FactionLeader = data.Factions[faction].FactionMembers[1];
+								table.insert(data.Events, createEvent("The new faction leader of '" .. faction .. "' is now " .. game.ServerGame.Game.Players[data.Factions[faction].FactionLeader].DisplayName(nil, false), data.Factions[faction].FactionLeader));
 							end
-							table.insert(data.Events, createEvent("'" .. data.PlayerInFaction[i] .. "' was deleted since it had no more members", WL.PlayerID.Neutral));
-						else
-							data.Factions[data.PlayerInFaction[i]].FactionLeader = data.Factions[data.PlayerInFaction[i]].FactionMembers[1];
-							local group;
-							if not Mod.Settings.GlobalSettings.VisibleHistory then
-								if data.PlayerInFaction[t.PlayerID] ~= nil then
-									group = data.Factions[data.PlayerInFaction[t.PlayerID]].FactionMembers;
-								end
-							end
-							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), data.Factions[data.PlayerInFaction[i]].FactionLeader));
 						end
 					end
 					data.PlayerInFaction[i] = nil;
@@ -94,7 +95,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					if terr.OwnerPlayerID == i then
 						for connID, _ in pairs(game.Map.Territories[terrID].ConnectedTo) do
 							if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= WL.PlayerID.Neutral and game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= i then
-								if data.Relations[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID][i] ~= "InFaction" and ((Mod.Settings.GlobalSettings.AICanDeclareOnPlayer and not game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI) or (Mod.Settings.GlobalSettings.AICanDeclareOnAI and game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI)) then
+								if data.Relations[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID][i] ~= "InFaction" and ((Mod.Settings.GlobalSettings.AICanDeclareOnPlayer and not game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI) or (Mod.Settings.GlobalSettings.AICanDeclareOnAI and game.ServerGame.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID].IsAIOrHumanTurnedIntoAI)) and (playerData[i] == nil or playerData[i].Cooldowns == nil or playerData[i].Cooldowns.WarDeclarations == nil or playerData[i].Cooldowns[game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID] == nil) then
 									table.insert(potentialTargets, game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID);
 								end
 							end
@@ -112,11 +113,30 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 				end
 			end
 		end
+		if playerData[i] ~= nil then
+			playerData[i].Cooldowns = nil;
+		end
 	end
 	data.TotalIncomeOfAllPlayers = count;
-	data.VersionNumber = 5;
+	if data.VersionNumber == nil or data.VersionNumber <= 5 then
+		data.VersionNumber = 6;
+		for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
+			print(data.PlayerInFaction[p]);
+			if data.PlayerInFaction[p] ~= nil and type(data.PlayerInFaction[p]) ~= type({}) then
+				print(data.PlayerInFaction[p]);
+				local f = data.PlayerInFaction[p];
+				data.PlayerInFaction[p] = {};
+				table.insert(data.PlayerInFaction[p], f);
+			else
+				data.PlayerInFaction[p] = {};
+			end
+		end
+	end
 	Mod.PublicGameData = data;
 	Mod.PlayerGameData = playerData;
+	if game.Game.TurnNumber > 1 then
+		playDiploCards(game, addNewOrder);
+	end
 end
 
 function playDiploCards(game, addNewOrder)
