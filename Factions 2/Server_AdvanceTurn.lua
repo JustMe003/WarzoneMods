@@ -37,6 +37,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 			end
 		end
 	end
+	data.FirstOrderDiplos = {};
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
