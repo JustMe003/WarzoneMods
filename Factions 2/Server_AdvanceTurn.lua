@@ -28,9 +28,21 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if game.Game.TurnNumber == 1 then
 		playDiploCards(game, addNewOrder);
 	end
+	for i, t in pairs(data.FirstOrderDiplos) do
+		for _, v in pairs(t) do
+			if data.Relations[i][v] ~= "AtWar" then
+				local instance = WL.NoParameterCardInstance.Create(WL.CardID.Diplomacy);
+				addNewOrder(WL.GameOrderReceiveCard.Create(i, instance.ID));
+				addNewOrder(WL.GameOrderPlayCardSpy.Create(instance.ID, i, v));
+			end
+		end
+	end
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
+	if game.Game.TurnNumber > 1 then
+		playDiploCards(game, addNewOrder);
+	end
 	local data = Mod.PublicGameData;
 	local playerData = Mod.PlayerGameData;
 	local count = 0;
@@ -88,7 +100,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		if p.State == WL.GamePlayerState.Playing and p.IsAIOrHumanTurnedIntoAI and (Mod.Settings.GlobalSettings.AICanDeclareOnPlayer or Mod.Settings.GlobalSettings.AICanDeclareOnAI) then
 			local isAtWar = false;
 			for _, state in pairs(data.Relations[i]) do
-				if state == "AtWar" then 
+				if state == "AtWar" then
 					isAtWar = true;
 					break;
 				end
@@ -124,9 +136,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	data.TotalIncomeOfAllPlayers = count;
 	Mod.PublicGameData = data;
 	Mod.PlayerGameData = playerData;
-	if game.Game.TurnNumber > 1 then
-		playDiploCards(game, addNewOrder);
-	end
 end
 
 function playDiploCards(game, addNewOrder)
