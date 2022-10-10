@@ -32,9 +32,13 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		for i, t in pairs(data.FirstOrderDiplos) do
 			for _, v in pairs(t) do
 				if data.Relations[i][v] ~= "AtWar" then
+					print(1);
 					local instance = WL.NoParameterCardInstance.Create(WL.CardID.Diplomacy);
+					print(2);
 					addNewOrder(WL.GameOrderReceiveCard.Create(i, instance.ID));
+					print(3);
 					addNewOrder(WL.GameOrderPlayCardSpy.Create(instance.ID, i, v));
+					print(4);
 				end
 			end
 		end
