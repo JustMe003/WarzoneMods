@@ -28,8 +28,8 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if game.Game.TurnNumber == 1 then
 		playDiploCards(game, addNewOrder);
 	end
+	print(data.FirstOrderDiplos);
 	if data.FirstOrderDiplos ~= nil then
-		print(data.FirstOrderDiplos);
 		for i, t in pairs(data.FirstOrderDiplos) do
 			for _, v in pairs(t) do
 				if data.Relations[i][v] ~= "AtWar" then
