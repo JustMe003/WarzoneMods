@@ -28,12 +28,14 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if game.Game.TurnNumber == 1 then
 		playDiploCards(game, addNewOrder);
 	end
-	for i, t in pairs(data.FirstOrderDiplos) do
-		for _, v in pairs(t) do
-			if data.Relations[i][v] ~= "AtWar" then
-				local instance = WL.NoParameterCardInstance.Create(WL.CardID.Diplomacy);
-				addNewOrder(WL.GameOrderReceiveCard.Create(i, instance.ID));
-				addNewOrder(WL.GameOrderPlayCardSpy.Create(instance.ID, i, v));
+	if data.FirstOrderDiplos ~= nil then
+		for i, t in pairs(data.FirstOrderDiplos) do
+			for _, v in pairs(t) do
+				if data.Relations[i][v] ~= "AtWar" then
+					local instance = WL.NoParameterCardInstance.Create(WL.CardID.Diplomacy);
+					addNewOrder(WL.GameOrderReceiveCard.Create(i, instance.ID));
+					addNewOrder(WL.GameOrderPlayCardSpy.Create(instance.ID, i, v));
+				end
 			end
 		end
 	end
