@@ -28,7 +28,6 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if game.Game.TurnNumber == 1 then
 		playDiploCards(game, addNewOrder);
 	end
-	print(data.FirstOrderDiplos);
 	if data.FirstOrderDiplos ~= nil then
 		for i, t in pairs(data.FirstOrderDiplos) do
 			for _, v in pairs(t) do
@@ -41,6 +40,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		end
 	end
 	data.FirstOrderDiplos = {};
+	Mod.PublicGameData = data;
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
