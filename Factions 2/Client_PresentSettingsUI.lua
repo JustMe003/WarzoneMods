@@ -13,6 +13,7 @@ function showMain()
 	counter = 0;
 	local vert = newVerticalGroup("vert", "root");
 	newButton(win .. "button", vert, "To slot configuration", showMainConfig, "Orange");
+	newButton(win .. "forced Rules", vert, "Forced rules", function() forcedRulesInit(function() showMain(); end) end)
 	local line = getLine(vert);
 	newLabel(win .. line, line, "Visible history: " .. tostring(Mod.Settings.GlobalSettings.VisibleHistory));
 	newButton(win .. line .. "button", line, "?", function() UI.Alert("If this settings is on (true), then all the events that happen between the turns will be visible for anyone. If this setting is off, then only the events that have impact on you or a factionmember will be visible. Events can be Faction creations, joins, declaration of war, etc"); end, "Blue");
