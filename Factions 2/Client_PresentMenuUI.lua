@@ -42,7 +42,7 @@ function showMenu()
 		newButton(win .. "createFactionButton", vert, "Create Faction", createFaction, "Lime", not(isFactionLeader(game.Us.ID)));
 		newLabel(win .. "empty", vert, "\n");
 		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, game.Us.Color.HtmlColor);
-		newButton(win .. "ForcedRuls", vert, "Forced rules", function() forcedRulesInit(function() showMenu(); end) end)
+		newButton(win .. "ForcedRuls", vert, "Forced rules", function() forcedRulesInit(function() showMenu(); end) end, "Orange Red")
 		newButton(win .. "ModHistory", vert, "History", showHistory, "Yellow");
 		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
 		newButton(win .. "About", vert, "About", showAbout, "Lime");
