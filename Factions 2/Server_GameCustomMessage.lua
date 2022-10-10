@@ -594,6 +594,9 @@ function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 					if bool then
 						data.Relations[i][p] = "InPeace";
 						data.Relations[p][i] = "InPeace";
+						if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
+						if data.FirstOrderDiplos[i] == nil then data.FirstOrderDiplos[i] = {}; end
+						table.insert(data.FirstOrderDiplos[i], p);
 					end
 				end
 			end
@@ -634,6 +637,9 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 				data.Relations[opponent][playerID] = "InPeace";
 				data.Relations[playerID][opponent] = "InPeace";
+				if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
+				if data.FirstOrderDiplos[playerID] == nil then data.FirstOrderDiplos[playerID] = {}; end
+				table.insert(data.FirstOrderDiplos[playerID], opponent);
 				setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 			else
 				setReturn(setReturnPayload("You cannot accept peace while one of your Factions is in war with your opponents Faction", "Fail"));
@@ -644,6 +650,9 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 			data.Relations[opponent][playerID] = "InPeace";
 			data.Relations[playerID][opponent] = "InPeace";
+			if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
+			if data.FirstOrderDiplos[playerID] == nil then data.FirstOrderDiplos[playerID] = {}; end
+			table.insert(data.FirstOrderDiplos[playerID], opponent);
 			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
 			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		end
