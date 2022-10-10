@@ -653,6 +653,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			data.Relations[playerID][opponent] = "InPeace";
 			if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
 			if data.FirstOrderDiplos[playerID] == nil then data.FirstOrderDiplos[playerID] = {}; end
+			print(#data.FirstOrderDiplos[playerID]);
 			table.insert(data.FirstOrderDiplos[playerID], opponent);
 			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
 			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
