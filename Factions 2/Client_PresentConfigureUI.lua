@@ -1,5 +1,6 @@
 require("UI");
 require("utilities");
+require("ForcedRules");
 function Client_PresentConfigureUI(rootParent)
 	init(rootParent);
 
@@ -37,6 +38,7 @@ function showMain()
 	local line = newHorizontalGroup(win .. "Line", vert);
 	newButton(win .. "Settings", line, "Settings", showSettings, "Aqua");
 	newButton(win .. "Config", line, "Configuration", showMainConfig, "Lime");
+	newButton(win .. "ForcedRules", line, "Forced rules", function() forcedRulesInit(function() showMain(); end) end, "Royal Blue");
 end
 
 function showSettings()
