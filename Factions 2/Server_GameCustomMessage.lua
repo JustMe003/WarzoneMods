@@ -640,6 +640,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
 				if data.FirstOrderDiplos[playerID] == nil then data.FirstOrderDiplos[playerID] = {}; end
 				table.insert(data.FirstOrderDiplos[playerID], opponent);
+				print(#data.FirstOrderDiplos[playerID]);
 				setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 			else
 				setReturn(setReturnPayload("You cannot accept peace while one of your Factions is in war with your opponents Faction", "Fail"));
