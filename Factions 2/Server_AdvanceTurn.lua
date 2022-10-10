@@ -35,7 +35,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 					print(1);
 					local instance = WL.NoParameterCardInstance.Create(WL.CardID.Diplomacy);
 					print(2);
-					addNewOrder(WL.GameOrderReceiveCard.Create(i, instance.ID));
+					addNewOrder(WL.GameOrderReceiveCard.Create(i, {instance.ID}));
 					print(3);
 					addNewOrder(WL.GameOrderPlayCardSpy.Create(instance.ID, i, v));
 					print(4);
