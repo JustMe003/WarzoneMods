@@ -527,6 +527,7 @@ function offerPeace(game, playerID, payload, setReturn)
 			if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
 			if data.FirstOrderDiplos[playerID] == nil then data.FirstOrderDiplos[playerID] = {}; end
 			table.insert(data.FirstOrderDiplos[playerID], payload.Opponent);
+			print(#data.FirstOrderDiplos[playerID]);
 			setReturn(setReturnPayload("The AI accepted your offer", "Success"));
 			table.insert(data.Events, createEvent(game.Game.Players[playerID].DisplayName(nil, false) .. " offered peace to " .. game.Game.Players[payload.Opponent].DisplayName(nil, false) .. ", which was directly accepted", playerID, getPlayerHashMap(data, playerID, payload.Opponent)));
 		else
