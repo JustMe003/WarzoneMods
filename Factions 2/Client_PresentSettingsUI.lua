@@ -1,4 +1,5 @@
 require("UI");
+require("ForcedRules");
 function Client_PresentSettingsUI(rootParent)
 	init(rootParent);
 	showMain();
