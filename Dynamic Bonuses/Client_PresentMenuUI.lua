@@ -145,7 +145,8 @@ end
 
 function canSeeBonusOwner(bonusID)
 	local p = -1;
-	for _, terr in pairs(game.LatestStanding.Territories[game.Map.Bonuses[bonusID].Territories[1]]) do
+	for _, terrID in pairs(game.Map.Bonuses[bonusID].Territories) do
+		local terr = game.LatestStanding.Territories[terrID];
 		if territoryIsVisible(terr.ID) and (p == terr.OwnerPlayerID or (p ~= WL.PlayerID.Neutral and p == -1)) then
 			p = terr.OwnerPlayerID;
 		else
