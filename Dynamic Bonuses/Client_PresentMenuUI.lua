@@ -32,7 +32,7 @@ function validateTerritory(terrDetails)
 		createLabel(vert, "Multiplier: " .. Mod.PublicGameData.WellBeingMultiplier[terrDetails.ID], colors.TextColor);
 		createLabel(vert, "Part of bonuses:", colors.TextColor);
 		for _, bonusID in ipairs(terrDetails.PartOfBonuses) do
-			createButton(vert, game.Map.Bonuses[bonusID].Name .. " (" .. #game.Map.Bonuses[bonusID].Territories .. " territories)", getBonusColor(game.Map.Bonuses[bonusID].ID), function() validateBonus(game.Map.Bonuses[bonusID]) end)
+			createButton(vert, game.Map.Bonuses[bonusID].Name .. " (" .. #game.Map.Bonuses[bonusID].Territories .. " territories)", canSeeBonusOwner(game.Map.Bonuses[bonusID].ID), function() validateBonus(game.Map.Bonuses[bonusID]) end)
 		end
 	else
 		createLabel(vert, "You are not able to see the details of this territory because you cannot see who owns it", colors.TextColor);
@@ -141,6 +141,14 @@ function sum(t)
 		count = count + 1;
 	end
 	return total / count;
+end
+
+function canSeeBonusOwner(bonusID)
+	if bonusIsVisible(bonusID) then
+		return getPlayerColor(game.LatestStanding.Territories[game.Map.Bonuses[bonus].Territories[1]].OwnerPlayerID);
+	else
+		return colors.TextColor;
+	end
 end
 
 function getPlayerColor(playerID)
