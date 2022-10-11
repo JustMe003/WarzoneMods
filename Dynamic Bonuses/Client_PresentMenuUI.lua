@@ -37,6 +37,7 @@ function validateTerritory(terrDetails)
 	else
 		createLabel(vert, "You are not able to see the details of this territory because you cannot see who owns it", colors.TextColor);
 	end
+	createLabel(vert, "\n", colors.TextColor);
 	createButton(vert, "Return", colors.Blue, showMenu);
 end
 
@@ -63,6 +64,7 @@ function validateBonus(bonusDetails)
 	else
 		createLabel(vert, "You are not able to see the details of this bonus because you cannot see who owns it", colors.TextColor);
 	end
+	createLabel(vert, "\n", colors.TextColor);
 	createButton(vert, "Return", colors.Blue, showMenu);
 end
 
