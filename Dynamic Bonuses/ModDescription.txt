@@ -4,3 +4,5 @@ This mod adds 3 new rules:
  - Every territory has a number (multiplier) which will affect every bonus value the territory belongs to
  - When a territory has a different owner at the end of the turn then at the start of the turn, this multiplier is reset to the lowest value
  - Every time a territory has the same owner at the end of the turn as at the start of the turn, this multiplier is increased (until the maximum value is reached)
+
+This mod is compatible with Local Deployment
