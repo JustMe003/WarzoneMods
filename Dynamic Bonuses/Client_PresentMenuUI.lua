@@ -14,7 +14,7 @@ end
 
 function showMenu()
 	resetAll();
-	createButton(vert, "Choose bonus", colors.Lime, pickBonus);
+	createButton(vert, "Choose bonus", colors.Blue, pickBonus);
 	createButton(vert, "Choose territory", colors.Blue, pickTerritory);
 end
 
@@ -37,7 +37,7 @@ function validateTerritory(terrDetails)
 	else
 		createLabel(vert, "You are not able to see the details of this territory because you cannot see who owns it", colors.TextColor);
 	end
-	createButton(vert, "Return", colors.Lime, showMenu);
+	createButton(vert, "Return", colors.Blue, showMenu);
 end
 
 function pickBonus()
@@ -63,7 +63,7 @@ function validateBonus(bonusDetails)
 	else
 		createLabel(vert, "You are not able to see the details of this bonus because you cannot see who owns it", colors.TextColor);
 	end
-	createButton(vert, "Return", colors.Lime, showMenu);
+	createButton(vert, "Return", colors.Blue, showMenu);
 end
 
 function bonusIsVisible(bonusID)
