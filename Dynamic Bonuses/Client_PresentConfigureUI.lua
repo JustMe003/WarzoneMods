@@ -16,7 +16,7 @@ function Client_PresentConfigureUI(rootParent)
 		.SetWholeNumbers(false)
 		.SetValue(minMultiplier);
 	UI.CreateLabel(vert)
-		.SetText("Configure the maximum multiplier")
+		.SetText("Configure the maximum multiplier (bonus value * multiplier)")
 		.SetColor("#AAAAAA");
 	setMaxMultiplier = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(1)
@@ -24,7 +24,7 @@ function Client_PresentConfigureUI(rootParent)
 		.SetWholeNumbers(false)
 		.SetValue(MaxMultiplier);
 	UI.CreateLabel(vert)
-		.SetText("Configure the multiplier per turn")
+		.SetText("Configure the increment of the multiplier each turn")
 		.SetColor("#AAAAAA");
 	setLevelMultiplierIncrement = UI.CreateNumberInputField(vert)
 		.SetSliderMinValue(0.1)
