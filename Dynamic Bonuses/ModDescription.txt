@@ -1,1 +1,6 @@
-citizens longer in peace produce more resources than those who just have fought. The longer you hold a bonus the more income it will generate
+Citizens of any territory do not like to have a different leader. But the longer they have the same leader, the more they will contribute to the society
+
+This mod adds 3 new rules:
+ - Every territory has a number (multiplier) which will affect every bonus value the territory belongs to
+ - When a territory has a different owner at the end of the turn then at the start of the turn, this multiplier is reset to the lowest value
+ - Every time a territory has the same owner at the end of the turn as at the start of the turn, this multiplier is increased (until the maximum value is reached)
