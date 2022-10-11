@@ -145,7 +145,7 @@ end
 
 function canSeeBonusOwner(bonusID)
 	if bonusIsVisible(bonusID) then
-		return getPlayerColor(game.LatestStanding.Territories[game.Map.Bonuses[bonus].Territories[1]].OwnerPlayerID);
+		return getPlayerColor(game.LatestStanding.Territories[game.Map.Bonuses[bonusID].Territories[1]].OwnerPlayerID);
 	else
 		return colors.TextColor;
 	end
