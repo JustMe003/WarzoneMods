@@ -144,11 +144,15 @@ function sum(t)
 end
 
 function canSeeBonusOwner(bonusID)
-	if bonusIsVisible(bonusID) then
-		return getPlayerColor(game.LatestStanding.Territories[game.Map.Bonuses[bonusID].Territories[1]].OwnerPlayerID);
-	else
-		return colors.TextColor;
+	local p = -1;
+	for _, terr in pairs(game.LatestStanding.Territories[game.Map.Bonuses[bonusID].Territories[1]]) do
+		if territoryIsVisible(terr.ID) and (p == terr.OwnerPlayerID or (p ~= WL.PlayerID.Neutral and p == -1)) then
+			p = terr.OwnerPlayerID;
+		else
+			return colors.TextColor;
+		end
 	end
+	return getPlayerColor(p);
 end
 
 function getPlayerColor(playerID)
