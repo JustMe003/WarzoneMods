@@ -1,5 +1,4 @@
 require("UI");
-local __bonusID__;
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
@@ -15,26 +14,56 @@ end
 
 function showMenu()
 	resetAll();
-	createButton(vert, "Choose bonus", colors.Lime, function() UI.InterceptNextBonusLinkClick(validateBonus) end);
-	
+	createButton(vert, "Choose bonus", colors.Lime, pickBonus);
+	createButton(vert, "Choose territory", colors.Blue, pickTerritory);
+end
+
+function pickTerritory()
+	resetAll();
+	createLabel(vert, "Pick a territory to show more information of this territory", colors.TextColor);
+	UI.InterceptNextTerritoryClick(validateTerritory);
+end
+
+function validateTerritory(terrDetails)
+	if terrDetails == nil then pickTerritory(); end
+	resetAll();
+	if territoryIsVisible(terrDetails.ID) then
+		createLabel(vert, terrDetails.Name, colors.TextColor);
+		createLabel(vert, "Multiplier: " .. Mod.PublicGameData.WellBeingMultiplier[terrDetails.ID], colors.TextColor);
+		createLabel(vert, "Part of bonuses:", colors.TextColor);
+		for _, bonusID in ipairs(terrDetails.PartOfBonuses) do
+			createButton(vert, game.Map.Bonuses[bonusID].Name, getBonusColor(game.Map.Bonuses[bonusID].ID), function() validateBonus(game.Map.Bonuses[bonusID]) end)
+		end
+	else
+		createLabel(vert, "You are not able to see the details of this territory because you cannot see who owns it", colors.TextColor);
+	end
+	createButton(vert, "Return", colors.Lime, showMenu);
+end
+
+function pickBonus()
+	resetAll();
+	createLabel(vert, "Pick a bonus link to show more information of this territory", colors.TextColor);
+	UI.InterceptNextBonusLinkClick(validateBonus);
 end
 
 function validateBonus(bonusDetails)
 	if bonusDetails == nil then return; end
 	resetAll();
-	if bonusIsVisible(bonusDetails.ID) or true then
+	if bonusIsVisible(bonusDetails.ID) then
 		createLabel(vert, bonusDetails.Name, getBonusColor(bonusDetails.ID));
 		local array = {};
 		for _, v in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
 			table.insert(array, Mod.PublicGameData.WellBeingMultiplier[v])
 		end
-		createLabel(vert, "This bonus generates " .. round(sum(array) * bonusDetails.Amount) .. " (" .. sum(array) * bonusDetails.Amount .. ")", colors.TextColor);
+		createLabel(vert, "This bonus generates " .. round(sum(array) * bonusDetails.Amount) .. " (" .. rounding(sum(array), 2) .. " * " .. bonusDetails.Amount .. ")", colors.TextColor);
 		createLabel(vert, "\n", colors.TextColor);
 		for _, terrID in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
-			createLabel(vert, game.Map.Territories[terrID].Name .. ": " .. Mod.PublicGameData.WellBeingMultiplier[terrID], colors.TextColor);
+			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getBonusColor(bonusDetails.ID), function() validateTerritory(game.Map.Territories[terrID]); end);
 		end
-		createButton(vert, "Return", colors.Lime, showMenu);
+	else
+		createLabel(vert, "You are not able to see the details of this bonus because you cannot see who owns it", colors.TextColor);
 	end
+	createButton(vert, "Return", colors.Lime, showMenu);
 end
 
 function bonusIsVisible(bonusID)
@@ -95,6 +124,12 @@ function round(n)
 		return math.ceil(n);
 	end
 end
+
+function rounding(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
 
 function sum(t)
 	local total = 0;
