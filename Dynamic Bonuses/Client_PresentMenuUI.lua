@@ -28,11 +28,11 @@ function validateTerritory(terrDetails)
 	if terrDetails == nil then pickTerritory(); end
 	resetAll();
 	if territoryIsVisible(terrDetails.ID) then
-		createLabel(vert, terrDetails.Name, colors.TextColor);
+		createLabel(vert, terrDetails.Name, getPlayerColor(game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID));
 		createLabel(vert, "Multiplier: " .. Mod.PublicGameData.WellBeingMultiplier[terrDetails.ID], colors.TextColor);
 		createLabel(vert, "Part of bonuses:", colors.TextColor);
 		for _, bonusID in ipairs(terrDetails.PartOfBonuses) do
-			createButton(vert, game.Map.Bonuses[bonusID].Name, getBonusColor(game.Map.Bonuses[bonusID].ID), function() validateBonus(game.Map.Bonuses[bonusID]) end)
+			createButton(vert, game.Map.Bonuses[bonusID].Name .. " (" .. #game.Map.Bonuses[bonusID].Territories .. " territories)", getBonusColor(game.Map.Bonuses[bonusID].ID), function() validateBonus(game.Map.Bonuses[bonusID]) end)
 		end
 	else
 		createLabel(vert, "You are not able to see the details of this territory because you cannot see who owns it", colors.TextColor);
@@ -58,7 +58,7 @@ function validateBonus(bonusDetails)
 		createLabel(vert, "This bonus generates " .. round(sum(array) * bonusDetails.Amount) .. " (" .. rounding(sum(array), 2) .. " * " .. bonusDetails.Amount .. ")", colors.TextColor);
 		createLabel(vert, "\n", colors.TextColor);
 		for _, terrID in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
-			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getBonusColor(bonusDetails.ID), function() validateTerritory(game.Map.Territories[terrID]); end);
+			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getPlayerColor(game.LatestStanding.Territories[terrID].OwnerPlayerID), function() validateTerritory(game.Map.Territories[terrID]); end);
 		end
 	else
 		createLabel(vert, "You are not able to see the details of this bonus because you cannot see who owns it", colors.TextColor);
@@ -139,4 +139,12 @@ function sum(t)
 		count = count + 1;
 	end
 	return total / count;
+end
+
+function getPlayerColor(playerID)
+	if playerID ~= WL.PlayerID.Neutral then
+		return game.Game.PlayingPlayers[playerID].Color.HtmlColor;
+	else
+		return colors.TextColor;
+	end
 end
