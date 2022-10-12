@@ -222,6 +222,7 @@ function showFactionDetails(factionName)
 	end
 	newLabel(win .. "label", vert, factionName, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
 	newLabel(win .. "EmptyAfterFactionName", vert, " ");
+	newButton(win .. "ViewFactionRelations", vert, "View Faction relations", function() viewFactionRelations(factionName); end, "Orange Red");
 	if game.Us.ID == Mod.PublicGameData.Factions[factionName].FactionLeader then
 		newButton(win .. "FactionSettings", vert, "Faction settings", function() factionSettings(factionName) end, "Tyrian Purple");
 		if Mod.Settings.GlobalSettings.ApproveFactionJoins then
@@ -237,6 +238,28 @@ function showFactionDetails(factionName)
 		if Mod.PublicGameData.Factions[factionName].FactionLeader == game.Us.ID and v ~= game.Us.ID then
 			newButton(win .. i .. "kick", line, "Kick", function() confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, false) .. " from your faction?", function() Close(); func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Kicking player...", {Type="kickPlayer", Index=i, Player=v, Faction=factionName}, gameCustomMessageReturn); showFactions(); end, function() showFactionDetails(factionName); end); end, "Red");
 			newButton(win .. i .. "Promote", line, "Promote", function() confirmChoice("Do you really wish to promote " .. game.Game.Players[v].DisplayName(nil, false) .. "? You will lose your role as faction leader", function() Close(); func = function() showFactionDetails(factionName); end; game.SendGameCustomMessage("Promoting player...", {Type="setFactionLeader", PlayerID=v, Faction=factionName}, gameCustomMessageReturn); end, function() showFactionDetails(factionName); end); end, "Orange");
+		end
+	end
+end
+
+function viewFactionRelations(factionName)
+	local win = "showFactionRelations" .. factionName;
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newLabel(win .. "label", vert, factionName, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
+	newLabel(win .. "emptyAFterLabel", vert, "\n");
+	for f, b in pairs(Mod.PublicGameData.Factions[factionName].AtWar) do
+		local line = newHorizontalGroup("line" .. f, vert);
+		if b then
+			newButton(win .. f .. "war", line, f, function() showFactionDetails(f); end, game.Game.Players[Mod.PublicGameData.Factions[f].FactionLeader].Color.HtmlColor);
+			newLabel(win .. f .. "relation", line, ":\tHostile", "Orange Red");
+		else
+			newButton(win .. f .. "war", line, f, function() showFactionDetails(f); end, game.Game.Players[Mod.PublicGameData.Factions[f].FactionLeader].Color.HtmlColor);
+			newLabel(win .. f .. "relation", line, ":\tPeaceful", "Orange Red");
 		end
 	end
 end
