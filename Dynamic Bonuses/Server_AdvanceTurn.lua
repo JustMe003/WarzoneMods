@@ -23,13 +23,16 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 	Mod.PublicGameData = data;
 	local t = {};
+	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
+		t[p] = {};
+	end
 	for _, bonus in pairs(game.Map.Bonuses) do
 		local pID = holdsBonus(game, bonus.Territories)
 		if pID ~= WL.PlayerID.Neutral and getBonusValue(game, bonus.ID) ~= 0 then
 			if not game.Settings.LocalDeployments then
-				table.insert(t, WL.IncomeMod.Create(pID, -getBonusValue(game, bonus.ID), "Cancel out " .. bonus.Name))
+				table.insert(t[pID], WL.IncomeMod.Create(pID, -getBonusValue(game, bonus.ID), "Cancel out " .. bonus.Name))
 			else
-				table.insert(t, WL.IncomeMod.Create(pID, -getBonusValue(game, bonus.ID), "Cancel out " .. bonus.Name, bonus.ID));
+				table.insert(t[pID], WL.IncomeMod.Create(pID, -getBonusValue(game, bonus.ID), "Cancel out " .. bonus.Name, bonus.ID));
 			end
 		end
 	end
@@ -41,13 +44,15 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 				table.insert(array, Mod.PublicGameData.WellBeingMultiplier[terrID])
 			end
 			if not game.Settings.LocalDeployments then
-				table.insert(t, WL.IncomeMod.Create(pID, round(getBonusValue(game, bonus.ID) * sum(array)), "Actual income of " .. bonus.Name));
+				table.insert(t[pID], WL.IncomeMod.Create(pID, round(getBonusValue(game, bonus.ID) * sum(array)), "Actual income of " .. bonus.Name));
 			else
-				table.insert(t, WL.IncomeMod.Create(pID, round(getBonusValue(game, bonus.ID) * sum(array)), "Actual income of " .. bonus.Name, bonus.ID));
+				table.insert(t[pID], WL.IncomeMod.Create(pID, round(getBonusValue(game, bonus.ID) * sum(array)), "Actual income of " .. bonus.Name, bonus.ID));
 			end
 		end
 	end
-	addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Dynamic Bonuses", nil, {}, {}, t));
+	for p, arr in pairs(t) do
+		addNewOrder(WL.GameOrderEvent.Create(p, "Dynamic Bonuses", nil, {}, {}, arr));
+	end
 end
 
 function holdsBonus(game, terrList)
