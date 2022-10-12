@@ -51,7 +51,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	for p, arr in pairs(t) do
-		addNewOrder(WL.GameOrderEvent.Create(p, "Dynamic Bonuses", nil, {}, {}, arr));
+		addNewOrder(WL.GameOrderEvent.Create(p, "Dynamic Bonuses", {}, {}, {}, arr));
 	end
 end
 
