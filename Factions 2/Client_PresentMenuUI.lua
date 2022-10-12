@@ -185,13 +185,12 @@ function viewPlayerRelations(playerID, relation)
 			if (relation == "All") or (relation == "Hostile" and Mod.PublicGameData.Relations[playerID][i] == "AtWar") or (relation == "Peaceful" and Mod.PublicGameData.Relations[playerID][i] == "InPeace") or (relation == "Friendly" and Mod.PublicGameData.Relations[playerID][i] == "InFaction") then
 				line = newHorizontalGroup("line" .. i, vert);
 				newButton(win .. i, line, p.DisplayName(nil, false), function() showPlayerDetails(i) end, p.Color.HtmlColor);
-				newLabel(win .. i .. ":", line, ": ");
 				if Mod.PublicGameData.Relations[i][playerID] == "AtWar" then
-					newLabel(win .. i .. "relationStatus", line, "Hostile", "Red");
+					newLabel(win .. i .. "relationStatus", line, "\tHostile", "Red");
 				elseif Mod.PublicGameData.Relations[i][playerID] == "InPeace" then
-					newLabel(win .. i .. "relationStatus", line, "Peaceful", "Yellow");
+					newLabel(win .. i .. "relationStatus", line, "\tPeaceful", "Yellow");
 				else
-					newLabel(win .. i .. "relationStatus", line, "Friendly", "Green");
+					newLabel(win .. i .. "relationStatus", line, "\tFriendly", "Green");
 				end
 			end
 		end
