@@ -249,10 +249,12 @@ function viewFactionRelations(factionName)
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "label", vert, factionName, function() showFactionDetails(factionName); end, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
+	local line = newHorizontalGroup("lineReturn", "root");
+	newButton(win .. "label", line, factionName, function() end, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
+	newButton(win .. "return", line, "Return", function() showFactionDetails(factionName); end, "Orange");
 	newLabel(win .. "emptyAFterLabel", vert, "\n");
 	for f, b in pairs(Mod.PublicGameData.Factions[factionName].AtWar) do
-		local line = newHorizontalGroup("line" .. f, vert);
+		line = newHorizontalGroup("line" .. f, vert);
 		if b then
 			newButton(win .. f .. "war", line, f, function() showFactionDetails(f); end, game.Game.Players[Mod.PublicGameData.Factions[f].FactionLeader].Color.HtmlColor);
 			newLabel(win .. f .. "relation", line, "\tHostile", "Orange Red");
