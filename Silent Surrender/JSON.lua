@@ -15,9 +15,9 @@ print(4)
 function getObjectFromJSON(s)
   local t = {};
   while #s > 1 do
-    local end = string.find(s, ":");
-    local key = string.sub(s, 1, end - 1);
-    s = string.sub(s, end + 1, -1);
+    local ending = string.find(s, ":");
+    local key = string.sub(s, 1, ending - 1);
+    s = string.sub(s, ending + 1, -1);
     if tonumber(key) ~= nil then
       key = tonumber(key);
     end
@@ -25,13 +25,13 @@ function getObjectFromJSON(s)
     if c == "{" then
       t[key], s = getObjectFromJSON(string.sub(s, 2, -1));
     else
-      local start, end = string.find(s, "%x");
-      t[key] = string.sub(s, start, end);
+      local start, ending = string.find(s, "%x");
+      t[key] = string.sub(s, start, ending);
       if tonumber(t[key]) ~= nil then
         t[key] = tonumber(t[key]);
       end
-      c = string.sub(s, end + 1, end + 1);
-      s = string.sub(s, end + 2, -1);
+      c = string.sub(s, ending + 1, ending + 1);
+      s = string.sub(s, ending + 2, -1);
       if c == "}" then
         return t, s;
       end
