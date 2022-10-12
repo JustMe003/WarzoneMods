@@ -256,10 +256,10 @@ function viewFactionRelations(factionName)
 		local line = newHorizontalGroup("line" .. f, vert);
 		if b then
 			newButton(win .. f .. "war", line, f, function() showFactionDetails(f); end, game.Game.Players[Mod.PublicGameData.Factions[f].FactionLeader].Color.HtmlColor);
-			newLabel(win .. f .. "relation", line, ":\tHostile", "Orange Red");
+			newLabel(win .. f .. "relation", line, "\tHostile", "Orange Red");
 		else
 			newButton(win .. f .. "war", line, f, function() showFactionDetails(f); end, game.Game.Players[Mod.PublicGameData.Factions[f].FactionLeader].Color.HtmlColor);
-			newLabel(win .. f .. "relation", line, ":\tPeaceful", "Yellow");
+			newLabel(win .. f .. "relation", line, "\tPeaceful", "Yellow");
 		end
 	end
 end
