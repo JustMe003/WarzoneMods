@@ -1,5 +1,4 @@
 require("UI");
-require("ForcedRules");
 function Client_PresentSettingsUI(rootParent)
 	init(rootParent);
 	showMain();
@@ -14,7 +13,6 @@ function showMain()
 	counter = 0;
 	local vert = newVerticalGroup("vert", "root");
 	newButton(win .. "button", vert, "To slot configuration", showMainConfig, "Orange");
-	newButton(win .. "forced Rules", vert, "Forced rules", function() forcedRulesInit(function() showMain(); end) end, "Royal Blue");
 	local line = getLine(vert);
 	newLabel(win .. line, line, "Visible history: " .. tostring(Mod.Settings.GlobalSettings.VisibleHistory));
 	newButton(win .. line .. "button", line, "?", function() UI.Alert("If this settings is on (true), then all the events that happen between the turns will be visible for anyone. If this setting is off, then only the events that have impact on you or a factionmember will be visible. Events can be Faction creations, joins, declaration of war, etc"); end, "Blue");
@@ -53,12 +51,12 @@ function showMainConfig()
 	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
 	newLabel(win .. "factions", vert, "Factions:");
 	for i, _ in pairs(Mod.Settings.Configuration.Factions) do
-		newButton(win .. i, vert, i, function() showFactionConfig(i); end, getFactionColor(i));
+		newButton(win .. i, vert, i, function() showFactionConfig(i); end);
 	end
 	newLabel(win .. "EmptyAfterFactions", vert, " ");
 	newLabel(win .. "Slots", vert, "Slots:")
 	for i, _ in pairs(Mod.Settings.Configuration.Relations) do
-		newButton(win .. i, vert, getSlotName(i), function() showSlotConfig(i); end, getSlotColor(i));
+		newButton(win .. i, vert, getSlotName(i), function() showSlotConfig(i); end);
 	end
 end
 
@@ -70,19 +68,16 @@ function showSlotConfig(slot)
 	end
 	window(win);
 	local vert = newVerticalGroup("Vert", "root");
-	if slot == "???" then showMainConfig(); return; end
 	newButton(win .. "return", vert, "Return", showMainConfig, "Orange");
 	newLabel(win .. "SlotName", vert, getSlotName(slot) .. " (Relation configuration)\n");
 	if Mod.Settings.Configuration.SlotInFaction[slot] ~= nil then
 		local line = newHorizontalGroup(win .. "line", vert);
-		newLabel(win .. "factionLabel", line, "Faction(s): ");
-		for _, f in pairs(Mod.Settings.Configuration.SlotInFaction[slot]) do
-			newButton(win .. "factionButton", line, f, function() showFactionConfig(f); end, getFactionColor(f));
-		end
+		newLabel(win .. "factionLabel", line, "Faction: ");
+		newButton(win .. "factionButton", line, Mod.Settings.Configuration.SlotInFaction[slot], function() showFactionConfig(Mod.Settings.Configuration.SlotInFaction[slot]); end);
 	end
 	for i, v in pairs(Mod.Settings.Configuration.Relations[slot]) do
 		local line = newHorizontalGroup(win .. i .. "line", vert);
-		newButton(win .. i .. "slotName", line, getSlotName(i), function() showSlotConfig(i); end, getSlotColor(i));
+		newButton(win .. i .. "slotName", line, getSlotName(i), function() showSlotConfig(i); end);
 		if v == "AtWar" then
 			newLabel(win .. i .. "Button", line, "War", "Red");
 		elseif v == "InPeace" then
@@ -106,10 +101,10 @@ function showFactionConfig(faction)
 	newLabel(win .. "FactionName", vert, faction .. " (configuration)\n");
 	local line = newHorizontalGroup(win .. "line", vert);
 	newLabel(win .. "FactionLeaderString", line, "Faction leader: ");
-	newButton(win .. "SetFactionLeader", line, getSlotName(getFactionLeader(faction)), function() showSlotConfig(getFactionLeader(faction)); end, getFactionColor(faction));
+	newLabel(win .. "SetFactionLeader", line, getFactionLeader(faction), "Yellow");
 	newLabel(win .. "EmptyAfterFactionLeader", vert, "\nFaction members:");
 	for i, v in pairs(Mod.Settings.Configuration.Factions[faction].FactionMembers) do
-		newButton(win .. i .. "Slot", vert, getSlotName(v), function() showSlotConfig(v); end, getSlotColor(v));
+		newLabel(win .. i .. "Slot", vert, getSlotName(v));
 	end
 	local line = newHorizontalGroup(win .. "line2", vert);
 	newLabel(win .. "EmptyAfterSlotsConfig", vert, " ");
@@ -134,7 +129,7 @@ function showFactionRelationConfig(faction)
 			else
 				newLabel(win .. i .. "Button", line, "Peace", "Green");
 			end
-			newButton(win .. i .. "text", line, i, function() showFactionConfig(i); end, getFactionColor(i));
+			newLabel(win .. i .. "text", line, i);
 		end
 	end
 end
@@ -146,7 +141,7 @@ end
 
 function getFactionLeader(faction)
 	if Mod.Settings.Configuration.Factions[faction].FactionLeader ~= nil then
-		return Mod.Settings.Configuration.Factions[faction].FactionLeader;
+		return getSlotName(Mod.Settings.Configuration.Factions[faction].FactionLeader);
 	else
 		return "???";
 	end
@@ -160,16 +155,4 @@ function getSlotName(i)
 		i = i - (26 * math.floor(i / 26));
 	end
 	return s .. c[i % 26 + 1];
-end
-
-function getSlotColor(slot)
-	for _, color in pairs(colors) do
-		if slot == 0 then return color; end
-		slot = slot - 1;
-	end
-end
-
-function getFactionColor(faction)
-	if Mod.Settings.Configuration.Factions[faction].FactionLeader ~= nil then return getSlotColor(Mod.Settings.Configuration.Factions[faction].FactionLeader); end
-	return "Dark Gray";
 end
