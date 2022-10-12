@@ -27,7 +27,7 @@ function showDiplomacyRules()
     end
     window(win);
     local vert = newVerticalGroup("Vert", "root");
-    newLabel(win .. "text", vert, "Most diplomacy mods skip illegal orders, like attacks on players which whom you have an alliance. The Factions mod does this differently, it uses Diplomacy cards to get to the same point. The cards are automatically played all the way at the end of the turn with the exception of some occurrences. This might occur if you just established peace with another players or multiple", "#CCCCCC");
+    newLabel(win .. "text", vert, "Most diplomacy mods skip illegal orders, like attacks on players which whom you have an alliance. The Factions mod does this differently, it uses Diplomacy cards to get the same result. The cards are automatically played all the way at the end of the turn with 2 exceptions. An exception for example is when you just have established peace with other players, otherwise these players are still able to attack you during the turn. The other exception is that during the first turn, the mod plays the diplomacy cards before your own orders are processed.", "#CCCCCC");
     newButton(win .. "Return", vert, "Return", forcedRules, "Orange");
 
 end
