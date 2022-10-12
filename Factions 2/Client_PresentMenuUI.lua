@@ -249,7 +249,7 @@ function viewFactionRelations(factionName)
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	local line = newHorizontalGroup("lineReturn", "root");
+	local line = newHorizontalGroup("lineReturn", "vert");
 	newButton(win .. "label", line, factionName, function() end, game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
 	newButton(win .. "return", line, "Return", function() showFactionDetails(factionName); end, "Orange");
 	newLabel(win .. "emptyAFterLabel", vert, "\n");
