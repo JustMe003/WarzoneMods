@@ -2,6 +2,7 @@ require("UI");
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
+	if Game.Us == nil then UI.Alert("Spectators cannot use this menu unfortunately"); close(); return; end
 	setMaxSize(500, 400);
 	game = Game;
 	colors = init();
@@ -20,7 +21,7 @@ end
 
 function pickTerritory()
 	resetAll();
-	createLabel(vert, "Pick a territory to show more information of this territory", colors.TextColor);
+	createLabel(vert, "Pick a territory to show more information of this territory\n\nYou can move this dialog out of the way if you need to", colors.TextColor);
 	UI.InterceptNextTerritoryClick(validateTerritory);
 end
 
@@ -43,7 +44,7 @@ end
 
 function pickBonus()
 	resetAll();
-	createLabel(vert, "Pick a bonus link to show more information of this territory", colors.TextColor);
+	createLabel(vert, "Pick a bonus link to show more information of this territory\n\nYou can move this dialog out of the way if you need to", colors.TextColor);
 	UI.InterceptNextBonusLinkClick(validateBonus);
 end
 
