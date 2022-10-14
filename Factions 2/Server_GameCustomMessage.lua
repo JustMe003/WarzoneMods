@@ -25,7 +25,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 	functions["updateData"] = updateData;
 	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
 	
-	print(playerID, payload.Type);
+	print(playerID, payload.Type, Mod.PublicGameData.VersionNumber);
 	local playerData = Mod.PlayerGameData;
 	if not game.Game.Players[playerID].IsAI then
 		playerData[playerID].NeedsRefresh = true;
