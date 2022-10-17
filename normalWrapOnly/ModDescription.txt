@@ -1,0 +1,1 @@
+Skips all attacks / transfers that go around the map
