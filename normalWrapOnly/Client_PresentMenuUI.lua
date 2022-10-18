@@ -8,6 +8,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 end
 
 function showOrderList()
+    SetWindow("showOrderList");
     for _, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderAttackTransfer" then
             if Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
