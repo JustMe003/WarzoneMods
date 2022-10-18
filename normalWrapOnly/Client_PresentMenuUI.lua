@@ -4,10 +4,12 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     colors = GetColors();
     Game = game;
     vert = CreateVerticalLayoutGroup(rootParent);
+    SetWindow("ROOT");
     showOrderList();
 end
 
 function showOrderList()
+    DestroyWindow();
     SetWindow("showOrderList");
     for _, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderAttackTransfer" then
