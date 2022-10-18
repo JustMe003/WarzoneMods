@@ -5,6 +5,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     Game = game;
     SetWindow("ROOT");
     vert = CreateVerticalLayoutGroup(rootParent);
+    SetWindow("LKDJOIGH");
     showOrderList();
 end
 
