@@ -3,8 +3,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Init();
     colors = GetColors();
     Game = game;
-    vert = CreateVerticalLayoutGroup(rootParent);
     SetWindow("ROOT");
+    vert = CreateVerticalLayoutGroup(rootParent);
     showOrderList();
 end
 
