@@ -4,7 +4,7 @@ colors = GetColors();
 
 function showIntroductionDialog(game, message)
     payload = {Message=message};
-    createDialog(game);
+    createDialog(game, createIntroductionDialog);
 end
 
 function hasSeenIntroductionMessage()
