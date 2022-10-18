@@ -19,9 +19,9 @@ function showOrderList()
     for _, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderAttackTransfer" then
             if Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
-                CreateButton(vert).SetText("Move " .. order.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.OrangeRed);
+                CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.OrangeRed);
             else
-                CreateButton(vert).SetText("Move " .. order.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.Green);
+                CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.Green);
             end
         elseif order.proxyType == "GameOrderDeploy" then
             CreateButton(vert).SetText("Deploy " .. order.NumArmies .. " on " .. Game.Map.Territories[order.DeployOn].Name).SetColor(colors.Green);
