@@ -1,4 +1,3 @@
-require("Dialog");
 function Server_GameCustomMessage(game, playerID, payload, setReturn)
     if payload.Type == 0 then
         pd = Mod.PlayerGameData[playerID];
