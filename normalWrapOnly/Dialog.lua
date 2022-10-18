@@ -43,6 +43,5 @@ end
 
 function savePlayerWantsNotifications(playerID, game, payload, setReturn)
     if pd == nil then pd = {}; end
-    if pd[playerID] == nil then pd[playerID] = {}; end
-    pd[playerID].Notifications_JAD = payload.Value;
+    pd.Notifications_JAD = payload.Value;
 end
