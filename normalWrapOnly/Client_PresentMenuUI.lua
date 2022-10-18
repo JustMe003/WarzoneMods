@@ -23,6 +23,7 @@ function showOrderList()
     if cnt == 0 then
         CreateLabel(vert).SetText("All orders are valid (for this mod at least)!").SetColor(colors.Lime);
     end
+    CreateButton(vert).SetText("[+]").SetColor(colors.RoyalBlue).SetOnClick(function() Game.SendGameCustomMessage("[+]", {Type=0}, function(t)  end) end);
 end
 
 function showMoveDetails(order, i)
