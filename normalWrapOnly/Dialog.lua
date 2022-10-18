@@ -28,12 +28,12 @@ function createIntroductionDialog(rootParent, setMaxSize, setScrollable, game, c
     CreateLabel(vert).SetText("This mod makes use of Just_A_Dutchman_'s dialog system\n\n").SetColor(colors.Ivory);
     CreateLabel(vert).SetText(payload.Message).SetColor(colors.Orange);
     CreateEmpty(vert).SetPreferredHeight(10);
-    createYesNoButtons(vert, game);
+    createYesNoButtons(vert, game, close);
 end
 
-function createYesNoButtons(parent, game)
-    CreateButton(parent).SetText("Yes, I want to receive warnings and other messages from this mod").SetColor(colors.Ivory).SetOnClick(function() game.SendGameCustomMessage("Updating mod", {Type="showMessages", Value=true}, function(t) UI.Alert("Successfully updated the mod!\n\nIf you want to change your choice you can do this in the mod menu") end); end);
-    CreateButton(parent).SetText("No, I do not want to receive warnings or other messages from this mod").SetColor(colors.Ivory).SetOnClick(function() game.SendGameCustomMessage("Updating mod", {Type="showMessages", Value=false}, function(t) UI.Alert("Successfully updated the mod!\n\nIf you want to change your choice you can do this in the mod menu") end); end);
+function createYesNoButtons(parent, game, close)
+    CreateButton(parent).SetText("Yes, I want to receive warnings and other messages from this mod").SetColor(colors.Green).SetOnClick(function() game.SendGameCustomMessage("Updating mod", {Type="showMessages", Value=true}, function(t) UI.Alert("Successfully updated the mod!\n\nIf you want to change your choice you can do this in the mod menu") end); close(); end);
+    CreateButton(parent).SetText("No, I do not want to receive warnings or other messages from this mod").SetColor(colors.Red).SetOnClick(function() game.SendGameCustomMessage("Updating mod", {Type="showMessages", Value=false}, function(t) UI.Alert("Successfully updated the mod!\n\nIf you want to change your choice you can do this in the mod menu") end); close(); end);
 end
 
 function getFunction(type)
