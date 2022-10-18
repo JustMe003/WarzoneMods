@@ -10,12 +10,13 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 
     local functions = {showMessages=setPlayerNotifications()};
 
-    pd = Mod.PlayerGameData[playerID];
+    pd = Mod.PlayerGameData;
     functions[payload.Type](game, playerID, payload, setReturn);
-    Mod.PlayerGameData[playerID] = pd;
+    Mod.PlayerGameData = pd;
 end
 
-function setPlayerNotifications()
+function setPlayerNotifications(game, playerID, payload, setReturn)
     if pd == nil then pd = {}; end
+    if pd[playerID] == nil then pd[playerID] = {}; end
     pd.Notifications_JAD = payload.Value;
 end
