@@ -5,6 +5,6 @@ function Client_GameRefresh(game)
         showIntroductionDialog(game, ""); return;
     end
     if playerWantsNotifications() then
-        game.CreateDialog()
+        game.CreateDialog(Client_PresentMenuUI);
     end
 end
