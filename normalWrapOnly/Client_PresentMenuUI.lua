@@ -13,10 +13,10 @@ end
 function showOrderList()
     DestroyWindow();
     SetWindow("showOrderList");
-    for _, order in pairs(Game.Orders) do
+    for i, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderAttackTransfer" then
             if Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
-                CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.OrangeRed);
+                CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.OrangeRed).SetOnClick(function() showMoveDetails(order, i); end);
             else
                 CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. Game.Map.Territories[order.From].Name .. " to " .. Game.Map.Territories[order.To].Name).SetColor(colors.Green);
             end
@@ -34,8 +34,11 @@ function showOrderList()
     end
 end
 
-function showMoveDetails(order)
+function showMoveDetails(order, i)
     DestroyWindow();
     SetWindow("ShowOrderDetails");
-
+    if Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
+        CreateLabel(vert).SetText("This order will not be processed. Any move that makes your armies move from one side to the other side of the map are skipped");
+        CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() local t = Game.Orders; table.remove(t, i); Game.Orders = t; end)
+    end
 end
