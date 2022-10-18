@@ -3,6 +3,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Init();
     colors = GetColors();
     Game = game;
+    setMaxSize(500, 600);
     SetWindow("ROOT");
     vert = CreateVerticalLayoutGroup(rootParent);
     SetWindow("LKDJOIGH");
@@ -17,10 +18,9 @@ function showOrderList()
             if Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
                 CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.OrangeRed);
             else
-                CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.Green);
+                CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. Game.Map.Territories[order.From].Name .. " to " .. Game.Map.Territories[order.To].Name).SetColor(colors.Green);
             end
         elseif order.proxyType == "GameOrderDeploy" then
-            CreateButton(vert).SetText("Deploy " .. order.NumArmies .. " on " .. Game.Map.Territories[order.DeployOn].Name).SetColor(colors.Green);
             CreateButton(vert).SetText("Deploy " .. order.NumArmies .. " on " .. Game.Map.Territories[order.DeployOn].Name).SetColor(colors.Green);
         elseif string.find(order.proxyType, "GameOrderPlayCard") ~= nil then
             CreateButton(vert).SetText("Play a card").SetColor(colors.Green);
@@ -32,4 +32,10 @@ function showOrderList()
             CreateButton(vert).SetText(order.proxyType).SetColor(colors.Green);
         end
     end
+end
+
+function showMoveDetails(order)
+    DestroyWindow();
+    SetWindow("ShowOrderDetails");
+
 end
