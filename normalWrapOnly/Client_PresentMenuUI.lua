@@ -12,7 +12,6 @@ end
 function showOrderList()
     DestroyWindow();
     SetWindow("showOrderList");
-    print(#Game.Orders);
     for _, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderAttackTransfer" then
             if Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
