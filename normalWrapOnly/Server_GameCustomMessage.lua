@@ -5,6 +5,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
         if pd == nil then pd = {}; end
         pd.ABC_JAD = 0;
         Mod.PlayerGameData[playerID] = pd;
+        return;
     end
     pd = Mod.PlayerGameData[playerID];
     getFunction(payload.Type)(game, playerID, payload, setReturn);
