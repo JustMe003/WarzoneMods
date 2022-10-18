@@ -39,7 +39,13 @@ function showMoveDetails(order, i)
     SetWindow("ShowOrderDetails");
     if Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
         CreateLabel(vert).SetText("This order will not be processed. Any move that makes your armies move from one side to the other side of the map are skipped");
-        CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() local t = Game.Orders; table.remove(t, i); Game.Orders = t; end)
+        CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() removeOrder(order, i); end)
     end
     CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
+end
+
+function removeOrder(order, i)
+    local t = Game.Orders;
+    table.remove(t, i);
+    Game.Orders = t;
 end
