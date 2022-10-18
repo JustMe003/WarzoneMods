@@ -18,5 +18,5 @@ end
 function setPlayerNotifications(game, playerID, payload, setReturn)
     if pd == nil then pd = {}; end
     if pd[playerID] == nil then pd[playerID] = {}; end
-    pd.Notifications_JAD = payload.Value;
+    pd[playerID].Notifications_JAD = payload.Value;
 end
