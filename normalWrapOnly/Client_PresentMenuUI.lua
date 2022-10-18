@@ -41,4 +41,5 @@ function showMoveDetails(order, i)
         CreateLabel(vert).SetText("This order will not be processed. Any move that makes your armies move from one side to the other side of the map are skipped");
         CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() local t = Game.Orders; table.remove(t, i); Game.Orders = t; end)
     end
+    CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
 end
