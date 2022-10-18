@@ -16,7 +16,7 @@ function showOrderList()
     local cnt = 0;
     for i, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderAttackTransfer"  and Game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
-            CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. order.From .. " to " .. order.To).SetColor(colors.OrangeRed).SetOnClick(function() showMoveDetails(order, i); end);
+            CreateButton(vert).SetText("Move " .. order.NumArmies.NumArmies .. " from " .. Game.Map.Territories[order.From].Name .. " to " .. Game.Map.Territories[order.To].Name).SetColor(colors.OrangeRed).SetOnClick(function() showMoveDetails(order, i); end);
             cnt = cnt + 1;
         end
     end
