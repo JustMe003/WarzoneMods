@@ -1,11 +1,15 @@
 require("Dialog");
 require("Client_PresentMenuUI")
 function Client_GameRefresh(game)
-    print(playerWantsNotifications(), Mod.PlayerGameData.Notifications_JAD);
     if not hasSeenIntroductionMessage() then
-        showIntroductionDialog(game, ""); return;
+        showIntroductionDialog(game, "Welcome to the [unnamed] mod! You cannot move armies from one side to the other side of the map, the mod will send you a notification if you have an 'illegal' order."); return;
     end
     if playerWantsNotifications() then
-        game.CreateDialog(Client_PresentMenuUI);
+        for _, order in pairs(game.Orders) do
+            if order.proxyType == "GameOrderAttackTransfer" and game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
+                game.CreateDialog(Client_PresentMenuUI);
+                return;
+            end
+        end
     end
 end

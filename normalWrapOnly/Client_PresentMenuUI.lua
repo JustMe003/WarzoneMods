@@ -1,9 +1,10 @@
 require("UI");
+require("Dialog");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
 	Init();
     colors = GetColors();
     Game = game;
-    setMaxSize(500, 600);
+    Close = close;
     SetWindow("ROOT");
     vert = CreateVerticalLayoutGroup(rootParent);
     SetWindow("LKDJOIGH");
@@ -23,7 +24,8 @@ function showOrderList()
     if cnt == 0 then
         CreateLabel(vert).SetText("All orders are valid (for this mod at least)!").SetColor(colors.Lime);
     end
-    CreateButton(vert).SetText("[+]").SetColor(colors.RoyalBlue).SetOnClick(function() Game.SendGameCustomMessage("[+]", {Type=0}, function(t)  end) end);
+    CreateEmpty(vert).SetPreferredHeight(10);
+    CreateButton(vert).SetText("Change notifications settings").SetColor(colors.Blue).SetOnClick(changeNotifications)
 end
 
 function showMoveDetails(order, i)
@@ -42,4 +44,10 @@ function removeOrder(i)
         end
     end
     Game.Orders = t;
+end
+
+function changeNotifications()
+    DestroyWindow();
+    SetWindow("changeNotifications");
+    createYesNoButtons(vert, Game, Close)
 end
