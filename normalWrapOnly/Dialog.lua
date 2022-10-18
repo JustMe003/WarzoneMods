@@ -35,13 +35,3 @@ function createYesNoButtons(parent, game, close)
     CreateButton(parent).SetText("Yes, I want to receive warnings and other messages from this mod").SetColor(colors.Green).SetOnClick(function() game.SendGameCustomMessage("Updating mod", {Type="showMessages", Value=true}, function(t) UI.Alert("Successfully updated the mod!\n\nIf you want to change your choice you can do this in the mod menu") end); close(); end);
     CreateButton(parent).SetText("No, I do not want to receive warnings or other messages from this mod").SetColor(colors.Red).SetOnClick(function() game.SendGameCustomMessage("Updating mod", {Type="showMessages", Value=false}, function(t) UI.Alert("Successfully updated the mod!\n\nIf you want to change your choice you can do this in the mod menu") end); close(); end);
 end
-
-function getFunction(type)
-    local functions = {showMessages=savePlayerWantsNotifications};
-    return functions[type];
-end
-
-function savePlayerWantsNotifications(playerID, game, payload, setReturn)
-    if pd == nil then pd = {}; end
-    pd.Notifications_JAD = payload.Value;
-end
