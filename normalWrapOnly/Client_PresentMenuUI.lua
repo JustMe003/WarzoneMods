@@ -46,12 +46,6 @@ end
 
 function removeOrder(order, i)
     local t = Game.Orders;
-    for k, v in pairs(t) do
-        print(k, v);
-    end
     table.remove(t, i);
-    for k, v in pairs(t) do
-        print(k, v);
-    end
     Game.Orders = t;
 end
