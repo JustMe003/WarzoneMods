@@ -37,6 +37,10 @@ function showMoveDetails(order, i)
 end
 
 function removeOrder(i)
+    if Game.HasCommittedOrders then
+        UI.Alert("You need to uncommit first!");
+        return;
+    end
     local t = {};
     for k, order in pairs(Game.Orders) do
         if i ~= k then
