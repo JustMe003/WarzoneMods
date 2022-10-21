@@ -4,6 +4,7 @@ function getDateIndexList() return {"Year", "Month", "Day", "Hours", "Minutes", 
 function getDateRestraints() return {Hours=24, Minutes=60, Seconds=60} end;
 
 function dateToTable(s)
+    print(s);
     local list = getDateIndexList();
     local r = {};
     for i = 1, 6 do
