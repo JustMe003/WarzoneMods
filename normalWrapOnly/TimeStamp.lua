@@ -4,7 +4,6 @@ function getDateIndexList() return {"Year", "Month", "Day", "Hours", "Minutes", 
 function getDateRestraints() return {Hours=24, Minutes=60, Seconds=60} end;
 
 function dateToTable(s)
-    print(s);
     local list = getDateIndexList();
     local r = {};
     for i = 1, 6 do
@@ -50,7 +49,6 @@ function dateIsEarlier(date1, date2)
     local list = getDateIndexList();
     for _, v in pairs(list) do
         if date1[v] ~= date2[v] then
-            print(date1[v], date2[v]);
             if date1[v] < date2[v] then
                 return true;
             else
