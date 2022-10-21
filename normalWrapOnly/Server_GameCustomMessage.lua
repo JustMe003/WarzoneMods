@@ -17,6 +17,6 @@ function receiveUpdate(game, playerID, payload, setReturn)
     local playerData = Mod.PlayerGameData;
     if playerData == nil then playerData = {}; end
     if playerData[playerID] == nil then playerData[playerID] = {}; end
-    playerData[playerID].LastUpdate_JAD = game.Game.ServerTime;
+    playerData[playerID].LastUpdate_JAD = payload.TimeStamp;
     Mod.PlayerGameData = playerData;
 end
