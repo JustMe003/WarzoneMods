@@ -4,6 +4,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Init();
     colors = GetColors();
     Game = game;
+    if Game.Us == nil then close(); return; end
     Close = close;
     SetWindow("ROOT");
     vert = CreateVerticalLayoutGroup(rootParent);
@@ -37,7 +38,7 @@ function showMoveDetails(order, i)
 end
 
 function removeOrder(i)
-    if Game.HasCommittedOrders then
+    if Game.Us.HasCommittedOrders then
         UI.Alert("You need to uncommit first!");
         return;
     end
