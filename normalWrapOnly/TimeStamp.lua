@@ -10,7 +10,7 @@ function dateToTable(s)
         local en = string.find(s, "[-: ]");
         if en == nil then break; end
         local part = string.sub(s, 1, en - 1);
-        r[list[i]] = part;
+        r[list[i]] = tonumber(part);
         s = string.sub(s, en + 1);
     end
     return r;
