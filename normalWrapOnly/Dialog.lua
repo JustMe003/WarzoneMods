@@ -8,7 +8,7 @@ function timeSinceLastUpdate(game, field, time)
 end
 
 function sendUpdate(game)
-    game.SendGameCustomMessage("Updating mod...", {Type="receiveUpdate"}, function(t) end);
+    game.SendGameCustomMessage("Updating mod...", {Type="receiveUpdate", game.Game.ServerTime}, function(t) end);
 end
 
 function showIntroductionDialog(game, message)
