@@ -1,6 +1,15 @@
 require("UI");
+require("TimeStamp");
 Init();
 colors = GetColors();
+
+function timeSinceLastUpdate(game, field, time)
+    return Mod.PlayerGameData.LastUpdate_JAD == nil or dateIsEarlier(addTime(dateToTable(Mod.PlayerGameData.LastUpdate_JAD), field, time), dateToTable(game.Game.ServerTime));
+end
+
+function sendUpdate(game)
+    game.SendGameCustomMessage("Updating mod...", {Type="receiveUpdate"}, function(t) end);
+end
 
 function showIntroductionDialog(game, message)
     payload = {Message=message};
