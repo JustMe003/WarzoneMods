@@ -4,6 +4,7 @@ Init();
 colors = GetColors();
 
 function timeSinceLastUpdate(game, field, time)
+    print(Mod.PlayerGameData.LastUpdate_JAD, game.Game.ServerTime)
     return Mod.PlayerGameData.LastUpdate_JAD == nil or dateIsEarlier(addTime(dateToTable(Mod.PlayerGameData.LastUpdate_JAD), field, time), dateToTable(game.Game.ServerTime));
 end
 
