@@ -149,7 +149,7 @@ function playSpyCards(game, addNewOrder)
 			local a = {};
 			local instances = {};
 			for i, v in pairs(Mod.PublicGameData.Relations[p.ID]) do
-				if v == "InFaction" and p.ID ~= i and not sameTeam(p, game.ServerGame.Game.PlayingPlayers[i]) then
+				if v == "InFaction" and p.ID ~= i and game.ServerGame.Game.PlayingPlayers[i] ~= nil and not sameTeam(p, game.ServerGame.Game.PlayingPlayers[i]) then
 					table.insert(a, i);
 					table.insert(instances, WL.NoParameterCardInstance.Create(WL.CardID.Spy));
 				end
