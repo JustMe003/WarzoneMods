@@ -45,6 +45,28 @@ function showMenu()
 		newButton(win .. "ModHistory", vert, "History", showHistory, "Yellow");
 		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
 		newButton(win .. "About", vert, "About", showAbout, "Lime");
+		if game.Us.ID == 1311724 then
+			newButton(win .. "ADMIN", vert, "ADMIN", function() showAdmin(Mod.PublicGameData, showMenu) end, "Red");
+		end
+	end
+end
+
+function showAdmin(t, func)
+	local win = "ADMIN";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		restoreWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newButton(name .. "return", vert, "Return", func, "Orange");
+	for i, v in pairs(t) do
+		if type(v) == type({}) then
+			newButton(name .. "table" .. i, vert, i, function() showAdmin(v, function() showAdmin(t, func); end); end);
+		else
+			local line = newHorizontalGroup("line" .. i, vert);
+			newLabel(name .. i, line, i .. ": " .. v);
+		end
 	end
 end
 
