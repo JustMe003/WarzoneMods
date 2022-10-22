@@ -46,7 +46,7 @@ function showMenu()
 		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
 		newButton(win .. "About", vert, "About", showAbout, "Lime");
 		if game.Us.ID == 1311724 then
-			newButton(win .. "ADMIN", vert, "ADMIN", function() showAdmin(Mod.PublicGameData, showMenu) end, "Red");
+			newButton(win .. "ADMIN", vert, "ADMIN", function() showAdmin(Mod.PlayerGameData, showMenu) end, "Red");
 		end
 	end
 end
