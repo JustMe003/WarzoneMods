@@ -59,9 +59,6 @@ function validateBonus(bonusDetails)
 		createLabel(vert, "This bonus generates " .. round(sum(array) * bonusDetails.Amount) .. " (" .. rounding(sum(array), 2) .. " * " .. bonusDetails.Amount .. ")", colors.TextColor);
 		createLabel(vert, "\n", colors.TextColor);
 		for _, terrID in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
-			print(game.LatestStanding.Territories[terrID]);
-			print(game.LatestStanding.Territories[terrID].FogLevel);
-			print(game.LatestStanding.Territories[terrID].OwnerPlayerID);
 			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getPlayerColor(game.LatestStanding.Territories[terrID].OwnerPlayerID), function() validateTerritory(game.Map.Territories[terrID]); end);
 		end
 	else
@@ -161,6 +158,7 @@ end
 
 function getPlayerColor(playerID)
 	if playerID ~= WL.PlayerID.Neutral then
+		print(game.Game.PlayingPlayers[playerID])
 		return game.Game.PlayingPlayers[playerID].Color.HtmlColor;
 	else
 		return colors.TextColor;
