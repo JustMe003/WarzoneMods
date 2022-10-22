@@ -2,9 +2,9 @@ require("UI");
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
-	if Game.Us == nil then UI.Alert("Spectators cannot use this menu unfortunately"); close(); return; end
 	setMaxSize(500, 400);
 	game = Game;
+	print(game.LatestStanding);
 	colors = init();
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	local horz = UI.CreateHorizontalLayoutGroup(vert);
