@@ -4,7 +4,7 @@ local colors;
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
 	setMaxSize(500, 400);
 	game = Game;
-	print(game.LatestStanding);
+	print(game.LatestStanding.Territories);
 	colors = init();
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	local horz = UI.CreateHorizontalLayoutGroup(vert);
