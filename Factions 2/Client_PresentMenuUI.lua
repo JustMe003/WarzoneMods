@@ -62,7 +62,7 @@ function showAdmin(t, func)
 	newButton(win .. "return", vert, "Return", func, "Orange");
 	for i, v in pairs(t) do
 		if type(v) == type({}) then
-			newButton(win .. "table" .. i, vert, i, function() showAdmin(v, function() showAdmin(t, func); end); end);
+			newButton(win .. "table" .. i, vert, i, function() showAdmin(v, function() showAdmin(t, func); end); end, "Lime");
 		else
 			newLabel(win .. i, vert, i .. ": " .. v);
 		end
