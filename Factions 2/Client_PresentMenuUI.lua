@@ -54,9 +54,8 @@ end
 function showAdmin(t, func)
 	local win = "ADMIN";
 	destroyWindow(getCurrentWindow());
-	print(getCurrentWindow())
 	if windowExists(win) then
-		restoreWindow(win);
+		resetWindow(win);
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
