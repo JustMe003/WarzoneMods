@@ -61,7 +61,7 @@ function validateBonus(bonusDetails)
 		for _, terrID in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
 			for i, v in pairs(game.LatestStanding.Territories[terrID]) do
 				print(tostring(i));
-				print(tostring(v));
+				print(tostring(v.proxyType));
 			end
 			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getPlayerColor(game.LatestStanding.Territories[terrID].OwnerPlayerID), function() validateTerritory(game.Map.Territories[terrID]); end);
 		end
