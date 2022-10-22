@@ -59,13 +59,12 @@ function showAdmin(t, func)
 	end
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
-	newButton(name .. "return", vert, "Return", func, "Orange");
+	newButton(win .. "return", vert, "Return", func, "Orange");
 	for i, v in pairs(t) do
 		if type(v) == type({}) then
-			newButton(name .. "table" .. i, vert, i, function() showAdmin(v, function() showAdmin(t, func); end); end);
+			newButton(win .. "table" .. i, vert, i, function() showAdmin(v, function() showAdmin(t, func); end); end);
 		else
-			local line = newHorizontalGroup("line" .. i, vert);
-			newLabel(name .. i, line, i .. ": " .. v);
+			newLabel(win .. i, vert, i .. ": " .. v);
 		end
 	end
 end
