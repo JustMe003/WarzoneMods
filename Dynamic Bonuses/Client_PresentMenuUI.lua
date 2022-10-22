@@ -158,7 +158,11 @@ end
 
 function getPlayerColor(playerID)
 	if playerID ~= WL.PlayerID.Neutral then
-		print(game.Game.PlayingPlayers[playerID])
+		local c = 0;
+		for _, _ in pairs(game.Game.PlayingPlayers) do
+			c = c + 1;
+		end
+		print(tostring(c));
 		return game.Game.PlayingPlayers[playerID].Color.HtmlColor;
 	else
 		return colors.TextColor;
