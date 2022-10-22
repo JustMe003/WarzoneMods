@@ -54,6 +54,7 @@ end
 function showAdmin(t, func)
 	local win = "ADMIN";
 	destroyWindow(getCurrentWindow());
+	print(getCurrentWindow())
 	if windowExists(win) then
 		restoreWindow(win);
 	end
@@ -64,7 +65,7 @@ function showAdmin(t, func)
 		if type(v) == type({}) then
 			newButton(win .. "table" .. i, vert, i, function() showAdmin(v, function() showAdmin(t, func); end); end, "Lime");
 		else
-			newLabel(win .. i, vert, i .. ": " .. v);
+			newLabel(win .. i, vert, i .. ": " .. tostring(v));
 		end
 	end
 end
