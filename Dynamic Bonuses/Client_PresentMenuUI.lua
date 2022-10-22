@@ -4,7 +4,6 @@ local colors;
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
 	setMaxSize(500, 400);
 	game = Game;
-	print(game.LatestStanding.Territories);
 	colors = init();
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	local horz = UI.CreateHorizontalLayoutGroup(vert);
@@ -159,6 +158,9 @@ end
 
 function getPlayerColor(playerID)
 	if playerID ~= WL.PlayerID.Neutral then
+		print(game);
+		print(game.Game);
+		print(game.Game.PlayingPlayers);
 		return game.Game.PlayingPlayers[playerID].Color.HtmlColor;
 	else
 		return colors.TextColor;
