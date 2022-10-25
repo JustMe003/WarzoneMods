@@ -5,9 +5,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         end
     elseif order.proxyType == "GameOrderPlayCardBomb" then
         local b = false;
-        for connID, wrap in pairs(game.Map.Territories[order.TargetTerritoryID].ConnectedTo) do
-            print(wrap, game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID);
-            if wrap == WL.TerritoryConnectionWrap.Normal and game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == order.PlayerID then
+        for connID, conn in pairs(game.Map.Territories[order.TargetTerritoryID].ConnectedTo) do
+            if conn.Wrap == WL.TerritoryConnectionWrap.Normal and game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == order.PlayerID then
                 b = true;
                 break;
             end
