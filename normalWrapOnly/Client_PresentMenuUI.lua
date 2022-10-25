@@ -44,7 +44,7 @@ end
 function showBombDetails(order, i)
     DestroyWindow();
     SetWindow("ShowBombDetails");
-    CreateLabel(vert).SetText("This order will not be processed. Any move that makes your armies move from one side to the other side of the map are skipped").SetColor(colors.OrangeRed);
+    CreateLabel(vert).SetText("This order will not be processed. Any bomb card that is played at the other side of the map will be skipped").SetColor(colors.OrangeRed);
     CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() removeOrder(i); showOrderList(); end)
     CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
 end
@@ -52,7 +52,7 @@ end
 function showMoveDetails(order, i)
     DestroyWindow();
     SetWindow("ShowOrderDetails");
-    CreateLabel(vert).SetText("This order will not be processed. Any bomb card that are played at the other side of the map will be skipped").SetColor(colors.OrangeRed);
+    CreateLabel(vert).SetText("This order will not be processed. Any move that makes your armies move from one side to the other side of the map are skipped").SetColor(colors.OrangeRed);
     CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() removeOrder(i); showOrderList() end)
     CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
 end
