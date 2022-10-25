@@ -6,11 +6,18 @@ function Client_GameRefresh(game)
     end
     if playerWantsNotifications() and timeSinceLastUpdate(game, "Seconds", 30) then
         for _, order in pairs(game.Orders) do
-            if order.proxyType == "GameOrderAttackTransfer" and game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal then
+            if (order.proxyType == "GameOrderAttackTransfer" and game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal) or (order.proxyType == "GameOrderPlayCardBomb" and isIllegalBomb(game, order)) then
                 sendUpdate(game);
                 game.CreateDialog(Client_PresentMenuUI);
                 return;
             end
         end
     end
+end
+
+function isIllegalBomb(game, order)
+    for connID, conn in pairs(game.Map.Territories[order.TargetTerritoryID].ConnectedTo) do
+        if conn.Wrap == WL.TerritoryConnectionWrap.Normal and game.LatestStanding.Territories[connID].OwnerPlayerID == game.Us.ID then return false; end
+    end
+    return true;
 end
