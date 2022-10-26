@@ -1,1 +1,3 @@
-A Medic is a special unit that recovers a configured percentage of armies if an attack is targeted on a bordering territory. The only exception is when a Medic is part of the attack
+A Medic is a special unit that recovers a configured percentage of armies from attacks. It uses the following rules:
+ - A Medic will only recover armies on territories it borders
+ - A Medic will only recover armies if it's stationary. If a Medic is part of the attack or forced to defend its territory, it cannot recover any armies
