@@ -37,9 +37,13 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             medics[order.PlayerID] = medics[order.PlayerID] + 1;
         end
         skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
-    elseif order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack and getNMedics(orderResult.ActualArmies) == 0 then
+    elseif order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack then
+        skipFrom = false
+        if getNMedics(orderResult.ActualArmies) > 0 then
+            skipFrom = true;
+        end
         for connID, _ in pairs(game.Map.Territories[order.To].ConnectedTo) do
-            if getNMedics(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies) > 0 then
+            if getNMedics(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies) > 0 and (skipFrom == false or connID ~= order.From) then
                 local mod = WL.TerritoryModification.Create(connID);
                 local p;
                 if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID == game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID then
@@ -50,7 +54,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     p = game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID;
                 end
                 if mod.AddArmies ~= nil and mod.AddArmies > 0 then
-                    local event = WL.GameOrderEvent.Create(p, "Medic recovered " .. Mod.Settings.Percentage .. "% armies", {}, {mod});
+                    local event = WL.GameOrderEvent.Create(p, "Medic recovered " .. mod.AddArmies .. " armies", {}, {mod});
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
                     addNewOrder(event);
                 end
