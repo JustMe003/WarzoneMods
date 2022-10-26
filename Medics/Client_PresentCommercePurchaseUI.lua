@@ -8,7 +8,7 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
     colors = GetColors();
 
     local line = CreateHorz(root);
-    CreateLabel(line).SetText("Medics recover " .. Mod.Settings.Percentage .. "% of lost armies on bordering territories, unless they are involved in the attack. Medics are worth " .. Mod.Settings.Health .. " armies and cost " .. Mod.Settings.Cost .. " gold").SetColor(colors.Ivory);
+    CreateLabel(line).SetText("Medics recover " .. Mod.Settings.Percentage .. "% of lost armies on bordering territories if they are stationary. When they are attacking or forced to defend, they cannot recover armies (during that order). Medics are worth " .. Mod.Settings.Health .. " armies and cost " .. Mod.Settings.Cost .. " gold").SetColor(colors.Ivory);
     CreateButton(line).SetText("Purchase Medic").SetColor(colors["Dark Green"]).SetOnClick(buyMedic);
 end
 
