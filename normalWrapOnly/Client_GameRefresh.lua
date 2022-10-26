@@ -1,6 +1,7 @@
 require("Dialog");
 require("Client_PresentMenuUI")
 function Client_GameRefresh(game)
+    if game.Us == nil then return; end
     if not hasSeenIntroductionMessage() then
         showIntroductionDialog(game, "Welcome to the [unnamed] mod! You cannot move armies from one side to the other side of the map, the mod will send you a notification if you have an 'illegal' order."); return;
     end
