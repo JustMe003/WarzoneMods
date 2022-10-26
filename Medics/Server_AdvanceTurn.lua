@@ -41,13 +41,16 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         for connID, _ in pairs(game.Map.Territories[order.To].ConnectedTo) do
             if getNMedics(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies) > 0 then
                 local mod = WL.TerritoryModification.Create(connID);
+                local p;
                 if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID == game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID then
                     mod.AddArmies = round(orderResult.DefendingArmiesKilled.NumArmies * (Mod.Settings.Percentage / 100));
+                    p = game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID;
                 elseif game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID == game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID then
                     mod.AddArmies = round(orderResult.AttackingArmiesKilled.NumArmies * (Mod.Settings.Percentage / 100));
+                    p = game.ServerGame.LatestTurnStanding.Territories[order.From].OwnerPlayerID;
                 end
                 if mod.AddArmies ~= nil and mod.AddArmies > 0 then
-                    local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID, "Medic recovered " .. Mod.Settings.Percentage .. "% armies", {}, {mod});
+                    local event = WL.GameOrderEvent.Create(p, "Medic recovered " .. Mod.Settings.Percentage .. "% armies", {}, {mod});
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
                     addNewOrder(event);
                 end
