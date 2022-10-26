@@ -8,4 +8,5 @@ function Client_PresentConfigureUI(rootParent)
 	nTurnsInput = UI.CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(nTurns);
 	UI.CreateLabel(vert).SetText("The amount of income a mine gives").SetColor("#DDDDDD");
 	incomeInput = UI.CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(income);
+	print(nTurns, income);
 end
