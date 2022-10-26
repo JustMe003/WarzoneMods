@@ -1,6 +1,7 @@
 require("UI");
 require("utilities");
 require("ForcedRules");
+print("Client_PresentMenuUI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close, calledFromGameRefresh)
 	init(rootParent);
 	game = Game;
