@@ -1,0 +1,1 @@
+A Medic is a special unit that recovers a configured percentage of armies if an attack is targeted on a bordering territory. The only exception is when a Medic is part of the attack
