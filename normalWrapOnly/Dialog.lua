@@ -32,6 +32,7 @@ function createDialog(game, func)
 end
 
 function createIntroductionDialog(rootParent, setMaxSize, setScrollable, game, close)
+    setMaxSize(400, 400);
     SetWindow("Introduction");
     local vert = CreateVerticalLayoutGroup(rootParent);
     CreateLabel(vert).SetText("This mod makes use of Just_A_Dutchman_'s dialog system\n\n").SetColor(colors.Ivory);
