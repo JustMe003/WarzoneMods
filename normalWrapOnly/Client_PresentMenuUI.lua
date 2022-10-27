@@ -5,6 +5,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     colors = GetColors();
     Game = game;
     if Game.Us == nil then close(); return; end
+    setMaxSize(400, 400);
     Close = close;
     SetWindow("ROOT");
     vert = CreateVerticalLayoutGroup(rootParent);
@@ -44,14 +45,24 @@ end
 function showBombDetails(order, i)
     DestroyWindow();
     SetWindow("ShowBombDetails");
+    local line = CreateHorz(vert);
+    CreateLabel(line).SetText("From: ").SetColor(colors.Ivory);
+    CreateButton(line).SetText(Game.Map.Territories[order.TargetTerritoryID].Name).SetColor(colors.Orange).SetOnClick(function() Game.CreateLocatorCircle(Game.Map.Territories[order.TargetTerritoryID].MiddlePointX, Game.Map.Territories[order.TargetTerritoryID].MiddlePointY); Game.HighlightTerritories({order.TargetTerritoryID}) end)
     CreateLabel(vert).SetText("This order will not be processed. Any bomb card that is played at the other side of the map will be skipped").SetColor(colors.OrangeRed);
     CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() removeOrder(i); showOrderList(); end)
     CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
 end
 
 function showMoveDetails(order, i)
+    if order == nil then UI.Alert("The order does not exists anymore"); return; end
     DestroyWindow();
     SetWindow("ShowOrderDetails");
+    local line = CreateHorz(vert);
+    CreateLabel(line).SetText("From: ").SetColor(colors.Ivory);
+    CreateButton(line).SetText(Game.Map.Territories[order.From].Name).SetColor(colors.Orange).SetOnClick(function() Game.CreateLocatorCircle(Game.Map.Territories[order.From].MiddlePointX, Game.Map.Territories[order.From].MiddlePointY); Game.HighlightTerritories({order.From}) end)
+    line = CreateHorz(vert);
+    CreateLabel(line).SetText("To: ").SetColor(colors.Ivory);
+    CreateButton(line).SetText(Game.Map.Territories[order.To].Name).SetColor(colors.Orange).SetOnClick(function() Game.CreateLocatorCircle(Game.Map.Territories[order.To].MiddlePointX, Game.Map.Territories[order.To].MiddlePointY); Game.HighlightTerritories({order.To}) end)
     CreateLabel(vert).SetText("This order will not be processed. Any move that makes your armies move from one side to the other side of the map are skipped").SetColor(colors.OrangeRed);
     CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() removeOrder(i); showOrderList() end)
     CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
