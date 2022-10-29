@@ -2,6 +2,7 @@ require("UI");
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
+	print(Game.HighlightTerritories)
 	setMaxSize(500, 400);
 	game = Game;
 	colors = init();
