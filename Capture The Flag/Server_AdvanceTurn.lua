@@ -2,6 +2,9 @@ function Server_AdvanceTurn_Start(game,addNewOrder)
 	data = Mod.PublicGameData;
 end
 function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrder)
+	for _, v in pairs(order.readableKeys) do
+		print(v, order[v]);
+	end
 	if order.proxyType == "GameOrderAttackTransfer" then
 		if result.IsAttack and result.IsSuccessful and game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			team = game.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID].Team;
