@@ -2,8 +2,7 @@ require("UI");
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
-	print(WL.IsVersionOrHigher("5.20"))
-        setMaxSize(500, 400);
+	setMaxSize(500, 400);
 	game = Game;
 	colors = init();
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
@@ -33,7 +32,7 @@ function validateTerritory(terrDetails)
 		createLabel(vert, "Multiplier: " .. Mod.PublicGameData.WellBeingMultiplier[terrDetails.ID], colors.TextColor);
 		createLabel(vert, "Part of bonuses:", colors.TextColor);
 		for _, bonusID in ipairs(terrDetails.PartOfBonuses) do
-			createButton(vert, game.Map.Bonuses[bonusID].Name .. " (" .. #game.Map.Bonuses[bonusID].Territories .. " territories)", canSeeBonusOwner(game.Map.Bonuses[bonusID].ID), function() if game.HighlightTerritories ~= nil then game.HighlightTerritories(game.Map.Bonuses[bonusID].Territories); end validateBonus(game.Map.Bonuses[bonusID]); end);
+			createButton(vert, game.Map.Bonuses[bonusID].Name .. " (" .. #game.Map.Bonuses[bonusID].Territories .. " territories)", canSeeBonusOwner(game.Map.Bonuses[bonusID].ID), function() if WL.IsVersionOrHigher("5.20") then game.HighlightTerritories(game.Map.Bonuses[bonusID].Territories); end validateBonus(game.Map.Bonuses[bonusID]); end);
 		end
 	else
 		createLabel(vert, "You are not able to see the details of this territory because you cannot see who owns it", colors.TextColor);
@@ -60,7 +59,7 @@ function validateBonus(bonusDetails)
 		createLabel(vert, "This bonus generates " .. round(sum(array) * bonusDetails.Amount) .. " (" .. rounding(sum(array), 2) .. " * " .. bonusDetails.Amount .. ")", colors.TextColor);
 		createLabel(vert, "\n", colors.TextColor);
 		for _, terrID in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
-			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getPlayerColor(game.LatestStanding.Territories[terrID].OwnerPlayerID), function() if game.HighlightTerritories ~= nil then game.HighlightTerritories({terrID}); game.CreateLocatorCircle(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY); end validateTerritory(game.Map.Territories[terrID]); end);
+			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getPlayerColor(game.LatestStanding.Territories[terrID].OwnerPlayerID), function() if WL.IsVersionOrHigher("5.20") then game.HighlightTerritories({terrID}); game.CreateLocatorCircle(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY); end validateTerritory(game.Map.Territories[terrID]); end);
 		end
 	else
 		createLabel(vert, "You are not able to see the details of this bonus because you cannot see who owns it", colors.TextColor);
