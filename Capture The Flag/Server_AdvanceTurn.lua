@@ -20,6 +20,9 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 			end
 		end
 	elseif order.proxyType == "GameOrderEvent" then
+		for _, v in pairs(order.readableKeys) do
+			print(v, order[v]);
+		end
 		if string.find(order.Message, "Captured flag at") ~= nil then
 			data.Flags[team][order.TerritoryModifications[1].TerritoryID] = nil;
 			table.insert(data.Income[game.ServerGame.LatestTurnStanding.Territories[order.TerritoryModifications[1].TerritoryID].OwnerPlayerID], "Captured flag at " .. game.Map.Territories[order.TerritoryModifications[1].TerritoryID].Name)
