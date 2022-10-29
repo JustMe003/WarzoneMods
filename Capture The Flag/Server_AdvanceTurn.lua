@@ -2,9 +2,6 @@ function Server_AdvanceTurn_Start(game,addNewOrder)
 	data = Mod.PublicGameData;
 end
 function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrder)
-	for _, v in pairs(order.readableKeys) do
-		print(v, order[v]);
-	end
 	if order.proxyType == "GameOrderAttackTransfer" then
 		if result.IsAttack and result.IsSuccessful and game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			team = game.Game.PlayingPlayers[game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID].Team;
@@ -23,15 +20,12 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 			end
 		end
 	elseif order.proxyType == "GameOrderEvent" then
-		for _, v in pairs(order.readableKeys) do
-			print(v, order[v]);
-		end
-		if string.find(order, "Captured flag at") ~= nil then
+		if string.find(order.Message, "Captured flag at") ~= nil then
 			data.Flags[team][order.TerritoryModifications[1].TerritoryID] = nil;
 			table.insert(data.Income[game.ServerGame.LatestTurnStanding.Territories[order.TerritoryModifications[1].TerritoryID].OwnerPlayerID], "Captured flag at " .. game.Map.Territories[order.TerritoryModifications[1].TerritoryID].Name)
 			checkFlagStatus(game, addNewOrder, owner);
-		elseif string.find(order, "Lost flag at") ~= nil then
-			print(order, data.Flags[teamID][order.TerritoryModifications[1].TerritoryID]);
+		elseif string.find(order.Message, "Lost flag at") ~= nil then
+			print(order.Message, data.Flags[teamID][order.TerritoryModifications[1].TerritoryID]);
 			data.Flags[teamID][order.TerritoryModifications[1].TerritoryID] = nil;
 			checkFlagStatus(game, addNewOrder, order.PlayerID);
 		else
