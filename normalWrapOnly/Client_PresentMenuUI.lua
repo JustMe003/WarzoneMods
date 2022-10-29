@@ -47,7 +47,7 @@ function showBombDetails(order, i)
     SetWindow("ShowBombDetails");
     local line = CreateHorz(vert);
     CreateLabel(line).SetText("From: ").SetColor(colors.Ivory);
-    CreateButton(line).SetText(Game.Map.Territories[order.TargetTerritoryID].Name).SetColor(colors.Orange).SetOnClick(function() Game.CreateLocatorCircle(Game.Map.Territories[order.TargetTerritoryID].MiddlePointX, Game.Map.Territories[order.TargetTerritoryID].MiddlePointY); Game.HighlightTerritories({order.TargetTerritoryID}) end)
+    CreateButton(line).SetText(Game.Map.Territories[order.TargetTerritoryID].Name).SetColor(colors.Orange).SetOnClick(function() if game.HighlightTerritories ~= nil then Game.CreateLocatorCircle(Game.Map.Territories[order.TargetTerritoryID].MiddlePointX, Game.Map.Territories[order.TargetTerritoryID].MiddlePointY); Game.HighlightTerritories({order.TargetTerritoryID}); end end);
     CreateLabel(vert).SetText("This order will not be processed. Any bomb card that is played at the other side of the map will be skipped").SetColor(colors.OrangeRed);
     CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() removeOrder(i); showOrderList(); end)
     CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
@@ -59,10 +59,10 @@ function showMoveDetails(order, i)
     SetWindow("ShowOrderDetails");
     local line = CreateHorz(vert);
     CreateLabel(line).SetText("From: ").SetColor(colors.Ivory);
-    CreateButton(line).SetText(Game.Map.Territories[order.From].Name).SetColor(colors.Orange).SetOnClick(function() Game.CreateLocatorCircle(Game.Map.Territories[order.From].MiddlePointX, Game.Map.Territories[order.From].MiddlePointY); Game.HighlightTerritories({order.From}) end)
+    CreateButton(line).SetText(Game.Map.Territories[order.From].Name).SetColor(colors.Orange).SetOnClick(function() if game.HighlightTerritories ~= nil then Game.CreateLocatorCircle(Game.Map.Territories[order.From].MiddlePointX, Game.Map.Territories[order.From].MiddlePointY); Game.HighlightTerritories({order.From}); end end);
     line = CreateHorz(vert);
     CreateLabel(line).SetText("To: ").SetColor(colors.Ivory);
-    CreateButton(line).SetText(Game.Map.Territories[order.To].Name).SetColor(colors.Orange).SetOnClick(function() Game.CreateLocatorCircle(Game.Map.Territories[order.To].MiddlePointX, Game.Map.Territories[order.To].MiddlePointY); Game.HighlightTerritories({order.To}) end)
+    CreateButton(line).SetText(Game.Map.Territories[order.To].Name).SetColor(colors.Orange).SetOnClick(function() if game.HighlightTerritories ~= nil then Game.CreateLocatorCircle(Game.Map.Territories[order.To].MiddlePointX, Game.Map.Territories[order.To].MiddlePointY); Game.HighlightTerritories({order.To}) end end);
     CreateLabel(vert).SetText("This order will not be processed. Any move that makes your armies move from one side to the other side of the map are skipped").SetColor(colors.OrangeRed);
     CreateButton(vert).SetText("Remove order").SetColor(colors.Lime).SetOnClick(function() removeOrder(i); showOrderList() end)
     CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showOrderList);
