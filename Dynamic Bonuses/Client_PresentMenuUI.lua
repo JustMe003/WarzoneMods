@@ -2,7 +2,7 @@ require("UI");
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
-	print(WL.IsVersionOrHigher("5.21"))
+	print(WL.IsVersionOrHigher("5.20"))
         setMaxSize(500, 400);
 	game = Game;
 	colors = init();
