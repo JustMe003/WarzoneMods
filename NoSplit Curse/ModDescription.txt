@@ -1,4 +1,3 @@
-A Medic is a special unit that recovers a configured percentage of armies from attacks. It uses the following rules:
- - A Medic will only recover armies on territories it borders
- - A Medic will only recover armies if it's stationary during the attack. If a Medic is part of the attack or forced to defend it's territory, it cannot recover any armies
-When there is an attack, the mod assumes all the fighting is done on the territory that is defending. It will therefore only check if the defending territory has any Medics bordering it.
+Your mage has learned a new spell! In exchange for some gold, your might persuade your mage to cast it on your enemies
+
+The No-split Curse is technically a custom special unit that players can add to a territory. If an attack / transfer is made from this territory, ALL armies and special units are forced to attack / transfer in that order (just like how no-split works, but then only for that army stack).
