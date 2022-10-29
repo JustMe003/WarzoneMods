@@ -2,7 +2,8 @@ require("UI");
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
-	setMaxSize(500, 400);
+	print(WL.IsVersionOrHigher("5.21"))
+        setMaxSize(500, 400);
 	game = Game;
 	colors = init();
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
