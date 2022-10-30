@@ -1,4 +1,5 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
+    count = 0;
     local data = Mod.PublicGameData;
     for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
         for _, order in pairs(game.ServerGame.ActiveTurnOrders[p]) do
@@ -34,6 +35,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
+    if count == 100 then return; end
     if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyNo-splitCurse_") then
         skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
     elseif order.proxyType == "GameOrderAttackTransfer" then
@@ -43,6 +45,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             orderResult.AttackingArmiesKilled = WL.Armies.Create(0, {});
             orderResult.DefendingArmiesKilled = WL.Armies.Create(0, {});
             addNewOrder(WL.GameOrderAttackTransfer.Create(order.PlayerID, order.From, order.To, order.AttackTransfer, order.ByPercent, game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies, order.AttackTeammates));
+            count = count + 1;
         end
     end
 end
