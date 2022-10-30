@@ -55,7 +55,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 end
 
 function compareArmies(a1, a2)
-    if a1.NumArmies ~= a2.NumArmies then return false; end
+    if a1.NumArmies ~= a2.NumArmies or #a1.SpecialUnits ~= #a2.SpecialUnits then return false; end
     for _, unit1 in pairs(a1.SpecialUnits) do
         local bool = false;
         for _, unit2 in pairs(a2.SpecialUnits) do
