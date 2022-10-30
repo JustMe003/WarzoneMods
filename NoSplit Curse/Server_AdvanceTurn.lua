@@ -25,6 +25,9 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
                     mod.AddSpecialUnits = {builder.Build()};
 
                     local cost = order.CostOpt[WL.ResourceType.Gold];
+                    print({p={[WL.ResourceType.Gold]=cost}});
+                    print(p, {[WL.ResourceType.Gold]=cost});
+                    print(WL.ResourceType.Gold, cost)
                     local event = WL.GameOrderEvent.Create(p, game.Game.PlayingPlayers[p].DisplayName(nil, false) .. "'s mage cursed " .. game.Map.Territories[terrID].Name .. " with No-split", {p={[WL.ResourceType.Gold]=cost}}, {mod});
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
                     addNewOrder(event);
