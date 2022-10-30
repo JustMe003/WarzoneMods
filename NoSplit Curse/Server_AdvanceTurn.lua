@@ -24,7 +24,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
                     local mod = WL.TerritoryModification.Create(terrID);
                     mod.AddSpecialUnits = {builder.Build()};
 
-                    local event = WL.GameOrderEvent.Create(p, game.Game.PlayingPlayers[p].DisplayName(nil, false) .. "'s mage cursed " .. game.Map.Territories[terrID].Name .. " with No-split", {}, {mod}, {p={[WL.ResourceType.Gold]=order.CostOpt[WL.ResourceType.Gold]}});
+                    local event = WL.GameOrderEvent.Create(p, game.Game.PlayingPlayers[p].DisplayName(nil, false) .. "'s mage cursed " .. game.Map.Territories[terrID].Name .. " with No-split", {}, {mod}, {[p]={[WL.ResourceType.Gold]=order.CostOpt[WL.ResourceType.Gold]}});
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
                     addNewOrder(event);
                     data.NoSplitCursesPurchased[p] = data.NoSplitCursesPurchased[p] + 1;
