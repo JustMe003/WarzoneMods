@@ -37,7 +37,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
     if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyNo-splitCurse_") then
         skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
     elseif order.proxyType == "GameOrderAttackTransfer" then
-        if hasNoSplitCurse(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies) then
+        print(compareArmies(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies, order.NumArmies));
+        if hasNoSplitCurse(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies) and compareArmies(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies, order.NumArmies) then
             orderResult.ActualArmies = WL.Armies.Create(0, {});
             orderResult.AttackingArmiesKilled = WL.Armies.Create(0, {});
             orderResult.DefendingArmiesKilled = WL.Armies.Create(0, {});
@@ -48,6 +49,23 @@ end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
 	
+end
+
+function compareArmies(a1, a2)
+    if a1.NumArmies ~= a2.NumArmies then return false; end
+    local unit1;
+    local unit2;
+    for _, unit1 in pairs(a1.SpecialUnits) do
+        for _, unit2 in pairs(a2.SpecialUnits) do
+            if unit1.ID == unit2.ID then
+                break;
+            end
+        end
+        if unit1.ID ~= unit2.ID then
+            return false;
+        end
+    end
+    return true;
 end
 
 function hasNoSplitCurse(armies)
