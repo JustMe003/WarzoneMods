@@ -6,7 +6,9 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
             if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyNo-splitCurse_") then
                 local terrID = tonumber(string.sub(order.Payload, #"BuyNo-splitCurse_" + 1));
                 if order.CostOpt ~= nil and Mod.Settings.Cost + (data.NoSplitCursesPurchased[p] * Mod.Settings.Increment) == order.CostOpt[WL.ResourceType.Gold] then
-                    local builder = WL.CustomSpecialUnitBuilder.Create(order.PlayerID);
+                    local owner = game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
+                    if owner == WL.PlayerID.Neutral then owner = p; end
+                    local builder = WL.CustomSpecialUnitBuilder.Create(owner);
                     builder.Name = "No-splitCurse";
                     builder.AttackPower = 0;
                     builder.CanBeAirliftedToSelf = true;
@@ -23,9 +25,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
                     local mod = WL.TerritoryModification.Create(terrID);
                     mod.AddSpecialUnits = {builder.Build()};
 
-                    local owner = game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID;
-                    if owner == WL.PlayerID.Neutral then owner = p; end
-                    local event = WL.GameOrderEvent.Create(owner, game.Game.PlayingPlayers[p].DisplayName(nil, false) .. "'s mage cursed " .. game.Map.Territories[terrID].Name .. " with No-split", {}, {mod});
+                    local event = WL.GameOrderEvent.Create(p, game.Game.PlayingPlayers[p].DisplayName(nil, false) .. "'s mage cursed " .. game.Map.Territories[terrID].Name .. " with No-split", {}, {mod});
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
                     addNewOrder(event);
                     data.NoSplitCursesPurchased[p] = data.NoSplitCursesPurchased[p] + 1;
