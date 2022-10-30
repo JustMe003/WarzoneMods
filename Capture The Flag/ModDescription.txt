@@ -1,5 +1,8 @@
-Gives every player / team flags. When a team loses a certain amount of flags the whole team is eliminated
+Every player / team starts with a configurable amount of flags. These are indicated by the custom Flag unit, worth 0 armies! If a player / team loses to many flags it will be eliminated.
+ - If you attack with a Flag, it can never get lost. But it will also have no effect when in a battle
+ - The game creator can configure a cooldown to move Flag units around.
+ - Capturing a Flag unit will create a different Flag unit. While you're in control of it, it might give you extra income (configurable)
+ - The yellow-red Flag unit is the initial Flag unit. This flag has not been captured throughout the game.
+ - The blue-green Flag unit is the same as the yellow-red Flag unit, with the only exception that it has been captured at least once.
 
- - (configurable) Specify how many flags each player / team gets
- - (configurable) specify how many flags a player / team has to lose before it is eliminated
- - (configurable) specify how much extra permanent income a player get when it captures a flag
+Note that only the yellow-red Flag units count towards initial flags. You can lose as many blue-green Flag units as you like, but losing to many yellow-red flag Units means elimination!

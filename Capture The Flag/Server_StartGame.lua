@@ -1,18 +1,14 @@
 function Server_StartGame(game, standing)
 	local data = Mod.PublicGameData;
-	local flags = {};
 	local players = {};
-	local income = {};
+	local isTeamGame = false;
+	local cooldowns = {};
 	data.Teams = {};
-	local teamNumber = 0;
 	for _, player in pairs(game.Game.PlayingPlayers) do
 		players[player.ID] = {};
-		income[player.ID] = {};
-		if player.Team == -1 then
-			data.Teams[player.ID] = teamNumber;
-			teamNumber = teamNumber + 1;
-		else
+		if player.Team ~= -1 then
 			if data.Teams[player.Team] == nil then
+				isTeamGame = true;
 				data.Teams[player.Team] = {};
 			end
 			table.insert(data.Teams[player.Team], player.ID);
@@ -25,55 +21,73 @@ function Server_StartGame(game, standing)
 		end
 	end
 	local minTerritories = 100000;
-	for p, team in pairs(data.Teams) do
-		local teamTerrCount = 0;
-		if type(team) == type(table) then
+	if isTeamGame then
+		for _, team in pairs(data.Teams) do
+			local teamTerrCount = 0;
 			for _, player in pairs(team) do
 				teamTerrCount = teamTerrCount + #players[player];
 			end
-		else
-			teamTerrCount = #players[p];
+			minTerritories = math.min(minTerritories, teamTerrCount);
 		end
-		minTerritories = math.min(minTerritories, teamTerrCount);
-	end
-	data.Flags = {};
-	data.FlagsLost = {};
-	for n, team in pairs(data.Teams) do
-		data.Flags[n] = {};
-		if type(team) == type(table) then
-			data.FlagsLost[n] = 0;
-			local order = {};
-			local shadowTeam = team;
-			for i = 1, #team do
-				local rand = math.random(#shadowTeam);
-				table.insert(order, shadowTeam[rand]);
-				table.remove(shadowTeam, rand)
-			end
-			local index = 1;
-			for i = 1, math.min(Mod.Settings.FlagsPerTeam, minTerritories) do
-				local rand = math.random(#players[order[index]]);
-				flags[players[order[index]][rand]] = n;
-				table.remove(players[order[index]], rand);
-				index = index + 1;
-				if index > #order then index = 1; end
-			end
-		else
-			data.FlagsLost[n] = 0;
-			for i = 1, math.min(Mod.Settings.FlagsPerTeam, minTerritories) do
-				local rand = math.random(#players[n]);
-				flags[players[n][rand]] = n;
-				table.remove(players[n], rand);
+		for _, team in pairs(data.Teams) do
+			for i = 1, math.min(minTerritories, Mod.Settings.FlagsPerTeam) do
+				local rp = math.random(#team);
+				while #players[team[rp]] < 1 do
+					rp = math.random(#team);
+				end
+				local rand = math.random(#players[team[rp]]);
+				local terr = standing.Territories[players[team[rp]][rand]];
+				local sp = terr.NumArmies.SpecialUnits;
+				local flag = getFlag(team[rp]);
+				table.insert(sp, flag);
+				if Mod.Settings.Cooldown > 0 then
+					cooldowns[flag.ID] = Mod.Settings.Cooldown;
+				end
+				terr.NumArmies = WL.Armies.Create(terr.NumArmies.NumArmies, sp);
+				standing.Territories[players[team[rp]][rand]] = terr;
+				table.remove(players[team[rp]], rand);
 			end
 		end
+	else
+		for p, _ in pairs(game.Game.PlayingPlayers) do
+			minTerritories = math.min(minTerritories, #players[p]);
+		end
+		for p, _ in pairs(game.Game.PlayingPlayers) do
+			for i = 1, math.min(minTerritories, Mod.Settings.FlagsPerTeam) do
+				local rand = math.random(#players[p]);
+				local terr = standing.Territories[players[p][rand]];
+				local sp = terr.NumArmies.SpecialUnits;
+				local flag = getFlag(p);
+				if Mod.Settings.Cooldown > 0 then
+					cooldowns[flag.ID] = Mod.Settings.Cooldown;
+				end
+				table.insert(sp, flag);
+				terr.NumArmies = WL.Armies.Create(terr.NumArmies.NumArmies, sp);
+				standing.Territories[players[p][rand]] = terr;
+				table.remove(players[p], rand);
+			end
+		end
 	end
-	local boundUp = 17;
-	for i, v in pairs(flags) do
-		local structure = standing.Territories[i].Structures;
-		structure = {};
-		structure[v % boundUp + 2] = 1;
-		standing.Territories[i].Structures = structure;
-		data.Flags[v][i] = true;
-	end
-	data.Income = income;
+	data.NFlags = math.min(minTerritories, Mod.Settings.FlagsPerTeam)
+	data.Teams = nil;
+	data.Cooldowns = cooldowns;
 	Mod.PublicGameData = data;
+end
+
+function getFlag(p)
+	local builder = WL.CustomSpecialUnitBuilder.Create(p);
+	builder.Name = 'Flag';
+	builder.IncludeABeforeName = true;
+	builder.ImageFilename = 'Flag.png';
+	builder.AttackPower = 0;
+	builder.DefensePower = 0;
+	builder.DamageToKill = 0;
+	builder.DamageAbsorbedWhenAttacked = 0;
+	builder.CombatOrder = 0;
+	builder.CanBeGiftedWithGiftCard = false;
+	builder.CanBeTransferredToTeammate = true;
+	builder.CanBeAirliftedToSelf = true;
+	builder.CanBeAirliftedToTeammate = true;
+	builder.IsVisibleToAllPlayers = false;
+	return builder.Build();
 end
