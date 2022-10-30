@@ -56,15 +56,15 @@ end
 
 function compareArmies(a1, a2)
     if a1.NumArmies ~= a2.NumArmies then return false; end
-    local unit1;
-    local unit2;
     for _, unit1 in pairs(a1.SpecialUnits) do
+        local bool = false;
         for _, unit2 in pairs(a2.SpecialUnits) do
             if unit1.ID == unit2.ID then
+                bool = true;
                 break;
             end
         end
-        if unit1.ID ~= unit2.ID then
+        if not bool then
             return false;
         end
     end
