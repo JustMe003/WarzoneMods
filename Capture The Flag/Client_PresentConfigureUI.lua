@@ -13,7 +13,7 @@ function Client_PresentConfigureUI(rootParent)
 	newLabel("incomeBoostDesc", vert, "The amount of (permanent) extra income a player gets on capturing a flag", "Cyan");
 	incomeIncrement = newNumberField("incomeIncrement", vert, 1, 10, incomeBoost);
 
-	newLabel("movement cooldown", vert, "After moving a Flag, players cannot move that Flag for X more turns");
+	newLabel("movement cooldown", vert, "After moving a Flag, players cannot move that Flag for X more turns", "Cyan");
 	moveCooldown = newNumberField("moveCooldown", vert, 0, 5, cooldown);
 end
 
