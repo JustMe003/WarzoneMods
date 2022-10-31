@@ -23,9 +23,19 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 			end
 			result.AttackingArmiesKilled = WL.Armies.Create(result.AttackingArmiesKilled.NumArmies, arr);
 		end
-		if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral and result.IsAttack and result.IsSuccessful then
+		if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral and result.IsAttack then
 			if getNumFlags(result.DefendingArmiesKilled, true) > 0 then
-				lostFlag(game, addNewOrder, order.To, result.DefendingArmiesKilled, order.PlayerID, game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID);
+				if result.IsSuccessful then
+					lostFlag(game, addNewOrder, order.To, result.DefendingArmiesKilled, order.PlayerID, game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID);
+				else
+					local t = {};
+					for _, unit in pairs(result.DefendingArmiesKilled.SpecialUnits) do
+						if not (unit.Name == "Flag" or unit.Name == "Captured Flag") then
+							table.insert(t, unit);
+						end
+					end
+					result.DefendingArmiesKilled = WL.Armies.Create(result.DefendingArmiesKilled.NumArmies, t);
+				end
 			end
 		end
 	end
