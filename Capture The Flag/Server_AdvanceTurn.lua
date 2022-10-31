@@ -66,12 +66,12 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 	for _, p in pairs(game.Game.PlayingPlayers) do
 		if p.Team ~= -1 then
-			if not playerHasEnoughFlags(game, -1, p.ID) then
-				eliminatePlayer(game, -1, p.ID);
-			end
-		else
 			if not teamHasEnoughFlags(game, -1, p.Team) then
 				eliminateTeam(game, -1, p.Team);
+			end
+		else
+			if not playerHasEnoughFlags(game, -1, p.ID) then
+				eliminatePlayer(game, -1, p.ID);
 			end
 		end
 	end
