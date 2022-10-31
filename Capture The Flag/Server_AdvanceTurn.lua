@@ -26,7 +26,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 		if result.IsAttack then
 			if getNumFlags(result.DefendingArmiesKilled, true) > 0 then
 				if result.IsSuccessful then
-					lostFlag(game, addNewOrder, order.To, result.DefendingArmiesKilled, order.PlayerID, game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID);
+					lostFlag(game, addNewOrder, order.To, result.DefendingArmiesKilled, order.PlayerID);
 				else
 					local t = {};
 					for _, unit in pairs(result.DefendingArmiesKilled.SpecialUnits) do
@@ -78,24 +78,32 @@ function getNumFlags(armies, allFlags)
 	return c;
 end
 
-function lostFlag(game, addNewOrder, terrID, armies, p, flagLoser)
+function lostFlag(game, addNewOrder, terrID, armies, p)
 	for _, unit in pairs(armies.SpecialUnits) do			-- there can be more than 1 flag that gets captured
 		if unit.Name == "Flag" or unit.Name == "Captured Flag" then
-			local mod = WL.TerritoryModification.Create(terrID);
-			mod.AddSpecialUnits = {getCapturedFlag(p)};
-			local event = WL.GameOrderEvent.Create(p, "Captured Flag", {}, {mod});
-			event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
-			addNewOrder(event);
-			if unit.Name == "Flag" and flagLoser ~= WL.PlayerID.Neutral then
-				if game.Game.PlayingPlayers[flagLoser].Team ~= -1 then
-					if not teamHasEnoughFlags(game, terrID, game.Game.PlayingPlayers[flagLoser].Team) then
-						event = WL.GameOrderEvent.Create(flagLoser, getTeamName(game.Game.PlayingPlayers[flagLoser].Team) .. " lost to many flags", nil,  eliminateTeam(game, terrID, game.Game.PlayingPlayers[flagLoser].Team));
+			if unit.OwnerID == p and unit.Name == "Flag" then
+				local mod = WL.TerritoryModification.Create(terrID);
+				mod.AddSpecialUnits = {getFlag(p)};
+				local event = WL.GameOrderEvent.Create(p, "Re-captured Flag", {}, {mod});
+				event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
+				addNewOrder(event);
+			else
+				local mod = WL.TerritoryModification.Create(terrID);
+				mod.AddSpecialUnits = {getCapturedFlag(p)};
+				local event = WL.GameOrderEvent.Create(p, "Captured Flag", {}, {mod});
+				event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
+				addNewOrder(event);
+			end
+			if unit.Name == "Flag" then
+				if game.Game.PlayingPlayers[unit.OwnerID].Team ~= -1 then
+					if not teamHasEnoughFlags(game, terrID, game.Game.PlayingPlayers[unit.OwnerID].Team) then
+						event = WL.GameOrderEvent.Create(unit.OwnerID, getTeamName(game.Game.PlayingPlayers[unit.OwnerID].Team) .. " lost to many flags", nil,  eliminateTeam(game, terrID, game.Game.PlayingPlayers[unit.OwnerID].Team));
 						event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
 						addNewOrder(event);
 					end
 				else
-					if not playerHasEnoughFlags(game, terrID, flagLoser) then
-						event = WL.GameOrderEvent.Create(flagLoser, game.Game.PlayingPlayers[flagLoser].DisplayName(nil, false) .. " lost to many flags", nil, eliminatePlayer(game, terrID, flagLoser));
+					if not playerHasEnoughFlags(game, terrID, unit.OwnerID) then
+						event = WL.GameOrderEvent.Create(unit.OwnerID, game.Game.PlayingPlayers[unit.OwnerID].DisplayName(nil, false) .. " lost to many flags", nil, eliminatePlayer(game, terrID, unit.OwnerID));
 						event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
 						addNewOrder(event);
 					end
@@ -179,3 +187,20 @@ function getCapturedFlag(p)
 	return builder.Build();
 end
 
+function getFlag(p)
+	local builder = WL.CustomSpecialUnitBuilder.Create(p);
+	builder.Name = 'Flag';
+	builder.IncludeABeforeName = true;
+	builder.ImageFilename = 'Flag.png';
+	builder.AttackPower = 0;
+	builder.DefensePower = 0;
+	builder.DamageToKill = 0;
+	builder.DamageAbsorbedWhenAttacked = 0;
+	builder.CombatOrder = 0;
+	builder.CanBeGiftedWithGiftCard = false;
+	builder.CanBeTransferredToTeammate = true;
+	builder.CanBeAirliftedToSelf = true;
+	builder.CanBeAirliftedToTeammate = true;
+	builder.IsVisibleToAllPlayers = false;
+	return builder.Build();
+end
