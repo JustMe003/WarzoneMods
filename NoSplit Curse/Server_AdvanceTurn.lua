@@ -41,8 +41,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
     elseif order.proxyType == "GameOrderAttackTransfer" then
         if not orderResult.IsNullified and hasNoSplitCurse(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies) and not compareArmies(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies, order.NumArmies) then
-            print(orderResult.DamageToSpecialUnitstable);
-            orderResult.DamageToSpecialUnitstable = {};
+            print(orderResult.DamageToSpecialUnitsTable);
+            orderResult.DamageToSpecialUnitsTable = {};
             orderResult.ActualArmies = WL.Armies.Create(0, {});
             orderResult.AttackingArmiesKilled = WL.Armies.Create(0, {});
             orderResult.DefendingArmiesKilled = WL.Armies.Create(0, {});
