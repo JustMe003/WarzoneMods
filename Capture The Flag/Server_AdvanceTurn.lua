@@ -23,7 +23,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 			end
 			result.AttackingArmiesKilled = WL.Armies.Create(result.AttackingArmiesKilled.NumArmies, arr);
 		end
-		if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID ~= WL.PlayerID.Neutral and result.IsAttack then
+		if result.IsAttack then
 			if getNumFlags(result.DefendingArmiesKilled, true) > 0 then
 				if result.IsSuccessful then
 					lostFlag(game, addNewOrder, order.To, result.DefendingArmiesKilled, order.PlayerID, game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID);
@@ -79,14 +79,14 @@ function getNumFlags(armies, allFlags)
 end
 
 function lostFlag(game, addNewOrder, terrID, armies, p, flagLoser)
-	for _, unit in pairs(armies.SpecialUnits) do			-- there can be more than 1 flag that get's captured
+	for _, unit in pairs(armies.SpecialUnits) do			-- there can be more than 1 flag that gets captured
 		if unit.Name == "Flag" or unit.Name == "Captured Flag" then
 			local mod = WL.TerritoryModification.Create(terrID);
 			mod.AddSpecialUnits = {getCapturedFlag(p)};
 			local event = WL.GameOrderEvent.Create(p, "Captured Flag", {}, {mod});
 			event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
 			addNewOrder(event);
-			if unit.Name == "Flag" then
+			if unit.Name == "Flag" and flagLoser ~= WL.PlayerID.Neutral then
 				if game.Game.PlayingPlayers[flagLoser].Team ~= -1 then
 					if not teamHasEnoughFlags(game, terrID, game.Game.PlayingPlayers[flagLoser].Team) then
 						event = WL.GameOrderEvent.Create(flagLoser, getTeamName(game.Game.PlayingPlayers[flagLoser].Team) .. " lost to many flags", nil,  eliminateTeam(game, terrID, game.Game.PlayingPlayers[flagLoser].Team));
