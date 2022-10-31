@@ -70,6 +70,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 				eliminateTeam(game, -1, p.Team);
 			end
 		else
+			print(playerHasEnoughFlags(game, -1, p.ID));
 			if not playerHasEnoughFlags(game, -1, p.ID) then
 				eliminatePlayer(game, -1, p.ID);
 			end
