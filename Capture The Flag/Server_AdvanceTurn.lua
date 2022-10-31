@@ -8,7 +8,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 			for _, unit in pairs(result.ActualArmies.SpecialUnits) do
 				if not ((unit.Name == "Flag" or unit.Name == "Captured Flag") and data.Cooldowns[unit.ID] ~= nil) then
 					table.insert(t, unit);
-				elseif unit.Name == "Flag" or unit.Name == "Captured Flag" then
+				elseif unit.Name == "Flag" or unit.Name == "Captured Flag" and Mod.Settings.Cooldown > 0 then
 					data.Cooldowns[unit.ID] = Mod.Settings.Cooldown;
 				end
 			end
