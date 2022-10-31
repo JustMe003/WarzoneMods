@@ -87,6 +87,7 @@ function lostFlag(game, addNewOrder, terrID, armies, p)
 				local event = WL.GameOrderEvent.Create(p, "Re-captured Flag", {}, {mod});
 				event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
 				addNewOrder(event);
+				return;
 			else
 				local mod = WL.TerritoryModification.Create(terrID);
 				mod.AddSpecialUnits = {getCapturedFlag(p)};
