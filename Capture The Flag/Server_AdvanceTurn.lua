@@ -64,6 +64,17 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 			addNewOrder(WL.GameOrderEvent.Create(p, "Income for controlling captured flags", {}, {}, {}, {WL.IncomeMod.Create(p, v * Mod.Settings.IncomeBoost, "Controlling captured flags")}));
 		end
 	end
+	for _, p in pairs(game.Game.PlayingPlayers) do
+		if p.Team ~= -1 then
+			if not playerHasEnoughFlags(game, -1, p.ID) then
+				eliminatePlayer(game, -1, p.ID);
+			end
+		else
+			if not teamHasEnoughFlags(game, -1, p.Team) then
+				eliminateTeam(game, -1, p.Team);
+			end
+		end
+	end
 	Mod.PublicGameData = data;
 end
 
