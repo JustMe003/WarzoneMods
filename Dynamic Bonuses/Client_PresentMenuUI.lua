@@ -2,6 +2,11 @@ require("UI");
 local colors;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
+	if Mod.PublicGameData.WellBeingMultiplier == nil then
+		UI.Alert("Due to a bug you'll have to wait till the next turn advances before the mod will start working correctly. If it is still not working after 1 turn, please let me know (Just_A_Dutchman_)");
+		close();
+		return;
+	end
 	setMaxSize(500, 400);
 	game = Game;
 	colors = init();
