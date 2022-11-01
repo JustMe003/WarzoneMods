@@ -15,6 +15,10 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 	local data = Mod.PublicGameData;
 	local t = data.WellBeingMultiplier;
+	if t == nil then
+		addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Something went wrong with Dynamic Bonuses. If you see this, please let me know (Just_A_Dutchman_)", nil, {}, {}));
+		return;
+	end
 	for terrID, _ in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 		if listOfAttackedTerr[terrID] ~= nil then
 			t[terrID] = Mod.Settings.MinMultiplier;
