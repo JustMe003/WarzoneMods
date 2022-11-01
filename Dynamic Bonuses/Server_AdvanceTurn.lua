@@ -1,4 +1,5 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
+	if Mod.PublicGameData.WellBeingMultiplier == nil then initData(game.ServerGame.LatestTurnStanding); end
 	playerPerTerr = {};
 	for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 		playerPerTerr[terr.ID] = terr.OwnerPlayerID;
@@ -14,19 +15,13 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	local data = Mod.PublicGameData;
-	local t = data.WellBeingMultiplier;
-	if t == nil then
-		addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Something went wrong with Dynamic Bonuses. If you see this, please let me know (Just_A_Dutchman_)", nil, {}, {}));
-		return;
-	end
 	for terrID, _ in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 		if listOfAttackedTerr[terrID] ~= nil then
-			t[terrID] = Mod.Settings.MinMultiplier;
+			data.WellBeingMultiplier[terrID] = Mod.Settings.MinMultiplier;
 		else
-			t[terrID] = math.min(Mod.Settings.MaxMultiplier, t[terrID] + Mod.Settings.LevelMultiplierIncrement);
+			data.WellBeingMultiplier[terrID] = math.min(Mod.Settings.MaxMultiplier, data.WellBeingMultiplier[terrID] + Mod.Settings.LevelMultiplierIncrement);
 		end
 	end
-	data.WellBeingMultiplier = t;
 	Mod.PublicGameData = data;
 	local t = {};
 	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
@@ -106,3 +101,12 @@ function sum(t)
 	return total / count;
 end
 
+function initData(standing)
+	local data = Mod.PublicGameData;
+	local t = {};
+	for terrID, _ in pairs(standing.Territories) do
+		t[terrID] = Mod.Settings.MinMultiplier;
+	end
+	data.WellBeingMultiplier = t;
+	Mod.PublicGameData = data;
+end
