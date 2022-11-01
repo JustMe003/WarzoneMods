@@ -14,13 +14,15 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	local data = Mod.PublicGameData;
+	local t = data.WellBeingMultiplier;
 	for terrID, _ in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 		if listOfAttackedTerr[terrID] ~= nil then
-			data.WellBeingMultiplier[terrID] = Mod.Settings.MinMultiplier;
+			t[terrID] = Mod.Settings.MinMultiplier;
 		else
-			data.WellBeingMultiplier[terrID] = math.min(Mod.Settings.MaxMultiplier, data.WellBeingMultiplier[terrID] + Mod.Settings.LevelMultiplierIncrement);
+			t[terrID] = math.min(Mod.Settings.MaxMultiplier, t[terrID] + Mod.Settings.LevelMultiplierIncrement);
 		end
 	end
+	data.WellBeingMultiplier = t;
 	Mod.PublicGameData = data;
 	local t = {};
 	for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
