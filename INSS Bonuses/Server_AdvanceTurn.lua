@@ -12,7 +12,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
         bonusOccupation[p] = {};
     end
     for _, bonus in pairs(game.Map.Bonuses) do
-        if Mod.PublicGameData.IsSuperBonus[bonus.ID] == nil and (Mod.Settings.UseNegativeBonuses or getBonusValue(game, bonus.ID) >= 0) then
+        if Mod.PublicGameData.IsSuperBonus[bonus.ID] == nil and (Mod.Settings.UseNegativeBonuses or getBonusValue(game, bonus.ID) > 0) then
             for p, v in pairs(getOccupationTable(game, bonus)) do
                 bonusOccupation[p][bonus.ID] = v;
             end
