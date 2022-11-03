@@ -100,7 +100,7 @@ end
 function turnAdvances(game)
     for _, p in pairs(game.Game.PlayingPlayers) do
         print(p.DisplayName(nil, false), p.HasCommittedOrders);
-        if not p.HasCommittedOrders then return false; end
+    --    if not p.HasCommittedOrders then return false; end
     end
     return true;
 end
