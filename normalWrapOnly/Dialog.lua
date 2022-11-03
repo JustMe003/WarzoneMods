@@ -7,8 +7,8 @@ function timeSinceLastUpdate(game, field, time)
     return Mod.PlayerGameData.LastUpdate_JAD == nil or dateIsEarlier(addTime(dateToTable(Mod.PlayerGameData.LastUpdate_JAD), field, time), dateToTable(game.Game.ServerTime));
 end
 
-function sendUpdate(game)
-    game.SendGameCustomMessage("Updating mod...", {Type="receiveUpdate", TimeStamp=game.Game.ServerTime}, function(t) end);
+function sendUpdate(game, f)
+    game.SendGameCustomMessage("Updating mod...", {Type="receiveUpdate", TimeStamp=game.Game.ServerTime}, function(t) f(); end);
 end
 
 function showIntroductionDialog(game, message)
