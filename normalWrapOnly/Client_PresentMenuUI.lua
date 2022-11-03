@@ -38,6 +38,10 @@ function showOrderList()
         end
     end
     if cnt == 0 then
+        if CalledFromRefresh ~= nil then
+            Close();
+            return;
+        end
         CreateLabel(vert).SetText("All orders are valid (for this mod at least)!").SetColor(colors.Lime);
     end
     CreateEmpty(vert).SetPreferredHeight(10);
