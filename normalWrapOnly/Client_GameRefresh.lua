@@ -8,8 +8,7 @@ function Client_GameRefresh(game)
     if playerWantsNotifications() and timeSinceLastUpdate(game, "Seconds", 30) then
         for _, order in pairs(game.Orders) do
             if (order.proxyType == "GameOrderAttackTransfer" and game.Map.Territories[order.From].ConnectedTo[order.To].Wrap ~= WL.TerritoryConnectionWrap.Normal) or (order.proxyType == "GameOrderPlayCardBomb" and isIllegalBomb(game, order)) then
-                sendUpdate(game);
-                game.CreateDialog(Client_PresentMenuUI);
+                sendUpdate(game, function() game.CreateDialog(Client_PresentMenuUI); end);
                 return;
             end
         end
