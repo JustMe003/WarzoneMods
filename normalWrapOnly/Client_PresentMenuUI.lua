@@ -1,6 +1,7 @@
 require("UI");
 require("Dialog");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
+    turnAdvances(game);
 	Init();
     colors = GetColors();
     Game = game;
@@ -93,4 +94,13 @@ function changeNotifications()
     DestroyWindow();
     SetWindow("changeNotifications");
     createYesNoButtons(vert, Game, Close)
+end
+
+
+function turnAdvances(game)
+    for _, p in pairs(game.Game.PlayingPlayers) do
+        print(p.HasCommittedOrders);
+        if not p.HasCommittedOrders then return false; end
+    end
+    return true;
 end
