@@ -1,0 +1,9 @@
+Adds a really simple, INSS bonus system to any map. 
+Players will get income based on the amount of territories they own of a bonus and the bonus value. The more territories you have in a bonus, the more income you get
+
+Imagine a bonus which contains out of 5 territories and with the value 3, then you'll get the following income
+1 territory = -1
+2 territories = 0
+3 territories = 1
+4 territories = 2
+5 territories = 3
