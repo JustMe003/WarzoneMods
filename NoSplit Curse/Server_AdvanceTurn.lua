@@ -73,7 +73,7 @@ end
 
 function hasNoSplitCurse(armies)
     for _, sp in pairs(armies.SpecialUnits) do
-        if sp.Name == "No-splitCurse" then
+        if sp.proxyType == "CustomSpecialUnit" and sp.Name == "No-splitCurse" then
             return true;
         end
     end
