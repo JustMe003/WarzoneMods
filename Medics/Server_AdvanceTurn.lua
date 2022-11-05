@@ -70,7 +70,7 @@ end
 function getNMedics(armies)
     local ret = 0;
     for _, sp in pairs(armies.SpecialUnits) do
-        if sp.Name == "Medic" then
+        if sp.proxyType == "CustomSpecialUnit" and sp.Name == "Medic" then
             ret = ret + 1;
         end
     end
