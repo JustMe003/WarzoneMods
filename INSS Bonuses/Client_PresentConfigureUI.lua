@@ -8,5 +8,5 @@ function Client_PresentConfigureUI(rootParent)
 
     SBInput = UI.CreateCheckBox(vert).SetText("Use this bonus system also for super bonuses").SetIsChecked(useSuperBonuses);
     NBInput = UI.CreateCheckBox(vert).SetText("Use this bonus system also for negative bonuses").SetIsChecked(useNegativeBonuses);
-    SBInput.SetOnValueChanged(function() if SBInput.GetIsChecked() then UI.Alert("You sure?\nThe game might become unplayable with this setting enabled!"); end);
+    SBInput.SetOnValueChanged(function() if SBInput.GetIsChecked() then UI.Alert("You sure?\nThe game might become unplayable with this setting enabled!"); end)
 end
