@@ -36,7 +36,7 @@ function showMain()
 	local line = newHorizontalGroup(win .. "Line", vert);
 	newButton(win .. "Settings", line, "Settings", showSettings, "Aqua");
 	newButton(win .. "Config", line, "Configuration", showMainConfig, "Lime");
-	newButton(win .. "ChangeVersion", line, "Change version", UI.Alert("Unfortunately, you need to remove the mod from your game, and re-open the mod settings page.\n\n[!]Warning[!]\nThis will reset the entire configuration"), "Orange Red");
+	newButton(win .. "ChangeVersion", line, "Change version", function() UI.Alert("Unfortunately, you need to remove the mod from your game, and re-open the mod settings page.\n\n[!]Warning[!]\nThis will reset the entire configuration"); end, "Orange Red");
 end
 
 function showSettings()
