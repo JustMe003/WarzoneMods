@@ -13,4 +13,5 @@ function Client_SaveConfigureUIMain(alert)
 	end
 	Mod.Settings.GlobalSettings = globalSettings;
 	Mod.Settings.Configuration = config;
+	Mod.Settings.VersionNumber = 1;
 end
