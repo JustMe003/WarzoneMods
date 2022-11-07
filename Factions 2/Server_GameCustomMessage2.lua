@@ -1,5 +1,5 @@
 require("utilities2");
-function Server_GameCustomMessage(game, playerID, payload, setReturn)
+function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	data = Mod.PublicGameData;
 	local functions = {};
 	functions["CreateFaction"] = createFaction;
