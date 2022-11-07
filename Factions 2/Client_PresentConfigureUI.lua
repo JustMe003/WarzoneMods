@@ -37,7 +37,7 @@ end
 function showMainDifference(vert)
 	local t = {};
 	table.insert(t, UI.CreateButton(vert).SetText("Return").SetColor("#FF7D00").SetOnClick(function() cleanUpWindow(t); showDifference(vert); end));
-	table.insert(t, UI.CreateLabel(vert).SetColor("#DDDDDD").SetText("The main difference is a change in a core mechanic, which is the reason why I cannot make it simply a setting.\n\nPrior to Factions 2.0, players were only able to join 1 faction. But, as you might can guess, nowadays players can join multiple Factions by using any version above 2.0. This comes with some extra forced rules by the mod to ensure the mod still has control over the diplomacy of the game.\n\nAll you and other players need to know, is that Factions 2.0 (and higher) is the newest version which is actively built on. You can read everything about the forced diplomacy rules in the mod configuration, mod menu or in the mod settings."))
+	table.insert(t, UI.CreateLabel(vert).SetColor("#DDDDDD").SetText("The main difference is a change in a core mechanic, which is the reason why I cannot make it simply a setting.\n\nPrior to Factions 2.0, players were only able to join 1 faction. But, as you might can guess, nowadays players can join multiple Factions by using any version above 2.0. This comes with some extra forced rules by the mod to ensure the mod still has control over the diplomacy of the game.\n\nAll you and other players need to know, is that Factions 2.0 (and higher) is the newest version which is actively built on. You can read everything about the forced diplomacy rules in the mod configuration, mod menu or in the mod settings. Due to the extra rules, 2.0 and higher is a bit more complex than prior to the 2.0 version"))
 end
 
 function showFullDifferenceList(vert)
