@@ -6,20 +6,6 @@ function Server_AdvanceTurn_StartMain(game, addNewOrder)
 			addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, filterDeadPlayers(game, data.Events[i].VisibleTo), {}, {}, {}));
 		end
 	end
-	if data.VersionNumber ~= nil and data.VersionNumber <= 5 then
-		for p, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
-			if data.PlayerInFaction[p] ~= nil then
-				if type(data.PlayerInFaction[p]) ~= type({}) then
-					local f = data.PlayerInFaction[p];
-					data.PlayerInFaction[p] = {};
-					table.insert(data.PlayerInFaction[p], f);
-				end
-			else
-				data.PlayerInFaction[p] = {};
-			end
-		end
-		data.VersionNumber = 6;
-	end
 	data.Events = {};
 	Mod.PublicGameData = data;
 	if Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers ~= nil and Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers and game.Settings.FogLevel ~= 1 then
