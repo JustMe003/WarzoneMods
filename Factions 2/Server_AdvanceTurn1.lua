@@ -1,5 +1,5 @@
 require("utilities1");
-function Server_AdvanceTurn_Start(game, addNewOrder)
+function Server_AdvanceTurn_StartMain(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	if data.VersionNumber ~= nil and data.VersionNumber >= 5 then
 		for i = 1, #data.Events do
