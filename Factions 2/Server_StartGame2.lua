@@ -1,5 +1,5 @@
 require("utilities2");
-function Server_StartGame(game, standing)
+function Server_StartGameMain(game, standing)
 	local data = Mod.PublicGameData;
 	local playerData = Mod.PlayerGameData;
 	local relations = {};
