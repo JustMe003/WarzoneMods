@@ -37,7 +37,7 @@ function CreateHorz(parent)
 	return CreateHorizontalLayoutGroup(parent);
 end
 
-function CreateEmpty(parent);
+function CreateEmpty(parent)
 	return AddObjectToWindowAndReturnObject(UI.CreateEmpty(parent));
 end
 
