@@ -31,8 +31,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					end
 					data.Relations[i] = nil;
 				end
-				print(playerData[i], i)
-				if playerData[i].Offers ~= nil then
+				if not p.IsAI and playerData[i].Offers ~= nil then
 					for v, b in pairs(playerData[i].Offers) do
 						if b then
 							playerData[v].Offers[i] = nil;
