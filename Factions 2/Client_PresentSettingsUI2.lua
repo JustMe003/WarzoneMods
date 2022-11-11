@@ -33,6 +33,16 @@ function showMain()
 	line = getLine(vert);
 	newLabel(win .. line, line, "Fair Factions: " .. tostring(Mod.Settings.GlobalSettings.FairFactions));
 	newButton(win .. line .. "button", line, "?", function() UI.Alert("If enabled, the mod will stop a player from joining a Faction if they disbalance the game to much. See 'Fair Faction modifiers' for more if enabled"); end, "Blue");
+	if Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers ~= nil then
+		line = getLine(vert);
+		newLabel(win .. line, line, "Play spy cards on Faction members: " .. tostring(Mod.Settings.GlobalSettings.PlaySpyOnFactionMembers));
+		newButton(win .. line .. "button", line, "?", function() UI.Alert("If enabled, the mod will automatically play spy cards for you on all your Faction members (allies). Otherwise the mod will not play any spy cards for you"); end, "Blue");
+	end
+	if Mod.Settings.GlobalSettings.PlayersStartAtWar then
+		line = getLine(vert);
+		newLabel(win .. line, line, "If the relation between players isn't set by the game creator at the start of the game, players start at war with eachother: " .. tostring(Mod.Settings.GlobalSettings.PlayersStartAtWar));
+		newButton(win .. line .. "button", line, "?", function() UI.Alert("If enabled, players that do not have a configured relation at the start of the game will automatically be at war with eachother. Otherwise they will be in peace with eachother"); end, "Blue");	
+	end
 	if Mod.Settings.GlobalSettings.FairFactions then
 		line = getLine(vert);
 		newLabel(win .. line, line, "Fair Factions modifier: " .. Mod.Settings.GlobalSettings.FairFactionsModifier);
