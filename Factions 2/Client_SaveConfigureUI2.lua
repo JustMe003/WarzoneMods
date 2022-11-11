@@ -7,6 +7,7 @@ function Client_SaveConfigureUIMain(alert)
 	globalSettings.ApproveFactionJoins = getIsChecked(ApproveFactionJoins);
 	globalSettings.LockPreSetFactions = getIsChecked(LockPreSetFactions);
 	globalSettings.PlaySpyOnFactionMembers = getIsChecked(PlaySpyOnFactionMembers);
+	globalSettings.PlayersStartAtWar = getIsChecked(PlayersStartAtWar);
 	if objectsID[FairFactionsModifier] ~= nil then
 		globalSettings.FairFactionsModifier = math.min(math.max(getValue(FairFactionsModifier), 0), 1);
 	else

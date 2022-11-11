@@ -22,6 +22,7 @@ function Client_PresentConfigureUIMain(rootParent)
 		settings.ApproveFactionJoins = false;
 		settings.LockPreSetFactions = false;
 		settings.PlaySpyOnFactionMembers = true;
+		settings.PlayersStartAtWar = false;
 	end
 	showSettings();
 	showMain();
@@ -76,6 +77,9 @@ function showSettings()
 	line = newHorizontalGroup("line7", vert);
 	PlaySpyOnFactionMembers = newCheckbox(win .. "PlaySpyCard", line, " ", settings.PlaySpyOnFactionMembers, true, function() settings.PlaySpyOnFactionMembers = getIsChecked("showSettingsPlaySpyCard");  end);
 	newLabel(win .. "PlaySpyCardText", line, "Play spy cards between every player if they are in the same faction");
+	line = newHorizontalGroup("line8", vert);
+	PlayersStartAtWar = newCheckbox(win .. "WarOrPeace", line, " ", settings.PlayersStartAtWar, true, function() settings.PlayersStartAtWar = getIsChecked("showSettingsWarOrPeace"); end);
+	newLabel(win .. "WarOrPeaceText", line, "If a relation isn't set between players, then players start at war with eachother");
 end
 
 function showMainConfig()
