@@ -86,27 +86,27 @@ function lostFlag(game, addNewOrder, terrID, armies, p)
 				mod.AddSpecialUnits = {getFlag(p)};
 				local event = WL.GameOrderEvent.Create(p, "Re-captured Flag", {}, {mod});
 				event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
-				addNewOrder(event);
+				addNewOrder(event, true);
 				return;
 			else
 				local mod = WL.TerritoryModification.Create(terrID);
 				mod.AddSpecialUnits = {getCapturedFlag(p)};
 				local event = WL.GameOrderEvent.Create(p, "Captured Flag", {}, {mod});
 				event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
-				addNewOrder(event);
+				addNewOrder(event, true);
 			end
 			if unit.Name == "Flag" then
 				if game.Game.PlayingPlayers[unit.OwnerID].Team ~= -1 then
 					if not teamHasEnoughFlags(game, terrID, game.Game.PlayingPlayers[unit.OwnerID].Team) then
 						event = WL.GameOrderEvent.Create(unit.OwnerID, getTeamName(game.Game.PlayingPlayers[unit.OwnerID].Team) .. " lost to many flags", nil,  eliminateTeam(game, terrID, game.Game.PlayingPlayers[unit.OwnerID].Team));
 						event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
-						addNewOrder(event);
+						addNewOrder(event, true);
 					end
 				else
 					if not playerHasEnoughFlags(game, terrID, unit.OwnerID) then
 						event = WL.GameOrderEvent.Create(unit.OwnerID, game.Game.PlayingPlayers[unit.OwnerID].DisplayName(nil, false) .. " lost to many flags", nil, eliminatePlayer(game, terrID, unit.OwnerID));
 						event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
-						addNewOrder(event);
+						addNewOrder(even, true);
 					end
 				end
 			end
