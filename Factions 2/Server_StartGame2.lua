@@ -78,7 +78,11 @@ function Server_StartGameMain(game, standing)
 			isInFaction[i] = false;
 			playerInFaction[p.ID] = {};
 			for k, _ in pairs(game.ServerGame.Game.PlayingPlayers) do
-				relations[i][k] = "InPeace";
+				if Mod.Settings.GlobalSettings.PlayersStartAtWar == nil or not Mod.Settings.GlobalSettings.PlayersStartAtWar then
+					relations[i][k] = "InPeace";
+				else
+					relations[i][k] = "AtWar";
+				end
 			end
 			if not p.IsAI then
 				playerData[i] = {};
