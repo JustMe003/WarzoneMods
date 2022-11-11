@@ -31,6 +31,19 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					end
 					data.Relations[i] = nil;
 				end
+				if playerData[i].Offers ~= nil then
+					for v, b in pairs(playerData[i].Offers) do
+						if b then
+							playerData[v].Offers[i] = nil;
+							for i2, v2 in pairs(playerData[v].PendingOffers) do
+								if v2 == i then
+									table.remove(playerData[v].PendingOffers, i2);
+									break;
+								end
+							end
+						end
+					end
+				end
 				if data.IsInFaction[i] then
 					local index = 0;
 					for k, v in pairs(data.Factions[data.PlayerInFaction[i]].FactionMembers) do
