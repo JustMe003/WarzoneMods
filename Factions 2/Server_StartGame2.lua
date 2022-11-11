@@ -40,8 +40,13 @@ function Server_StartGameMain(game, standing)
 					end
 				end
 				if relations[p.ID][i] == nil then
-					relations[p.ID][i] = "InPeace";
-					relations[i][p.ID] = "InPeace";
+					if Mod.Settings.GlobalSettings.PlayersStartAtWar == nil or not Mod.Settings.GlobalSettings.PlayersStartAtWar then
+						relations[p.ID][i] = "InPeace";
+						relations[i][p.ID] = "InPeace";
+					else
+						relations[p.ID][i] = "AtWar";
+						relations[i][p.ID] = "AtWar";
+					end
 				end
 			end
 			isInFaction[p.ID] = Mod.Settings.Configuration.SlotInFaction[p.Slot] ~= nil;
