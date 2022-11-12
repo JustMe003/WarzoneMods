@@ -1,6 +1,6 @@
 -- code
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
-    Game.GetTurn(Game.Game.TurnNumber - 1, callback);
+    Game.GetTurn(Game.Game.TurnNumber - 2, callback);
 end
 
 function callback(t)
