@@ -4,6 +4,9 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 end
 
 function callback(t)
+    for i, v in pairs (WL.TurnPhase) do
+        print(i, v);
+    end
     for i, v in pairs(t.Orders) do
         if v.proxyType == "GameOrderEvent" then
             print(v.ModID);
