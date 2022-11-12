@@ -4,7 +4,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 end
 
 function callback(t)
-    for i, v in pairs(t) do
-        print(i, v);
+    for i, v in pairs(t.Orders) do
+        print(i, v.proxyType);
     end
 end
