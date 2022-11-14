@@ -1,18 +1,21 @@
 function Client_PresentConfigureUI(rootParent)
+	local vert = UI.CreateVerticalLayoutGroup(rootParent);
 	if Mod.Settings.VersionNumber ~= nil then
 		Version = Mod.Settings.VersionNumber;
 		if Mod.Settings.VersionNumber == 1 then
+			UI.CreateLabel(vert).SetText("Version: 1.5.2");
 			require("Client_PresentConfigureUI1");
 		else
+			UI.CreateLabel(vert).SetText("Version: 2.3");
 			require("Client_PresentConfigureUI2");
 		end
-		Client_PresentConfigureUIMain(rootParent);
+		Client_PresentConfigureUIMain(vert);
 	elseif Mod.Settings ~= nil and getTableLength(Mod.Settings) > 0 then
 		Version = 1;
 		require("Client_PresentConfigureUI1");
-		Client_PresentConfigureUIMain(rootParent);
+		UI.CreateLabel(vert).SetText("Version: 1.5.2");
+		Client_PresentConfigureUIMain(vert);
 	else
-		local vert = UI.CreateVerticalLayoutGroup(rootParent);
 		showChoices(vert);
 	end
 end
