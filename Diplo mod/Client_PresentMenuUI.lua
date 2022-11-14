@@ -7,7 +7,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	UI.CreateLabel(line).SetText("Version: ").SetColor("#DDDDDD");
 	if Mod.Settings.VersionNumber == nil or Mod.Settings.VersionNumber == 1 then
 		require("Client_PresentMenuUI1");
-		UI.CreateLabel(line).SetText("1.5").SetColor("#FF4700");
+		UI.CreateLabel(line).SetText("1.5.2").SetColor("#FF4700");
 	else
 		require("Client_PresentMenuUI2");
 		UI.CreateLabel(line).SetText("2.3").SetColor("#FF4700");
