@@ -708,3 +708,9 @@ function getFactionIncome(game, faction)
 	end
 	return count;
 end
+
+function hasSeenUpdateWindow(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	playerData[playerID].HasSeenUpdateWindow = true;
+	Mod.PlayerGameData = playerData;
+end
