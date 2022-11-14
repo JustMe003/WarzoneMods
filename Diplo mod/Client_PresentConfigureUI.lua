@@ -7,6 +7,10 @@ function Client_PresentConfigureUI(rootParent)
 			require("Client_PresentConfigureUI2");
 		end
 		Client_PresentConfigureUIMain(rootParent);
+	elseif Mod.Settings ~= nil and getTableLength(Mod.Settings) > 0 then
+		Version = 1;
+		require("Client_PresentConfigureUI1");
+		Client_PresentConfigureUIMain(rootParent);
 	else
 		local vert = UI.CreateVerticalLayoutGroup(rootParent);
 		showChoices(vert);
