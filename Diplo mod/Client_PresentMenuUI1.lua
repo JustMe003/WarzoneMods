@@ -325,6 +325,7 @@ function showFactionChat()
 	newTextField(win .. "typeMessage", line, "Type here your message", "", 300, true, 300, -1, 1, 0);
 	newButton(win .. "sendMessage", line, "Send", sendMessage, "Blue");
 	newButton(win .. "refresh", line, "Refresh", showFactionChat, "Green");
+	newButton(win .. "Return", line, "Return", showMenu, "Orange");
 	newLabel(win .. "empty", vert, "\n");
 	for i = #Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat, 1, -1 do
 		local message = Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[game.Us.ID]].FactionChat[i];
