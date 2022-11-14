@@ -22,6 +22,8 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	functions["declinePeaceOffer"] = declinePeaceOffer;
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	functions["RefreshWindow"] = RefreshWindow;
+	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
+
 	
 	print(playerID, payload.Type);
 	
