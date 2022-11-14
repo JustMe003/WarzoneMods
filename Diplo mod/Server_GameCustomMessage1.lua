@@ -22,6 +22,7 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	functions["declinePeaceOffer"] = declinePeaceOffer;
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	functions["RefreshWindow"] = RefreshWindow;
+	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
 	
 	print(playerID, payload.Type);
 	
@@ -707,4 +708,10 @@ function getFactionIncome(game, faction)
 		count = count + game.ServerGame.Game.PlayingPlayers[i].Income(0, game.ServerGame.LatestTurnStanding, true, true).Total;
 	end
 	return count;
+end
+
+function hasSeenUpdateWindow(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	playerData[playerID].HasSeenUpdateWindow = true;
+	Mod.PlayerGameData = playerData;
 end
