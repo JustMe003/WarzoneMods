@@ -52,3 +52,11 @@ function showFullDifferenceList(vert)
 	table.insert(t, UI.CreateButton(vert).SetText("Return").SetColor("#FF7D00").SetOnClick(function() cleanUpWindow(t); showDifference(vert); end));
 	table.insert(t, UI.CreateLabel(vert).SetColor("#DDDDDD").SetText("Full changelog (from 1.6 --> 2.0 and higher)\n\n- Players can join multiple Factions instead of the usual 1\n- Diplomacy cards are now played at the end of the turn instead of the start (with some exceptions)\n- Added a new file which contains all the forced diplomacy rules and their explanations\n- Added a button in the mod configuration to read the forced diplomacy rules\n- Added a button in the mod settings to read the forced diplomacy rules\n- Added a button in the mod menu to read the forced diplomacy rules\n- Added a new setting to allow configuration of the normally standard 'playing spy cards on allies'\n- Players can now have pending join request for multiple Factions\n- Players can now read the Faction chat of every Faction they're in\n- Added a new pop up message for when a player opens their game for the first time, to tell them something about the new Factions version\n- Faction names must now be between 2 and 50 characters long\n- With the setting 'Visible History' set to true, players can see the Faction relation of any Faction\n- Removed the '1 Faction restriction' in the mod configuration when modifying which Faction a slot is in\n- Modified the text of A LOT of messages..."))
 end
+
+function getTableLength(t)
+	local c = 0;
+	for _, _ in pairs(t) do
+		c = c + 1;
+	end
+	return c;
+end
