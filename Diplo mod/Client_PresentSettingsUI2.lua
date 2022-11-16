@@ -46,7 +46,7 @@ function showMain()
 	end
 	if Mod.Settings.GlobalSettings.FairFactions then
 		line = getLine(vert);
-		newLabel(win .. line, line, "Fair Factions modifier: " .. round(Mod.Settings.GlobalSettings.FairFactionsModifier));
+		newLabel(win .. line, line, "Fair Factions modifier: " .. round(Mod.Settings.GlobalSettings.FairFactionsModifier, 2));
 		newButton(win .. line .. "button", line, "?", function() UI.Alert("This number indicates how much total income a Faction might have compared to the total income of every player in the game. This can prevent the biggest players from joining a Faction and steamroll the rest of the game"); end, "Blue");
 	end
 end
