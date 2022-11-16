@@ -217,7 +217,7 @@ function showFactionDetails(factionName)
 	end
 	newLabel(win .. "FactionLeader", vert, "Faction leader: " .. game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].DisplayName(nil, false) .. "\n", game.Game.Players[Mod.PublicGameData.Factions[factionName].FactionLeader].Color.HtmlColor);
 	newLabel(win .. "PlayersInFaction", vert, "The following players are in this faction: ");
-	for i, v in pairs(Mod.PublicGameData.Factions[factionName].FactionMembers) do
+	for i, v in ipairs(Mod.PublicGameData.Factions[factionName].FactionMembers) do
 		local line = newHorizontalGroup(win .. "line" .. i, vert);
 		newLabel(win .. i .. v, line, i .. ". " .. game.Game.Players[v].DisplayName(nil, false), game.Game.Players[v].Color.HtmlColor);
 		if Mod.PublicGameData.Factions[factionName].FactionLeader == game.Us.ID and v ~= game.Us.ID then
