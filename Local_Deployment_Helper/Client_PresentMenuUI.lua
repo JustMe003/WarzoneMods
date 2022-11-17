@@ -67,7 +67,7 @@ function addDeploysTurnOne()
 
 	for bonusID, worth in pairs(Game.Us.Income(0, Game.LatestStanding, false, false).BonusRestrictions) do
 		if #Game.Map.Bonuses[bonusID].Territories == 1 then
-			table.insert(orders, WL.GameOrderDeploy.Create(Game.Us.ID, worth, Game.Map.Bonuses[bonusID].Territories[1]));
+			table.insert(orders, WL.GameOrderDeploy.Create(Game.Us.ID, worth, Game.Map.Bonuses[bonusID].Territories[1], false));
 		end
 	end
 	
