@@ -33,6 +33,9 @@ function showMenu()
 	init();
 	if Mod.Settings.DeployTransferHelper == true then
 		createButton(vert, "Go to deploy/transfer helper", "#00ff05", function() destroyAll(); showHelperMenu(); end);
+		if Game.Game.TurnNumber == 1 then
+			createButton(vert, "Deploy in all bonuses of size 1", "#AC0059", addDeploysTurnOne)
+		end
 		createButton(vert, "Clear Orders", "#0000FF", clearOrdersFunction);
 	else
 		if Game.Us ~= nil and not Game.Us.IsAIOrHumanTurnedIntoAI then
@@ -54,10 +57,28 @@ function showCredits()
 	createLabel(line, "Zazzlegut", colors.Green)
 end
 
+function addDeploysTurnOne()
+	local orders = Game.Orders;
+	if #orders > 0 then
+		UI.Alert("Remove all orders from your order list to use this");
+		Close();
+		return;
+	end
+
+	for bonusID, worth in pairs(Game.Us.Income(0, Game.LatestStanding, false, false).BonusRestrictions) do
+		if #Game.Map.Bonuses[bonusID].Territories == 1 then
+			table.insert(orders, WL.GameOrderDeploy.Create(Game.Us.ID, worth, Game.Map.Bonuses[bonusID].Territories[1]));
+		end
+	end
+	
+	Game.Orders = orders;
+end
+
 function showHelperMenu()
 	if Game.Game.TurnNumber < 2 then
-		UI.Alert("You cannon use the helper function in the distribution phase of in turn 1 and turn 2");
+		UI.Alert("You cannot use the helper function in the distribution phase or in turn 1");
 		Close();
+		return;
 	end
 	
 	init();
@@ -82,7 +103,6 @@ function showHelperMenu()
 	addOrdersButton = createButton(vert, "Add orders", colors.Green, function() AddOrdersHelper(); destroyAll(); showMenu(); end);
 	setToPercentage.SetInteractable(Game.Settings.AllowPercentageAttacks);
 end
-
 
 function showSettings()
 	init();
