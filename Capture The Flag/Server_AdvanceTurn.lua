@@ -106,7 +106,7 @@ function lostFlag(game, addNewOrder, terrID, armies, p)
 					if not playerHasEnoughFlags(game, terrID, unit.OwnerID) then
 						event = WL.GameOrderEvent.Create(unit.OwnerID, game.Game.PlayingPlayers[unit.OwnerID].DisplayName(nil, false) .. " lost to many flags", nil, eliminatePlayer(game, terrID, unit.OwnerID));
 						event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
-						addNewOrder(even, true);
+						addNewOrder(event, true);
 					end
 				end
 			end
