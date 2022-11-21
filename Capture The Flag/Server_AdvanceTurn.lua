@@ -96,6 +96,7 @@ function lostFlag(game, addNewOrder, terrID, armies, p)
 				addNewOrder(event, true);
 			end
 			if unit.Name == "Flag" then
+				print(unit.OwnerID);
 				if game.Game.PlayingPlayers[unit.OwnerID].Team ~= -1 then
 					if not teamHasEnoughFlags(game, terrID, game.Game.PlayingPlayers[unit.OwnerID].Team) then
 						event = WL.GameOrderEvent.Create(unit.OwnerID, getTeamName(game.Game.PlayingPlayers[unit.OwnerID].Team) .. " lost to many flags", nil,  eliminateTeam(game, terrID, game.Game.PlayingPlayers[unit.OwnerID].Team));
