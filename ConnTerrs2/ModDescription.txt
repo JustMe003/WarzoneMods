@@ -1,4 +1,4 @@
-[Revamp of the old Connected Commanders mod]
+[Revamp of the old(er) Connected Commanders mod]
 Each player will get a number of Link units. These units are represented by a chain icon and always worth 1 army. Territories that are not connected to at least one link unit will go neutral at the end of the turn. (connected means: There is a path from the territory in question to a link unit, the length of this path doesn't matter)
 
 With some settings for better customization
