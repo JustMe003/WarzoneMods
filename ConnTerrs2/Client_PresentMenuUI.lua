@@ -34,7 +34,7 @@ function showMenu()
 end
 
 function validateClick(terrDetails)
-	if terrDetails == nil then return; end
+	if terrDetails == nil then showMenu(); end
 	if game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID ~= game.Us.ID then
 		UI.Alert("you must pick a territory you control");
 		if Order ~= nil then
@@ -42,7 +42,7 @@ function validateClick(terrDetails)
 			table.insert(orders, Order);
 			game.Orders = orders;
 		end
-		return;
+		showMenu();
 	end
 	local orders = game.Orders;
 	table.insert(orders, WL.GameOrderCustom.Create(game.Us.ID, "Place link unit on " .. terrDetails.Name, "ConnTerrs2_" .. terrDetails.ID));
