@@ -15,7 +15,7 @@ function showMenu()
 
 	local text = CreateLabel(GetRoot()).SetColor(colors.Tan);
 	local addUnit = CreateButton(GetRoot()).SetText("Place unit").SetColor(colors.Blue).SetOnClick(function() DestroyWindow(); SetWindow("ShowInfo"); CreateLabel(GetRoot()).SetText("Click one of your territories to create the order. You can move this dialog out of the way if you need to"); UI.InterceptNextTerritoryClick(validateClick); end);
-	CreateEmpty(GetRoot()).SetPreferredHeigth(10)
+	CreateEmpty(GetRoot()).SetPreferredHeight(10)
 	CreateLabel(GetRoot()).SetText("You're gonna deploy link units on:").SetColor(colors.Tan);
 	local count = 0;
 	for _, order in pairs(game.Orders) do
