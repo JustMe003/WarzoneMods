@@ -35,7 +35,7 @@ end
 
 function validateClick(terrDetails)
 	if terrDetails == nil then return; end
-	if game.LatestStanding.Territories[terrDetails.ID].OwnerPlayeraID ~= game.Us.ID then
+	if game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID ~= game.Us.ID then
 		UI.Alert("you must pick a territory you control");
 		if Order ~= nil then
 			local orders = game.Orders;
