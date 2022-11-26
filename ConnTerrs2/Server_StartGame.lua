@@ -22,11 +22,10 @@ function Server_StartGame(game, standing)
 			end
 		end
 		standing = s;
-	else
-		local data = Mod.PublicGameData;
-		data.NumUnits = getAmountOfUnits(playerTerrs);
-		Mod.PublicGameData = data;
 	end
+	local data = Mod.PublicGameData;
+	data.NumUnits = getAmountOfUnits(playerTerrs);
+	Mod.PublicGameData = data;
 end
 
 function includeUnit(t, u)
