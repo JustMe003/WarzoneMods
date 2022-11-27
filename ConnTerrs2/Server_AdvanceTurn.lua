@@ -1,6 +1,6 @@
 require("util");
 function Server_AdvanceTurn_Start(game, addNewOrder)
-	if game.ServerGame.Game.TurnNumber ~= 1 then return; end
+	if game.ServerGame.Game.TurnNumber ~= 1 or Mod.Settings.AutoDistributeUnits then return; end
 	local hasDeployedUnit = 0;
 	local deployedUnitAt = {};
 	for p, _ in pairs(game.Game.PlayingPlayers) do
