@@ -1,14 +1,15 @@
 function Server_AdvanceTurn_Start(game,addNewOrder)
 	data = Mod.PublicGameData;
 end
+
 function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderAttackTransfer" then
 		if getNumFlags(result.ActualArmies, true) > 0 then
 			local t = {};
 			for _, unit in pairs(result.ActualArmies.SpecialUnits) do
-				if not ((unit.Name == "Flag" or unit.Name == "Captured Flag") and data.Cooldowns[unit.ID] ~= nil) then
+				if unit.proxyType == "CustomSpecialUnit" and not ((unit.Name == "Flag" or unit.Name == "Captured Flag") and data.Cooldowns[unit.ID] ~= nil) then
 					table.insert(t, unit);
-				elseif unit.Name == "Flag" or unit.Name == "Captured Flag" and Mod.Settings.Cooldown > 0 then
+				elseif unit.proxyType == "CustomSpecialUnit" and (unit.Name == "Flag" or unit.Name == "Captured Flag") and Mod.Settings.Cooldown > 0 then
 					data.Cooldowns[unit.ID] = Mod.Settings.Cooldown;
 				end
 			end
@@ -17,7 +18,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 		if getNumFlags(result.AttackingArmiesKilled, true) > 0 then
 			local arr = {};
 			for _, unit in ipairs(result.AttackingArmiesKilled.SpecialUnits) do
-				if not (unit.Name == "Flag" or unit.Name == "Captured Flag") then
+				if unit.proxyType == "CustomSpecialUnit" and not (unit.Name == "Flag" or unit.Name == "Captured Flag") then
 					table.insert(arr, unit);
 				end
 			end
@@ -30,7 +31,7 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 				else
 					local t = {};
 					for _, unit in pairs(result.DefendingArmiesKilled.SpecialUnits) do
-						if not (unit.Name == "Flag" or unit.Name == "Captured Flag") then
+						if unit.proxyType == "CustomSpecialUnit" and not (unit.Name == "Flag" or unit.Name == "Captured Flag") then
 							table.insert(t, unit);
 						end
 					end
@@ -49,11 +50,11 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
 		if getNumFlags(terr.NumArmies, true) > 0 then
 			for _, unit in pairs(terr.NumArmies.SpecialUnits) do
-				if (unit.Name == "Flag" or unit.Name == "Captured Flag") and data.Cooldowns[unit.ID] ~= nil then
+				if unit.proxyType == "CustomSpecialUnit" and (unit.Name == "Flag" or unit.Name == "Captured Flag") and data.Cooldowns[unit.ID] ~= nil then
 					data.Cooldowns[unit.ID] = data.Cooldowns[unit.ID] - 1;
 					if data.Cooldowns[unit.ID] == 0 then data.Cooldowns[unit.ID] = nil; end
 				end
-				if unit.Name == "Captured Flag" and terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
+				if unit.proxyType == "CustomSpecialUnit" and unit.Name == "Captured Flag" and terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
 					t[terr.OwnerPlayerID] = t[terr.OwnerPlayerID] + 1;
 				end
 			end
@@ -71,7 +72,7 @@ end
 function getNumFlags(armies, allFlags)
 	local c = 0;
 	for _, unit in pairs(armies.SpecialUnits) do
-		if unit.Name == "Flag" or (allFlags and unit.Name == "Captured Flag") then
+		if unit.proxyType == "CustomSpecialUnit" and (unit.Name == "Flag" or (allFlags and unit.Name == "Captured Flag")) then
 			c = c + 1;
 		end
 	end
@@ -80,7 +81,7 @@ end
 
 function lostFlag(game, addNewOrder, terrID, armies, p)
 	for _, unit in pairs(armies.SpecialUnits) do			-- there can be more than 1 flag that gets captured
-		if unit.Name == "Flag" or unit.Name == "Captured Flag" then
+		if unit.proxyType == "CustomSpecialUnit" and (unit.Name == "Flag" or unit.Name == "Captured Flag") then
 			if unit.OwnerID == p and unit.Name == "Flag" then
 				local mod = WL.TerritoryModification.Create(terrID);
 				mod.AddSpecialUnits = {getFlag(p)};
