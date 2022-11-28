@@ -21,7 +21,7 @@ function Client_PresentConfigureUI(rootParent)
 	autoDistributeUnitsInput = CreateCheckBox(line).SetText(" ").SetIsChecked(autoDistributeUnits);
 	CreateLabel(line).SetText("Auto distribute the link units").SetColor(colors.Tan);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When enabled, the mod will automatically (but efficiently) distribute the link units for players. When this option is disabled and players do not deploy all their link units, the mod will auto distribute the remaining units for them"); end);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When enabled, the mod will automatically (but efficiently) distribute the link units for players. When this option is disabled and players do not deploy all their link units, the mod will auto distribute the remaining units for them regardless of this setting"); end);
 	line = CreateHorz(root).SetFlexibleWidth(1);
 	local vert = CreateVert(root);
 	nUnitsIsNTerrsInput = CreateCheckBox(line).SetText(" ").SetIsChecked(nUnitsIsNTerrs).SetOnValueChanged(function() if nUnitsIsNTerrsInput.GetIsChecked() then numberOfUnits = numberOfUnitsInput.GetValue(); DestroyWindow("Extrainput"); else inputNumberUnits(vert); end; end);
