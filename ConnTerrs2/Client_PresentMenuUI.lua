@@ -28,7 +28,7 @@ function showMenu()
 				count = count + 1;
 				local line = CreateHorz(GetRoot()).SetFlexibleWidth(1);
 				CreateButton(line).SetText(game.Map.Territories[t[2]].Name).SetColor(colors.Lime).SetOnClick(function() Order = order; removeOrder(t[2]) DestroyWindow(); SetWindow("ShowInfo"); CreateLabel(GetRoot()).SetText("Click one of your territories to create the order. You can move this dialog out of the way if you need to"); UI.InterceptNextTerritoryClick(validateClick); end).SetFlexibleWidth(1);
-				CreateEmpty(line).SetPreferredWidth(300).SetFlexibleWidth(0);
+				CreateEmpty(line).SetFlexibleWidth(0);
 				CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() if WL.IsVersionOrHigher("5.21") then game.HighlightTerritories({tonumber(t[2])}); game.CreateLocatorCircle(game.Map.Territories[tonumber(t[2])].MiddlePointX, game.Map.Territories[tonumber(t[2])].MiddlePointY); end; end)
 			end
 		end
