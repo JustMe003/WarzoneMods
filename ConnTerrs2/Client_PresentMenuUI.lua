@@ -15,7 +15,7 @@ function showMenu()
 	DestroyWindow();
 	SetWindow("ShowMenu");
 
-	SetMaxSize(400, 500);
+	SetMaxSize(300, 300);
 	local text = CreateLabel(GetRoot()).SetColor(colors.Tan);
 	local addUnit = CreateButton(GetRoot()).SetText("Place unit").SetColor(colors.Blue).SetOnClick(function() DestroyWindow(); SetWindow("ShowInfo"); CreateLabel(GetRoot()).SetText("Click one of your territories to create the order. You can move this dialog out of the way if you need to"); UI.InterceptNextTerritoryClick(validateClick); end);
 	CreateEmpty(GetRoot()).SetPreferredHeight(10)
