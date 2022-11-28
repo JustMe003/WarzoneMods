@@ -7,6 +7,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	Init(rootParent);
 	colors = GetColors();
 	game = Game;
+	SetMaxSize = setMaxSize;
 	showMenu();
 end
 
@@ -14,6 +15,7 @@ function showMenu()
 	DestroyWindow();
 	SetWindow("ShowMenu");
 
+	SetMaxSize(400, 500);
 	local text = CreateLabel(GetRoot()).SetColor(colors.Tan);
 	local addUnit = CreateButton(GetRoot()).SetText("Place unit").SetColor(colors.Blue).SetOnClick(function() DestroyWindow(); SetWindow("ShowInfo"); CreateLabel(GetRoot()).SetText("Click one of your territories to create the order. You can move this dialog out of the way if you need to"); UI.InterceptNextTerritoryClick(validateClick); end);
 	CreateEmpty(GetRoot()).SetPreferredHeight(10)
@@ -30,6 +32,8 @@ function showMenu()
 	end
 	if count > 0 then text2.SetText("You're gonna deploy link units on:"); end
 	CreateLabel(GetRoot()).SetText("You can move or close this window if you want to, but don't forget to deploy all link units!").SetColor(colors.Tan);
+	CreateEmpty(GetRoot()).SetPreferredHeight(10);
+	CreateButton(GetRoot()).SetText("Minimize window").SetColor(colors.Purple).SetOnClick(minimizeWindow);
 	addUnit.SetInteractable(Mod.PublicGameData.NumUnits - count > 0);
 	text.SetText("You can place " .. Mod.PublicGameData.NumUnits - count .. " more link units");
 end
@@ -64,4 +68,12 @@ function removeOrder(terrID)
 			end
 		end
 	end
+end
+
+function minimizeWindow()
+	DestroyWindow();
+	SetWindow("MinimizeWindow");
+
+	SetMaxSize(100, 165);
+	CreateButton(GetRoot()).SetText("Open Dialog").SetColor(colors.Purple).SetOnClick(showMenu);
 end
