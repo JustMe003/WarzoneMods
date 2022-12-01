@@ -4,7 +4,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
         medics[p] = 0;
     end
     for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
-        if terr.NumArmies.SpecialUnits ~= nil and #terr.NumArmies.SpecialUnits > 0 then
+        if terr.NumArmies.SpecialUnits ~= nil and #terr.NumArmies.SpecialUnits > 0 and terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
             medics[terr.OwnerPlayerID] = medics[terr.OwnerPlayerID] + getNMedics(terr.NumArmies);
         end
     end
