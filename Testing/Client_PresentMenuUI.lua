@@ -3,6 +3,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
     game = Game;
     Game.GetTurn(Game.Game.TurnNumber - 2, callback);
 
+    print(Mod.PublicGameData.PendingStateTransitions);
     if Mod.PublicGameData.PendingStateTransitions ~= nil then
         for i, v in pairs(Mod.PublicGameData.PendingStateTransitions) do
             for k, v2 in pairs(v) do
