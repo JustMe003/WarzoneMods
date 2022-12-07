@@ -6,6 +6,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
     print(Mod.PublicGameData.PendingStateTransitions);
     if Mod.PublicGameData.PendingStateTransitions ~= nil then
         for i, v in pairs(Mod.PublicGameData.PendingStateTransitions) do
+            print(i, v)
             for k, v2 in pairs(v) do
                 print(i, k, v2);
             end
