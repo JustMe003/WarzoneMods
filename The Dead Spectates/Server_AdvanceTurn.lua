@@ -1,5 +1,17 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
-	local data = Mod.PublicGameData;
+	playCards(game, addNewOrder);
+end
+
+function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
+	
+end
+
+function Server_AdvanceTurn_End(game, addNewOrder)
+	playCards(game, addNewOrder);
+end
+
+function playCards(game, addNewOrder)
+    local data = Mod.PublicGameData;
     if data.NonPlayingPlayers == nil then data.NonPlayingPlayers = {}; end
     for _, p in pairs(game.Game.Players) do
         if playerIsOut(p.State) and not valueInTable(data.NonPlayingPlayers, p.ID) then
@@ -15,14 +27,6 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
         end
     end
     Mod.PublicGameData = data;
-end
-
-function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
-	
-end
-
-function Server_AdvanceTurn_End(game, addNewOrder)
-	
 end
 
 function playerIsOut(state)
