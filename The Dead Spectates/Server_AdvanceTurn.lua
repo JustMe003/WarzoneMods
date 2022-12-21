@@ -30,10 +30,10 @@ function playCards(game, addNewOrder)
 end
 
 function playerIsOut(state)
-    if Mod.Settings.IncludeInGamePlayers == nil or not Mod.Settings.IncludeInGamePlayers then
-        return state == WL.GamePlayerState.Eliminated or state == WL.GamePlayerState.Booted or state == WL.GamePlayerState.SurrenderAccepted;
-    else
+    if Mod.Settings.IncludeInGamePlayers == nil or Mod.Settings.IncludeInGamePlayers then
         return state ~= WL.GamePlayerState.Playing;
+    else
+        return state == WL.GamePlayerState.Eliminated or state == WL.GamePlayerState.Booted or state == WL.GamePlayerState.SurrenderAccepted;
     end
 end
 
