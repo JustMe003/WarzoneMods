@@ -1,6 +1,6 @@
 The Dead Watches...
 
-Eliminated, surrendered and booted players will automatically play spy cards on every player and neutrals. They will be able to see the entire game from that point.
+Non-playing players will automatically play spy cards on every player and neutrals, simulating a spectator mode. They will be able to see the entire game from that point. Can exclude booted, eliminated or surrendered players since they can chat in the global game chat.
 
 This mod takes full control over the spy card, doesn't matter if you've added the card or not. Players cannot get or play the card, only the dead players will automatically play them
 
