@@ -3,6 +3,6 @@ function Client_PresentConfigureUI(rootParent)
     if includeInGamePlayers == nil then includeInGamePlayers = true; end
 
     local line = UI.CreateHorizontalLayoutGroup(rootParent);
-    includeInGamePlayersInput = UI.CreateCheckbox(line).SetIsChecked(includeInGamePlayers).SetText(" ");
+    includeInGamePlayersInput = UI.CreateCheckBox(line).SetIsChecked(includeInGamePlayers).SetText(" ");
     UI.CreateLabel(line).SetText("Include players who got booted, eliminated or surrendered").SetColor("#DDDDDD");
 end
