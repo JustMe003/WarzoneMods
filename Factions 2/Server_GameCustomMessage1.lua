@@ -704,6 +704,7 @@ function RefreshWindow(game, playerID, payload, setReturn)
 end
 
 function getFactionIncome(game, faction)
+	print("Faction: " .. faction);
 	local count = 0;
 	for _, i in pairs(data.Factions[faction].FactionMembers) do
 		count = count + game.ServerGame.Game.PlayingPlayers[i].Income(0, game.ServerGame.LatestTurnStanding, true, true).Total;
