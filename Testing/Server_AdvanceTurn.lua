@@ -4,7 +4,7 @@ end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderEvent" then
-		for _, v in pairs(orderResult) do
+		for _, v in pairs(orderResult.readableKeys) do
 			print(v, orderResult[v])
 		end
 	end
