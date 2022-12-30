@@ -3,7 +3,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
-	if order.proxyType == "GameOrderEvent" then
+	if order.proxyType == "GameOrderCustom" then
 		for _, v in pairs(orderResult.readableKeys) do
 			print(v, orderResult[v])
 		end
