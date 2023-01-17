@@ -4,11 +4,9 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
-    if order.proxyType == "GameOrderPlayCardGift" then
-        if not globalBoolean then
-            table.insert(listOfGifts, order);
-            skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
-        end
+    if not globalBoolean and order.proxyType == "GameOrderPlayCardGift" then
+        table.insert(listOfGifts, order);
+        skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
     end
 end
 
