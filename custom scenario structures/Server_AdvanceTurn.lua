@@ -4,7 +4,6 @@ end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if game.Settings.MultiPlayer then return; end
-	print(order.proxyType);
 	if Mod.Settings.Testing then return; end
 	if order.proxyType == "GameOrderCustom" then
 		if string.find(order.Payload, "CustomScenarioStructures_") ~= nil then
