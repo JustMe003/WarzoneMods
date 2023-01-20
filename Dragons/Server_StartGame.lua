@@ -3,7 +3,7 @@ function Server_StartGame(game, standing)
     for _, terr in pairs(s) do
         if terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
             local armies = terr.NumArmies;
-            print(armies.proxyType);
+            print(armies);
             table.insert(armies.SpecialUnits, getDragon(terr.OwnerPlayerID));
             terr.NumArmies = WL.Armies.Create(armies.NumArmies, armies.SpecialUnits);
         end
