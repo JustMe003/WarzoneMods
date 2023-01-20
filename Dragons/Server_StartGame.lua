@@ -11,7 +11,6 @@ end
 function getDragon(p)
     local builder = WL.CustomSpecialUnitBuilder.Create(p);
     builder.Name = "Dragon";
-    builder.TextOverHeadOpt = "Dragon";
     builder.IncludeABeforeName = true;
     builder.ImageFilename = 'dragon.png';
     builder.AttackPower = 20;
