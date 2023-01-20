@@ -18,7 +18,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 for connID, _ in pairs(game.Map.Territories[order.To].ConnectedTo) do
                     if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= order.PlayerID then
                         local mod = WL.TerritoryModification.Create(connID);
-                        mod.AddArmies = -math.min(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.NumArmies, dragonCount * 5);
+                        mod.AddArmies = -math.min(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.NumArmies, dragonCount * 2);
                         table.insert(mods, mod);
                     end
                 end
