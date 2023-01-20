@@ -11,7 +11,7 @@ function Server_StartGame(game, standing)
 end
 
 function getDragon(p)
-    local builder = WL.CustomSpecialUnitBuilder.Create(order.PlayerID);
+    local builder = WL.CustomSpecialUnitBuilder.Create(p);
     builder.Name = "Dragon";
     builder.TextOverHeadOpt = "Dragon";
     builder.IncludeABeforeName = true;
