@@ -19,7 +19,9 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= order.PlayerID then
                         local mod = WL.TerritoryModification.Create(connID);
                         mod.AddArmies = -math.min(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.NumArmies, dragonCount * 2);
-                        table.insert(mods, mod);
+                        if mod.AddArmies ~= 0 then
+                            table.insert(mods, mod);
+                        end
                     end
                 end
                 local event = WL.GameOrderEvent.Create(order.PlayerID, "Dragon breath", {}, mods);
