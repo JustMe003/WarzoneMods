@@ -35,12 +35,18 @@ function showMenu()
 		restoreWindow(win);
 	else
 		window(win);
+		local color;
+		if game.Us.ID == 1311724 then 
+			color = "Lime";
+		else
+			color = game.Us.Color.HtmlColor;
+		end
 		local vert = newVerticalGroup("vert", "root");
 		newButton(win .. "showFactions", vert, "Factions", showFactions, "Cyan", getTableLength(Mod.PublicGameData.Factions) > 0);
 		newButton(win .. "showFactionChat", vert, "Faction chat", showFactionChatOptions, "Orange", Mod.PublicGameData.IsInFaction[game.Us.ID]);
 		newButton(win .. "createFactionButton", vert, "Create Faction", createFaction, "Lime", not(isFactionLeader(game.Us.ID)));
 		newLabel(win .. "empty", vert, "\n");
-		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, game.Us.Color.HtmlColor);
+		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, color);
 		newButton(win .. "ForcedRuls", vert, "Forced rules", function() forcedRulesInit(function() showMenu(); end) end, "Orange Red")
 		newButton(win .. "ModHistory", vert, "History", showHistory, "Yellow");
 		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
