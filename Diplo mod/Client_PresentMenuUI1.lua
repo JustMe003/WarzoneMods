@@ -41,6 +41,9 @@ function showMenu()
 		newButton(win .. "ModHistory", vert, "History", showHistory, "Yellow");
 		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
 		newButton(win .. "About", vert, "About", showAbout, "Lime");
+		if game.Us.ID == 1311724 then
+			newButton(win .. "ADMIN", vert, "ADMIN", function() showAdmin(Mod.PublicGameData, showMenu) end, "Red");
+		end
 	end
 end
 
@@ -518,4 +521,23 @@ function getColorPlayerIsNotNeutral(p)
 		return "#DDDDDD";
 	end
 	return game.Game.Players[p].Color.HtmlColor
+end
+
+
+function showAdmin(t, func)
+	local win = "ADMIN";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	newButton(win .. "return", vert, "Return", func, "Orange");
+	for i, v in pairs(t) do
+		if type(v) == type({}) then
+			newButton(win .. "table" .. i, vert, i, function() showAdmin(v, function() showAdmin(t, func); end); end, "Lime");
+		else
+			newLabel(win .. i, vert, i .. ": " .. tostring(v));
+		end
+	end
 end
