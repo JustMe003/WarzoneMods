@@ -5,7 +5,7 @@ function Client_PresentMenuUIMain(rootParent, setMaxSize, setScrollable, Game, c
 	init(rootParent);
 	game = Game;
 	if game.Us == nil then UI.Alert("You cannot use this mod since you're not playing in this game"); close(); return; end
-	if game.Us.State ~= WL.GamePlayerState.Playing and not game.Us.ID == 1311724 then UI.Alert("You cannot use this mod anymore since you're not playing anymore"); close(); return; end
+	if game.Us.State ~= WL.GamePlayerState.Playing then UI.Alert("You cannot use this mod anymore since you're not playing anymore"); close(); return; end
 	if game.Game.TurnNumber < 1 then UI.Alert("This mod can only be used after the distribution turn"); close(); return; end
 	if Mod.PublicGameData.VersionNumber == nil or Mod.PublicGameData.VersionNumber < 6 then UI.Alert("Hooray! An update! Unfortunately this game has to advance a turn first before you can use it again"); close(); return; end
 
@@ -35,18 +35,12 @@ function showMenu()
 		restoreWindow(win);
 	else
 		window(win);
-		local color;
-		if game.Us.ID == 1311724 then 
-			color = "Lime";
-		else
-			color = game.Us.Color.HtmlColor;
-		end
 		local vert = newVerticalGroup("vert", "root");
 		newButton(win .. "showFactions", vert, "Factions", showFactions, "Cyan", getTableLength(Mod.PublicGameData.Factions) > 0);
 		newButton(win .. "showFactionChat", vert, "Faction chat", showFactionChatOptions, "Orange", Mod.PublicGameData.IsInFaction[game.Us.ID]);
 		newButton(win .. "createFactionButton", vert, "Create Faction", createFaction, "Lime", not(isFactionLeader(game.Us.ID)));
 		newLabel(win .. "empty", vert, "\n");
-		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, color);
+		newButton(win .. "playerPage", vert, "Your relations", showPlayerPage, game.Us.Color.HtmlColor);
 		newButton(win .. "ForcedRuls", vert, "Forced rules", function() forcedRulesInit(function() showMenu(); end) end, "Orange Red")
 		newButton(win .. "ModHistory", vert, "History", showHistory, "Yellow");
 		newButton(win .. "showPlayerSettings", vert, "Personal settings", showPlayerSettings, "Royal Blue");
