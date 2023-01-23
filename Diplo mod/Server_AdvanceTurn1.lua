@@ -59,11 +59,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 							data.Factions[data.PlayerInFaction[i]].FactionLeader = data.Factions[data.PlayerInFaction[i]].FactionMembers[1];
 							local group;
 							if not Mod.Settings.GlobalSettings.VisibleHistory then
-								if data.PlayerInFaction[t.PlayerID] ~= nil then
-									group = data.Factions[data.PlayerInFaction[t.PlayerID]].FactionMembers;
-								end
+								group = data.Factions[data.PlayerInFaction[i]].FactionMembers;
 							end
-							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), data.Factions[data.PlayerInFaction[i]].FactionLeader));
+							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), data.Factions[data.PlayerInFaction[i]].FactionLeader, group));
 						end
 					end
 					data.PlayerInFaction[i] = nil;
