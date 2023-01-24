@@ -64,7 +64,7 @@ function modifyDragon(dragon)
     dragonInputs.IncludeABeforeName = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IncludeABeforeName);
     CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
 
-    dragonInputs.UseHealth.SetOnValueChange(function() healthAndDamage(dragon, vert) end);
+    dragonInputs.UseHealth.SetOnValueChanged(function() healthAndDamage(dragon, vert) end);
 end
 
 function healthAndDamage(dragon, vert)
