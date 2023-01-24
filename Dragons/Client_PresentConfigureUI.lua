@@ -41,6 +41,26 @@ function modifyDragon(dragon)
     line = CreateHorz(root).SetFlexibleWidth(1);
     dragonInputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
     CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.IsVisibleToAllPlayers = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IsVisibleToAllPlayers);
+    CreateLabel(line).SetText("This dragon is always visible for every player").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.CanBeAirliftedToSelf = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeAirliftedToSelf);
+    CreateLabel(line).SetText("Players can airlift this dragon").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.CanBeGiftedWithGiftCard = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeGiftedWithGiftCard);
+    CreateLabel(line).SetText("Players can gift this dragon to other players").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.IncludeABeforeName = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IncludeABeforeName);
+    CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth);
+    CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
 end
 
 function changeColor(dragon)
@@ -61,7 +81,12 @@ end
 
 function saveDragon(dragon, inputs)
     dragons[dragon.ID].Name = inputs.Name.GetText();
-    dragons[dragon.ID].DragonBreathAttack = inputs.
+    dragons[dragon.ID].DragonBreathAttack = inputs.DragonBreathAttack.GetIsChecked();
+    dragons[dragon.ID].IsVisibleToAllPlayers = inputs.IsVisibleToAllPlayers.GetIsChecked();
+    dragons[dragon.ID].CanBeAirliftedToSelf = inputs.CanBeAirliftedToSelf.GetIsChecked();
+    dragons[dragon.ID].CanBeGiftedWithGiftCard = inputs.CanBeGiftedWithGiftCard.GetIsChecked();
+    dragons[dragon.ID].IncludeABeforeName = inputs.IncludeABeforeName.GetIsChecked();
+    dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked();
 end
 
 function initDragon()
@@ -78,6 +103,11 @@ function initDragon()
     t.Color = c[math.random(#c)];
     t.ColorName = getColorName(t.Color);
     t.DragonBreathAttack = true;
+    t.IsVisibleToAllPlayers = false;
+    t.CanBeAirliftedToSelf = true;
+    t.CanBeGiftedWithGiftCard = false;
+    t.IncludeABeforeName = true;
+    t.UseHealth = true;
     t.ID = #dragons + 1;
     return t;
 end
