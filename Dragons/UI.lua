@@ -30,8 +30,7 @@ function AddSubWindow(win, subWin)
 	if subWindows_JAD[win] == nil then
 		subWindows_JAD[win] = {};
 	end
-	if not valueInTable_JAD(subWindows_JAD, subWin) and win ~= subWin then
-		print(#subWindows_JAD[win]);
+	if not valueInTable_JAD(subWindows_JAD[win], subWin) and win ~= subWin then
 		table.insert(subWindows_JAD[win], subWin);
 	end
 end
