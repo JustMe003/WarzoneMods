@@ -27,7 +27,7 @@ function modifyDragon(dragon)
     DestroyWindow(GetCurrentWindow(), true);
     SetWindow("modifyDragon");
     
-    local dragonInputs = {};
+    dragonInputs = {};
     currentDragon = dragon.ID;
     
     CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
