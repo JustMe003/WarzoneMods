@@ -37,7 +37,7 @@ function modifyDragon(dragon)
     CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
     CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() saveDragon(dragon, dragonInputs) changeColor(dragon) end);
     
-    CreateButton(root).SetOnClick(showMain).SetColor(colors.Orange).SetText("Return");
+    CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
     
 end
 
@@ -59,7 +59,7 @@ end
 
 function saveDragon(dragon, inputs)
     local dragons[dragon.ID].Name = GetText(inputs.Name);
-    
+
 end
 
 function initDragon()
