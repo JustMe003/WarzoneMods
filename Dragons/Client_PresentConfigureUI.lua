@@ -68,8 +68,10 @@ function modifyDragon(dragon)
 end
 
 function healthAndDamage(dragon, vert)
-    DestroyWindow("healthAndDamage");
-    SetWindow("healthAndDamage");
+    local win = "healthAndDamage";
+    AddSubWindow(GetCurrentWindow, win);
+    DestroyWindow(win);
+    SetWindow(win);
 
     CreateButton(vert).SetText("test");
 end
