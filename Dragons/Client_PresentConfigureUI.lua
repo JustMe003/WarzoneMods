@@ -76,6 +76,7 @@ function initDragon()
     t.Color = c[math.random(#c)];
     t.ColorName = getColorName(t.Color);
     t.ID = #dragons + 1;
+    print(t.ID);
     return t;
 end
 
