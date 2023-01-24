@@ -23,6 +23,7 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	functions["RefreshWindow"] = RefreshWindow;
 	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
+	functions["resetOffer"] = resetOffer;
 	
 	print(playerID, payload.Type);
 	
@@ -507,6 +508,9 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 				data.Relations[opponent][playerID] = "InPeace";
 				data.Relations[playerID][opponent] = "InPeace";
+				playerData[playerID].Offers[opponent] = nil;
+				playerData[opponent].Offers[playerID] = nil;
+				table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
 				setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 			else
 				setReturn(setReturnPayload("You cannot accept peace while your faction is in war with your opponents faction", "Fail"));
@@ -517,6 +521,8 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 			data.Relations[opponent][playerID] = "InPeace";
 			data.Relations[playerID][opponent] = "InPeace";
+			playerData[playerID].Offers[opponent] = nil;
+			playerData[opponent].Offers[playerID] = nil;
 			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
 			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		end
@@ -584,9 +590,9 @@ function kickPlayer(game, playerID, payload, setReturn)
 			end
 		else
 			setReturn(setReturnPayload("You are not the faction leader and cannot make do this", "Fail"));
-		end
-	else
-		setReturn(setReturnPayload("Your faction doesn't exists anymore", "Fail"));
+			end
+		else
+			setReturn(setReturnPayload("Your faction doesn't exists anymore", "Fail"));
 	end
 end
 
@@ -656,6 +662,8 @@ function declinePeaceOffer(game, playerID, payload, setReturn)
 		table.remove(playerData[playerID].PendingOffers, payload.Index);
 		table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 		table.insert(playerData[opponent].Notifications.PeaceDeclines, playerID);
+		playerData[playerID].Offers[opponent] = nil;
+		playerData[opponent].Offers[playerID] = nil;
 		setReturn(setReturnPayload("Successfully declined the offer", "Success"));
 		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " declined the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 	else
@@ -713,5 +721,38 @@ end
 function hasSeenUpdateWindow(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	playerData[playerID].HasSeenUpdateWindow = true;
+	Mod.PlayerGameData = playerData;
+end
+
+function resetOffer(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	if playerData[playerID].Offers ~= nil and playerData[playerID].Offers[payload.Opponent] ~= nil then
+		playerData[playerID].Offers[payload.opponent] = nil;
+		playerData[payload.opponent].Offers[playerID] = nil;
+		if playerData[playerID].PendingOffers ~= nil then
+			local index = 0;
+			for i, p in pairs(playerData[playerID].PendingOffers) do
+				if p == payload.Opponent then
+					index = i;
+				end
+			end
+			if index > 0 then
+				table.remove(playerData[playerID].PendingOffers, index);
+			end
+		end
+		if playerData[payload.Opponent].PendingOffers ~= nil then
+			local index = 0;
+			for i, p in pairs(playerData[payload.Opponent].PendingOffers) do
+				if p == playerID then
+					index = i;
+				end
+			end
+			if index > 0 then
+				table.remove(playerData[payload.Opponent].PendingOffers, index);
+			end
+		end
+	else
+		setReturn(setReturnPayload("Something isn't right, pls let me know!", "Fail"));
+	end
 	Mod.PlayerGameData = playerData;
 end

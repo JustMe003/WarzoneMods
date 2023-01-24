@@ -151,6 +151,10 @@ function showPlayerDetails(playerID)
 	local line = newHorizontalGroup(win .. "line2", vert);
 	newButton(win .. "ToWar", line, "Declare war", function() confirmChoice("Do you really wish to go to war against " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() Close(); func = function() showPlayerDetails(playerID); end; game.SendGameCustomMessage("Declaring war...", { Type="declareWar", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID) end); end, "Red", Mod.PublicGameData.Relations[game.Us.ID][playerID] == "InPeace");
 	newButton(win .. "offerPeace", line, "Offer peace", function() confirmChoice("Do you wish to offer peace to " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function() Close(); func = function() showPlayerDetails(playerID); end; game.SendGameCustomMessage("Offering peace...", { Type="peaceOffer", Opponent=playerID }, gameCustomMessageReturn); showPlayerDetails(playerID); end, function() showPlayerDetails(playerID); end); end, "Green", not(isAtWarFromFaction) and Mod.PublicGameData.Relations[game.Us.ID][playerID] == "AtWar" and Mod.PlayerGameData.Offers[playerID] == nil);
+	if Mod.PlayerGameData.Offers[playerID] ~= nil then
+		newLabel(win .. "CancelPeaceOfferLabel", vert, "Due to a small oversight from the creator of this mod, sometimes players cannot request for peace. If this is the case for you, press this button below to reset it.");
+		newButton(win .. "ResetPeace", vert, "Reset", function() func = function() showPlayerDetails(playerID); end; game.SendGameCustomMessage("Resetting data...", { Type="resetOffer", Opponent=playerID }, gameCustomMessageReturn); end, "Orange Red")
+	end
 	newButton(win .. "return", vert, "Return", showPlayerPage, "Orange");
 end
 
