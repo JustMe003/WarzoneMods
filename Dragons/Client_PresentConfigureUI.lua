@@ -39,6 +39,12 @@ function modifyDragon(dragon)
     CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() if #dragons < 5 then saveDragon(dragon, dragonInputs); changeColor(dragon); else UI.Alert("To pick a different color for '" .. dragonInputs.Name.GetText() .. "', you must first delete another dragon. You can at most have 5 dragons, all with distinct colors") end end);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth).SetOnValueChange(function() healthAndDamage(dragon) end);
+    CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
+
+    local vert = CreateVert(root);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
     dragonInputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
     CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
     
@@ -57,10 +63,15 @@ function modifyDragon(dragon)
     line = CreateHorz(root).SetFlexibleWidth(1);
     dragonInputs.IncludeABeforeName = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IncludeABeforeName);
     CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth);
-    CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
+
+    dragonInputs.UseHealth.SetOnValueChange(function() healthAndDamage(dragon, vert) end);
+end
+
+function healthAndDamage(dragon, vert)
+    DestroyWindow("healthAndDamage");
+    SetWindow("healthAndDamage");
+
+    CreateButton(vert).SetText("test");
 end
 
 function changeColor(dragon)
