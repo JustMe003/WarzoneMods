@@ -35,7 +35,7 @@ function modifyDragon(dragon)
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
-    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() UI.Alert("Under development"); end);
+    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() changeColor(dragon) end);
     
     CreateButton(root).SetOnClick(showMain).SetColor(colors.Orange).SetText("Return");
     
