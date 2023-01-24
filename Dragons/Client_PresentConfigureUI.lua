@@ -58,7 +58,7 @@ function changeColor(dragon)
 end
 
 function saveDragon(dragon, inputs)
-    print(dragon.ID, dragons[1].Name)
+    print(inputs.Name)
     dragons[dragon.ID].Name = GetText(inputs.Name);
 
 end
