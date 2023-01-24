@@ -11,7 +11,7 @@ function Client_PresentConfigureUI(rootParent)
 end
 
 function showMain()
-    DestroyWindow();
+    DestroyWindow(GetCurrentWindow, true);
     SetWindow("Main");
 
     for _, dragon in pairs(dragons) do
@@ -24,7 +24,7 @@ function showMain()
 end
 
 function modifyDragon(dragon)
-    DestroyWindow();
+    DestroyWindow(GetCurrentWindow, true);
     SetWindow("modifyDragon");
     
     local dragonInputs = {};
@@ -65,15 +65,18 @@ function modifyDragon(dragon)
     CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
 
     dragonInputs.UseHealth.SetOnValueChanged(function() healthAndDamage(dragon, vert) end);
+    healthAndDamage(dragon, vert);
 end
 
 function healthAndDamage(dragon, vert)
     local win = "healthAndDamage";
-    AddSubWindow(GetCurrentWindow, win);
-    DestroyWindow(win);
+    local parent = GetCurrentWindow;
+    AddSubWindow(parent, win);
+    DestroyWindow(win, false);
     SetWindow(win);
 
     CreateButton(vert).SetText("test");
+    SetWindow(parent);
 end
 
 function changeColor(dragon)
