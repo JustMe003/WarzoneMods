@@ -75,8 +75,6 @@ function healthAndDamage(dragon, vert)
     DestroyWindow(win, false);
     SetWindow(win);
 
-    print(dragon.UseHealth);
-
     if dragon.UseHealth then
         CreateLabel(vert).SetText("You use health").SetColor(colors.Orange);
     else
