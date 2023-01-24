@@ -18,7 +18,7 @@ function showMain()
         CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() modifyDragon(dragon); end);
     end
 
-    CreateEmpty(root).SetPreferredHeight(5);
+    CreateEmpty(root).SetPreferredHeight(10);
     
     CreateButton(root).SetText("Add Dragon").SetColor(colors.Lime).SetOnClick(function() table.insert(dragons, initDragon()); modifyDragon(dragons[#dragons]) end).SetInteractable(#dragons < 5);
 end
@@ -64,11 +64,11 @@ function modifyDragon(dragon)
     dragonInputs.IncludeABeforeName = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IncludeABeforeName);
     CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
 
-    dragonInputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert) end);
-    healthAndDamage(dragon, vert);
+    dragonInputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert, dragonInputs) end);
+    healthAndDamage(dragon, vert, dragonInputs);
 end
 
-function healthAndDamage(dragon, vert)
+function healthAndDamage(dragon, vert, inputs)
     local win = "healthAndDamage";
     local parent = GetCurrentWindow();
     AddSubWindow(parent, win);
@@ -76,9 +76,13 @@ function healthAndDamage(dragon, vert)
     SetWindow(win);
 
     if dragon.UseHealth then
-        CreateLabel(vert).SetText("You use health").SetColor(colors.Orange);
+        CreateLabel(vert).SetText("The initial health of this dragon").SetColor(colors.Textcolor);
+        inputs.Health = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Health);
     else
-        CreateLabel(vert).SetText("You don't use health, but a fixed amount of HP").SetColor(colors.Tan);
+        CreateLabel(vert).SetText("The number of damage points it takes to kill this dragon").SetColor(colors.Textcolor)
+        inputs.DamageToKill = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageToKill);
+        CreateLabel(vert).SetText("When this dragon takes damage, it will reduce the amount of damage remaining to other units on this territory by this value").SetColor(colors.Textcolor)
+        inputs.DamageAbsorbedWhenAttacked = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageAbsorbedWhenAttacked);
     end
 
     SetWindow(parent);
@@ -108,6 +112,12 @@ function saveDragon(dragon, inputs)
     dragons[dragon.ID].CanBeGiftedWithGiftCard = inputs.CanBeGiftedWithGiftCard.GetIsChecked();
     dragons[dragon.ID].IncludeABeforeName = inputs.IncludeABeforeName.GetIsChecked();
     dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked();
+    if dragons[dragon.ID].UseHealth then
+        dragons[dragon.ID].Health = inputs.Health.GetValue();
+    else
+        dragons[dragon.ID].DamageAbsorbedWhenAttacked = inputs.DamageAbsorbedWhenAttacked.GetValue();
+        dragons[dragon.ID].DamageToKill = inputs.DamageToKill.GetValue();
+    end
 end
 
 function initDragon()
@@ -129,6 +139,9 @@ function initDragon()
     t.CanBeGiftedWithGiftCard = false;
     t.IncludeABeforeName = true;
     t.UseHealth = true;
+    t.Health = 20;
+    t.DamageAbsorbedWhenAttacked = 10;
+    t.DamageToKill = 10;
     t.ID = #dragons + 1;
     return t;
 end
