@@ -88,7 +88,7 @@ function DestroyWindow(win, bool)
 			UI.Destroy(obj);
 		end
 	end
-	if bool then
+	if bool and subWindows_JAD[win] ~= nil and #subWindows_JAD[win] > 0 then
 		for _, subWin in pairs(subWindows_JAD[win]) do
 			DestroyWindow(subWin, false);
 		end
