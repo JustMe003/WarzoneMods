@@ -2,7 +2,7 @@ require("UI");
 function Client_PresentConfigureUI(rootParent)
 	Init(rootParent);
     
-    dragons = Mod.settings.dragons
+    dragons = Mod.Settings.Dragons
     if dragons == nil then dragons = {}; end
 
     root = GetRoot().SetFlexibleWidth(1);
