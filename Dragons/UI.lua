@@ -90,6 +90,7 @@ function DestroyWindow(win, bool)
 	end
 	if bool and subWindows_JAD[win] ~= nil and #subWindows_JAD[win] > 0 then
 		for _, subWin in pairs(subWindows_JAD[win]) do
+			print("Destroying " .. subWin);
 			DestroyWindow(subWin, false);
 		end
 	end
