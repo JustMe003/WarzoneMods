@@ -1,5 +1,6 @@
 function Init(root)
-	windows_POI = {};
+	windows_JAD = {};
+	subWindows_JAD = {};
 	root_JAD = UI.CreateVerticalLayoutGroup(root);
 	SetWindow(root.id);
 end
@@ -14,11 +15,22 @@ function GetColors()
 	return colors;
 end
 
+function GetCurrentWindow()
+	return currentWindow_JAD
+end
+
 function SetWindow(win)
-	currentWindow_POI = win
-	if windows_POI[win] == nil then
-		windows_POI[win] = {};
+	currentWindow_JAD = win
+	if windows_JAD[win] == nil then
+		windows_JAD[win] = {};
 	end
+end
+
+function AddSubWindow(win, subWin)
+	if subWindows_JAD[win] == nil then
+		subWindows_JAD[win] = {};
+	end
+	table.insert(subWindows_JAD[win], subWin);
 end
 
 function CreateVerticalLayoutGroup(parent)
@@ -62,15 +74,21 @@ function CreateNumberInputField(parent)
 end
 
 function AddObjectToWindowAndReturnObject(obj)
-	table.insert(windows_POI[currentWindow_POI], obj)
+	table.insert(windows_JAD[currentWindow_JAD], obj)
 	return obj;
 end
 
-function DestroyWindow(win)
-	win = win or currentWindow_POI;
-	if windows_POI[win] ~= nil then
-		for _, obj in pairs(windows_POI[win]) do
+function DestroyWindow(win, bool)
+	win = win or currentWindow_JAD;
+	bool = bool or false;
+	if windows_JAD[win] ~= nil then
+		for _, obj in pairs(windows_JAD[win]) do
 			UI.Destroy(obj);
+		end
+	end
+	if bool then
+		for _, subWin in pairs(subWindows_JAD[win]) do
+			DestroyWindow(subWin, false);
 		end
 	end
 end
