@@ -26,16 +26,38 @@ end
 function modifyDragon(dragon)
     DestroyWindow();
     SetWindow("modifyDragon");
-
+    
+    local dragonInputs = {};
+    
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
-    CreateTextInputField(root).SetText(dragon.Name).SetFlexibleWidth(1);
-
+    dragonInputs.Name = CreateTextInputField(root).SetText(dragon.Name).SetFlexibleWidth(1);
+    
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
     CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() UI.Alert("Under development"); end);
-
+    
     CreateButton(root).SetOnClick(showMain).SetColor(colors.Orange).SetText("Return");
+    
+end
+
+function changeColor(dragon)
+    DestroyWindow();
+    SetWindow("modifyDragon");
+
+    local c = {Blue=colors.Blue, Green=colors.Green, Red=colors.Red, Yellow=colors.Yellow, White=colors.Ivory};
+    CreateLabel(root).SetText("Pick the color you want").SetColor(colors.Textcolor);
+    for _, d in pairs(dragons) do
+        if d ~= dragon then
+            c[d.ColorName] = nil;
+        end
+    end
+    for name, color in pairs(c) do
+        CreateButton(root).SetText(name).SetColor(color).SetOnClick(function() dragon.Color = color; dragon.ColorName = name; modifyDragon(dragon); end)
+    end
+end
+
+function saveDragon(dragon)
 
 end
 
