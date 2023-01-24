@@ -29,16 +29,18 @@ function modifyDragon(dragon)
     
     local dragonInputs = {};
     
+    CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
-    dragonInputs.Name = CreateTextInputField(root).SetText(dragon.Name).SetFlexibleWidth(1);
+    dragonInputs.Name = CreateTextInputField(line).SetText(dragon.Name).SetFlexibleWidth(1);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
-    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() saveDragon(dragon, dragonInputs) changeColor(dragon) end);
+    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() if #dragons < 5 then saveDragon(dragon, dragonInputs); changeColor(dragon); else UI.Alert("To pick a different color for '" .. dragonInputs.Name.GetText() .. "', you must first delete another dragon. You can at most have 5 dragons, all with distinct colors") end end);
     
-    CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
-    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
+    CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
 end
 
 function changeColor(dragon)
@@ -59,7 +61,7 @@ end
 
 function saveDragon(dragon, inputs)
     dragons[dragon.ID].Name = inputs.Name.GetText();
-
+    dragons[dragon.ID].DragonBreathAttack = inputs.
 end
 
 function initDragon()
@@ -75,6 +77,7 @@ function initDragon()
     end
     t.Color = c[math.random(#c)];
     t.ColorName = getColorName(t.Color);
+    t.DragonBreathAttack = true;
     t.ID = #dragons + 1;
     return t;
 end
