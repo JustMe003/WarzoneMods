@@ -30,7 +30,9 @@ function AddSubWindow(win, subWin)
 	if subWindows_JAD[win] == nil then
 		subWindows_JAD[win] = {};
 	end
-	table.insert(subWindows_JAD[win], subWin);
+	if not valueInTable_JAD(subWindows_JAD, subWin) then
+		table.insert(subWindows_JAD[win], subWin);
+	end
 end
 
 function CreateVerticalLayoutGroup(parent)
@@ -91,4 +93,11 @@ function DestroyWindow(win, bool)
 			DestroyWindow(subWin, false);
 		end
 	end
+end
+
+function valueInTable_JAD(t, v)
+	for _, v2 in pairs(t) do
+		if v2 == v then return true; end
+	end
+	return false;
 end
