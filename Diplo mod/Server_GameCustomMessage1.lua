@@ -727,8 +727,8 @@ end
 function resetOffer(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	if playerData[playerID].Offers ~= nil and playerData[playerID].Offers[payload.Opponent] ~= nil then
-		playerData[playerID].Offers[payload.opponent] = nil;
-		playerData[payload.opponent].Offers[playerID] = nil;
+		playerData[playerID].Offers[payload.Opponent] = nil;
+		playerData[payload.Opponent].Offers[playerID] = nil;
 		if playerData[playerID].PendingOffers ~= nil then
 			local index = 0;
 			for i, p in pairs(playerData[playerID].PendingOffers) do
