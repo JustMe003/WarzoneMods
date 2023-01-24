@@ -11,7 +11,7 @@ function Client_PresentConfigureUI(rootParent)
 end
 
 function showMain()
-    DestroyWindow(GetCurrentWindow, true);
+    DestroyWindow(GetCurrentWindow(), true);
     SetWindow("Main");
 
     for _, dragon in pairs(dragons) do
@@ -24,7 +24,7 @@ function showMain()
 end
 
 function modifyDragon(dragon)
-    DestroyWindow(GetCurrentWindow, true);
+    DestroyWindow(GetCurrentWindow(), true);
     SetWindow("modifyDragon");
     
     local dragonInputs = {};
@@ -70,7 +70,7 @@ end
 
 function healthAndDamage(dragon, vert)
     local win = "healthAndDamage";
-    local parent = GetCurrentWindow;
+    local parent = GetCurrentWindow();
     AddSubWindow(parent, win);
     DestroyWindow(win, false);
     SetWindow(win);
