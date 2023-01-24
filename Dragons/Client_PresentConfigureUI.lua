@@ -28,6 +28,7 @@ function modifyDragon(dragon)
     SetWindow("modifyDragon");
     
     local dragonInputs = {};
+    currentDragon = dragon.ID;
     
     CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
     local line = CreateHorz(root).SetFlexibleWidth(1);
