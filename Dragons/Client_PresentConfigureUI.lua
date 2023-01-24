@@ -35,7 +35,7 @@ function modifyDragon(dragon)
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
-    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() changeColor(dragon) end);
+    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() saveDragon(dragon, dragonInputs) changeColor(dragon) end);
     
     CreateButton(root).SetOnClick(showMain).SetColor(colors.Orange).SetText("Return");
     
@@ -57,8 +57,9 @@ function changeColor(dragon)
     end
 end
 
-function saveDragon(dragon)
-
+function saveDragon(dragon, inputs)
+    local dragons[dragon.ID].Name = GetText(inputs.Name);
+    
 end
 
 function initDragon()
@@ -74,6 +75,7 @@ function initDragon()
     end
     t.Color = c[math.random(#c)];
     t.ColorName = getColorName(t.Color);
+    t.ID = #dragons + 1;
     return t;
 end
 
