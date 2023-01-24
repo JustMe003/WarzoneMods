@@ -75,7 +75,12 @@ function healthAndDamage(dragon, vert)
     DestroyWindow(win, false);
     SetWindow(win);
 
-    CreateButton(vert).SetText("test");
+    if dragon.UseHealth then
+        CreateLabel(root).SetText("You use health").SetColor(colors.Orange);
+    else
+        CreateLabel(root).SetText("You don't use health, but a fixed amount of HP").SetColor(colors.Tan);
+    end
+
     SetWindow(parent);
 end
 
