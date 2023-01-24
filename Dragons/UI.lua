@@ -31,6 +31,7 @@ function AddSubWindow(win, subWin)
 		subWindows_JAD[win] = {};
 	end
 	if not valueInTable_JAD(subWindows_JAD, subWin) and win ~= subWin then
+		print(#subWindows_JAD[win]);
 		table.insert(subWindows_JAD[win], subWin);
 	end
 end
@@ -83,7 +84,6 @@ end
 function DestroyWindow(win, bool)
 	win = win or currentWindow_JAD;
 	bool = bool or false;
-	print(subWindows_JAD[win]);
 	if windows_JAD[win] ~= nil then
 		for _, obj in pairs(windows_JAD[win]) do
 			UI.Destroy(obj);
