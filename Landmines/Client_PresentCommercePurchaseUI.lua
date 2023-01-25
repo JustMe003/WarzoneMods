@@ -49,7 +49,7 @@ function purchaseLandmine()
     local orders = Game.Orders;
     local index = 0;
     for i, order in pairs(orders) do
-        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Deploys + 1 then
+        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Deploys + 2 then
             index = i;
             break;
         end
