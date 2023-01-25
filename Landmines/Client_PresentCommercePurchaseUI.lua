@@ -46,13 +46,16 @@ function terrClicked(terrDetails)
 end
 
 function purchaseLandmine()
+    for i, v in pairs(WL.TurnPhase) do print(i, v); end
     local orders = Game.Orders;
+    local index = 0;
     for i, order in pairs(orders) do
         if order.OccursInPhase ~= nil and order.OccursInPhase < 25 then
-            table.insert(orders, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Landmine on " .. selectedTerr.Name, "BuyLandmine_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost + ((Mod.PublicGameData.NoSplitCursesPurchased[Game.Us.ID] + noSplitCurseOrders) * Mod.Settings.CostIncrease)}, 25));
+            local index = 1;
             break;
         end
     end
+    table.insert(orders, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Landmine on " .. selectedTerr.Name, "BuyLandmine_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost + ((Mod.PublicGameData.NoSplitCursesPurchased[Game.Us.ID] + noSplitCurseOrders) * Mod.Settings.CostIncrease)}, 25));
     Game.Orders = orders;
     Close();
 end
