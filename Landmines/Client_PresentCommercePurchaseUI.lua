@@ -54,7 +54,7 @@ function purchaseLandmine()
             break;
         end
     end
-    if index == 0 then index = #orders; end
+    if index == 0 then index = math.max(#orders, 1); end
     table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Landmine on " .. selectedTerr.Name, "BuyLandmine_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost + ((Mod.PublicGameData.LandminesBought[Game.Us.ID] + LandmineOrders) * Mod.Settings.CostIncrease)}, WL.TurnPhase.Deploys + 1));
     Game.Orders = orders;
     Close();
