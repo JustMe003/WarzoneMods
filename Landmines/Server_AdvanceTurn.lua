@@ -5,7 +5,7 @@ end
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
     if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyLandmine_") then
         local terrID = tonumber(string.sub(order.Payload, #"BuyLandmine_" + 1));
-        if order.CostOpt ~= nil and Mod.Settings.Cost == order.CostOpt[WL.ResourceType.Gold] + (data.LandminesBought[order.PlayerID] * Mod.Settings.CostIncrease) and game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == order.PlayerID then
+        if order.CostOpt ~= nil and Mod.Settings.Cost + (data.LandminesBought[order.PlayerID] * Mod.Settings.CostIncrease) == order.CostOpt[WL.ResourceType.Gold] and game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == order.PlayerID then
             local builder = WL.CustomSpecialUnitBuilder.Create(order.PlayerID);
             builder.Name = "Landmine";
             builder.AttackPower = 0;
