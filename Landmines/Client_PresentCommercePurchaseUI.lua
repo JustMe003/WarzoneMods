@@ -49,12 +49,12 @@ function purchaseLandmine()
     local orders = Game.Orders;
     local index = 0;
     for i, order in pairs(orders) do
-        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Deploys + 2 then
-            index = i;
+        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Deploys + 1 then
+            index = i + 1;
             break;
         end
     end
-    if index == 0 then index = math.max(#orders, 1); end
+    if index == 0 then index = #orders + 1; end
     table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Landmine on " .. selectedTerr.Name, "BuyLandmine_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost + ((Mod.PublicGameData.LandminesBought[Game.Us.ID] + LandmineOrders) * Mod.Settings.CostIncrease)}, WL.TurnPhase.Deploys + 1));
     Game.Orders = orders;
     Close();
