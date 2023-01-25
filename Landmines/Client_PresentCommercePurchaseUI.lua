@@ -11,7 +11,6 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("A Web cannot be moved, but will absorb " .. Mod.Settings.DamageAbsorbed .. " once when attacked").SetColor(colors.Textcolor).SetFlexibleWidth(0);
     CreateButton(line).SetText("Purchase Web").SetColor(colors["Dark Green"]).SetOnClick(function() Game.CreateDialog(pickTerr); end).SetPreferredWidth(250).SetFlexibleWidth(0.2);
-    print(Mod.PublicGameData.WebsBought)
     CreateLabel(root).SetText("Your next Web will cost " .. Mod.Settings.Cost + ((Mod.PublicGameData.WebsBought[game.Us.ID] + WebOrders) * Mod.Settings.CostIncrease) .. ", after each time you buy a Web the price will go up by " .. Mod.Settings.CostIncrease .. " gold").SetColor(colors.Textcolor)
 end
 
