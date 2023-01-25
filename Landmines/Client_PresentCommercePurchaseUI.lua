@@ -51,7 +51,7 @@ function purchaseLandmine()
     for i, order in pairs(orders) do
         print(order.OccursInPhase);
         if order.OccursInPhase ~= nil and order.OccursInPhase < WL.TurnPhase.Deploys + 1 then
-            local index = 1;
+            local index = i;
             break;
         end
     end
