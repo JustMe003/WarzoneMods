@@ -1,1 +1,1 @@
-Landmines cannot be moved, but they can deal massive damage to any attacker who dares to take a territory!
+Webs cannot be moved, but they make sure that the attackers do less damage when they destroy the Web!
