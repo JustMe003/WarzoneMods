@@ -55,7 +55,8 @@ function purchaseLandmine()
             break;
         end
     end
-    table.insert(orders, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Landmine on " .. selectedTerr.Name, "BuyLandmine_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost + ((Mod.PublicGameData.NoSplitCursesPurchased[Game.Us.ID] + noSplitCurseOrders) * Mod.Settings.CostIncrease)}, WL.TurnPhase.Deploys + 1), index);
+    print(orders, selectedTerr)
+    table.insert(orders, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Landmine on " .. selectedTerr.Name, "BuyLandmine_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost + ((Mod.PublicGameData.LandminesBought[Game.Us.ID] + noSplitCurseOrders) * Mod.Settings.CostIncrease)}, WL.TurnPhase.Deploys + 1), index);
     Game.Orders = orders;
     Close();
 end
