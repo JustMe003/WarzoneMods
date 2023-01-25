@@ -46,7 +46,6 @@ function terrClicked(terrDetails)
 end
 
 function purchaseLandmine()
-    for i, v in pairs(WL.TurnPhase) do print(i, v); end
     local orders = Game.Orders;
     local index = 0;
     for i, order in pairs(orders) do
