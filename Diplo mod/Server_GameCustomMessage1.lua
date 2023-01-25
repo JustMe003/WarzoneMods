@@ -753,7 +753,7 @@ function resetOffer(game, playerID, payload, setReturn)
 			end
 		end
 	else
-		setReturn(setReturnPayload("Something isn't right, pls let me know!", "Fail"));
+		setReturn(setReturnPayload(tostring(playerData[playerID].Offers) .. " | " .. tostring(playerData[playerID].Offers[payload.Opponent]), "Fail"));
 	end
 	Mod.PlayerGameData = playerData;
 end
