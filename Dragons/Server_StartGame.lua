@@ -13,9 +13,9 @@ function getDragon(p)
     builder.Name = "Dragon";
     builder.IncludeABeforeName = true;
     builder.ImageFilename = 'dragon.png';
-    builder.AttackPower = 20;
-    builder.DefensePower = 20;
-    builder.Health = 20;
+    builder.AttackPower = 200;
+    builder.DefensePower = 200;
+    builder.Health = 200;
     builder.CombatOrder = 1362;
     builder.CanBeGiftedWithGiftCard = true;
     builder.CanBeTransferredToTeammate = true;
