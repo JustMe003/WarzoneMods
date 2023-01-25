@@ -511,6 +511,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				playerData[playerID].Offers[opponent] = nil;
 				playerData[opponent].Offers[playerID] = nil;
 				table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
+				table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 				setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 			else
 				setReturn(setReturnPayload("You cannot accept peace while your faction is in war with your opponents faction", "Fail"));
@@ -524,11 +525,11 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			playerData[playerID].Offers[opponent] = nil;
 			playerData[opponent].Offers[playerID] = nil;
 			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
+			table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		end
 	else
 		setReturn(setReturnPayload("Something went wrong", "Fail"));
-		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 		setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 	end
 	Mod.PlayerGameData = playerData;
