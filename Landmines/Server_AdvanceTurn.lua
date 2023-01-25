@@ -23,8 +23,9 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             local mod = WL.TerritoryModification.Create(terrID);
             mod.AddSpecialUnits = {builder.Build()};
 
-            local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a Landmine", {}, {mod});
+            local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a Landmine", {}, {mod}, {});
             event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
+            event.AddResourceOpt = {[WL.ResourceType.Gold] = order.CostOpt[WL.ResourceType.Gold]};
             addNewOrder(event);
             data.LandminesBought[order.PlayerID] = data.LandminesBought[order.PlayerID] + 1;
         end
