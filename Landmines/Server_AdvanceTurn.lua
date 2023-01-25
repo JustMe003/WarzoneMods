@@ -14,7 +14,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             builder.CanBeGiftedWithGiftCard = false;
             builder.CanBeTransferredToTeammate = false;
             builder.CombatOrder = 13;
-            builder.DamageAbsorbedWhenAttacked = Mod.Setting.DamageAbsorbed;
+            builder.DamageAbsorbedWhenAttacked = Mod.Settings.DamageAbsorbed;
             builder.DamageToKill = 1;
             builder.DefensePower = 1;
             builder.ImageFilename = "landmine.png";
