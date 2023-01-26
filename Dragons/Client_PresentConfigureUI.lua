@@ -31,7 +31,14 @@ function modifyDragon(dragon)
     currentDragon = dragon.ID;
     
     CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
-    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(root).SetPreferredHeight(10);
+
+    local line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("General").SetColor(colors.Tan);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
     dragonInputs.Name = CreateTextInputField(line).SetText(dragon.Name).SetFlexibleWidth(1);
     
@@ -76,6 +83,11 @@ function healthAndDamage(dragon, vert, inputs)
     DestroyWindow(win, false);
     SetWindow(win);
 
+    local line = CreateHorz(vert);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("Health and Damage").SetColor(colors.Tan);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+
     if dragon.UseHealth then
         CreateLabel(vert).SetText("The initial health of this dragon").SetColor(colors.Textcolor);
         inputs.Health = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Health);
@@ -85,6 +97,8 @@ function healthAndDamage(dragon, vert, inputs)
         CreateLabel(vert).SetText("When this dragon takes damage, it will reduce the amount of damage remaining to other units on this territory by this value").SetColor(colors.Textcolor)
         inputs.DamageAbsorbedWhenAttacked = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageAbsorbedWhenAttacked);
     end
+
+
 
     SetWindow(parent);
 end
