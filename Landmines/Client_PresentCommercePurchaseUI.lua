@@ -16,14 +16,14 @@ end
 
 function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
     ClosePurchase();
-    if not(UI.IsDestroyed(rootParent)) and Close ~= nil then
+    if not(UI.IsDestroyed(prevRoot)) and Close ~= nil then
         Close();
     end
     Close = close;
     Game = game;
 
-    print(UI.IsDestroyed(rootParent))
     Init(rootParent);
+    prevRoot = rootParent;
     root = GetRoot().SetFlexibleWidth(1);
 
     selected = CreateButton(root).SetText("Pick territory").SetColor(colors.Orange).SetOnClick(selectTerr);
