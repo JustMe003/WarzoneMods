@@ -127,8 +127,12 @@ function healthAndDamage(dragon, vert, inputs)
     else
         CreateLabel(vert).SetText("The number of damage points it takes to kill this dragon").SetColor(colors.Textcolor)
         inputs.DamageToKill = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageToKill);
+        
         CreateLabel(vert).SetText("When this dragon takes damage, it will reduce the amount of damage remaining to other units on this territory by this value").SetColor(colors.Textcolor)
         inputs.DamageAbsorbedWhenAttacked = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageAbsorbedWhenAttacked);
+    
+        CreateLabel(vert).SetText("The defence power of the Dragon").SetColor(colors.Textcolor);
+        inputs.DefensePower = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DefensePower);
     end
 
     CreateLabel(vert).SetText("The attack power of the Dragon").SetColor(colors.Textcolor);
@@ -169,7 +173,7 @@ function changeColor(dragon)
     SetWindow("modifyDragon");
     
     root.SetPreferredHeight(500);
-    
+
     local c = {Blue=colors.Blue, Green=colors.Green, Red=colors.Red, Yellow=colors.Yellow, White=colors.Ivory};
     CreateLabel(root).SetText("Pick the color you want").SetColor(colors.Textcolor);
     for _, d in pairs(dragons) do
@@ -195,6 +199,7 @@ function saveDragon(dragon, inputs)
     if inputs.DefensePower ~= nil then dragons[DefensePower].DefensePower = inputs.DefensePower.GetValue(); end
     if inputs.DamageAbsorbedWhenAttacked ~= nil then dragons[dragon.ID].DamageAbsorbedWhenAttacked = inputs.DamageAbsorbedWhenAttacked.GetValue(); end
     if inputs.DamageToKill ~= nil then dragons[dragon.ID].DamageToKill = inputs.DamageToKill.GetValue(); end
+    if inputs.DefensePower ~= nil then dragons[dragon.ID].DefensePower = inputs.DefensePower.GetValue(); end
     dragons[dragon.ID].AttackPower = inputs.AttackPower.GetValue();
     dragons[dragon.ID].AttackPowerPercentage = inputs.AttackPowerPercentage.GetValue();
     dragons[dragon.ID].DefensePowerPercentage = inputs.DefensePowerPercentage.GetValue();
@@ -223,6 +228,7 @@ function initDragon()
     t.DynamicDefencePower = true;
     t.DamageAbsorbedWhenAttacked = 10;
     t.DamageToKill = 10;
+    t.DefensePower = 10;
     t.AttackPower = 10;
     t.AttackPowerPercentage = 0;
     t.DefensePowerPercentage = 0;
