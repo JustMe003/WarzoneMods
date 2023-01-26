@@ -14,13 +14,15 @@ function showMain()
     DestroyWindow(GetCurrentWindow(), true);
     SetWindow("Main");
 
+    local vert = CreateVert(root);
+
     for _, dragon in pairs(dragons) do
-        CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() modifyDragon(dragon); end);
+        CreateButton(vert).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() modifyDragon(dragon); end);
     end
 
-    CreateEmpty(root).SetPreferredHeight(10);
+    CreateEmpty(vert).SetPreferredHeight(10);
     
-    CreateButton(root).SetText("Add Dragon").SetColor(colors.Lime).SetOnClick(function() table.insert(dragons, initDragon()); modifyDragon(dragons[#dragons]) end).SetInteractable(#dragons < 5);
+    CreateButton(vert).SetText("Add Dragon").SetColor(colors.Lime).SetOnClick(function() table.insert(dragons, initDragon()); modifyDragon(dragons[#dragons]) end).SetInteractable(#dragons < 5);
 end
 
 function modifyDragon(dragon)
