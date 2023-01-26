@@ -3,7 +3,7 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
     Init(rootParent);
 
     Game = game;
-    Close = close;
+    ClosePurchase = close;
     root = GetRoot();
     colors = GetColors();
     WebOrders = getNumWebOrders(Game.Orders);
@@ -15,7 +15,10 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
 end
 
 function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
-    Close();
+    ClosePurchase();
+    if not UI.IsDestroyed(root) and Close ~= nil then
+        Close();
+    end
     Close = close;
     Game = game;
 
