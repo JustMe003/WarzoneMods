@@ -521,6 +521,7 @@ function declareWar(game, playerID, payload, setReturn)
 end
 
 function offerPeace(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
 	if data.Relations[playerID][payload.Opponent] == "AtWar" then
 		if game.Game.Players[payload.Opponent].IsAIOrHumanTurnedIntoAI then
 			data.Relations[playerID][payload.Opponent] = "InPeace";
@@ -544,12 +545,12 @@ function offerPeace(game, playerID, payload, setReturn)
 			else
 				setReturn(setReturnPayload("There already is a pending peace offer", "Fail"));
 			end
-			Mod.PlayerGameData = playerData;
 			setReturn(setReturnPayload("Successfully offered peace to " .. game.Game.Players[payload.Opponent].DisplayName(nil, false), "Success"));
 		end
 	else
 		setReturn(setReturnPayload("You cannot offer peace to " .. game.Game.Players[payload.Opponent].DisplayName(nil, false) .. " this player since you're not in war with them", "Fail"));
 	end
+	Mod.PlayerGameData = playerData;
 end
 
 function openedChat(game, playerID, payload, setReturn)
