@@ -31,7 +31,6 @@ function modifyDragon(dragon)
     currentDragon = dragon.ID;
     
     CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
-    CreateEmpty(root).SetPreferredHeight(10);
     
     CreateEmpty(root).SetPreferredHeight(10);
     local line = CreateHorz(root).SetFlexibleWidth(1);
@@ -90,6 +89,13 @@ function modifyDragon(dragon)
 
     dragonInputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert, dragonInputs) end);
     healthAndDamage(dragon, vert, dragonInputs);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.45);
+    CreateButton(line).SetText("Save and Return").SetColor(colors.Green).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end);
+    CreateEmpty(line).SetFlexibleWidth(0.1);
+    CreateButton(line).SetText("Remove Dragon").SetColor(colors["Orange Red"]).SetOnClick(function() saveDragon(dragon, dragonInputs); removeDragon(dragon); end)
+    CreateEmpty(line).SetFlexibleWidth(0.45);
 end
 
 function healthAndDamage(dragon, vert, inputs)
@@ -129,6 +135,22 @@ function healthAndDamage(dragon, vert, inputs)
     inputs.DefensePowerPercentage = CreateNumberInputField(vert).SetWholeNumbers(false).SetSliderMinValue(-100).SetSliderMaxValue(100).SetValue(dragon.DefensePowerPercentage)
 
     SetWindow(parent);
+end
+
+function removeDragon(dragon)
+    DestroyWindow();
+    SetWindow("removeDragon");
+
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("Are you sure you want to remove this dragon?").SetColor(colors.Textcolor);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.45);
+    CreateButton(line).SetText("Yes").SetColor(colors.Green).SetOnClick(function() table.remove(dragons, dragon.ID); showMain(); end);
+    CreateEmpty(line).SetFlexibleWidth(0.1);
+    CreateButton(line).SetText("No").SetColor(colors.Red).SetOnClick(function() modifyDragon(dragon); end);
+    CreateEmpty(line).SetFlexibleWidth(0.45);
 end
 
 function changeColor(dragon)
