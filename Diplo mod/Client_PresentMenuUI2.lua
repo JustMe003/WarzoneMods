@@ -117,7 +117,7 @@ function showPlayerPage(relation)
 	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	local line = newHorizontalGroup(win .. "Line1", vert);
-	print(getTableLength(Mod.PlayerGameData.PendingOffers))
+	print(getTableLength(Mod.PlayerGameData.Offers))
 	newButton(win .. "PendingOffers", line, "Pending offers", showPendingOffers, "Cyan", Mod.PlayerGameData.PendingOffers ~= nil and getTableLength(Mod.PlayerGameData.PendingOffers) > 0);
 	newButton(win .. "ChangeRelation", line, "Relation: " .. relation, function() showPlayerPage(changeRelationState(relation)); end, "Ivory");
 	newButton(win .. "Return", line, "Return", showMenu, "Orange");
