@@ -17,6 +17,7 @@ end
 function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
     Close();
     Close = close;
+    Game = game;
 
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
@@ -39,6 +40,7 @@ function terrClicked(terrDetails)
         label.SetText("");
         selectedTerr = nil;
     else
+        for i, v in pairs(Game.LatestStanding.Territories[terrDetails.ID]) do print(i, v); end
         label.SetText("Selected territory: " .. terrDetails.Name);
         selectedTerr = terrDetails;
         purchase.SetInteractable(true);
