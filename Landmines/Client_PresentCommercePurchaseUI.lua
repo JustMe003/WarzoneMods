@@ -40,10 +40,15 @@ function terrClicked(terrDetails)
         label.SetText("");
         selectedTerr = nil;
     else
-        for _, v in pairs(Game.LatestStanding.Territories[terrDetails.ID].readableKeys) do print(v, Game.LatestStanding.Territories[terrDetails.ID][v]); end
-        label.SetText("Selected territory: " .. terrDetails.Name);
-        selectedTerr = terrDetails;
-        purchase.SetInteractable(true);
+        if Game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID ~= Game.Us.ID then
+            label.SetText("You must select a territory you have own, you don't own " .. terrDetails.Name);
+            selectedTerr = terrDetails;
+            purchase.SetInteractable(false);
+        else
+            label.SetText("Selected territory: " .. terrDetails.Name);
+            selectedTerr = terrDetails;
+            purchase.SetInteractable(true);
+        end
     end
 end
 
