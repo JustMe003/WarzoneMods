@@ -4,14 +4,14 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
 
     Game = game;
     ClosePurchase = close;
-    root = GetRoot();
+    rootPurchase = GetRoot();
     colors = GetColors();
     WebOrders = getNumWebOrders(Game.Orders);
 
-    local line = CreateHorz(root).SetFlexibleWidth(1);
+    local line = CreateHorz(rootPurchase).SetFlexibleWidth(1);
     CreateLabel(line).SetText("A Web cannot be moved, but will absorb " .. Mod.Settings.DamageAbsorbed .. " once when attacked").SetColor(colors.Textcolor).SetFlexibleWidth(0);
     CreateButton(line).SetText("Purchase Web").SetColor(colors["Dark Green"]).SetOnClick(function() Game.CreateDialog(pickTerr); end).SetPreferredWidth(250).SetFlexibleWidth(0.2);
-    CreateLabel(root).SetText("Your next Web will cost " .. Mod.Settings.Cost + ((Mod.PublicGameData.WebsBought[game.Us.ID] + WebOrders) * Mod.Settings.CostIncrease) .. ", after each time you buy a Web the price will go up by " .. Mod.Settings.CostIncrease .. " gold").SetColor(colors.Textcolor)
+    CreateLabel(rootPurchase).SetText("Your next Web will cost " .. Mod.Settings.Cost + ((Mod.PublicGameData.WebsBought[game.Us.ID] + WebOrders) * Mod.Settings.CostIncrease) .. ", after each time you buy a Web the price will go up by " .. Mod.Settings.CostIncrease .. " gold").SetColor(colors.Textcolor)
 end
 
 function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
