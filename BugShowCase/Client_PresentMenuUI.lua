@@ -8,5 +8,5 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     vert = UI.CreateVerticalLayoutGroup(rootParent);
     Close = close;          -- We use this to close off the previous window
 
-    UI.CreateButton(vert).SetText("Close me").SetOnClick(Close)
+    UI.CreateButton(vert).SetText("Close me").SetOnClick(function() Close() end)
 end
