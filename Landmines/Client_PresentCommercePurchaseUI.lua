@@ -16,6 +16,7 @@ end
 
 function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
     ClosePurchase();
+    print(not UI.IsDestroyed(root), Close ~= nil, not UI.IsDestroyed(root) and Close ~= nil)
     if not UI.IsDestroyed(root) and Close ~= nil then
         print("close")
         Close();
