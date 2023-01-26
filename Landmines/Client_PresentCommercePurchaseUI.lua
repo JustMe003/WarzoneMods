@@ -16,16 +16,15 @@ end
 
 function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
     ClosePurchase();
-    if not(UI.IsDestroyed(dummy)) and Close ~= nil then
+    if not(UI.IsDestroyed(rootParent)) and Close ~= nil then
         Close();
     end
     Close = close;
     Game = game;
 
-    print(UI.IsDestroyed(dummy))
+    print(UI.IsDestroyed(rootParent))
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
-    dummy = CreateLabel(root);
 
     selected = CreateButton(root).SetText("Pick territory").SetColor(colors.Orange).SetOnClick(selectTerr);
     label = CreateLabel(root).SetText("").SetColor(colors.Tan);
@@ -34,14 +33,12 @@ function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
 end
 
 function selectTerr()
-    print(UI.IsDestroyed(dummy))
     UI.InterceptNextTerritoryClick(terrClicked);
     label.SetText("Click the territory you want to deploy a Web on. If needed you can move this dialog out of the way");
     selected.SetInteractable(false);
 end
 
 function terrClicked(terrDetails)
-    print(UI.IsDestroyed(dummy))
     selected.SetInteractable(true);
     if terrDetails == nil then
         label.SetText("");
@@ -60,7 +57,6 @@ function terrClicked(terrDetails)
 end
 
 function purchaseLandmine()
-    print(UI.IsDestroyed(dummy))
     local orders = Game.Orders;
     local index = 0;
     for i, order in pairs(orders) do
