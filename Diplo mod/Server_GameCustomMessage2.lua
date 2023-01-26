@@ -24,6 +24,7 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	functions["RefreshWindow"] = RefreshWindow;
 	functions["updateData"] = updateData;
 	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
+	functions["resetOffer"] = resetOffer;
 	
 	print(playerID, payload.Type, Mod.PublicGameData.VersionNumber);
 	local playerData = Mod.PlayerGameData;
@@ -880,5 +881,39 @@ end
 function hasSeenUpdateWindow(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	playerData[playerID].HasSeenUpdateWindow = true;
+	Mod.PlayerGameData = playerData;
+end
+
+
+function resetOffer(game, playerID, payload, setReturn)
+	local playerData = Mod.PlayerGameData;
+	if playerData[playerID].Offers ~= nil and playerData[playerID].Offers[payload.Opponent] ~= nil then
+		playerData[playerID].Offers[payload.Opponent] = nil;
+		playerData[payload.Opponent].Offers[playerID] = nil;
+		if playerData[playerID].PendingOffers ~= nil then
+			local index = 0;
+			for i, p in pairs(playerData[playerID].PendingOffers) do
+				if p == payload.Opponent then
+					index = i;
+				end
+			end
+			if index > 0 then
+				table.remove(playerData[playerID].PendingOffers, index);
+			end
+		end
+		if playerData[payload.Opponent].PendingOffers ~= nil then
+			local index = 0;
+			for i, p in pairs(playerData[payload.Opponent].PendingOffers) do
+				if p == playerID then
+					index = i;
+				end
+			end
+			if index > 0 then
+				table.remove(playerData[payload.Opponent].PendingOffers, index);
+			end
+		end
+	else
+		setReturn(setReturnPayload(tostring(playerData[playerID].Offers) .. " | " .. tostring(playerData[playerID].Offers[payload.Opponent]), "Fail"));
+	end
 	Mod.PlayerGameData = playerData;
 end
