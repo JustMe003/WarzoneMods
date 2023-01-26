@@ -5,7 +5,7 @@ function Client_PresentConfigureUI(rootParent)
     dragons = Mod.Settings.Dragons
     if dragons == nil then dragons = {}; end
 
-    root = GetRoot().SetFlexibleWidth(1).SetPreferredHeight(500);
+    root = GetRoot().SetFlexibleWidth(1).SetPreferredHeight(600);
     colors = GetColors();
     showMain();
 end
