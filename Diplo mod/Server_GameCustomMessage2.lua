@@ -532,7 +532,6 @@ function offerPeace(game, playerID, payload, setReturn)
 			setReturn(setReturnPayload("The AI accepted your offer", "Success"));
 			table.insert(data.Events, createEvent(game.Game.Players[playerID].DisplayName(nil, false) .. " offered peace to " .. game.Game.Players[payload.Opponent].DisplayName(nil, false) .. ", which was directly accepted", playerID, getPlayerHashMap(data, playerID, payload.Opponent)));
 		else
-			local playerData = Mod.PlayerGameData;
 			if playerData[playerID].Offers[payload.Opponent] == nil then
 				if playerData[payload.Opponent].Notifications == nil then playerData[payload.Opponent].Notifications = setPlayerNotifications(); end
 				if playerData[payload.Opponent].Notifications.PeaceOffers == nil then playerData[payload.Opponent].Notifications.PeaceOffers = {}; end
