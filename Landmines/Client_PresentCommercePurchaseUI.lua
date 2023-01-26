@@ -22,6 +22,7 @@ function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
     Close = close;
     Game = game;
 
+    print(UI.IsDestroyed(root))
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
 
