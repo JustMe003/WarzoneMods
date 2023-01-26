@@ -122,10 +122,10 @@ function healthAndDamage(dragon, vert, inputs)
     CreateLabel(vert).SetText("The attack power of the Dragon").SetColor(colors.Textcolor);
     inputs.AttackPower = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.AttackPower);
 
-    CreateLabel(vert).SetText("The attack modifier of the Dragon").SetColor(colors.Textcolor);
+    CreateLabel(vert).SetText("The attack modifier of the Dragon (percentage)").SetColor(colors.Textcolor);
     inputs.AttackPowerPercentage = CreateNumberInputField(vert).SetWholeNumbers(false).SetSliderMinValue(-100).SetSliderMaxValue(100).SetValue(dragon.AttackPowerPercentage)
 
-    CreateLabel(vert).SetText("The defence modifier of the Dragon").SetColor(colors.Textcolor);
+    CreateLabel(vert).SetText("The defence modifier of the Dragon (percentage)").SetColor(colors.Textcolor);
     inputs.DefensePowerPercentage = CreateNumberInputField(vert).SetWholeNumbers(false).SetSliderMinValue(-100).SetSliderMaxValue(100).SetValue(dragon.DefensePowerPercentage)
 
     SetWindow(parent);
