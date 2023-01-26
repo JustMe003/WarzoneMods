@@ -58,6 +58,11 @@ function modifyDragon(dragon)
     local vert = CreateVert(root);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("Permissions").SetColor(colors.Tan);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
     dragonInputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
     CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
     
