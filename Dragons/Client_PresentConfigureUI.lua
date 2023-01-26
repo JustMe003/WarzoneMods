@@ -48,16 +48,16 @@ function modifyDragon(dragon)
     CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
     CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() if #dragons < 5 then saveDragon(dragon, dragonInputs); changeColor(dragon); else UI.Alert("To pick a different color for '" .. dragonInputs.Name.GetText() .. "', you must first delete another dragon. You can at most have 5 dragons, all with distinct colors") end end);
     
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth);
-    CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
-
     CreateEmpty(root).SetPreferredHeight(10);
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateLabel(line).SetText("Health and Damage").SetColor(colors.Tan);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(root).SetPreferredHeight(5);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth);
+    CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
 
     local vert = CreateVert(root);
     
