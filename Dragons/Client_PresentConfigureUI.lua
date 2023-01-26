@@ -147,12 +147,15 @@ function removeDragon(dragon)
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateLabel(line).SetText("Are you sure you want to remove this dragon?").SetColor(colors.Textcolor);
     CreateEmpty(line).SetFlexibleWidth(0.5);
+
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.45);
     CreateButton(line).SetText("Yes").SetColor(colors.Green).SetOnClick(function() table.remove(dragons, dragon.ID); showMain(); end);
     CreateEmpty(line).SetFlexibleWidth(0.1);
     CreateButton(line).SetText("No").SetColor(colors.Red).SetOnClick(function() modifyDragon(dragon); end);
     CreateEmpty(line).SetFlexibleWidth(0.45);
+
+    CreateEmpty(root).SetFlexibleHeight(1);
 end
 
 function changeColor(dragon)
