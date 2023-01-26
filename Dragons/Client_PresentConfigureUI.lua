@@ -32,11 +32,13 @@ function modifyDragon(dragon)
     
     CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
     CreateEmpty(root).SetPreferredHeight(10);
-
+    
+    CreateEmpty(root).SetPreferredHeight(10);
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateLabel(line).SetText("General").SetColor(colors.Tan);
     CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateEmpty(root).SetPreferredHeight(5);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
@@ -50,17 +52,21 @@ function modifyDragon(dragon)
     dragonInputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth);
     CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
 
+    CreateEmpty(root).SetPreferredHeight(10);
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateLabel(line).SetText("Health and Damage").SetColor(colors.Tan);
     CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateEmpty(root).SetPreferredHeight(5);
 
     local vert = CreateVert(root);
     
+    CreateEmpty(root).SetPreferredHeight(10);
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateLabel(line).SetText("Permissions").SetColor(colors.Tan);
     CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateEmpty(root).SetPreferredHeight(5);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     dragonInputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
