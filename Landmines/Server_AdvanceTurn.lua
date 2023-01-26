@@ -5,7 +5,7 @@ end
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
     if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyWeb_") then
         local terrID = tonumber(string.sub(order.Payload, #"BuyWeb_" + 1));
-        if order.CostOpt ~= nil and Mod.Settings.Cost + (data.WebsBought[order.PlayerID] * Mod.Settings.CostIncrease) == order.CostOpt[WL.ResourceType.Gold] and game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == order.PlayerID then
+        if order.CostOpt ~= nil and Mod.Settings.Cost + (data.WebsBought[order.PlayerID] * Mod.Settings.CostIncrease) <= order.CostOpt[WL.ResourceType.Gold] and game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == order.PlayerID then
             local builder = WL.CustomSpecialUnitBuilder.Create(order.PlayerID);
             builder.Name = "Web";
             builder.AttackPower = 0;
@@ -24,7 +24,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 
             local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a Web", {}, {mod}, {});
             event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
-            event.AddResourceOpt = {[order.PlayerID] = {[WL.ResourceType.Gold] = -order.CostOpt[WL.ResourceType.Gold]}};
+            event.AddResourceOpt = {[order.PlayerID] = {[WL.ResourceType.Gold] = -(Mod.Settings.Cost + (data.WebsBought[order.PlayerID] * Mod.Settings.CostIncrease))}};
             addNewOrder(event);
             data.WebsBought[order.PlayerID] = data.WebsBought[order.PlayerID] + 1;
         end
