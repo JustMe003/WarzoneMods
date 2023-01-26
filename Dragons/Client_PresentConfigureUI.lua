@@ -102,6 +102,16 @@ function healthAndDamage(dragon, vert, inputs)
     if dragon.UseHealth then
         CreateLabel(vert).SetText("The initial health of this dragon").SetColor(colors.Textcolor);
         inputs.Health = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Health);
+
+        local line = CreateHorz(vert).SetFlexibleWidth(1);
+        inputs.DynamicDefencePower = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DynamicDefencePower).SetOnValueChanged(function() saveDragon(dragon, inputs); healthAndDamage(dragon, vert, inputs); end);
+        CreateLabel(line).SetText("Use the Dragon's health as defence power")
+        
+        if not dragon.DynamicDefencePower then
+            CreateLabel(vert).SetText("The defence power of the Dragon").SetColor(colors.Textcolor);
+            inputs.DefensePower = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.DefensePower);
+        end
+    
     else
         CreateLabel(vert).SetText("The number of damage points it takes to kill this dragon").SetColor(colors.Textcolor)
         inputs.DamageToKill = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageToKill);
@@ -109,7 +119,14 @@ function healthAndDamage(dragon, vert, inputs)
         inputs.DamageAbsorbedWhenAttacked = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageAbsorbedWhenAttacked);
     end
 
+    CreateLabel(vert).SetText("The attack power of the Dragon").SetColor(colors.Textcolor);
+    inputs.AttackPower = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.AttackPower);
 
+    CreateLabel(vert).SetText("The attack modifier of the Dragon").SetColor(colors.Textcolor);
+    inputs.AttackPowerPercentage = CreateNumberInputField(vert).SetWholeNumbers(false).SetSliderMinValue(-100).SetSliderMaxValue(100).SetValue(dragon.AttackPowerPercentage)
+
+    CreateLabel(vert).SetText("The defence modifier of the Dragon").SetColor(colors.Textcolor);
+    inputs.DefensePowerPercentage = CreateNumberInputField(vert).SetWholeNumbers(false).SetSliderMinValue(-100).SetSliderMaxValue(100).SetValue(dragon.DefensePowerPercentage)
 
     SetWindow(parent);
 end
@@ -139,13 +156,18 @@ function saveDragon(dragon, inputs)
     dragons[dragon.ID].IncludeABeforeName = inputs.IncludeABeforeName.GetIsChecked();
     dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked();
     if inputs.Health ~= nil then dragons[dragon.ID].Health = inputs.Health.GetValue(); end
+    if inputs.DynamicDefencePower ~= nil then dragons[dragon.ID].DynamicDefencePower = inputs.DynamicDefencePower.GetIsChecked(); end
+    if inputs.DefensePower ~= nil then dragons[DefensePower].DefensePower = inputs.DefensePower.GetValue(); end
     if inputs.DamageAbsorbedWhenAttacked ~= nil then dragons[dragon.ID].DamageAbsorbedWhenAttacked = inputs.DamageAbsorbedWhenAttacked.GetValue(); end
     if inputs.DamageToKill ~= nil then dragons[dragon.ID].DamageToKill = inputs.DamageToKill.GetValue(); end
+    dragons[dragon.ID].AttackPower = inputs.AttackPower.GetValue();
+    dragons[dragon.ID].AttackPowerPercentage = inputs.AttackPowerPercentage.GetValue();
+    dragons[dragon.ID].DefensePowerPercentage = inputs.DefensePowerPercentage.GetValue();
 end
 
 function initDragon()
     local t = {};
-    t.Name = "New Dragon";
+    t.Name = "Dragon #" .. #dragons + 1;
     local c = {colors.Blue, colors.Green, colors.Red, colors.Yellow, colors.Ivory};
     for _, dragon in ipairs(dragons) do
         for i, v in ipairs(c) do
@@ -163,8 +185,12 @@ function initDragon()
     t.IncludeABeforeName = true;
     t.UseHealth = true;
     t.Health = 20;
+    t.DynamicDefencePower = true;
     t.DamageAbsorbedWhenAttacked = 10;
     t.DamageToKill = 10;
+    t.AttackPower = 10;
+    t.AttackPowerPercentage = 0;
+    t.DefensePowerPercentage = 0;
     t.ID = #dragons + 1;
     return t;
 end
