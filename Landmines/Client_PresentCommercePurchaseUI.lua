@@ -40,7 +40,7 @@ function terrClicked(terrDetails)
         label.SetText("");
         selectedTerr = nil;
     else
-        for i, v in pairs(Game.LatestStanding.Territories[terrDetails.ID]) do print(i, v); end
+        for _, v in pairs(Game.LatestStanding.Territories[terrDetails.ID]) do print(v, Game.LatestStanding.Territories[terrDetails.ID][v]); end
         label.SetText("Selected territory: " .. terrDetails.Name);
         selectedTerr = terrDetails;
         purchase.SetInteractable(true);
