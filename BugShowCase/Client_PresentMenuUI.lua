@@ -1,4 +1,5 @@
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
+    print(UI.IsDestroyed(vert))
 	if not UI.IsDestroyed(vert) and Close ~= nil then       -- UI.IsDestroyed(vert) is always true
         print(UI.IsDestroyed(vert))
         Close();
