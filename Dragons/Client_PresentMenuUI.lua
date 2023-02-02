@@ -43,7 +43,7 @@ function pickTerr()
     label = CreateLabel(root).SetText("click / tap a territory to deploy a Dragon").setColor(colors.Textcolor);
     local line = CreateHorz(root);
     nextButton = CreateButton(line).SetText("Next").setColor(colors.Green).SetOnClick(chooseDragon).SetInteractable(false);
-    againButton CreateButton(line).SetText("Change territory").setColor(colors["Royal Blue"]).SetOnClick(function() UI.InterceptNextTerritoryClick(terrChosen); end).SetInteractable(false);
+    againButton = CreateButton(line).SetText("Change territory").setColor(colors["Royal Blue"]).SetOnClick(function() UI.InterceptNextTerritoryClick(terrChosen); end).SetInteractable(false);
     UI.InterceptNextTerritoryClick(terrChosen)
 end
 
