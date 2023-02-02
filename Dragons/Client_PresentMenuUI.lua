@@ -11,7 +11,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     Game = game;
     Close = close;
 
-    setMaxSize(300, 400);
+    setMaxSize(400, 300);
 
     showMain();
 end
@@ -20,7 +20,9 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
     
-    CreateButton(root).SetText("Place Dragon").SetColor(colors.Lime).SetOnClick(pickTerr);
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateButton(line).SetText("Place Dragon").SetColor(colors.Lime).SetOnClick(pickTerr);
+    CreateButton(line).SetText("Get Data").SetColor(colors.Orange).SetOnClick(showDragonPlacements);
 
     CreateEmpty(root).SetPreferredHeight(10);
 
@@ -76,4 +78,16 @@ end
 function addDragon(dragonID)
     Game.SendGameCustomMessage("Updating data...", {Type="addDragon", TerrID=chosenTerr.ID, DragonID=dragonID}, function(t) showMain(); end);
     Close();
+end
+
+function showDragonPlacements()
+    DestroyWindow();
+    SetWindow("setDragonPlacements");
+
+    for i, v in pairs(Mod.PublicGameData.DragonPlacements) do 
+        print(i, v);
+    end
+    CreateTextInputField(root).SetText(placements).SetPlaceholderText("Copy from here the Dragons placement data").SetFlexibleWidth(1);
+    CreateLabel(root).SetText("Paste this data in the Mod configuration")
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 end
