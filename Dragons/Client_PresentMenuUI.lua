@@ -31,7 +31,7 @@ function showMain()
                 s = s .. "A ";
             end
             CreateLabel(line).SetText(s .. Mod.Settings.Dragons[dragonID].Name .. " on: ").SetColor(Mod.Settings.Dragons[dragonID].Color);
-            CreateButton(line).SetText(Game.Map.Territories[terr]).SetColor(colors.Tan).SetOnClick(function()  end);
+            CreateButton(line).SetText(Game.Map.Territories[terr].Name).SetColor(colors.Tan).SetOnClick(function() if WL.IsVersionOrHigher or WL.IsVersionOrHigher("5.21") then Game.HighlightTerritories({terr}); Game.CreateLocatorCircle(Game.Map.Territories[terr].MiddlePointX, Game.Map.Territories[terr].MiddlePointY) end);
         end
     end
 end
