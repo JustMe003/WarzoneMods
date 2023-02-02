@@ -11,6 +11,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     Game = game;
     Close = close;
 
+    setMaxSize(300, 400);
+
     showMain();
 end
 
