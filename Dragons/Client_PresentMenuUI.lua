@@ -9,6 +9,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     root = GetRoot();
     colors = GetColors();
     Game = game;
+    Close = close;
 
     showMain();
 end
