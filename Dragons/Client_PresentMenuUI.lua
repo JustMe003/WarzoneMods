@@ -17,7 +17,7 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
     
-    CreateButton(root).SetText("Place Dragon").setColor(colors.Lime).SetOnClick(pickTerr);
+    CreateButton(root).SetText("Place Dragon").SetColor(colors.Lime).SetOnClick(pickTerr);
 
     CreateEmpty(root).SetPreferredHeight(10);
 
@@ -39,11 +39,11 @@ function pickTerr()
     DestroyWindow();
     SetWindow("pickTerr");
 
-    CreateButton(root).SetText("Return").setColor(colors.Orange).SetOnClick(showMain);
-    label = CreateLabel(root).SetText("click / tap a territory to deploy a Dragon").setColor(colors.Textcolor);
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+    label = CreateLabel(root).SetText("click / tap a territory to deploy a Dragon").SetColor(colors.Textcolor);
     local line = CreateHorz(root);
-    nextButton = CreateButton(line).SetText("Next").setColor(colors.Green).SetOnClick(chooseDragon).SetInteractable(false);
-    againButton = CreateButton(line).SetText("Change territory").setColor(colors["Royal Blue"]).SetOnClick(function() UI.InterceptNextTerritoryClick(terrChosen); end).SetInteractable(false);
+    nextButton = CreateButton(line).SetText("Next").SetColor(colors.Green).SetOnClick(chooseDragon).SetInteractable(false);
+    againButton = CreateButton(line).SetText("Change territory").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.InterceptNextTerritoryClick(terrChosen); end).SetInteractable(false);
     UI.InterceptNextTerritoryClick(terrChosen)
 end
 
@@ -60,7 +60,7 @@ function chooseDragon()
     DestroyWindow();
     SetWindow("chooseDragon");
 
-    CreateButton(root).SetText("Return").setColor(colors.Orange).SetOnClick(pickTerr);
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(pickTerr);
     CreateEmpty(root).SetPreferredHeight(10);
     CreateLabel(root).SetText("Choose which dragon will be put on " .. chosenTerr.Name);
     CreateEmpty(root).SetPreferredHeight(5);
