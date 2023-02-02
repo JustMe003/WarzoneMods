@@ -84,10 +84,13 @@ function showDragonPlacements()
     DestroyWindow();
     SetWindow("setDragonPlacements");
 
-    local s = "[" .. Game.Map.ID .. "]{";
+    local s = "";
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do 
-        print(string.find(s, "%[%d+%]{"))
-        if string.find(s, "%[%d+%]{") - #s > 0 then s = s .. ","; end
+        if #s > 0 then 
+            s = s .. ","; 
+        else
+            s = "[" .. Game.Map.ID .. "]{";
+        end
         s = s .. terr .. ":{";
         for i = 1, #arr - 1 do
             s = s .. arr[i] .. ",";
