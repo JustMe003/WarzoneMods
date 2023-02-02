@@ -1,4 +1,8 @@
 function Server_StartGame(game, standing)
+    local data = Mod.PublicGameData;
+    data.DragonPlacements = Mod.Settings.DragonPlacements;
+    if data.DragonPlacements == nil then data.DragonPlacements = {}; end
+    Mod.PublicGameData = data;
     local s = standing;
     for _, terr in pairs(s.Territories) do
         if terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
