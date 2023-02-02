@@ -1,6 +1,6 @@
 require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-	if game.Settings.SinglePlayer then
+	if not game.Settings.SinglePlayer then
         UI.Alert("This option can only be used in singleplayer");
         close();
         return;
