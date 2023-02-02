@@ -84,9 +84,16 @@ function showDragonPlacements()
     DestroyWindow();
     SetWindow("setDragonPlacements");
 
-    for i, v in pairs(Mod.PublicGameData.DragonPlacements) do 
-        print(i, v);
+    local s = "[" .. Game.Map.ID .. "]{";
+    for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do 
+        if #s > 0 then s = s .. ",";
+        s = s .. terr .. ":{";
+        for i = 1, #arr - 1 do
+            s = s .. arr[i] .. ",";
+        end
+        s = s .. arr[#arr] .. "}"
     end
+    s = s .. "}"
 
     CreateTextInputField(root).SetText("").SetPlaceholderText("Copy from here the Dragons placement data").SetFlexibleWidth(1);
     CreateLabel(root).SetText("Paste this data in the Mod configuration")
