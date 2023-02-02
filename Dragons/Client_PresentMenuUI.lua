@@ -95,7 +95,7 @@ function showDragonPlacements()
     end
     s = s .. "}"
 
-    CreateTextInputField(root).SetText("").SetPlaceholderText("Copy from here the Dragons placement data").SetFlexibleWidth(1);
+    CreateTextInputField(root).SetText(s).SetPlaceholderText("Copy from here the Dragons placement data").SetFlexibleWidth(1);
     CreateLabel(root).SetText("Paste this data in the Mod configuration")
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 end
