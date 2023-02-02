@@ -1,6 +1,7 @@
 function Server_StartGame(game, standing)
     local data = Mod.PublicGameData;
     data.DragonPlacements = Mod.Settings.DragonPlacements;
+    data.DragonPlacements = {};
     if data.DragonPlacements == nil then data.DragonPlacements = {}; end
     Mod.PublicGameData = data;
     local s = standing;
