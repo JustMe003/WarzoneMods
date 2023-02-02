@@ -86,7 +86,7 @@ function showDragonPlacements()
 
     local s = "[" .. Game.Map.ID .. "]{";
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do 
-        print(string.find(s, "%d"))
+        print(string.find(s, "[%d]"))
         if string.gsub(s, "[.]{") then s = s .. ","; end
         s = s .. terr .. ":{";
         for i = 1, #arr - 1 do
