@@ -19,11 +19,15 @@ function Server_StartGame(game, standing)
     local s = standing;
     for terr, arr in pairs(data.DragonPlacements) do
         if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
-            local t = {};
-            for _, v in pairs(arr) do
-                table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
+            if type(arr) == type({}) then
+                local t = {};
+                for _, v in pairs(arr) do
+                    table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
+                end
+                s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
+            else
+                table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.");
             end
-            s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
         else
             table.insert(data.Errors, "There does not exist a territory with ID [" .. terr .. "]");
         end
