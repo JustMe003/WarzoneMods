@@ -9,7 +9,6 @@ function Server_StartGame(game, standing)
             s = s:sub(ending + 2, -1);
             print(s);
             data.DragonPlacements = getTable(s);
-            printCompleteTable(data.DragonPlacements);
             if data.DragonPlacements == nil then data.DragonPlacements = {}; end
         else
             table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
@@ -23,6 +22,7 @@ function Server_StartGame(game, standing)
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
         local t = {};
         for _, v in pairs(t) do
+            print(v);
             table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v).ID)
         end
         s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
