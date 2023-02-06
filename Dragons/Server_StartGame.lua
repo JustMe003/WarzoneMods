@@ -26,6 +26,7 @@ function Server_StartGame(game, standing)
             table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v).ID)
         end
         s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
+        print(#s.Territories[terr].NumArmies.SpecialUnits)
     end
     standing = s;
 end
