@@ -1,7 +1,7 @@
 function Server_StartGame(game, standing)
     local data = Mod.PublicGameData;
     local s = Mod.Settings.DragonPlacements
-    local start, ending = s:find("[%d*]%]");
+    local start, ending = s:find("%[[%d]+%]");
     print(start, ending);
     s = s:sub(ending, -1);
     print(s);
