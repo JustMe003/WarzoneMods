@@ -75,6 +75,10 @@ function getTable(s)
                 local commandChar = s:sub(ending + 1, ending + 1);
                 if commandChar == ":" then
                     key = getCorrectType(s:sub(start, ending));
+                    if key == nil then
+                        table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.")
+                        return t, "";
+                    end
                     s = s:sub(ending + 2, -1);
                     local valueChar = s:sub(1, 1);
                     if valueChar == "{" then
@@ -91,7 +95,12 @@ function getTable(s)
                         end
                     end
                 else
-                    table.insert(t, getCorrectType(s:sub(start, ending)));
+                    local value = getCorrectType(s:sub(start, ending));
+                    if value == nil then
+                        table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.")
+                        return t, "";
+                    end
+                    table.insert(t, value);
                     s = s:sub(ending + 1, -1);
                 end
             else
