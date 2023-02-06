@@ -92,6 +92,9 @@ function showDragonPlacements()
             s = s .. arr[#arr] .. "}"
         end
     end
+    if #s == 0 then
+        s = "[" .. Game.Map.ID .. "]{";
+    end
     s = s .. "}"
 
     CreateTextInputField(root).SetText(s).SetPlaceholderText("Copy from here the Dragons placement data").SetFlexibleWidth(1);
