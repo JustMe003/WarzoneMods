@@ -98,11 +98,19 @@ function showDragonPlacements()
 end
 
 function addDragonPlacementLabel(terr, dragonID)
-    local line = CreateHorz(root);
+    local line = CreateHorz(root).SetFlexibleWidth(1);
     local s = "";
     if Mod.Settings.Dragons[dragonID].IncludeABeforeName then
         s = s .. "A ";
     end
-    CreateLabel(line).SetText(s .. Mod.Settings.Dragons[dragonID].Name .. " on: ").SetColor(Mod.Settings.Dragons[dragonID].Color);
+    CreateLabel(line).SetText(s .. Mod.Settings.Dragons[dragonID].Name).SetColor(Mod.Settings.Dragons[dragonID].Color);
+    CreateLabel(line).SetText(" on: ").SetColor(colors.Textcolor);
+    CreateEmpty(line).SetFlexibleWidth(0.1);
     CreateButton(line).SetText(Game.Map.Territories[terr].Name).SetColor(colors.Tan).SetOnClick(function() if WL.IsVersionOrHigher or WL.IsVersionOrHigher("5.21") then Game.HighlightTerritories({terr}); Game.CreateLocatorCircle(Game.Map.Territories[terr].MiddlePointX, Game.Map.Territories[terr].MiddlePointY); end; end);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("DEL").SetColor(colors.Red).SetOnClick(function() deleteDragonConfirmation(terr, dragonID); end);
+end
+
+function deleteDragonConfirmation(terr, dragonID)
+    
 end
