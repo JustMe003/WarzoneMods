@@ -20,15 +20,17 @@ function Server_StartGame(game, standing)
     end
     Mod.PublicGameData = data;
     local s = standing;
-    for _, terr in pairs(s.Territories) do
-        if terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
-            s.Territories[terr.ID].NumArmies = s.Territories[terr.ID].NumArmies.Add(WL.Armies.Create(0, {getDragon(terr.OwnerPlayerID)}))
+    for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
+        local t = {};
+        for _, v in pairs(t) do
+            table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
         end
+        s.Territories[terr]
     end
     standing = s;
 end
 
-function getDragon(p)
+function getDragon(p, dragonID)
     local builder = WL.CustomSpecialUnitBuilder.Create(p);
     builder.Name = "Dragon";
     builder.IncludeABeforeName = true;
