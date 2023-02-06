@@ -16,7 +16,6 @@ function Server_StartGame(game, standing)
     if data.DragonPlacements == nil then
         data.DragonPlacements = {};
     end
-    Mod.PublicGameData = data;
     local s = standing;
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
         if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
@@ -29,6 +28,7 @@ function Server_StartGame(game, standing)
             table.insert(data.Errors, "There does not exist a territory with ID [" .. terr .. "]");
         end
     end
+    Mod.PublicGameData = data;
     standing = s;
 end
 
