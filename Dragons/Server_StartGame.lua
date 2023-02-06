@@ -48,15 +48,11 @@ end
 function getTable(s)
     local t = {};
     local key = nil;
-    print(s);
     while #s > 0 do
         local nextChar = s:sub(1, 1);
-        print(nextChar);
         if nextChar == "}" then
-            print("returning");
             return t, s:sub(2, -1);
         elseif nextChar == "," then
-            print("',' found");
             s = s:sub(2, -1);
         else
             local start, ending = s:find("%w+");
@@ -75,7 +71,6 @@ function getTable(s)
                         if value ~= nil then
                             t[key] = value;
                             s = s:sub(ending + 1, -1);
-                            print(key, value);
                         else
                             table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.")
                             return t, "";
