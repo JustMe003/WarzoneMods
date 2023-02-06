@@ -1,5 +1,5 @@
 function Server_StartGame(game, standing)
-    local data = Mod.PublicGameData;
+    data = Mod.PublicGameData;
     data.Errors = {};
     local s = Mod.Settings.DragonPlacements
     local start, ending = s:find("%[[%d]+%]");
@@ -40,10 +40,47 @@ end
 
 function getTable(s)
     local t = {};
+    local key = nil;
     while #s > 0 do
-        local char = s:sub(s:find("[,:}]"));
-        print(char);
-        break;
+        local nextChar = s:sub(1, 1);
+        print(nextChar);
+        if nextChar == "}" then
+            return t, s:sub(2, -1);
+        elseif nextChar == "," then
+            s = s:sub(2, -1);
+        else
+            local start, ending = s:find("%w+:");
+            if start ~= nil and ending ~= nil then
+                key = getCorrectType(s:sub(start, ending - 1));
+                s = s:sub(ending + 1, -1);
+                local valueChar = s:sub(1, 1);
+                if valueChar == "{" then
+                    t[key], s = getTable(s:sub(2, -1));
+                else
+                    start, ending = s:find("%w+");
+                    local value = getCorrectType(s:sub(start, ending));
+                    if value ~= nil then
+                        t[key] = value;
+                        s = s:sub(ending + 1, -1);
+                    else
+                        table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.")
+                        return t, "";
+                    end
+                end
+            else
+                table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.")
+                return t, "";
+            end
+        end
     end
     return t;
+end
+
+function getCorrectType(input)
+    if input == nil then
+        return nil;
+    elseif tonumber(input) ~= nil then
+        return tonumber(input);
+    end
+    return input;
 end
