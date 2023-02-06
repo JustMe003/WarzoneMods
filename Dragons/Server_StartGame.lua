@@ -20,9 +20,10 @@ function Server_StartGame(game, standing)
     Mod.PublicGameData = data;
     local s = standing;
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
+        print("Territory: ", terr);
         local t = {};
         for _, v in pairs(t) do
-            print(v);
+            print("Dragon: ", v);
             table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v).ID)
         end
         s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
