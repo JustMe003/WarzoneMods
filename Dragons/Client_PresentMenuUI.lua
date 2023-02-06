@@ -77,7 +77,6 @@ end
 
 function addDragon(dragonID)
     Game.SendGameCustomMessage("Updating data...", {Type="addDragon", TerrID=chosenTerr.ID, DragonID=dragonID}, function(t) showMain(); end);
-    Close();
 end
 
 function showDragonPlacements()
