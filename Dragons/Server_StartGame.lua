@@ -37,8 +37,9 @@ function getDragon(p, dragonID)
     builder.CanBeGiftedWithGiftCard = Mod.Settings.Dragons[dragonID].CanBeGiftedWithGiftCard;
     builder.IncludeABeforeName = Mod.Settings.Dragons[dragonID].IncludeABeforeName;
     builder.AttackPower = Mod.Settings.Dragons[dragonID].AttackPower;
-    builder.AttackPowerPercentage = Mod.Settings.Dragons[dragonID].AttackPowerPercentage;
-    builder.DefensePowerPercentage = Mod.Settings.Dragons[dragonID].DefensePowerPercentage;
+    print(Mod.Settings.Dragons[dragonID].AttackPowerPercentage, (Mod.Settings.Dragons[dragonID].AttackPowerPercentage / 100) + 1)
+    builder.AttackPowerPercentage = (Mod.Settings.Dragons[dragonID].AttackPowerPercentage / 100) + 1;
+    builder.DefensePowerPercentage = (Mod.Settings.Dragons[dragonID].DefensePowerPercentage / 100) + 1;
     if Mod.Settings.Dragons[dragonID].UseHealth then
         builder.Health = Mod.Settings.Dragons[dragonID].Health;
         if Mod.Settings.Dragons[dragonID].DynamicDefencePower then
