@@ -84,12 +84,13 @@ function showDragonPlacements()
         else
             s = "[" .. Game.Map.ID .. "]{";
         end
-        s = s .. terr .. ":{";
-        for i = 1, #arr - 1 do
-            s = s .. arr[i] .. ",";
+        if #arr > 0 then
+            s = s .. terr .. ":{";
+            for i = 1, #arr - 1 do
+                s = s .. arr[i] .. ",";
+            end
+            s = s .. arr[#arr] .. "}"
         end
-        print(#arr);
-        s = s .. arr[#arr] .. "}"
     end
     s = s .. "}"
 
