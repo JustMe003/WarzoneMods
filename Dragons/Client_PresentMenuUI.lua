@@ -5,6 +5,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
         close();
         return;
     end
+    if game.Us == nil then
+        UI.Alert("You cannot use this mod as a spectator");
+        close();
+        return;
+    end
     Init(rootParent);
     root = GetRoot();
     colors = GetColors();
