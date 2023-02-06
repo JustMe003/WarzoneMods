@@ -68,6 +68,7 @@ function getTable(s)
                     if value ~= nil then
                         t[key] = value;
                         s = s:sub(ending + 1, -1);
+                        print(key, value);
                     else
                         table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.")
                         return t, "";
