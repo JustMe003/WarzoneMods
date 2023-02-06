@@ -78,7 +78,7 @@ function getTable(s)
             end
         end
     end
-    return t;
+    return t, s;
 end
 
 function getCorrectType(input)
