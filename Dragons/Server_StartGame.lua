@@ -31,6 +31,7 @@ end
 
 function getDragon(p, dragonID)
     local builder = WL.CustomSpecialUnitBuilder.Create(p);
+    builder.ImageFilename = "dragon.png";
     builder.Name = Mod.Settings.Dragons[dragonID].Name;
     builder.IsVisibleToAllPlayers = Mod.Settings.Dragons[dragonID].IsVisibleToAllPlayers;
     builder.CanBeAirliftedToSelf = Mod.Settings.Dragons[dragonID].CanBeAirliftedToSelf;
