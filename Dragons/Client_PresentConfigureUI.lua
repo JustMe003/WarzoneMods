@@ -209,7 +209,6 @@ function saveDragon(dragon, inputs)
     dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked();
     if inputs.Health ~= nil then dragons[dragon.ID].Health = inputs.Health.GetValue(); end
     if inputs.DynamicDefencePower ~= nil then dragons[dragon.ID].DynamicDefencePower = inputs.DynamicDefencePower.GetIsChecked(); end
-    if inputs.DefensePower ~= nil then dragons[DefensePower].DefensePower = inputs.DefensePower.GetValue(); end
     if inputs.DamageAbsorbedWhenAttacked ~= nil then dragons[dragon.ID].DamageAbsorbedWhenAttacked = inputs.DamageAbsorbedWhenAttacked.GetValue(); end
     if inputs.DamageToKill ~= nil then dragons[dragon.ID].DamageToKill = inputs.DamageToKill.GetValue(); end
     if inputs.DefensePower ~= nil then dragons[dragon.ID].DefensePower = inputs.DefensePower.GetValue(); end

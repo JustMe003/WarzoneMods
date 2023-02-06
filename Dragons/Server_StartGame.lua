@@ -30,18 +30,28 @@ end
 
 function getDragon(p, dragonID)
     local builder = WL.CustomSpecialUnitBuilder.Create(p);
-    builder.Name = "Dragon";
-    builder.IncludeABeforeName = true;
-    builder.ImageFilename = 'dragon.png';
-    builder.AttackPower = 200;
-    builder.DefensePower = 200;
-    builder.Health = 200;
-    builder.CombatOrder = 1362;
-    builder.CanBeGiftedWithGiftCard = true;
-    builder.CanBeTransferredToTeammate = true;
-    builder.CanBeAirliftedToSelf = true;
-    builder.CanBeAirliftedToTeammate = true;
-    builder.IsVisibleToAllPlayers = false;
+    builder.Name = Mod.Settings.Dragons[dragonID].Name;
+    builder.IsVisibleToAllPlayers = Mod.Settings.Dragons[dragonID].IsVisibleToAllPlayers;
+    builder.CanBeAirliftedToSelf = Mod.Settings.Dragons[dragonID].CanBeAirliftedToSelf;
+    builder.CanBeGiftedWithGiftCard = Mod.Settings.Dragons[dragonID].CanBeGiftedWithGiftCard;
+    builder.IncludeABeforeName = Mod.Settings.Dragons[dragonID].IncludeABeforeName;
+    builder.AttackPower = Mod.Settings.Dragons[dragonID].AttackPower;
+    builder.AttackPowerPercentage = Mod.Settings.Dragons[dragonID].AttackPowerPercentage;
+    builder.DefensePowerPercentage = Mod.Settings.Dragons[dragonID].DefensePowerPercentage;
+    if Mod.Settings.Dragons[dragonID].UseHealth then
+        builder.Health = Mod.Settings.Dragons[dragonID].Health;
+        if Mod.Settings.Dragons[dragonID].DynamicDefencePower then
+            builder.DefensePower = Mod.Settings.Dragons[dragonID].Health;
+        else
+            builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
+        end
+    else
+        builder.DamageAbsorbedWhenAttacked = Mod.Settings.Dragons[dragonID].DamageAbsorbedWhenAttacked;
+        builder.DamageToKill = Mod.Settings.Dragons[dragonID].DamageToKill;
+        builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
+    end
+    
+    builder.ModData = "DynamicDefencePower:" .. tostring(Mod.Settings.Dragons[dragonID].DynamicDefencePower) .. "|DragonBreathAttack" .. tostring(Mod.Settings.Dragons[dragonID].DragonBreathAttack);
     return builder.Build();
 end
 
