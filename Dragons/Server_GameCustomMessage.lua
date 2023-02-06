@@ -1,9 +1,18 @@
 function Server_GameCustomMessage(game, playerID, payload, setReturn)
+    local data = Mod.PublicGameData;
 	if payload.Type == "addDragon" then
-        local data = Mod.PublicGameData;
         if data.DragonPlacements[payload.TerrID] == nil then data.DragonPlacements[payload.TerrID] = {}; end
         table.insert(data.DragonPlacements[payload.TerrID], payload.DragonID);
-        Mod.PublicGameData = data;
+    elseif payload.Type == "removeDragon" then
+        if data.DragonPlacements[payload.TerrID] ~= nil then
+            for i, dragon in pairs(data.DragonPlacements[payload.TerrID]) do
+                if dragon == payload.DragonID then
+                    table.remove(data.DragonPlacements[payload.TerrID]);
+                    break;
+                end
+            end
+        end
     end
+    Mod.PublicGameData = data;
     setReturn({});
 end
