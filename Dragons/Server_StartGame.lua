@@ -8,6 +8,7 @@ function Server_StartGame(game, standing)
         s = s:sub(ending + 2, -1);
         print(s);
         data.DragonPlacements = getTable(s);
+        printCompleteTable(data.DragonPlacements);
         if data.DragonPlacements == nil then data.DragonPlacements = {}; end
     else
         table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
@@ -88,4 +89,13 @@ function getCorrectType(input)
         return tonumber(input);
     end
     return input;
+end
+
+function printCompleteTable(t)
+    for i, v in pairs(t) do
+        print(i, v);
+        if type(v) == type({}) then
+            printCompleteTable(v);
+        end
+    end
 end
