@@ -88,6 +88,7 @@ function showDragonPlacements()
         for i = 1, #arr - 1 do
             s = s .. arr[i] .. ",";
         end
+        print(#arr);
         s = s .. arr[#arr] .. "}"
     end
     s = s .. "}"
