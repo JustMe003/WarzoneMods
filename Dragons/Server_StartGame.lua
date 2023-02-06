@@ -17,7 +17,7 @@ function Server_StartGame(game, standing)
         data.DragonPlacements = {};
     end
     local s = standing;
-    for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
+    for terr, arr in pairs(data.DragonPlacements) do
         if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
             local t = {};
             for _, v in pairs(arr) do
