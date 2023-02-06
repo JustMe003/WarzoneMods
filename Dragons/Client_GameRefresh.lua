@@ -1,5 +1,5 @@
 function Client_GameRefresh(game)
-	if game.Settings.StartedBy == nil or game.Us.ID == nil or game.Settings.StartedBy ~= game.Us.PlayerID or Mod.PlayerGameData.HasSeenNotification ~= nil then return; end
+	if game.Settings.StartedBy == nil or game.Us.ID == nil or game.Settings.StartedBy ~= game.Us.PlayerID or game.Game.TurnNumber < 1 or game.Game.TurnNumber > 1 or Mod.PlayerGameData.HasSeenNotification ~= nil then return; end
     if Mod.PublicGameData.Errors == nil or #Mod.PublicGameData.Errors == 0 then
         UI.Alert("Every Dragon was placed correctly!")
     else
