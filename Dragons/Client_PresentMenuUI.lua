@@ -112,5 +112,14 @@ function addDragonPlacementLabel(terr, dragonID)
 end
 
 function deleteDragonConfirmation(terr, dragonID)
+    DestroyWindow();
+    SetWindow("deleteDragonConfirmation");
 
+    CreateLabel(root).SetText("Are you sure you want to remove 1 " Mod.Settings.Dragons[dragonID].Name .. " from " .. game.Map.Territories[terr].Name .. "?").SetColor(colors.Textcolor);
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.475);
+    CreateButton(line).SetText("Yes").SetColor(colors.Green).SetOnClick(function() Game.SendGameCustomMessage("Updating data...", {Type="removeDragon", TerrID=terr, DragonID=dragonID}, function(t) end); Close(); end)
+    CreateEmpty(line).SetFlexibleWidth(0.05);
+    CreateButton(line).SetText("No").SetColor(colors.Red).SetOnClick(showMain);
+    CreateEmpty(line).SetFlexibleWidth(0.475);
 end
