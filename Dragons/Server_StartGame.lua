@@ -46,8 +46,10 @@ function getTable(s)
         local nextChar = s:sub(1, 1);
         print(nextChar);
         if nextChar == "}" then
+            print("returning");
             return t, s:sub(2, -1);
         elseif nextChar == "," then
+            print("',' found");
             s = s:sub(2, -1);
         else
             local start, ending = s:find("%w+:");
