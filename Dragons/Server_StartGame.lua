@@ -15,6 +15,9 @@ function Server_StartGame(game, standing)
             table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
         end
     end
+    if data.DragonPlacements == nil then
+        data.DragonPlacements = {};
+    end
     Mod.PublicGameData = data;
     local s = standing;
     for _, terr in pairs(s.Territories) do
