@@ -55,6 +55,7 @@ function getTable(s)
             local start, ending = s:find("%w+:");
             if start ~= nil and ending ~= nil then
                 key = getCorrectType(s:sub(start, ending - 1));
+                print(key);
                 s = s:sub(ending + 1, -1);
                 local valueChar = s:sub(1, 1);
                 if valueChar == "{" then
