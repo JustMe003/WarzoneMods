@@ -19,7 +19,7 @@ function Server_StartGame(game, standing)
     Mod.PublicGameData = data;
     local s = standing;
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
-        if game.Map.Territories[terr] ~= nil then
+        if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
             local t = {};
             for _, v in pairs(arr) do
                 table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
