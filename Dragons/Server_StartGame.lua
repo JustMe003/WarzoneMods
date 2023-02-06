@@ -1,12 +1,16 @@
 function Server_StartGame(game, standing)
     local data = Mod.PublicGameData;
+    data.Errors = {};
     local s = Mod.Settings.DragonPlacements
     local start, ending = s:find("%[[%d]+%]");
-    print(start, ending);
-    s = s:sub(ending, -1);
-    print(s);
-    data.DragonPlacements = getTable(s);
-    if data.DragonPlacements == nil then data.DragonPlacements = {}; end
+    local mapID = tonumber(s:sub(start + 1, ending - 1));
+    if mapID ~= nil and game.Map.ID == mapID then
+        s = s:sub(ending + 1, -1);
+        data.DragonPlacements = getTable(s);
+        if data.DragonPlacements == nil then data.DragonPlacements = {}; end
+    else
+        table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
+    end
     Mod.PublicGameData = data;
     local s = standing;
     for _, terr in pairs(s.Territories) do
@@ -37,6 +41,8 @@ end
 function getTable(s)
     local t = {};
     while #s > 0 do
+        local char = s:sub(s:find("[,:}]"));
+        print(char);
         break;
     end
     return t;
