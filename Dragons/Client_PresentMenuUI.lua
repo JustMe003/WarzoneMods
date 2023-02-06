@@ -29,13 +29,7 @@ function showMain()
     CreateLabel(root).SetText("These are all the Dragons that will be placed (note that you still have to copy the data input over to the mod settings!)").SetColor(colors.Textcolor);
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
         for _, dragonID in pairs(arr) do
-            local line = CreateHorz(root);
-            local s = "";
-            if Mod.Settings.Dragons[dragonID].IncludeABeforeName then
-                s = s .. "A ";
-            end
-            CreateLabel(line).SetText(s .. Mod.Settings.Dragons[dragonID].Name .. " on: ").SetColor(Mod.Settings.Dragons[dragonID].Color);
-            CreateButton(line).SetText(Game.Map.Territories[terr].Name).SetColor(colors.Tan).SetOnClick(function() if WL.IsVersionOrHigher or WL.IsVersionOrHigher("5.21") then Game.HighlightTerritories({terr}); Game.CreateLocatorCircle(Game.Map.Territories[terr].MiddlePointX, Game.Map.Territories[terr].MiddlePointY); end; end);
+            addDragonPlacementLabel(terr, dragonID);
         end
     end
 end
@@ -76,7 +70,7 @@ function chooseDragon()
 end
 
 function addDragon(dragonID)
-    Game.SendGameCustomMessage("Updating data...", {Type="addDragon", TerrID=chosenTerr.ID, DragonID=dragonID}, function(t) Close(); Game.CreateDialog(Client_PresentMenuUI); end);
+    Game.SendGameCustomMessage("Updating data...", {Type="addDragon", TerrID=chosenTerr.ID, DragonID=dragonID}, function(t) Close(); Game.CreateDialog(Client_PresentMenuUI); addDragonPlacementLabel(terr, dragonID) end);
 end
 
 function showDragonPlacements()
@@ -101,4 +95,14 @@ function showDragonPlacements()
     CreateTextInputField(root).SetText(s).SetPlaceholderText("Copy from here the Dragons placement data").SetFlexibleWidth(1);
     CreateLabel(root).SetText("Paste this data in the Mod configuration")
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+end
+
+function addDragonPlacementLabel(terr, dragonID)
+    local line = CreateHorz(root);
+    local s = "";
+    if Mod.Settings.Dragons[dragonID].IncludeABeforeName then
+        s = s .. "A ";
+    end
+    CreateLabel(line).SetText(s .. Mod.Settings.Dragons[dragonID].Name .. " on: ").SetColor(Mod.Settings.Dragons[dragonID].Color);
+    CreateButton(line).SetText(Game.Map.Territories[terr].Name).SetColor(colors.Tan).SetOnClick(function() if WL.IsVersionOrHigher or WL.IsVersionOrHigher("5.21") then Game.HighlightTerritories({terr}); Game.CreateLocatorCircle(Game.Map.Territories[terr].MiddlePointX, Game.Map.Territories[terr].MiddlePointY); end; end);
 end
