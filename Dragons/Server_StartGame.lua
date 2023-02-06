@@ -42,6 +42,7 @@ end
 function getTable(s)
     local t = {};
     local key = nil;
+    print(s);
     while #s > 0 do
         local nextChar = s:sub(1, 1);
         print(nextChar);
