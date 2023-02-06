@@ -7,7 +7,6 @@ function Server_StartGame(game, standing)
         local mapID = tonumber(s:sub(start + 1, ending - 1));
         if mapID ~= nil and game.Map.ID == mapID then
             s = s:sub(ending + 2, -1);
-            print(s);
             data.DragonPlacements = getTable(s);
             if data.DragonPlacements == nil then data.DragonPlacements = {}; end
         else
@@ -20,14 +19,11 @@ function Server_StartGame(game, standing)
     Mod.PublicGameData = data;
     local s = standing;
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
-        print("Territory: ", terr);
         local t = {};
         for _, v in pairs(arr) do
-            print("Dragon: ", v);
             table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
         end
         s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
-        print(#s.Territories[terr].NumArmies.SpecialUnits)
     end
     standing = s;
 end
@@ -64,7 +60,6 @@ function getTable(s)
                 local commandChar = s:sub(ending + 1, ending + 1);
                 if commandChar == ":" then
                     key = getCorrectType(s:sub(start, ending));
-                    print(key);
                     s = s:sub(ending + 2, -1);
                     local valueChar = s:sub(1, 1);
                     if valueChar == "{" then
