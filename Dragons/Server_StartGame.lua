@@ -79,7 +79,6 @@ function getTable(s)
                 return t, "";
             end
         end
-        printCompleteTable(t);
     end
     return t, s;
 end
