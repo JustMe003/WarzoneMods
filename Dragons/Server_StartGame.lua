@@ -6,6 +6,7 @@ function Server_StartGame(game, standing)
     local mapID = tonumber(s:sub(start + 1, ending - 1));
     if mapID ~= nil and game.Map.ID == mapID then
         s = s:sub(ending + 1, -1);
+        print(s);
         data.DragonPlacements = getTable(s);
         if data.DragonPlacements == nil then data.DragonPlacements = {}; end
     else
