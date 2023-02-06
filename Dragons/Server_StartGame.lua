@@ -19,11 +19,15 @@ function Server_StartGame(game, standing)
     Mod.PublicGameData = data;
     local s = standing;
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
-        local t = {};
-        for _, v in pairs(arr) do
-            table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
+        if game.Map.Territories[terr] ~= nil then
+            local t = {};
+            for _, v in pairs(arr) do
+                table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
+            end
+            s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
+        else
+            table.insert(data.Errors, "There does not exist a territory with ID [" .. terr .. "]");
         end
-        s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
     end
     standing = s;
 end

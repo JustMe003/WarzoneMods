@@ -12,6 +12,11 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
                 end
             end
         end
+    elseif payload.Type == "updateNotification" then
+        local pd = Mod.PlayerGameData;
+        pd[playerID] = {};
+        pd[playerID].HasSeenNotification = true;
+        Mod.PlayerGameData = pd;
     end
     Mod.PublicGameData = data;
     setReturn({});
