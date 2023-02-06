@@ -3,15 +3,17 @@ function Server_StartGame(game, standing)
     data.Errors = {};
     local s = Mod.Settings.DragonPlacements
     local start, ending = s:find("%[[%d]+%]");
-    local mapID = tonumber(s:sub(start + 1, ending - 1));
-    if mapID ~= nil and game.Map.ID == mapID then
-        s = s:sub(ending + 2, -1);
-        print(s);
-        data.DragonPlacements = getTable(s);
-        printCompleteTable(data.DragonPlacements);
-        if data.DragonPlacements == nil then data.DragonPlacements = {}; end
-    else
-        table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
+    if #s > 0 then
+        local mapID = tonumber(s:sub(start + 1, ending - 1));
+        if mapID ~= nil and game.Map.ID == mapID then
+            s = s:sub(ending + 2, -1);
+            print(s);
+            data.DragonPlacements = getTable(s);
+            printCompleteTable(data.DragonPlacements);
+            if data.DragonPlacements == nil then data.DragonPlacements = {}; end
+        else
+            table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
+        end
     end
     Mod.PublicGameData = data;
     local s = standing;
