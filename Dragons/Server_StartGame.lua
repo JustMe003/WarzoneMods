@@ -37,8 +37,7 @@ end
 function getTable(s)
     local t = {};
     while #s > 0 do
-        
-        t[]
-
+        break;
     end
+    return t;
 end
