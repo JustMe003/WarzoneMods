@@ -22,7 +22,7 @@ function Server_StartGame(game, standing)
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
         print("Territory: ", terr);
         local t = {};
-        for _, v in pairs(t) do
+        for _, v in pairs(arr) do
             print("Dragon: ", v);
             table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v).ID)
         end
