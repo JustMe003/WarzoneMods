@@ -15,8 +15,6 @@ end
 function showMain()
     DestroyWindow(GetCurrentWindow(), true);
     SetWindow("Main");
-
-    root.SetPreferredHeight(500);
     
     for _, dragon in pairs(dragons) do
         CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() modifyDragon(dragon); end);
@@ -62,9 +60,9 @@ function modifyDragon(dragon)
     CreateButton(line).SetText("Remove Dragon").SetColor(colors["Orange Red"]).SetOnClick(function() saveDragon(dragon, dragonInputs); removeDragon(dragon); end)
     CreateEmpty(line).SetFlexibleWidth(0.45);
 
-    generalCheckBox.SetOnValueChanged(function() if generalLabel.GetText():sub(1, 4) == "Show" then generalLabel.SetText("Hide" .. generalLabel.GetText():sub(5, -1)); generalSettings(dragon, vertGeneral, dragonInputs); else generalLabel.SetText("Show" .. generalLabel.GetText():sub(5, -1)); DestroyWindow("generalSettings", false); end end);
-    HealthAndDamageCheckBox.SetOnValueChanged(function() if HealthAndDamageLabel.GetText():sub(1, 4) == "Show" then HealthAndDamageLabel.SetText("Hide" .. HealthAndDamageLabel.GetText():sub(5, -1)); healthAndDamage(dragon, vertGeneral, dragonInputs); else HealthAndDamageLabel.SetText("Show" .. HealthAndDamageLabel.GetText():sub(5, -1)); DestroyWindow("healthAndDamage", false); end end);
-    OtherCheckBox.SetOnValueChanged(function() if OtherLabel.GetText():sub(1, 4) == "Show" then OtherLabel.SetText("Hide" .. OtherLabel.GetText():sub(5, -1)); permissionsSettings(dragon, vertGeneral, dragonInputs); else OtherLabel.SetText("Show" .. OtherLabel.GetText():sub(5, -1)); DestroyWindow("permissionsSettings", false); end end);
+    generalCheckBox.SetOnValueChanged(function() if generalLabel.GetText():sub(1, 4) == "Show" then generalLabel.SetText("Hide" .. generalLabel.GetText():sub(5, -1)); generalSettings(dragon, vertGeneral, dragonInputs); else generalLabel.SetText("Show" .. generalLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("generalSettings", false); end end);
+    HealthAndDamageCheckBox.SetOnValueChanged(function() if HealthAndDamageLabel.GetText():sub(1, 4) == "Show" then HealthAndDamageLabel.SetText("Hide" .. HealthAndDamageLabel.GetText():sub(5, -1)); healthAndDamage(dragon, vertGeneral, dragonInputs); else HealthAndDamageLabel.SetText("Show" .. HealthAndDamageLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("healthAndDamage", false); end end);
+    OtherCheckBox.SetOnValueChanged(function() if OtherLabel.GetText():sub(1, 4) == "Show" then OtherLabel.SetText("Hide" .. OtherLabel.GetText():sub(5, -1)); permissionsSettings(dragon, vertGeneral, dragonInputs); else OtherLabel.SetText("Show" .. OtherLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("permissionsSettings", false); end end);
 end
 
 function generalSettings(dragon, vert, inputs)
@@ -94,7 +92,7 @@ function generalSettings(dragon, vert, inputs)
     CreateLabel(line).SetText("This dragon can be purchased with gold").SetColor(colors.Textcolor);
     
     CreateLabel(vert).SetText("The cost of this dragon").SetColor(colors.Textcolor);
-    inputs.Cost = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Cost);
+    inputs.Cost = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Cost).SetInteractable(inputs.CanBeBought);
     
     CreateLabel(vert).SetText("The maximum number of this dragon each player may have").SetColor(colors.Textcolor);
     inputs.MaxNumOfDragon = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(dragon.MaxNumOfDragon);
