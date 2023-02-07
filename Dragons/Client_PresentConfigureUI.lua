@@ -174,19 +174,19 @@ function permissionsSettings(dragon, vert, inputs)
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
 
-    line = CreateHorz(root).SetFlexibleWidth(1);
+    line = CreateHorz(vert).SetFlexibleWidth(1);
     dragonInputs.IsVisibleToAllPlayers = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IsVisibleToAllPlayers);
     CreateLabel(line).SetText("This dragon is always visible for every player").SetColor(colors.Textcolor);
     
-    line = CreateHorz(root).SetFlexibleWidth(1);
+    line = CreateHorz(vert).SetFlexibleWidth(1);
     dragonInputs.CanBeAirliftedToSelf = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeAirliftedToSelf);
     CreateLabel(line).SetText("Players can airlift this dragon").SetColor(colors.Textcolor);
     
-    line = CreateHorz(root).SetFlexibleWidth(1);
+    line = CreateHorz(vert).SetFlexibleWidth(1);
     dragonInputs.CanBeGiftedWithGiftCard = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeGiftedWithGiftCard);
     CreateLabel(line).SetText("Players can gift this dragon to other players").SetColor(colors.Textcolor);
     
-    line = CreateHorz(root).SetFlexibleWidth(1);
+    line = CreateHorz(vert).SetFlexibleWidth(1);
     dragonInputs.IncludeABeforeName = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IncludeABeforeName);
     CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
     
