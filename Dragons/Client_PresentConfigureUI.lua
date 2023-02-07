@@ -40,17 +40,17 @@ function modifyDragon(dragon)
     
     local line = CreateHorz(root).SetFlexibleWidth(1);
     local generalCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
-    local generalLabel = CreateLabel(line).SetText("Show general settings").SetColor(colors.Textcolor);
+    local generalLabel = CreateLabel(line).SetText("Show general settings").SetColor(colors.Tan);
     local vertGeneral = CreateVert(root);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local HealthAndDamageCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
-    local HealthAndDamageLabel = CreateLabel(line).SetText("Show health and damage settings").SetColor(colors.Textcolor);
+    local HealthAndDamageLabel = CreateLabel(line).SetText("Show health and damage settings").SetColor(colors.Tan);
     local vertHealthAndDamage = CreateVert(root);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local OtherCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
-    local OtherLabel = CreateLabel(line).SetText("Show permissions").SetColor(colors.Textcolor);
+    local OtherLabel = CreateLabel(line).SetText("Show permissions").SetColor(colors.Tan);
     local vertOther = CreateVert(root);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
@@ -75,7 +75,7 @@ function generalSettings(dragon, vert, inputs)
     CreateEmpty(vert).SetPreferredHeight(10);
     local line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateLabel(line).SetText("General").SetColor(colors.Tan);
+    CreateLabel(line).SetText("General").SetColor(colors.Orange);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
     
@@ -111,7 +111,7 @@ function healthAndDamage(dragon, vert, inputs)
     CreateEmpty(vert).SetPreferredHeight(10);
     local line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateLabel(line).SetText("Health and Damage").SetColor(colors.Tan);
+    CreateLabel(line).SetText("Health and Damage").SetColor(colors.Orange);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
     
@@ -170,7 +170,7 @@ function permissionsSettings(dragon, vert, inputs)
     CreateEmpty(vert).SetPreferredHeight(10);
     local line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateLabel(line).SetText("Permissions").SetColor(colors.Tan);
+    CreateLabel(line).SetText("Permissions").SetColor(colors.Orange);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
 
