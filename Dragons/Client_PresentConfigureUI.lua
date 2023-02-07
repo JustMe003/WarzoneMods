@@ -113,6 +113,10 @@ function healthAndDamage(dragon, vert, inputs)
     DestroyWindow(win, false);
     SetWindow(win);
     
+    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateVert(line).SetPreferredWidth(25).SetFlexibleWidth(0);
+    vert = CreateVert(line).SetFlexibleWidth(1);
+    
     CreateEmpty(vert).SetPreferredHeight(10);
     local line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
@@ -171,6 +175,10 @@ function permissionsSettings(dragon, vert, inputs)
     AddSubWindow(parent, win);
     DestroyWindow(win, false);
     SetWindow(win);
+    
+    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateVert(line).SetPreferredWidth(25).SetFlexibleWidth(0);
+    vert = CreateVert(line).SetFlexibleWidth(1);
     
     CreateEmpty(vert).SetPreferredHeight(10);
     local line = CreateHorz(vert).SetFlexibleWidth(1);
