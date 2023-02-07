@@ -92,7 +92,7 @@ function generalSettings(dragon, vert, inputs)
     CreateLabel(line).SetText("This dragon can be purchased with gold").SetColor(colors.Textcolor);
     
     CreateLabel(vert).SetText("The cost of this dragon").SetColor(colors.Textcolor);
-    inputs.Cost = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Cost).SetInteractable(inputs.CanBeBought);
+    inputs.Cost = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Cost).SetInteractable(inputs.CanBeBought.GetIsChecked());
     
     CreateLabel(vert).SetText("The maximum number of this dragon each player may have").SetColor(colors.Textcolor);
     inputs.MaxNumOfDragon = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(dragon.MaxNumOfDragon);
