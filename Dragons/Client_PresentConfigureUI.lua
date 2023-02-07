@@ -34,78 +34,73 @@ end
 function modifyDragon(dragon)
     DestroyWindow(GetCurrentWindow(), true);
     SetWindow("modifyDragon");
-    
-    root.SetPreferredHeight(-1);
-    
+        
     dragonInputs = {};
     currentDragon = dragon.ID;
     
     CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
     
-    CreateEmpty(root).SetPreferredHeight(10);
     local line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateLabel(line).SetText("General").SetColor(colors.Tan);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateEmpty(root).SetPreferredHeight(5);
+    local generalCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
+    local generalLabel = CreateLabel(line).SetText("Show general settings").SetColor(colors.Textcolor);
+    local vertGeneral = CreateVert(root);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
-    dragonInputs.Name = CreateTextInputField(line).SetText(dragon.Name).SetFlexibleWidth(1);
+    local HealthAndDamageCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
+    local HealthAndDamageLabel = CreateLabel(line).SetText("Show health and damage settings").SetColor(colors.Textcolor);
+    local vertHealthAndDamage = CreateVert(root);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
-    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() if #dragons < 5 then saveDragon(dragon, dragonInputs); changeColor(dragon); else UI.Alert("To pick a different color for '" .. dragonInputs.Name.GetText() .. "', you must first delete another dragon. You can at most have 5 dragons, all with distinct colors") end end);
-    
-    CreateEmpty(root).SetPreferredHeight(10);
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateLabel(line).SetText("Health and Damage").SetColor(colors.Tan);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateEmpty(root).SetPreferredHeight(5);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth);
-    CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
-    
-    local vert = CreateVert(root);
-    
-    CreateEmpty(root).SetPreferredHeight(10);
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateLabel(line).SetText("Permissions").SetColor(colors.Tan);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateEmpty(root).SetPreferredHeight(5);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
-    CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.IsVisibleToAllPlayers = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IsVisibleToAllPlayers);
-    CreateLabel(line).SetText("This dragon is always visible for every player").SetColor(colors.Textcolor);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.CanBeAirliftedToSelf = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeAirliftedToSelf);
-    CreateLabel(line).SetText("Players can airlift this dragon").SetColor(colors.Textcolor);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.CanBeGiftedWithGiftCard = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeGiftedWithGiftCard);
-    CreateLabel(line).SetText("Players can gift this dragon to other players").SetColor(colors.Textcolor);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    dragonInputs.IncludeABeforeName = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IncludeABeforeName);
-    CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
-    
-    dragonInputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert, dragonInputs) end);
-    healthAndDamage(dragon, vert, dragonInputs);
-    
+    local OtherCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
+    local OtherLabel = CreateLabel(line).SetText("Show health and damage settings").SetColor(colors.Textcolor);
+    local vertOther = CreateVert(root);
+
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.45);
     CreateButton(line).SetText("Save and Return").SetColor(colors.Green).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end);
     CreateEmpty(line).SetFlexibleWidth(0.1);
     CreateButton(line).SetText("Remove Dragon").SetColor(colors["Orange Red"]).SetOnClick(function() saveDragon(dragon, dragonInputs); removeDragon(dragon); end)
     CreateEmpty(line).SetFlexibleWidth(0.45);
+
+    generalCheckBox.SetOnValueChanged(function() if generalLabel.GetText():sub(1, 4) == "Show" then generalLabel.SetText("Hide" .. generalLabel.GetText():sub(5, -1)); generalSettings(dragon, vertGeneral, dragonInputs); else generalLabel.SetText("Show" .. generalLabel.GetText():sub(5, -1)); DestroyWindow("generalSettings", false); end end);
+    HealthAndDamageCheckBox.SetOnValueChanged(function() if HealthAndDamageLabel.GetText():sub(1, 4) == "Show" then HealthAndDamageLabel.SetText("Hide" .. HealthAndDamageLabel.GetText():sub(5, -1)); healthAndDamage(dragon, vertGeneral, dragonInputs); else HealthAndDamageLabel.SetText("Show" .. HealthAndDamageLabel.GetText():sub(5, -1)); DestroyWindow("healthAndDamage", false); end end);
+    OtherCheckBox.SetOnValueChanged(function() if OtherLabel.GetText():sub(1, 4) == "Show" then OtherLabel.SetText("Hide" .. OtherLabel.GetText():sub(5, -1)); permissionsSettings(dragon, vertGeneral, dragonInputs); else OtherLabel.SetText("Show" .. OtherLabel.GetText():sub(5, -1)); DestroyWindow("permissionsSettings", false); end end);
+end
+
+function generalSettings(dragon, vert, inputs)
+    local win = "generalSettings";
+    local parent = GetCurrentWindow();
+    AddSubWindow(parent, win);
+    DestroyWindow(win, false);
+    SetWindow(win);
+    
+    CreateEmpty(vert).SetPreferredHeight(10);
+    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("General").SetColor(colors.Tan);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateEmpty(vert).SetPreferredHeight(5);
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
+    inputs.Name = CreateTextInputField(line).SetText(dragon.Name).SetFlexibleWidth(1);
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
+    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() if #dragons < 5 then saveDragon(dragon, dragonInputs); changeColor(dragon); else UI.Alert("To pick a different color for '" .. dragonInputs.Name.GetText() .. "', you must first delete another dragon. You can at most have 5 dragons, all with distinct colors") end end);
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    inputs.CanBeBought = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeBought);
+    CreateLabel(line).SetText("This dragon can be purchased with gold").SetColor(colors.Textcolor);
+    
+    CreateLabel(vert).SetText("The cost of this dragon").SetColor(colors.Textcolor);
+    inputs.Cost = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Cost);
+    
+    CreateLabel(vert).SetText("The maximum number of this dragon each player may have").SetColor(colors.Textcolor);
+    inputs.MaxNumOfDragon = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(dragon.MaxNumOfDragon);
+    
+    inputs.CanBeBought.SetOnValueChanged(function() saveDragon(dragon, inputs); generalSettings(dragon, vert, inputs); end)
+    SetWindow(parent);
 end
 
 function healthAndDamage(dragon, vert, inputs)
@@ -114,6 +109,17 @@ function healthAndDamage(dragon, vert, inputs)
     AddSubWindow(parent, win);
     DestroyWindow(win, false);
     SetWindow(win);
+    
+    CreateEmpty(vert).SetPreferredHeight(10);
+    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("Health and Damage").SetColor(colors.Tan);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateEmpty(vert).SetPreferredHeight(5);
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    inputs.UseHealth = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.UseHealth);
+    CreateLabel(line).SetText("Use dynamic health").SetColor(colors.Textcolor);
     
     if dragon.UseHealth then
         CreateLabel(vert).SetText("The initial health of this dragon").SetColor(colors.Textcolor);
@@ -134,7 +140,7 @@ function healthAndDamage(dragon, vert, inputs)
         
         CreateLabel(vert).SetText("When this dragon takes damage, it will reduce the amount of damage remaining to other units on this territory by this value").SetColor(colors.Textcolor)
         inputs.DamageAbsorbedWhenAttacked = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DamageAbsorbedWhenAttacked);
-    
+        
         CreateLabel(vert).SetText("The defence power of the Dragon").SetColor(colors.Textcolor);
         inputs.DefensePower = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(dragon.DefensePower);
     end
@@ -147,6 +153,44 @@ function healthAndDamage(dragon, vert, inputs)
     
     CreateLabel(vert).SetText("The defence modifier of the Dragon (percentage)").SetColor(colors.Textcolor);
     inputs.DefensePowerPercentage = CreateNumberInputField(vert).SetWholeNumbers(false).SetSliderMinValue(-100).SetSliderMaxValue(100).SetValue(dragon.DefensePowerPercentage)
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    inputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
+    CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
+    
+    inputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert, dragonInputs) end);
+    SetWindow(parent);
+end
+
+function permissionsSettings(dragon, vert, inputs)
+    local win = "permissionsSettings";
+    local parent = GetCurrentWindow();
+    AddSubWindow(parent, win);
+    DestroyWindow(win, false);
+    SetWindow(win);
+    
+    CreateEmpty(vert).SetPreferredHeight(10);
+    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("Permissions").SetColor(colors.Tan);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateEmpty(vert).SetPreferredHeight(5);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.IsVisibleToAllPlayers = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IsVisibleToAllPlayers);
+    CreateLabel(line).SetText("This dragon is always visible for every player").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.CanBeAirliftedToSelf = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeAirliftedToSelf);
+    CreateLabel(line).SetText("Players can airlift this dragon").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.CanBeGiftedWithGiftCard = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeGiftedWithGiftCard);
+    CreateLabel(line).SetText("Players can gift this dragon to other players").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    dragonInputs.IncludeABeforeName = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.IncludeABeforeName);
+    CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon").SetColor(colors.Textcolor);
     
     SetWindow(parent);
 end
@@ -200,21 +244,24 @@ function setDragonPlacements()
 end
 
 function saveDragon(dragon, inputs)
-    dragons[dragon.ID].Name = inputs.Name.GetText();
-    dragons[dragon.ID].DragonBreathAttack = inputs.DragonBreathAttack.GetIsChecked();
-    dragons[dragon.ID].IsVisibleToAllPlayers = inputs.IsVisibleToAllPlayers.GetIsChecked();
-    dragons[dragon.ID].CanBeAirliftedToSelf = inputs.CanBeAirliftedToSelf.GetIsChecked();
-    dragons[dragon.ID].CanBeGiftedWithGiftCard = inputs.CanBeGiftedWithGiftCard.GetIsChecked();
-    dragons[dragon.ID].IncludeABeforeName = inputs.IncludeABeforeName.GetIsChecked();
-    dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked();
+    if inputs.Name ~= nil then dragons[dragon.ID].Name = inputs.Name.GetText(); end
+    if inputs.DragonBreathAttack ~= nil then dragons[dragon.ID].DragonBreathAttack = inputs.DragonBreathAttack.GetIsChecked(); end
+    if inputs.IsVisibleToAllPlayers ~= nil then dragons[dragon.ID].IsVisibleToAllPlayers = inputs.IsVisibleToAllPlayers.GetIsChecked(); end
+    if inputs.CanBeAirliftedToSelf ~= nil then dragons[dragon.ID].CanBeAirliftedToSelf = inputs.CanBeAirliftedToSelf.GetIsChecked(); end
+    if inputs.CanBeGiftedWithGiftCard ~= nil then dragons[dragon.ID].CanBeGiftedWithGiftCard = inputs.CanBeGiftedWithGiftCard.GetIsChecked(); end
+    if inputs.IncludeABeforeName ~= nil then dragons[dragon.ID].IncludeABeforeName = inputs.IncludeABeforeName.GetIsChecked(); end
+    if inputs.UseHealth ~= nil then dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked(); end
     if inputs.Health ~= nil then dragons[dragon.ID].Health = inputs.Health.GetValue(); end
     if inputs.DynamicDefencePower ~= nil then dragons[dragon.ID].DynamicDefencePower = inputs.DynamicDefencePower.GetIsChecked(); end
     if inputs.DamageAbsorbedWhenAttacked ~= nil then dragons[dragon.ID].DamageAbsorbedWhenAttacked = inputs.DamageAbsorbedWhenAttacked.GetValue(); end
     if inputs.DamageToKill ~= nil then dragons[dragon.ID].DamageToKill = inputs.DamageToKill.GetValue(); end
     if inputs.DefensePower ~= nil then dragons[dragon.ID].DefensePower = inputs.DefensePower.GetValue(); end
-    dragons[dragon.ID].AttackPower = inputs.AttackPower.GetValue();
-    dragons[dragon.ID].AttackPowerPercentage = inputs.AttackPowerPercentage.GetValue();
-    dragons[dragon.ID].DefensePowerPercentage = inputs.DefensePowerPercentage.GetValue();
+    if inputs.AttackPower ~= nil then dragons[dragon.ID].AttackPower = inputs.AttackPower.GetValue(); end
+    if inputs.AttackPowerPercentage ~= nil then dragons[dragon.ID].AttackPowerPercentage = inputs.AttackPowerPercentage.GetValue(); end
+    if inputs.DefensePowerPercentage ~= nil then dragons[dragon.ID].DefensePowerPercentage = inputs.DefensePowerPercentage.GetValue(); end
+    if inputs.CanBeBought ~= nil then dragons[dragon.ID].CanBeBought = inputs.CanBeBought.GetIsChecked(); end
+    if inputs.Cost ~= nil then dragons[dragon.ID].Cost = inputs.Cost.GetValue(); end
+    if inputs.MaxNumOfDragon ~= nil then dragons[dragon.ID].MaxNumOfDragon = inputs.MaxNumOfDragon.GetValue(); end
 end
 
 function initDragon()
@@ -228,6 +275,7 @@ function initDragon()
             end
         end
     end
+
     t.Color = c[math.random(#c)];
     t.ColorName = getColorName(t.Color);
     t.DragonBreathAttack = true;
@@ -244,6 +292,9 @@ function initDragon()
     t.AttackPower = 10;
     t.AttackPowerPercentage = 0;
     t.DefensePowerPercentage = 0;
+    t.CanBeBought = true;
+    t.Cost = 20;
+    t.MaxNumOfDragon = 3;
     t.ID = #dragons + 1;
     return t;
 end
