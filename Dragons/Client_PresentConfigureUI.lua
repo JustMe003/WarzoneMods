@@ -7,7 +7,7 @@ function Client_PresentConfigureUI(rootParent)
     placements = Mod.Settings.DragonPlacements;
     if placements == nil then placements = ""; end
 
-    root = GetRoot().SetFlexibleWidth(1).SetPreferredHeight(500);
+    root = GetRoot().SetFlexibleWidth(1);
     colors = GetColors();
     showMain();
 end
