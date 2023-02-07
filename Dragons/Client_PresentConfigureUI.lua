@@ -61,8 +61,8 @@ function modifyDragon(dragon)
     CreateEmpty(line).SetFlexibleWidth(0.45);
 
     generalCheckBox.SetOnValueChanged(function() if generalLabel.GetText():sub(1, 4) == "Show" then generalLabel.SetText("Hide" .. generalLabel.GetText():sub(5, -1)); generalSettings(dragon, vertGeneral, dragonInputs); else generalLabel.SetText("Show" .. generalLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("generalSettings", false); end end);
-    HealthAndDamageCheckBox.SetOnValueChanged(function() if HealthAndDamageLabel.GetText():sub(1, 4) == "Show" then HealthAndDamageLabel.SetText("Hide" .. HealthAndDamageLabel.GetText():sub(5, -1)); healthAndDamage(dragon, vertGeneral, dragonInputs); else HealthAndDamageLabel.SetText("Show" .. HealthAndDamageLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("healthAndDamage", false); end end);
-    OtherCheckBox.SetOnValueChanged(function() if OtherLabel.GetText():sub(1, 4) == "Show" then OtherLabel.SetText("Hide" .. OtherLabel.GetText():sub(5, -1)); permissionsSettings(dragon, vertGeneral, dragonInputs); else OtherLabel.SetText("Show" .. OtherLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("permissionsSettings", false); end end);
+    HealthAndDamageCheckBox.SetOnValueChanged(function() if HealthAndDamageLabel.GetText():sub(1, 4) == "Show" then HealthAndDamageLabel.SetText("Hide" .. HealthAndDamageLabel.GetText():sub(5, -1)); healthAndDamage(dragon, vertHealthAndDamage, dragonInputs); else HealthAndDamageLabel.SetText("Show" .. HealthAndDamageLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("healthAndDamage", false); end end);
+    OtherCheckBox.SetOnValueChanged(function() if OtherLabel.GetText():sub(1, 4) == "Show" then OtherLabel.SetText("Hide" .. OtherLabel.GetText():sub(5, -1)); permissionsSettings(dragon, vertOther, dragonInputs); else OtherLabel.SetText("Show" .. OtherLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("permissionsSettings", false); end end);
 end
 
 function generalSettings(dragon, vert, inputs)
