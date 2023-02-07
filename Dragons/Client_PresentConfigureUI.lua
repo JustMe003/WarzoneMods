@@ -50,7 +50,7 @@ function modifyDragon(dragon)
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local OtherCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
-    local OtherLabel = CreateLabel(line).SetText("Show health and damage settings").SetColor(colors.Textcolor);
+    local OtherLabel = CreateLabel(line).SetText("Show permissions").SetColor(colors.Textcolor);
     local vertOther = CreateVert(root);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
