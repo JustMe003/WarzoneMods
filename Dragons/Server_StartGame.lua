@@ -3,8 +3,9 @@ function Server_StartGame(game, standing)
     data.Errors = {};
     local s = Mod.Settings.DragonPlacements
     local start, ending = s:find("%[[%d]+%]");
+    local mapID = nil;
     if #s > 0 then
-        local mapID = tonumber(s:sub(start + 1, ending - 1));
+        mapID = tonumber(s:sub(start + 1, ending - 1));
         s = s:sub(ending + 2, -1);
         data.DragonPlacements = getTable(s);
         if data.DragonPlacements == nil then data.DragonPlacements = {}; end
