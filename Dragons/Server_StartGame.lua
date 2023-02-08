@@ -1,47 +1,20 @@
 function Server_StartGame(game, standing)
-    data = Mod.PublicGameData;
-    data.Errors = {};
-    local s = Mod.Settings.DragonPlacements
-    local start, ending = s:find("%[[%d]+%]");
-    local mapID = nil;
-    if #s > 0 then
-        mapID = tonumber(s:sub(start + 1, ending - 1));
-        s = s:sub(ending + 2, -1);
-        data.DragonPlacements = getTable(s);
-        if data.DragonPlacements == nil then data.DragonPlacements = {}; end
-    end
-    if data.DragonPlacements == nil then
-        data.DragonPlacements = {};
-    end
-    if mapID == nil or game.Map.ID ~= mapID then
-        table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
-    else
-        local s = standing;
-        for terr, arr in pairs(data.DragonPlacements) do
-            if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
-                if type(arr) == type({}) then
-                    local t = {};
-                    for _, v in pairs(arr) do
-                        table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
-                    end
-                    s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
-                else
-                    table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.");
+    local s = standing;
+    for terr, arr in pairs(data.DragonPlacements) do
+        if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
+            if type(arr) == type({}) then
+                local t = {};
+                for _, v in pairs(arr) do
+                    table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
                 end
+                s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
             else
-                table.insert(data.Errors, "There does not exist a territory with ID [" .. terr .. "]");
+                table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.");
             end
+        else
+            table.insert(data.Errors, "There does not exist a territory with ID [" .. terr .. "]");
         end
     end
-    data.DragonNamesIDs = {};
-    data.DragonBreathAttack = {};
-    for _, dragon in pairs(Mod.Settings.Dragons) do
-        data.DragonNamesIDs[dragon.Name] = dragon.ID;
-        if dragon.DragonBreathAttack then
-            data.DragonBreathAttack[dragon.ID] = dragon.DragonBreathAttackDamage;
-        end
-    end
-    Mod.PublicGameData = data;
     standing = s;
 end
 
