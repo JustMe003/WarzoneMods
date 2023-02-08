@@ -81,8 +81,6 @@ function generalSettings(dragon, vert, inputs)
     AddSubWindow(parent, win);
     SetWindow(win);
 
-    print(parent);
-
     local line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateVert(line).SetPreferredWidth(25).SetFlexibleWidth(0);
     vert = CreateVert(line).SetFlexibleWidth(1);
@@ -99,6 +97,8 @@ function generalSettings(dragon, vert, inputs)
     inputs.CanBeBought = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeBought);
     CreateLabel(line).SetText("This dragon can be purchased with gold").SetColor(colors.Textcolor);
     
+    print(inputs.CanBeBought.GetText());
+
     CreateLabel(vert).SetText("The cost of this dragon").SetColor(colors.Textcolor);
     inputs.Cost = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Cost).SetInteractable(inputs.CanBeBought.GetIsChecked());
     
