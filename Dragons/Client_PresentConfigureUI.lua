@@ -166,7 +166,7 @@ function healthAndDamage(dragon, vert, inputs)
     inputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
     CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
     
-    inputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert, dragonInputs) end);
+    inputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert, dragonInputs); end);
     SetWindow(parent);
 end
 
