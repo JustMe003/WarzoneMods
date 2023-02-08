@@ -27,7 +27,6 @@ function Server_Created(game, settings)
     Mod.PublicGameData = data;
 end
 
-
 function getTable(s)
     local t = {};
     local key = nil;
