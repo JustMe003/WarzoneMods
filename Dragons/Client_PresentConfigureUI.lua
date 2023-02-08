@@ -74,14 +74,14 @@ function modifyDragon(dragon)
 end
 
 
-function generalSettings(dragon, vert, inputs)
+function generalSettings(dragon, root, inputs)
     local win = "generalSettings";
     local parent = GetCurrentWindow();
     DestroyWindow(win, false);
     AddSubWindow(parent, win);
     SetWindow(win);
 
-    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateVert(line).SetPreferredWidth(25).SetFlexibleWidth(0);
     vert = CreateVert(line).SetFlexibleWidth(1);
     
@@ -97,26 +97,24 @@ function generalSettings(dragon, vert, inputs)
     inputs.CanBeBought = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeBought);
     CreateLabel(line).SetText("This dragon can be purchased with gold").SetColor(colors.Textcolor);
     
-    print(line.GetFlexibleWidth());
-
     CreateLabel(vert).SetText("The cost of this dragon").SetColor(colors.Textcolor);
     inputs.Cost = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Cost).SetInteractable(inputs.CanBeBought.GetIsChecked());
     
     CreateLabel(vert).SetText("The maximum number of this dragon each player may have").SetColor(colors.Textcolor);
     inputs.MaxNumOfDragon = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(dragon.MaxNumOfDragon);
     
-    inputs.CanBeBought.SetOnValueChanged(function() saveDragon(dragon, inputs); generalSettings(dragon, vert, inputs); end)
+    inputs.CanBeBought.SetOnValueChanged(function() saveDragon(dragon, inputs); generalSettings(dragon, root, inputs); end)
     SetWindow(parent);
 end
 
-function healthAndDamage(dragon, vert, inputs)
+function healthAndDamage(dragon, root, inputs)
     local win = "healthAndDamage";
     local parent = GetCurrentWindow();
     AddSubWindow(parent, win);
     DestroyWindow(win, false);
     SetWindow(win);
     
-    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateVert(line).SetPreferredWidth(25).SetFlexibleWidth(0);
     vert = CreateVert(line).SetFlexibleWidth(1);
     
@@ -168,18 +166,18 @@ function healthAndDamage(dragon, vert, inputs)
     inputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
     CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
     
-    inputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, vert, dragonInputs); end);
+    inputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, root, dragonInputs); end);
     SetWindow(parent);
 end
 
-function permissionsSettings(dragon, vert, inputs)
+function permissionsSettings(dragon, root, inputs)
     local win = "permissionsSettings";
     local parent = GetCurrentWindow();
     AddSubWindow(parent, win);
     DestroyWindow(win, false);
     SetWindow(win);
     
-    local line = CreateHorz(vert).SetFlexibleWidth(1);
+    local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateVert(line).SetPreferredWidth(25).SetFlexibleWidth(0);
     vert = CreateVert(line).SetFlexibleWidth(1);
     
