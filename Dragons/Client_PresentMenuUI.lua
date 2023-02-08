@@ -1,10 +1,5 @@
 require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-    if game.Game.TurnNumber < 1 then
-        UI.Alert("You can start using / viewing the dragons placement tool after the distribution");
-        close();
-        return;
-    end
     Init(rootParent);
     root = GetRoot();
     colors = GetColors();
@@ -20,7 +15,7 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
     
-    if Game.Settings.SinglePlayer then
+    if Game.Settings.SinglePlayer and Game.Game.TurnNumber > 0 then
         local line = CreateHorz(root).SetFlexibleWidth(1);
         CreateButton(line).SetText("Place Dragon").SetColor(colors.Lime).SetOnClick(pickTerr);
         CreateButton(line).SetText("Get Data").SetColor(colors.Orange).SetOnClick(showDragonPlacements);
@@ -118,7 +113,7 @@ function addDragonPlacementLabel(terr, dragonID)
     else
         CreateButton(line).SetText("[" .. terr .. "]").SetColor(colors.Red);
     end
-    if Game.Settings.SinglePlayer then
+    if Game.Settings.SinglePlayer and Game.Game.TurnNumber > 0 then
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("DEL").SetColor(colors.Red).SetOnClick(function() deleteDragonConfirmation(terr, dragonID); end);
     end
