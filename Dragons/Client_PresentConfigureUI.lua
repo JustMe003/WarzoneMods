@@ -281,7 +281,7 @@ function changeCombatOrder()
                 for i, dragon2 in pairs(arr) do
                     print(dragon.CombatOrder, dragon2.CombatOrder)
                     if dragon.CombatOrder < dragon2.CombatOrder then
-                        table.insert(arr, i + 1, dragon);
+                        table.insert(arr, i, dragon);
                         bool = true;
                         break;
                     end
@@ -295,7 +295,7 @@ function changeCombatOrder()
             print(dragon.Name, dragon.CombatOrder);
             local line = CreateHorz(root);
             CreateButton(line).SetText("^").SetColor(colors.Aqua).SetOnClick(function() if dragon.CombatOrder > 0 then dragon.CombatOrder = dragon.CombatOrder - 1; arr[i - 1].CombatOrder = arr[i - 1].CombatOrder + 1; changeCombatOrder(); end; end);
-            CreateButton(line).SetText("⌄").SetColor(colors.Aqua).SetOnClick(function() if dragon.CombatOrder < #dragons then dragon.CombatOrder = dragon.CombatOrder + 1; arr[i + 1].CombatOrder = arr[i + 1].CombatOrder - 1; changeCombatOrder(); end; end);
+            CreateButton(line).SetText("⌄").SetColor(colors.Aqua).SetOnClick(function() if dragon.CombatOrder < #dragons - 1 then dragon.CombatOrder = dragon.CombatOrder + 1; arr[i + 1].CombatOrder = arr[i + 1].CombatOrder - 1; changeCombatOrder(); end; end);
             CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
             CreateLabel(line).SetText(dragon.Name).SetColor(dragon.Color);
         end
