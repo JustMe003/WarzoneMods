@@ -47,6 +47,7 @@ function getDragon(p, dragonID)
     builder.AttackPower = Mod.Settings.Dragons[dragonID].AttackPower;
     builder.AttackPowerPercentage = (Mod.Settings.Dragons[dragonID].AttackPowerPercentage / 100) + 1;
     builder.DefensePowerPercentage = (Mod.Settings.Dragons[dragonID].DefensePowerPercentage / 100) + 1;
+    builder.CombatOrder = Mod.Settings.Dragons[dragonID].CombatOrder + 6971;
     if Mod.Settings.Dragons[dragonID].UseHealth then
         builder.Health = Mod.Settings.Dragons[dragonID].Health;
         if Mod.Settings.Dragons[dragonID].DynamicDefencePower then
