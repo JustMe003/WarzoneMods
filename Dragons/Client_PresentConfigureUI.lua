@@ -24,6 +24,7 @@ function showMain()
     
     local line = CreateHorz(root);
     CreateButton(line).SetText("Add Dragon").SetColor(colors.Lime).SetOnClick(function() table.insert(dragons, initDragon()); modifyDragon(dragons[#dragons]) end).SetInteractable(#dragons < 5);
+    CreateButton(line).SetText("Change combat order").SetColor(colors["Royal Blue"]).SetOnClick(changeCombatOrder);
     CreateButton(line).SetText("Set Dragon positions").SetColor(colors.Yellow).SetOnClick(setDragonPlacements);
 
     CreateEmpty(root).SetFlexibleHeight(1);
@@ -253,6 +254,37 @@ function setDragonPlacements()
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() savePlacement(); showMain(); end);
 end
 
+function changeCombatOrder()
+    DestroyWindow()
+    SetWindow("changeCombatOrder");
+
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+    CreateEmpty(root).SetPreferredHeight(5);
+    
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("Combat order").SetColor(colors.Tan);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+
+    CreateEmpty(root).SetPreferredHeight(10);
+    CreateLabel(root).SetText("The combat order is very important, although you don't notice it often. It determines which special unit takes damage and which not if there is more than 1 unit. ").SetColor(Colors.Textcolor);
+    CreateEmpty(root).SetPreferredHeight(5);
+
+    if #dragons > 0 then
+        CreateLabel(root).SetText("This dragon takes damage first").SetColor(colors.Textcolor);
+        for i, dragon in pairs(dragons) do
+            local line = CreateHorz(root);
+            CreateButton(line).SetText("^").SetColor(colors.Aqua).SetOnClick(function() end);
+            CreateButton(line).SetText("⌄").SetColor(colors.Aqua).SetOnClick(function() end);
+            CreateLabel(line).SetText(i + 1 .. ". ").SetColor(colors.Textcolor);
+            CreateLabel(line).SetText(dragon.Name).SetColor(color.Color);
+        end
+        CreateLabel(root).SetText("This dragon takes damage last").SetColor(colors.Textcolor);
+    else
+        CreateLabel(root).SetText("Create a dragon first to change the combat order of this unit")
+    end
+end
+
 function saveDragon(dragon, inputs)
     if inputs.Name ~= nil then dragons[dragon.ID].Name = inputs.Name.GetText(); end
     if inputs.DragonBreathAttack ~= nil then dragons[dragon.ID].DragonBreathAttack = inputs.DragonBreathAttack.GetIsChecked(); end
@@ -306,6 +338,7 @@ function initDragon()
     t.Cost = 20;
     t.MaxNumOfDragon = 3;
     t.ID = #dragons + 1;
+    t.CombatOrder = #dragons;
     return t;
 end
 
