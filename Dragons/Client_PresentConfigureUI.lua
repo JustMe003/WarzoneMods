@@ -279,7 +279,7 @@ function changeCombatOrder()
                 table.insert(arr, dragon);
             else
                 for i, dragon2 in pairs(arr) do
-                    if dragon.CombatOrder > dragon2.CombatOrder then
+                    if dragon.CombatOrder < dragon2.CombatOrder then
                         table.insert(arr, i + 1, dragon);
                         break;
                     end
