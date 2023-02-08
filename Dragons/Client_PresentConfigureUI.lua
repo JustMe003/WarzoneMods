@@ -167,7 +167,6 @@ function healthAndDamage(dragon, root, inputs)
     inputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
     CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
 
-    if dragon.DragonBreathAttackDamage == nil then dragon.DragonBreathAttackDamage = 2; end
     CreateLabel(vert).SetText("The damage of the Dragon Breath Attack").SetColor(colors.Textcolor);
     inputs.DragonBreathAttackDamage = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(dragon.DragonBreathAttackDamage).SetInteractable(dragon.DragonBreathAttack);
     
