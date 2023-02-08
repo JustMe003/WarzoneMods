@@ -276,8 +276,8 @@ function changeCombatOrder()
             local line = CreateHorz(root);
             CreateButton(line).SetText("^").SetColor(colors.Aqua).SetOnClick(function() end);
             CreateButton(line).SetText("⌄").SetColor(colors.Aqua).SetOnClick(function() end);
-            CreateLabel(line).SetText(i + 1 .. ". ").SetColor(colors.Textcolor);
-            CreateLabel(line).SetText(dragon.Name).SetColor(color.Color);
+            CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
+            CreateLabel(line).SetText(dragon.Name).SetColor(dragon.Color);
         end
         CreateLabel(root).SetText("This dragon takes damage last").SetColor(colors.Textcolor);
     else
