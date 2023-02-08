@@ -273,7 +273,7 @@ function changeCombatOrder()
     if #dragons > 0 then
         CreateLabel(root).SetText("This dragon takes damage first").SetColor(colors.Textcolor);
         local arr = {};
-        local index = 0;
+        local bool = false;
         for k, dragon in pairs(dragons) do
             if #arr == 0 then
                 table.insert(arr, dragon);
@@ -281,8 +281,12 @@ function changeCombatOrder()
                 for i, dragon2 in pairs(arr) do
                     if dragon.CombatOrder < dragon2.CombatOrder then
                         table.insert(arr, i + 1, dragon);
+                        bool = true;
                         break;
                     end
+                end
+                if not bool then
+                    table.insert(arr, dragon);
                 end
             end
         end
