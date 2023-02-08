@@ -272,12 +272,27 @@ function changeCombatOrder()
 
     if #dragons > 0 then
         CreateLabel(root).SetText("This dragon takes damage first").SetColor(colors.Textcolor);
-        for i, dragon in pairs(dragons) do
+        local arr = {};
+        local index = 0;
+        for k, dragon in pairs(dragons) do
+            if #arr == 0 then
+                table.insert(arr, dragon);
+            else
+                for i, dragon2 in pairs(arr) do
+                    if dragon.CombatOrder > dragon2.CombatOrder then
+                        table.insert(arr, i + 1, dragon);
+                        break;
+                    end
+                end
+            end
+        end
+        for i, dragon in pairs(arr) do
             local line = CreateHorz(root);
             CreateButton(line).SetText("^").SetColor(colors.Aqua).SetOnClick(function() end);
             CreateButton(line).SetText("⌄").SetColor(colors.Aqua).SetOnClick(function() end);
             CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
             CreateLabel(line).SetText(dragon.Name).SetColor(dragon.Color);
+            print(dragon.CombatOrder);
         end
         CreateLabel(root).SetText("This dragon takes damage last").SetColor(colors.Textcolor);
     else
