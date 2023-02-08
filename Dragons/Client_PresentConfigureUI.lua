@@ -81,6 +81,8 @@ function generalSettings(dragon, vert, inputs)
     AddSubWindow(parent, win);
     SetWindow(win);
 
+    print(parent);
+
     local line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateVert(line).SetPreferredWidth(25).SetFlexibleWidth(0);
     vert = CreateVert(line).SetFlexibleWidth(1);
