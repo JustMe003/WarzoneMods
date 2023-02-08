@@ -127,7 +127,7 @@ end
 
 function deleteDragonConfirmation(terr, dragonID)
     if Game.Map.Territories[terr] == nil then
-        Game.SendGameCustomMessage("Updating data...", {Type="removeDragon", TerrID=terr, DragonID=dragonID}, function(t) end);
+        Game.SendGameCustomMessage("Updating data...", {Type="removeDragon", TerrID=terr, DragonID=dragonID}, function(t) showMain(); end);
         return;
     end
 
