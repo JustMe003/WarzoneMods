@@ -8,9 +8,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             local dragonBreathDamage = 0;
             for _, sp in pairs(orderResult.ActualArmies.SpecialUnits) do
                 if sp.proxyType == "CustomSpecialUnit" then
-                    print(Mod.PublicGameData.DragonNamesIDs[sp.Name])
                     if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonBreathAttack[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
-                        dragonBreathDamage = dragonBreathDamage + 1;
+                        dragonBreathDamage = dragonBreathDamage + Mod.PublicGameData.DragonBreathAttack[Mod.PublicGameData.DragonNamesIDs[sp.Name]];
                     end
                 end
             end
