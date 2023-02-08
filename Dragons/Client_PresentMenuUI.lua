@@ -116,7 +116,11 @@ function addDragonPlacementLabel(terr, dragonID)
     CreateLabel(line).SetText(s .. Mod.Settings.Dragons[dragonID].Name).SetColor(Mod.Settings.Dragons[dragonID].Color);
     CreateLabel(line).SetText(" on: ").SetColor(colors.Textcolor);
     CreateEmpty(line).SetPreferredWidth(5);
-    CreateButton(line).SetText(Game.Map.Territories[terr].Name).SetColor(colors.Tan).SetOnClick(function() if WL.IsVersionOrHigher or WL.IsVersionOrHigher("5.21") then Game.HighlightTerritories({terr}); Game.CreateLocatorCircle(Game.Map.Territories[terr].MiddlePointX, Game.Map.Territories[terr].MiddlePointY); end; end);
+    if Game.Map.Territories[terr] ~= nil then
+        CreateButton(line).SetText(Game.Map.Territories[terr].Name).SetColor(colors.Tan).SetOnClick(function() if WL.IsVersionOrHigher or WL.IsVersionOrHigher("5.21") then Game.HighlightTerritories({terr}); Game.CreateLocatorCircle(Game.Map.Territories[terr].MiddlePointX, Game.Map.Territories[terr].MiddlePointY); end; end);
+    else
+        CreateButton(line).SetText("ERROR: Territory [" .. terr .. "] not found").SetColor(colors.Red);
+    end
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("DEL").SetColor(colors.Red).SetOnClick(function() deleteDragonConfirmation(terr, dragonID); end);
 end
