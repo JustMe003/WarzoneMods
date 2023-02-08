@@ -5,20 +5,20 @@ end
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack then
         if #orderResult.ActualArmies.SpecialUnits > 0 then
-            local dragonCount = 0;
+            local dragonBreathDamage = 0;
             for _, sp in pairs(orderResult.ActualArmies.SpecialUnits) do
                 if sp.proxyType == "CustomSpecialUnit" then
-                    if sp.ModID ~= nil and sp.ModID == 594 then
-                        dragonCount = dragonCount + 1;
+                    if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonBreathAttack[Mod.PublicGameData.DragonNamesIDs[dragon.Name]] ~= nil then
+                        dragonBreathDamage = dragonBreathDamage + 1;
                     end
                 end
             end
-            if dragonCount > 0 then
+            if dragonBreathDamage > 0 then
                 local mods = {};
                 for connID, _ in pairs(game.Map.Territories[order.To].ConnectedTo) do
                     if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= order.PlayerID then
                         local mod = WL.TerritoryModification.Create(connID);
-                        mod.AddArmies = -math.min(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.NumArmies, dragonCount * 2);
+                        mod.AddArmies = -math.min(game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.NumArmies, dragonBreathDamage);
                         if mod.AddArmies ~= 0 then
                             table.insert(mods, mod);
                         end
