@@ -38,6 +38,14 @@ function modifyDragon(dragon)
     
     CreateButton(root).SetOnClick(function() saveDragon(dragon, dragonInputs); showMain(); end).SetColor(colors.Orange).SetText("Return");
     
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
+    dragonInputs.Name = CreateTextInputField(line).SetText(dragon.Name).SetFlexibleWidth(1);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
+    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() if #dragons < 5 then saveDragon(dragon, dragonInputs); changeColor(dragon); else UI.Alert("To pick a different color for '" .. dragonInputs.Name.GetText() .. "', you must first delete another dragon. You can at most have 5 dragons, all with distinct colors") end end);
+
     local line = CreateHorz(root).SetFlexibleWidth(1);
     local generalCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(false);
     local generalLabel = CreateLabel(line).SetText("Show general settings").SetColor(colors.Tan);
@@ -65,6 +73,7 @@ function modifyDragon(dragon)
     OtherCheckBox.SetOnValueChanged(function() if OtherLabel.GetText():sub(1, 4) == "Show" then OtherLabel.SetText("Hide" .. OtherLabel.GetText():sub(5, -1)); permissionsSettings(dragon, vertOther, dragonInputs); else OtherLabel.SetText("Show" .. OtherLabel.GetText():sub(5, -1)); saveDragon(dragon, dragonInputs); DestroyWindow("permissionsSettings", false); end end);
 end
 
+
 function generalSettings(dragon, vert, inputs)
     local win = "generalSettings";
     local parent = GetCurrentWindow();
@@ -83,14 +92,6 @@ function generalSettings(dragon, vert, inputs)
     CreateLabel(line).SetText("General").SetColor(colors.Orange);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
-    
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
-    inputs.Name = CreateTextInputField(line).SetText(dragon.Name).SetFlexibleWidth(1);
-    
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
-    CreateButton(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetOnClick(function() if #dragons < 5 then saveDragon(dragon, dragonInputs); changeColor(dragon); else UI.Alert("To pick a different color for '" .. dragonInputs.Name.GetText() .. "', you must first delete another dragon. You can at most have 5 dragons, all with distinct colors") end end);
     
     line = CreateHorz(vert).SetFlexibleWidth(1);
     inputs.CanBeBought = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeBought);
