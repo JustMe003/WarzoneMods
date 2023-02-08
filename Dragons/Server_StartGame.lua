@@ -62,7 +62,7 @@ function getDragon(p, dragonID)
         builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
     end
     
-    builder.ModData = "DynamicDefencePower:" .. tostring(Mod.Settings.Dragons[dragonID].DynamicDefencePower) .. "|DragonBreathAttack" .. tostring(Mod.Settings.Dragons[dragonID].DragonBreathAttack);
+    builder.ModData = Mod.Settings.Dragons[dragonID].ID .. "|DynamicDefencePower:" .. tostring(Mod.Settings.Dragons[dragonID].DynamicDefencePower) .. "|DragonBreathAttack" .. tostring(Mod.Settings.Dragons[dragonID].DragonBreathAttack);
     return builder.Build();
 end
 
