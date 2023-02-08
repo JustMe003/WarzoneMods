@@ -267,7 +267,7 @@ function changeCombatOrder()
     CreateEmpty(line).SetFlexibleWidth(0.5);
 
     CreateEmpty(root).SetPreferredHeight(10);
-    CreateLabel(root).SetText("The combat order is very important, although you don't notice it often. It determines which special unit takes damage and which not if there is more than 1 unit. ").SetColor(colors.Textcolor);
+    CreateLabel(root).SetText("The combat order is very important, although you don't notice it often. It determines the order in which special units take damage. Different configurations can have very different outcomes in an attack").SetColor(colors.Textcolor);
     CreateEmpty(root).SetPreferredHeight(5);
 
     if #dragons > 0 then
