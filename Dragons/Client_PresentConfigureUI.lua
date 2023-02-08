@@ -209,9 +209,7 @@ end
 function removeDragon(dragon)
     DestroyWindow();
     SetWindow("removeDragon");
-    
-    root.SetPreferredHeight(500);
-    
+        
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateLabel(line).SetText("Are you sure you want to remove this dragon?").SetColor(colors.Textcolor);
