@@ -1,17 +1,7 @@
 require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-	if not game.Settings.SinglePlayer then
-        UI.Alert("This option can only be used in singleplayer");
-        close();
-        return;
-    end
-    if game.Us == nil then
-        UI.Alert("You cannot use this mod as a spectator");
-        close();
-        return;
-    end
     if game.Game.TurnNumber < 1 then
-        UI.Alert("You can start using the dragons placement tool after the distribution");
+        UI.Alert("You can start using / viewing the dragons placement tool after the distribution");
         close();
         return;
     end
@@ -30,9 +20,11 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
     
-    local line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateButton(line).SetText("Place Dragon").SetColor(colors.Lime).SetOnClick(pickTerr);
-    CreateButton(line).SetText("Get Data").SetColor(colors.Orange).SetOnClick(showDragonPlacements);
+    if Game.Settings.SinglePlayer then
+        local line = CreateHorz(root).SetFlexibleWidth(1);
+        CreateButton(line).SetText("Place Dragon").SetColor(colors.Lime).SetOnClick(pickTerr);
+        CreateButton(line).SetText("Get Data").SetColor(colors.Orange).SetOnClick(showDragonPlacements);
+    end
 
     CreateEmpty(root).SetPreferredHeight(10);
 
@@ -124,10 +116,12 @@ function addDragonPlacementLabel(terr, dragonID)
     if Game.Map.Territories[terr] ~= nil then
         CreateButton(line).SetText(Game.Map.Territories[terr].Name).SetColor(colors.Tan).SetOnClick(function() if WL.IsVersionOrHigher or WL.IsVersionOrHigher("5.21") then Game.HighlightTerritories({terr}); Game.CreateLocatorCircle(Game.Map.Territories[terr].MiddlePointX, Game.Map.Territories[terr].MiddlePointY); end; end);
     else
-        CreateButton(line).SetText("ERROR: Territory [" .. terr .. "] not found").SetColor(colors.Red);
+        CreateButton(line).SetText("[" .. terr .. "]").SetColor(colors.Red);
     end
-    CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("DEL").SetColor(colors.Red).SetOnClick(function() deleteDragonConfirmation(terr, dragonID); end);
+    if Game.Settings.SinglePlayer then
+        CreateEmpty(line).SetFlexibleWidth(1);
+        CreateButton(line).SetText("DEL").SetColor(colors.Red).SetOnClick(function() deleteDragonConfirmation(terr, dragonID); end);
+    end
 end
 
 function deleteDragonConfirmation(terr, dragonID)
