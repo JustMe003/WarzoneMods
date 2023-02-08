@@ -1,4 +1,5 @@
 function Server_StartGame(game, standing)
+    local data = Mod.PublicGameData;
     local s = standing;
     for terr, arr in pairs(data.DragonPlacements) do
         if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
@@ -16,6 +17,7 @@ function Server_StartGame(game, standing)
         end
     end
     standing = s;
+    Mod.PublicGameData = data;
 end
 
 function getDragon(p, dragonID)
