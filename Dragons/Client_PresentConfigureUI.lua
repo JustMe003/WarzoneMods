@@ -135,7 +135,7 @@ function healthAndDamage(dragon, root, inputs)
         inputs.Health = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(dragon.Health);
         
         local line = CreateHorz(vert).SetFlexibleWidth(1);
-        inputs.DynamicDefencePower = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DynamicDefencePower).SetOnValueChanged(function() saveDragon(dragon, inputs); healthAndDamage(dragon, vert, inputs); end);
+        inputs.DynamicDefencePower = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DynamicDefencePower).SetOnValueChanged(function() saveDragon(dragon, inputs); healthAndDamage(dragon, root, inputs); end);
         CreateLabel(line).SetText("Use the Dragon's health as defence power")
         
         if not dragon.DynamicDefencePower then
@@ -166,6 +166,10 @@ function healthAndDamage(dragon, root, inputs)
     line = CreateHorz(vert).SetFlexibleWidth(1);
     inputs.DragonBreathAttack = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.DragonBreathAttack);
     CreateLabel(line).SetText("Enable Dragon Breath Attack").SetColor(colors.Textcolor);
+
+    if dragon.DragonBreathAttackDamage == nil then dragon.DragonBreathAttackDamage = 2; end
+    CreateLabel(vert).SetText("The damage of the Dragon Breath Attack").SetColor(colors.Textcolor);
+    inputs.DragonBreathAttackDamage = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(dragon.DragonBreathAttackDamage).SetInteractable(dragon.DragonBreathAttack);
     
     inputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, root, dragonInputs); end);
     SetWindow(parent);
@@ -307,6 +311,7 @@ end
 function saveDragon(dragon, inputs)
     if inputs.Name ~= nil then dragons[dragon.ID].Name = inputs.Name.GetText(); end
     if inputs.DragonBreathAttack ~= nil then dragons[dragon.ID].DragonBreathAttack = inputs.DragonBreathAttack.GetIsChecked(); end
+    if inputs.DragonBreathAttackDamage ~= nil then dragons[dragon.ID].DragonBreathAttackDamage = inputs.DragonBreathAttackDamage.GetValue(); end
     if inputs.IsVisibleToAllPlayers ~= nil then dragons[dragon.ID].IsVisibleToAllPlayers = inputs.IsVisibleToAllPlayers.GetIsChecked(); end
     if inputs.CanBeAirliftedToSelf ~= nil then dragons[dragon.ID].CanBeAirliftedToSelf = inputs.CanBeAirliftedToSelf.GetIsChecked(); end
     if inputs.CanBeGiftedWithGiftCard ~= nil then dragons[dragon.ID].CanBeGiftedWithGiftCard = inputs.CanBeGiftedWithGiftCard.GetIsChecked(); end
@@ -336,10 +341,10 @@ function initDragon()
             end
         end
     end
-
     t.Color = c[math.random(#c)];
     t.ColorName = getColorName(t.Color);
     t.DragonBreathAttack = true;
+    t.DragonBreathAttackDamage = 2;
     t.IsVisibleToAllPlayers = false;
     t.CanBeAirliftedToSelf = true;
     t.CanBeGiftedWithGiftCard = false;

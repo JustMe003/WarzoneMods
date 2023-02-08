@@ -33,6 +33,12 @@ function Server_StartGame(game, standing)
             end
         end
     end
+    data.DragonBreathAttack = {};
+    for _, dragon in pairs(Mod.Settings.Dragons) do
+        if dragon.DragonBreathAttack then
+            
+        end
+    end
     Mod.PublicGameData = data;
     standing = s;
 end
@@ -61,8 +67,7 @@ function getDragon(p, dragonID)
         builder.DamageToKill = Mod.Settings.Dragons[dragonID].DamageToKill;
         builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
     end
-    
-    builder.ModData = Mod.Settings.Dragons[dragonID].ID .. "|DynamicDefencePower:" .. tostring(Mod.Settings.Dragons[dragonID].DynamicDefencePower) .. "|DragonBreathAttack" .. tostring(Mod.Settings.Dragons[dragonID].DragonBreathAttack);
+    builder.ModData = "ID:" .. Mod.Settings.Dragons[dragonID].ID .. "|DynamicDefencePower:" .. tostring(Mod.Settings.Dragons[dragonID].DynamicDefencePower) .. "|DragonBreathAttack" .. tostring(Mod.Settings.Dragons[dragonID].DragonBreathAttack);
     return builder.Build();
 end
 

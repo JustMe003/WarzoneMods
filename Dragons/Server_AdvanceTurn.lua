@@ -8,8 +8,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             local dragonCount = 0;
             for _, sp in pairs(orderResult.ActualArmies.SpecialUnits) do
                 if sp.proxyType == "CustomSpecialUnit" then
-                    print(sp.ModID);
-                    if sp.ModID == 1 then
+                    if sp.ModID ~= nil and sp.ModID == 594 then
                         dragonCount = dragonCount + 1;
                     end
                 end
