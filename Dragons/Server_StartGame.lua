@@ -12,6 +12,7 @@ function Server_StartGame(game, standing)
     if data.DragonPlacements == nil then
         data.DragonPlacements = {};
     end
+    print(mapID, game.Map.ID)
     if mapID == nil or game.Map.ID ~= mapID then
         table.insert(data.Errors, "The map does not correspond to the inputted data, please update the data and try again");
     else
