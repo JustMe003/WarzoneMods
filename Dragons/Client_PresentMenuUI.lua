@@ -10,6 +10,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
         close();
         return;
     end
+    if game.Game.TurnNumber < 1 then
+        UI.Alert("You can start using the dragons placement tool after the distribution");
+        close();
+        return;
+    end
     Init(rootParent);
     root = GetRoot();
     colors = GetColors();
