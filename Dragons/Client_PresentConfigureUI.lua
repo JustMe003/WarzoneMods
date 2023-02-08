@@ -77,8 +77,8 @@ end
 function generalSettings(dragon, vert, inputs)
     local win = "generalSettings";
     local parent = GetCurrentWindow();
-    AddSubWindow(parent, win);
     DestroyWindow(win, false);
+    AddSubWindow(parent, win);
     SetWindow(win);
 
     local line = CreateHorz(vert).SetFlexibleWidth(1);
