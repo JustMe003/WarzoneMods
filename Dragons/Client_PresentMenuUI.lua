@@ -23,7 +23,8 @@ function showMain()
 
     CreateEmpty(root).SetPreferredHeight(10);
 
-    CreateLabel(root).SetText("These are all the Dragons that are / will be placed at the start of the game (note that you still have to copy the data input over to the mod settings!)").SetColor(colors.Textcolor);
+    CreateLabel(root).SetText("These are all the Dragons that are / will be placed at the start of the game").SetColor(colors.Textcolor);
+    CreateLabel(root).SetText("(note that you still have to copy the data input over to the mod settings!)").SetColor(colors.Tan);
     for terr, arr in pairs(Mod.PublicGameData.DragonPlacements) do
         for _, dragonID in pairs(arr) do
             addDragonPlacementLabel(terr, dragonID);
