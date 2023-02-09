@@ -58,6 +58,14 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                         end
                     end
                 end
+                local mods = {};
+                if #modTo.AddSpecialUnits > 0 then table.insert(mods, modTo); end
+                if #modFrom.AddSpecialUnits > 0 then table.insert(mods, modFrom); end
+                if #mods > 0 then
+                    local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated dragons", {}, mods);
+                    event.JumpToActionSpotOpt = WL.RectangleVM.Create((game.Map.Territories[order.To].MiddlePointX + game.Map.Territories[order.From].MiddlePointX) / 2, (game.Map.Territories[order.To].MiddlePointY + game.Map.Territories[order.From].MiddlePointY) / 2, (game.Map.Territories[order.To].MiddlePointX + game.Map.Territories[order.From].MiddlePointX) / 2, (game.Map.Territories[order.To].MiddlePointY + game.Map.Territories[order.From].MiddlePointY) / 2);
+                    addNewOrder(event, true);
+                end
             end
         end
     end
