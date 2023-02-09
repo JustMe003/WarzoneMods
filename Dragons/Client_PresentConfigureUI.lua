@@ -9,6 +9,22 @@ function Client_PresentConfigureUI(rootParent)
 
     root = GetRoot().SetFlexibleWidth(1);
     colors = GetColors();
+    local line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+    UI.CreateEmpty(root).SetFlexibleWidth(0.5);
+    UI.CreateLabel(root).SetText("Mod Author: ").SetColor(colors.Textcolor);
+    UI.CreateLabel(root).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
+    UI.CreateEmpty(root).SetFlexibleWidth(0.5);
+    
+    line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+    UI.CreateEmpty(root).SetFlexibleWidth(0.5);
+    UI.CreateLabel(root).SetText("Requested by: ").SetColor(colors.Textcolor);
+    UI.CreateLabel(root).SetText("Koen27 ").SetColor(colors.Ivory);
+    UI.CreateLabel(root).SetText("and ").SetColor(colors.Textcolor);
+    UI.CreateLabel(root).SetText("Jack Handy").SetColor(colors.Teal);
+    UI.CreateEmpty(root).SetFlexibleWidth(0.5);
+    
+    UI.CreateEmpty(root).SetPreferredHeight(10);
+
     showMain();
 end
 
