@@ -93,7 +93,7 @@ function showGeneralSettings(dragon, root)
 end
 
 function showHealthAndDamage(dragon, root)
-    local win = "healthAndDamage";
+    local win = "healthAndDamage" .. dragon.ID;
     local parent = GetCurrentWindow();
     AddSubWindow(parent, win);
     DestroyWindow(win, false);
@@ -151,7 +151,7 @@ function showHealthAndDamage(dragon, root)
 end
 
 function showPermissions(dragon, root)
-    local win = "permissionsSettings";
+    local win = "permissions" .. dragon.ID;
     local parent = GetCurrentWindow();
     AddSubWindow(parent, win);
     DestroyWindow(win, false);
