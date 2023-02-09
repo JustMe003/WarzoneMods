@@ -20,7 +20,7 @@ function showMain()
     end
     
     CreateEmpty(root).SetPreferredHeight(5);
-    CreateLabel(root).SetText("To see which and where dragons have been / will be placed at the start of game, please visit the mod menu. It is unfortunately not possible to show it here").SetColor(colors.Textcolor);
+    CreateLabel(root).SetText("For the dragon placements, see the mod menu").SetColor(colors.Textcolor);
 end
 
 function showDragonSettings(dragon, showAll)
