@@ -22,10 +22,12 @@ end
 
 function showDragonSettings(dragon, showAll)
     showAll = showAll or false;
-    DestroyWindow();
-    SetWindow("dragonMain" .. dragon.ID);
+    if not showAll then
+        DestroyWindow();
+        SetWindow("dragonMain" .. dragon.ID);
 
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+    end
 
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
@@ -132,21 +134,44 @@ function showHealthAndDamage(dragon, root)
         end
     else
         CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
-
+        
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("The number of damage points it takes to kill this dragon: ").SetColor(colors.Textcolor);
         CreateLabel(line).SetText(dragon.DamageToKill).SetColor(colors.Teal);
-
+        
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Damage absorbed when this dragon takes damage: ").SetColor(colors.Textcolor);
         CreateLabel(line).SetText(dragon.DamageAbsorbedWhenAttacked).SetColor(colors.Teal);
-
+        
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("The static defence power of the dragon: ").SetColor(colors.Textcolor);
         CreateLabel(line).SetText(dragon.DefensePower).SetColor(colors.Teal);
     end
-
-
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("The attack power of the dragon: ").SetColor(colors.Textcolor);
+    CreateLabel(line).SetText(dragon.AttackPower).SetColor(colors.Teal);
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("The attack modifier of the dragon: ").SetColor(colors.Textcolor);
+    CreateLabel(line).SetText(dragon.AttackPowerPercentage .. "%").SetColor(colors.Cyan);
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("The defence modifier of the dragon: ").SetColor(colors.Textcolor);
+    CreateLabel(line).SetText(dragon.DefensePowerPercentage .. "%").SetColor(colors.Cyan);
+    
+    line = CreateHorz(vert).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("Has Dragon Breath attack: ").SetColor(colors.Textcolor);
+    if dragon.DragonBreathAttack then
+        CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+        
+        line = CreateHorz(vert).SetFlexibleWidth(1);
+        CreateLabel(line).SetText("The damage of the Dragon Breath attack: ").SetColor(colors.Textcolor);
+        CreateLabel(line).SetText(dragon.DragonBreathAttackDamage).SetColor(colors.Cyan);
+    else
+        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+    end
+    
     SetWindow(parent);
 end
 
@@ -204,5 +229,13 @@ function showPermissions(dragon, root)
 end
 
 function showAllSettings()
+    DestroyWindow();
+    SetWindow("showAll");
 
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+
+    for _, dragon in pairs(Mod.Settings.Dragons) do
+        showDragonSettings(dragon);
+        CreateEmpty(root).SetPreferredHeight(10);
+    end
 end
