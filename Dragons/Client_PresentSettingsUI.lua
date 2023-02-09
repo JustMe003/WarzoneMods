@@ -18,6 +18,9 @@ function showMain()
     for _, dragon in pairs(Mod.Settings.Dragons) do
         CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() showDragonSettings(dragon); end);
     end
+    
+    CreateEmpty(root).SetPreferredHeight(5);
+    CreateLabel(root).SetText("To see which and where dragons have been / will be placed at the start of game, please visit the mod menu. It is unfortunately not possible to show it here").SetColor(colors.Textcolor);
 end
 
 function showDragonSettings(dragon, showAll)
