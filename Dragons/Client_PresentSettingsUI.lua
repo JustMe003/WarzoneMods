@@ -235,7 +235,7 @@ function showAllSettings()
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 
     for _, dragon in pairs(Mod.Settings.Dragons) do
-        showDragonSettings(dragon);
+        showDragonSettings(dragon, true);
         CreateEmpty(root).SetPreferredHeight(10);
     end
 end
