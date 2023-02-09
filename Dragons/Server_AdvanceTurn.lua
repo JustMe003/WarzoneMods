@@ -88,7 +88,12 @@ end
 function replaceDragon(mod, sp, v)
     local builder = WL.CustomSpecialUnitBuilder.CreateCopy(sp);
     builder.Health = builder.Health - v;
-    table.insert(mod.AddSpecialUnits, builder.Build());
+    local t = {};
+    for _, v in pairs(mod.AddSpecialUnits) do
+        table.insert(t, v);
+    end
+    table.insert(t, builder.Build());
+    mod.AddSpecialUnits = t;
     print(#mod.AddSpecialUnits)
     table.insert(mod.RemoveSpecialUnitsOpt, ID);
     return mod;
