@@ -40,7 +40,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits) do
                         if sp.ID == ID then
                             if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
-                                replaceDragon(modTo, sp, v);
+                                modTo = replaceDragon(modTo, sp, v);
                                 print(#modTo.AddSpecialUnits)
                             end
                             break;
@@ -51,10 +51,10 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                             print(sp.ModID ~= nil, sp.ModID == 594, Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]]);
                             if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
                                 if orderResult.IsSuccessful then
-                                    replaceDragon(modTo, sp, v);
+                                    modTo = replaceDragon(modTo, sp, v);
                                     print(#modTo.AddSpecialUnits)
                                 else
-                                    replaceDragon(modFrom, sp, v);
+                                    modFrom = replaceDragon(modFrom, sp, v);
                                     print(#modFrom.AddSpecialUnits)
                                 end
                             end
@@ -91,4 +91,5 @@ function replaceDragon(mod, sp, v)
     builder.Health = builder.Health - v;
     table.insert(mod.AddSpecialUnits, builder.Build());
     table.insert(mod.RemoveSpecialUnitsOpt, ID);
+    return mod;
 end
