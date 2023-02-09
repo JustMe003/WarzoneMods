@@ -29,7 +29,35 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 addNewOrder(event, true);
             end
             if not tableIsEmpty(orderResult.DamageToSpecialUnits) then
-                for i, v in pairs(orderResult.DamageToSpecialUnits) do print(i, v); end
+                local modTo = WL.TerritoryModification.Create(order.To);
+                modTo.AddSpecialUnits = {};
+                modTo.RemoveSpecialUnitsOpt = {};
+                local modFrom = WL.TerritoryModification.Create(order.From);
+                modFrom.AddSpecialUnits = {};
+                modFrom.RemoveSpecialUnitsOpt = {};
+                for ID, v in pairs(orderResult.DamageToSpecialUnits) do 
+                    print(i, v);
+                    for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits) do
+                        if sp.ID == ID then
+                            if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
+                                replaceDragon(modTo, sp, v);
+                            end
+                            break;
+                        end
+                    end
+                    for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.SpecialUnits) do
+                        if sp.ID == ID then
+                            if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
+                                if orderResult.IsSuccessful then
+                                    replaceDragon(modTo, sp, v);
+                                else
+                                    replaceDragon(modFrom, sp, v);
+                                end
+                            end
+                            break;
+                        end
+                    end
+                end
             end
         end
     end
@@ -44,4 +72,11 @@ function tableIsEmpty(t)
         return false;
     end
     return true;
+end
+
+function replaceDragon(mod, sp, v)
+    local builder = WL.CustomSpecialUnitBuilder.CreateCopy(sp);
+    builder.Health = builder.Health - v;
+    table.insert(mod.AddSpecialUnits, builder.Build());
+    table.insert(mod.RemoveSpecialUnitsOpt, ID);
 end

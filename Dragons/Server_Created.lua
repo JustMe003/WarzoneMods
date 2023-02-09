@@ -18,10 +18,14 @@ function Server_Created(game, settings)
     end
     data.DragonNamesIDs = {};
     data.DragonBreathAttack = {};
+    data.DynamicDefencePower = {};
     for _, dragon in pairs(Mod.Settings.Dragons) do
         data.DragonNamesIDs[dragon.Name] = dragon.ID;
         if dragon.DragonBreathAttack then
             data.DragonBreathAttack[dragon.ID] = dragon.DragonBreathAttackDamage;
+        end
+        if dragon.DynamicDefencePower then
+            data.DynamicDefencePower[dragon.ID] = true;
         end
     end
     Mod.PublicGameData = data;
