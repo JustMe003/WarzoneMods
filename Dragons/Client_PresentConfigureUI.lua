@@ -187,6 +187,7 @@ function healthAndDamage(dragon, root, inputs)
     inputs.DragonBreathAttackDamage = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(dragon.DragonBreathAttackDamage).SetInteractable(dragon.DragonBreathAttack);
     
     inputs.UseHealth.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, root, dragonInputs); end);
+    inputs.DragonBreathAttack.SetOnValueChanged(function() saveDragon(dragon, dragonInputs); healthAndDamage(dragon, root, dragonInputs); end);
     SetWindow(parent);
 end
 
