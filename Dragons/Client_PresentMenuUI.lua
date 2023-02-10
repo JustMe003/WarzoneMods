@@ -70,7 +70,7 @@ function chooseDragon()
 end
 
 function addDragon(dragonID)
-    Game.SendGameCustomMessage("Updating data...", {Type="addDragon", TerrID=chosenTerr.ID, DragonID=dragonID}, function(t) Close(); Game.CreateDialog(Client_PresentMenuUI); addDragonPlacementLabel(chosenTerr.ID, dragonID) end);
+    Game.SendGameCustomMessage("Updating data...", {Type="addDragon", TerrID=chosenTerr.ID, DragonID=dragonID}, function(t) showMain(); addDragonPlacementLabel(chosenTerr.ID, dragonID) end);
 end
 
 function showDragonPlacements()
