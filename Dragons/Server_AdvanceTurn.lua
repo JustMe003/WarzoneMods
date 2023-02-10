@@ -1,7 +1,3 @@
-function Server_AdvanceTurn_Start(game, addNewOrder)
-	
-end
-
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack then
         if #orderResult.ActualArmies.SpecialUnits > 0 then
@@ -69,10 +65,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             end
         end
     end
-end
-
-function Server_AdvanceTurn_End(game, addNewOrder)
-	
 end
 
 function tableIsEmpty(t)
