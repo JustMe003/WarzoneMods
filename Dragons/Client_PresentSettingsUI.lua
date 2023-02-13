@@ -35,7 +35,7 @@ function showDragonSettings(dragon, showAll)
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
     CreateEmpty(line).SetFlexibleWidth(1);
-    CreateLabel(line).SetText(dragon.Name).SetColor(colors.Tan).SetPreferredWidth(250);
+    CreateLabel(line).SetText(dragon.Name).SetColor(colors.Tan).SetPreferredWidth(150);
     CreateButton(line).SetText("?").SetColor(colors.Aqua).SetOnClick(function() UI.Alert("'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing with"); end);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
