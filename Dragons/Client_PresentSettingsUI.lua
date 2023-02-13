@@ -97,7 +97,7 @@ function showGeneralSettings(dragon, root)
         
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Price of this dragon: ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.Cost).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragons.Cost));
+        CreateLabel(line).SetText(dragon.Cost).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.Cost));
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("A '" .. dragon.Name .. "' will cost you " .. dragon.Cost .. " gold to purchase"); end);
         
