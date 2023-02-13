@@ -36,13 +36,13 @@ function showDragonSettings(dragon, showAll)
     CreateLabel(line).SetText("Dragon name: ").SetColor(colors.Textcolor);
     CreateLabel(line).SetText(dragon.Name).SetColor(colors.Tan).SetPreferredWidth(#dragon.Name * 10);
     CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("?").SetColor(colors.Aqua).SetOnClick(function() UI.Alert("'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with"); end);
+    CreateButton(line).SetText("?").SetColor(colors.Cyan).SetOnClick(function() UI.Alert("'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with"); end);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Dragon color: ").SetColor(colors.Textcolor);
     CreateLabel(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetPreferredWidth(#dragon.Name * 10);
     CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("?").SetColor(colors.Aqua).SetOnClick(function() UI.Alert("'" .. dragon.Color .. "' is the color if this dragon icon on the map. Together with the name of this dragon (species) it will allow you to identify which dragon you're dealing/playing with"); end);
+    CreateButton(line).SetText("?").SetColor(colors.Cyan).SetOnClick(function() UI.Alert("'" .. dragon.Color .. "' is the color if this dragon icon on the map. Together with the name of this dragon (species) it will allow you to identify which dragon you're dealing/playing with"); end);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local generalCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(showAll);
