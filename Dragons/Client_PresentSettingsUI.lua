@@ -265,5 +265,5 @@ function getNumDigits(n)
     if n < 10 then
         return 1;
     end
-    return log10(n / 10) + 1;
+    return getNumDigits(n / 10) + 1;
 end
