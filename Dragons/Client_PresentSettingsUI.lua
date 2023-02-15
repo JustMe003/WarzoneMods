@@ -136,7 +136,7 @@ function showHealthAndDamage(dragon, root)
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("This dragon uses dynamic health: ").SetColor(colors.Textcolor);
     if dragon.UseHealth then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(10);
+        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(30);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type will automatically reduce its health when it's part of combat where it receives damage, and automatically die if the health goes below 1\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending"); end);
         
@@ -164,61 +164,61 @@ function showHealthAndDamage(dragon, root)
             CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type has a fixed defense power of " .. dragon.DefensePower .. ". This is the amount of damage it will deal when defending a territory"); end);
         end
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(10);
+        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type will NOT automatically reduce its health when it's part of combat where it receives damage"); end);
         
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("The number of damage points it takes to kill this dragon: ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DamageToKill).SetColor(colors.Teal);
+        CreateLabel(line).SetText(dragon.DamageToKill).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.DamageToKill));
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("To kill / remove this dragon from the game, you'll have to deal at least " .. dragon.DamageToKill .. " damage points in 1 blow (so not multiple attacks!). Note that you first need to kill all the normal armies on this territory before you can take down a dragon"); end);
         
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Damage absorbed when this dragon takes damage: ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DamageAbsorbedWhenAttacked).SetColor(colors.Teal);
+        CreateLabel(line).SetText(dragon.DamageAbsorbedWhenAttacked).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.DamageAbsorbedWhenAttacked));
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("When this dragon is attacked and this dragon is killed, it will reduce the remaining damage points (that would normally deal damage to the left over special units / dragons) by " .. dragon.DamageAbsorbedWhenAttacked); end);
         
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("The fixed defence power of the dragon: ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DefensePower).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.Health));
+        CreateLabel(line).SetText(dragon.DefensePower).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.DefensePower));
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type has a fixed defense power of " .. dragon.DefensePower .. ". This is the amount of damage it will deal when defending a territory"); end);
     end
     
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("The attack power of the dragon: ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(dragon.AttackPower).SetColor(colors.Teal);
+    CreateLabel(line).SetText(dragon.AttackPower).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.AttackPower));
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon will deal " .. dragon.AttackPower .. " when it attacks"); end);
     
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("The attack modifier of the dragon: ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(round(dragon.AttackPowerPercentage, 2) .. "%").SetColor(colors.Cyan);
+    CreateLabel(line).SetText(round(dragon.AttackPowerPercentage, 2) .. "%").SetColor(colors.Cyan).SetPreferredWidth(10 * (getNumDigits(dragon.AttackPowerPercentage) + 5));
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("When part of an attack, this dragon will add " .. round(dragon.AttackPowerPercentage, 2) .. " damage. That is, when your attack (including this dragon) is 100 attack power, this dragon will buff it to " .. round(((dragon.AttackPowerPercentage / 100) + 1) * 100, 0)); end);
     
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("The defence modifier of the dragon: ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(round(dragon.DefensePowerPercentage, 2) .. "%").SetColor(colors.Cyan);
+    CreateLabel(line).SetText(round(dragon.DefensePowerPercentage, 2) .. "%").SetColor(colors.Cyan).SetPreferredWidth(10 * (getNumDigits(dragon.DefensePowerPercentage) + 5));;
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("When defending, this dragon will add " .. round(dragon.DefensePowerPercentage, 2) .. " damage. That is, when your defence (including this dragon) is equal to 100 defence power, this dragon will buff it to " .. round(((dragon.DefensePowerPercentage / 100) + 1) * 100, 0)); end);
     
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Has Dragon Breath attack: ").SetColor(colors.Textcolor);
     if dragon.DragonBreathAttack then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(30);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon uses his dragon breath every time it attacks an territory. See 'Dragon Breath Attack damage' for a better explanation"); end);
         
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("The damage of the Dragon Breath attack: ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DragonBreathAttackDamage).SetColor(colors.Cyan);
+        CreateLabel(line).SetText(dragon.DragonBreathAttackDamage).SetColor(colors.Cyan).SetPreferredWidth(10 * getNumDigits(dragon.DragonBreathAttackDamage));
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon uses his breath to damage bordering territories (of the attacked territory) when it attacks. It will remove " .. dragon.DragonBreathAttackDamage .. " armies from each bordering territory that is not controlled by the player who owns the dragon or their teammates"); end);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon does not uses his dragon breath every time it attacks an territory"); end);
     end
@@ -247,11 +247,11 @@ function showPermissions(dragon, root)
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("This dragon is always visible for everyone: ").SetColor(colors.Textcolor);
     if dragon.IsVisibleToAllPlayers then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(30);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("Whatever fog your game uses, everyone can see the territory that contains a dragon of this type"); end);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("Whatever fog your game uses, everyone can NOT see the territory that contains a dragon of this type"); end);
     end
@@ -259,11 +259,11 @@ function showPermissions(dragon, root)
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Players can airlift this dragon: ").SetColor(colors.Textcolor);
     if dragon.CanBeAirliftedToSelf then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(30);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon can be airlifted"); end);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be airlifted"); end);
     end
@@ -271,11 +271,11 @@ function showPermissions(dragon, root)
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Players can gift this dragon to other players: ").SetColor(colors.Textcolor);
     if dragon.CanBeGiftedWithGiftCard then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(30);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon can be gifted to other players"); end);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be gifted to other players"); end);
     end
@@ -283,11 +283,11 @@ function showPermissions(dragon, root)
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon: ").SetColor(colors.Textcolor);
     if dragon.IncludeABeforeName then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(30);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("For better language, this mod and Warzone will put 'A' before the name of this dragon, indicating that there can be more than one of this dragon in the game"); end);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This mod and Warzone will not put 'A' before the name of this dragon"); end);
     end
