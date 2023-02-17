@@ -27,6 +27,8 @@ function getDragon(p, dragonID)
     builder.IsVisibleToAllPlayers = Mod.Settings.Dragons[dragonID].IsVisibleToAllPlayers;
     builder.CanBeAirliftedToSelf = Mod.Settings.Dragons[dragonID].CanBeAirliftedToSelf;
     builder.CanBeGiftedWithGiftCard = Mod.Settings.Dragons[dragonID].CanBeGiftedWithGiftCard;
+    builder.CanBeTransferredToTeammate = Mod.Settings.Dragons[dragonID].CanBeTransferredToTeammate;
+    builder.CanBeAirliftedToTeammate = builder.CanBeAirliftedToSelf and builder.CanBeTransferredToTeammate;
     builder.IncludeABeforeName = Mod.Settings.Dragons[dragonID].IncludeABeforeName;
     builder.AttackPower = Mod.Settings.Dragons[dragonID].AttackPower;
     builder.AttackPowerPercentage = (Mod.Settings.Dragons[dragonID].AttackPowerPercentage / 100) + 1;
@@ -44,6 +46,5 @@ function getDragon(p, dragonID)
         builder.DamageToKill = Mod.Settings.Dragons[dragonID].DamageToKill;
         builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
     end
-    builder.ModData = "ID:" .. Mod.Settings.Dragons[dragonID].ID .. "|DynamicDefencePower:" .. tostring(Mod.Settings.Dragons[dragonID].DynamicDefencePower) .. "|DragonBreathAttack" .. tostring(Mod.Settings.Dragons[dragonID].DragonBreathAttack);
     return builder.Build();
 end

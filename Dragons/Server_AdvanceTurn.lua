@@ -64,6 +64,22 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 end
             end
         end
+    elseif order.proxyType == "GameOrderCustom" then
+        if order.Payload:sub(1, #"Dragons_") == "Dragons_" then
+            local splitData = split(order.Payload, "_");
+            splitData[2] = tonumber(splitData[2]);
+            splitData[3] = tonumber(splitData[3]);
+            if splitData[2] ~= nil and splitData[3] ~= nil then
+                local mod = WL.TerritoryModification.Create(splitData[2]);
+                mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[3])};
+                local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[3]].Name .. "'", {}, {mod})
+                event.AddResourceOpt = {[order.PlayerID] = order.CostOpt};
+                event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[splitData[2]].MiddlePointX, game.Map.Territories[splitData[2]].MiddlePointY, game.Map.Territories[splitData[2]].MiddlePointX, game.Map.Territories[splitData[2]].MiddlePointY);
+                addNewOrder(event);
+                skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
+            end
+        end
+    end
     end
 end
 
@@ -91,4 +107,52 @@ function replaceDragon(mod, sp, v)
     table.insert(t, sp.ID);
     mod.RemoveSpecialUnitsOpt = t;
     return mod;
+end
+
+function split(str, pat)
+    local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+    local fpat = "(.-)" .. pat
+    local last_end = 1
+    local s, e, cap = str:find(fpat, 1)
+    while s do
+       if s ~= 1 or cap ~= "" then
+          table.insert(t,cap)
+       end
+       last_end = e+1
+       s, e, cap = str:find(fpat, last_end)
+    end
+    if last_end <= #str then
+       cap = str:sub(last_end)
+       table.insert(t, cap)
+    end
+    return t
+ end
+
+function getDragon(p, dragonID)
+    local builder = WL.CustomSpecialUnitBuilder.Create(p);
+    builder.ImageFilename = "Dragon_" .. Mod.Settings.Dragons[dragonID].ColorName .. ".png";
+    builder.Name = Mod.Settings.Dragons[dragonID].Name;
+    builder.IsVisibleToAllPlayers = Mod.Settings.Dragons[dragonID].IsVisibleToAllPlayers;
+    builder.CanBeAirliftedToSelf = Mod.Settings.Dragons[dragonID].CanBeAirliftedToSelf;
+    builder.CanBeGiftedWithGiftCard = Mod.Settings.Dragons[dragonID].CanBeGiftedWithGiftCard;
+    builder.CanBeTransferredToTeammate = Mod.Settings.Dragons[dragonID].CanBeTransferredToTeammate;
+    builder.CanBeAirliftedToTeammate = builder.CanBeAirliftedToSelf and builder.CanBeTransferredToTeammate;
+    builder.IncludeABeforeName = Mod.Settings.Dragons[dragonID].IncludeABeforeName;
+    builder.AttackPower = Mod.Settings.Dragons[dragonID].AttackPower;
+    builder.AttackPowerPercentage = (Mod.Settings.Dragons[dragonID].AttackPowerPercentage / 100) + 1;
+    builder.DefensePowerPercentage = (Mod.Settings.Dragons[dragonID].DefensePowerPercentage / 100) + 1;
+    builder.CombatOrder = Mod.Settings.Dragons[dragonID].CombatOrder + 6971;
+    if Mod.Settings.Dragons[dragonID].UseHealth then
+        builder.Health = Mod.Settings.Dragons[dragonID].Health;
+        if Mod.Settings.Dragons[dragonID].DynamicDefencePower then
+            builder.DefensePower = Mod.Settings.Dragons[dragonID].Health;
+        else
+            builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
+        end
+    else
+        builder.DamageAbsorbedWhenAttacked = Mod.Settings.Dragons[dragonID].DamageAbsorbedWhenAttacked;
+        builder.DamageToKill = Mod.Settings.Dragons[dragonID].DamageToKill;
+        builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
+    end
+    return builder.Build();
 end

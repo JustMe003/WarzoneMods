@@ -218,6 +218,10 @@ function permissionsSettings(dragon, root, inputs)
     CreateLabel(line).SetText("Players can airlift this dragon").SetColor(colors.Textcolor);
     
     line = CreateHorz(vert).SetFlexibleWidth(1);
+    dragonInputs.CanBeTransferredToTeammate = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeTransferredToTeammate);
+    CreateLabel(line).SetText("Players can transfer this dragon to teammates").SetColor(colors.Textcolor);
+
+    line = CreateHorz(vert).SetFlexibleWidth(1);
     dragonInputs.CanBeGiftedWithGiftCard = CreateCheckBox(line).SetText(" ").SetIsChecked(dragon.CanBeGiftedWithGiftCard);
     CreateLabel(line).SetText("Players can gift this dragon to other players").SetColor(colors.Textcolor);
     
@@ -344,6 +348,7 @@ function saveDragon(dragon, inputs)
     if inputs.CanBeBought ~= nil then dragons[dragon.ID].CanBeBought = inputs.CanBeBought.GetIsChecked(); end
     if inputs.Cost ~= nil then dragons[dragon.ID].Cost = inputs.Cost.GetValue(); end
     if inputs.MaxNumOfDragon ~= nil then dragons[dragon.ID].MaxNumOfDragon = inputs.MaxNumOfDragon.GetValue(); end
+    if inputs.CanBeTransferredToTeammate ~= nil then dragons[dragon.ID].CanBeTransferredToTeammate = inputs.CanBeTransferredToTeammate.GetIsChecked(); end
 end
 
 function initDragon()
@@ -364,6 +369,7 @@ function initDragon()
     t.IsVisibleToAllPlayers = false;
     t.CanBeAirliftedToSelf = true;
     t.CanBeGiftedWithGiftCard = false;
+    t.CanBeTransferredToTeammate = true;
     t.IncludeABeforeName = true;
     t.UseHealth = true;
     t.Health = 20;

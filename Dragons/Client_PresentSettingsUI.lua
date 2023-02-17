@@ -268,6 +268,20 @@ function showPermissions(dragon, root)
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be airlifted"); end);
     end
     
+    if dragon.CanBeTransferredToTeammate ~= nil then
+        line = CreateHorz(vert).SetFlexibleWidth(1);
+        CreateLabel(line).SetText("Players can transfer this dragon to teammates ").SetColor(colors.Textcolor);
+        if dragon.CanBeTransferredToTeammate then
+            CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(30);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon can be transferred to teammates. If this dragon can be airlifted, then players can also airlift this dragon to their teammates"); end);
+        else
+            CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be transferred to teammates. Players can also not airlift this dragon to their teammates"); end);
+        end
+    end
+    
     line = CreateHorz(vert).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Players can gift this dragon to other players ").SetColor(colors.Textcolor);
     if dragon.CanBeGiftedWithGiftCard then
