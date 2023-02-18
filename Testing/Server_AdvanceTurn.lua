@@ -1,7 +1,5 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
-    local mod = WL.TerritoryModification.Create(1);
-    mod.SetOwnerOpt = -2;
-    AddNewOrder(WL.GameOrderEvent.Create(0, "jy7ihgf", nil, {mod}));
+    
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
