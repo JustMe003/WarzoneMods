@@ -1,4 +1,5 @@
 function Server_StartGame(game, standing)
+    print("Mod: DH4")
     local t = {};
     local s = standing;
     for _, v in pairs(s.Territories) do
