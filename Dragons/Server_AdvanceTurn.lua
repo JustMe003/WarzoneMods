@@ -79,6 +79,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "'", {}, {mod})
                     print(3);
                     event.AddResourceOpt = {[order.PlayerID] = order.CostOpt};
+                    print(event.AddResourceOpt[order.PlayerID][WL.ResourceType.Gold])
                     print(4);
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY, game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY);
                     print(5);
