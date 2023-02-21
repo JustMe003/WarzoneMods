@@ -92,6 +92,7 @@ function purchaseDragon(dragon)
 end
 
 function returnA(dragon)
+    print(dragon);
     if dragon.IncludeABeforeName then return "a "; end
     return "";
 end
