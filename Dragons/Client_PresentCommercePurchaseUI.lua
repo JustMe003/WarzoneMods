@@ -24,11 +24,7 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
         if order.proxyType == "GameOrderCustom" and order.Payload:sub(1, #"Dragons_") == "Dragons_" then
             local info = split(order.Payload);
             info[2] = tonumber(info[2]);
-            if dragonsOwned[info[2]] == nil then 
-                dragonsOwned[info[2]] = 1;
-            else
-                dragonsOwned[info[2]] = dragonsOwned[info[2]] + 1;
-            end
+            dragonsOwned[info[2]] = dragonsOwned[info[2]] + 1;
         end
     end
     Init(rootParent);
@@ -102,6 +98,9 @@ end
 
 function getOwnedDragons()
     local t = {};
+    for _, v in pairs(Mod.Settings.Dragons) do
+        t[v.ID] = 0;
+    end
     for _, terr in pairs(Game.LatestStanding.Territories) do
         if #terr.NumArmies.SpecialUnits > 0 then
             for _, sp in pairs(terr.NumArmies.SpecialUnits) do
