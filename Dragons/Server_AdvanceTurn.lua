@@ -86,7 +86,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
         end
     end
-    end
 end
 
 function tableIsEmpty(t)
