@@ -70,7 +70,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             splitData[2] = tonumber(splitData[2]);
             splitData[3] = tonumber(splitData[3]);
             if splitData[2] ~= nil and splitData[3] ~= nil then
-                if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon <= getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2]) then
+                if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon > getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2]) then
+                    print(splitData[3], game.ServerGame.LatestTurnStanding.Territories[splitData[3]])
                     local mod = WL.TerritoryModification.Create(splitData[3]);
                     print(1);
                     mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[2])};
