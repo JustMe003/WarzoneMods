@@ -48,19 +48,19 @@ function showDragonSettings(dragon, showAll)
     local generalCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(showAll);
     local generalLabel = CreateLabel(line).SetText("Show general settings");
     local generalVert = CreateVert(root).SetFlexibleWidth(1);
-    generalCheckBox.SetOnValueChanged(function() if generalCheckBox.GetIsChecked() then showGeneralSettings(dragon, generalVert); generalLabel.SetText("Hide" .. generalLabel.GetText():sub(5, -1)); else DestroyWindow("generalSettings" .. dragon.ID, false); generalLabel.SetText("Show" .. generalLabel.GetText()sub(5, -1)); end; end)
+    generalCheckBox.SetOnValueChanged(function() if generalCheckBox.GetIsChecked() then showGeneralSettings(dragon, generalVert); generalLabel.SetText("Hide" .. generalLabel.GetText():sub(5, -1)); else DestroyWindow("generalSettings" .. dragon.ID, false); generalLabel.SetText("Show" .. generalLabel.GetText():sub(5, -1)); end; end)
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local healthAndDamageCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(showAll);
     local healthAndDamageLabel = CreateLabel(line).SetText("Show health and damage");
     local healthAndDamageVert = CreateVert(root).SetFlexibleWidth(1);
-    healthAndDamageCheckBox.SetOnValueChanged(function() if healthAndDamageCheckBox.GetIsChecked() then showHealthAndDamage(dragon, healthAndDamageVert); healthAndDamageLabel.SetText("Hide" .. healthAndDamageLabel.GetText():sub(5, -1)); else DestroyWindow("healthAndDamage" .. dragon.ID, false); healthAndDamageLabel.SetText("Show" .. healthAndDamageLabel.GetText()sub(5, -1)); end; end)
+    healthAndDamageCheckBox.SetOnValueChanged(function() if healthAndDamageCheckBox.GetIsChecked() then showHealthAndDamage(dragon, healthAndDamageVert); healthAndDamageLabel.SetText("Hide" .. healthAndDamageLabel.GetText():sub(5, -1)); else DestroyWindow("healthAndDamage" .. dragon.ID, false); healthAndDamageLabel.SetText("Show" .. healthAndDamageLabel.GetText():sub(5, -1)); end; end)
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local permissionsCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(showAll);
     local permissionsLabel = CreateLabel(line).SetText("Show permissions");
     local permissionsVert = CreateVert(root).SetFlexibleWidth(1);
-    permissionsCheckBox.SetOnValueChanged(function() if permissionsCheckBox.GetIsChecked() then showPermissions(dragon, permissionsVert); permissionsLabel.SetText("Hide" .. permissionsLabel.GetText():sub(5, -1)); else DestroyWindow("permissions" .. dragon.ID, false); permissionsLabel.SetText("Show" .. permissionsLabel.GetText()sub(5, -1)); end; end)
+    permissionsCheckBox.SetOnValueChanged(function() if permissionsCheckBox.GetIsChecked() then showPermissions(dragon, permissionsVert); permissionsLabel.SetText("Hide" .. permissionsLabel.GetText():sub(5, -1)); else DestroyWindow("permissions" .. dragon.ID, false); permissionsLabel.SetText("Show" .. permissionsLabel.GetText():sub(5, -1)); end; end)
 
     if showAll then
         showGeneralSettings(dragon, generalVert);
