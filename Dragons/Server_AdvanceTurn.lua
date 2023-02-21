@@ -173,5 +173,6 @@ function getNumOfOwnedDragons(terrs, dragonID)
             end
         end
     end
+    print(c);
     return c;
 end
