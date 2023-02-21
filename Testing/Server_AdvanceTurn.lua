@@ -1,17 +1,13 @@
 function Server_AdvanceTurn_Start(game, addNewOrder)
-	playCards(game, addNewOrder);
+    
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
-	if order.proxyType == "GameOrderDeploy" then
-		for _, v in pairs(orderResult.readableKeys) do
-			print(v, orderResult[v])
-		end
-	end
+    
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
-	playCards(game, addNewOrder);
+
 end
 
 function playCards(game, addNewOrder)
