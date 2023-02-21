@@ -1,5 +1,6 @@
 require("UI");
 function Client_PresentCommercePurchaseUI(rootParent, game, close)
+    colors = GetColors();
     local root = UI.CreateVerticalLayoutGroup(rootParent);
     local b = false;
     for _, dragon in pairs(Mod.Settings.Dragons) do
@@ -10,7 +11,7 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
     end
     if b then
         local line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
-        UI.CreateLabel(line).SetText("There are (some) dragons that can be purchased")
+        UI.CreateLabel(line).SetText("There are (some) dragons that can be purchased").SetColor(colors.Textcolor)
         UI.CreateEmpty(line).SetFlexibleWidth(1);
         UI.CreateButton(line).SetText("Buy a dragon").SetColor(colors.Orange).SetOnClick(function() close(); game.CreateDialog(createDialog); end)
     end
@@ -32,7 +33,6 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
     end
     Init(rootParent);
     root = GetRoot();
-    colors = GetColors();
     Close = close;
 
     for _, dragon in pairs(Mod.Settings.Dragons) do
