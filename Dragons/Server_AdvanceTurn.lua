@@ -70,7 +70,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             splitData[2] = tonumber(splitData[2]);
             splitData[3] = tonumber(splitData[3]);
             if splitData[2] ~= nil and splitData[3] ~= nil then
-                if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon > getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2]) then
+                if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon > getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2], order.PlayerID) then
                     local mod = WL.TerritoryModification.Create(splitData[3]);
                     mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[2])};
                     local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "'", {}, {mod})
@@ -162,10 +162,10 @@ function getDragon(p, dragonID)
     return builder.Build();
 end
 
-function getNumOfOwnedDragons(terrs, dragonID) 
+function getNumOfOwnedDragons(terrs, dragonID, p) 
     local c = 0;
     for _, terr in pairs(terrs) do
-        if not tableIsEmpty(terr.NumArmies.SpecialUnits) then
+        if not tableIsEmpty(terr.NumArmies.SpecialUnits) and terr.OwnerPlayerID == p then
             for _, sp in pairs(terr.NumArmies.SpecialUnits) do
                 if sp.proxyType == "CustomSpecialUnit" and sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonNamesIDs[sp.Name] ~= nil and Mod.PublicGameData.DragonNamesIDs[sp.Name] == dragonID then
                     c = c + 1;

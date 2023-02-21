@@ -102,7 +102,7 @@ function getOwnedDragons()
         t[v.ID] = 0;
     end
     for _, terr in pairs(Game.LatestStanding.Territories) do
-        if #terr.NumArmies.SpecialUnits > 0 then
+        if #terr.NumArmies.SpecialUnits > 0 and Game.Us.ID == terr.OwnerPlayeriD then
             for _, sp in pairs(terr.NumArmies.SpecialUnits) do
                 if sp.proxyType == "CustomSpecialUnit" and sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonNamesIDs[sp.Name] ~= nil then
                     if t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
