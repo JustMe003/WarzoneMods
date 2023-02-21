@@ -52,7 +52,7 @@ function pickTerritory(dragon)
     selected = CreateButton(root).SetText("Pick territory").SetColor(colors.Orange).SetOnClick(function() selectTerr(dragon); end);
     label = CreateLabel(root).SetText("").SetColor(colors.Ivory);
     purchase = CreateButton(root).SetText("Purchase").SetColor(colors.Green).SetOnClick(function() purchaseDragon(dragon); end).SetInteractable(false);
-    selectTerr();
+    selectTerr(dragon);
 end
 
 function selectTerr(dragon)
