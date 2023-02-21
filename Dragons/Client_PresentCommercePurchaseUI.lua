@@ -32,6 +32,7 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
     Close = close;
 
     for _, dragon in pairs(Mod.Settings.Dragons) do
+        print(dragon.MaxNumOfDragon, dragonsOwned[dragon.ID]);
         if not dragon.CanBeBought then
             local line = CreateHorz(root);
             CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetInteractable(false);
