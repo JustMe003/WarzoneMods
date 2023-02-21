@@ -17,26 +17,35 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
 end
 
 function createDialog(rootParent, setMaxSize, setScrollable, game, close)
+    Game = game;
+    local dragonsOwned = getOwnedDragons();
     for _, order in pairs(game.Orders) do
         if order.proxyType == "GameOrderCustom" and order.Payload:sub(1, #"Dragons_") == "Dragons_" then
-            close();
-            UI.Alert("you can only buy 1 dragon each turn");
-            return;
+            local info = split(order.Payload);
+            info[2] = tonumber(info[2]);
+            if dragonsOwned[info[2]] == nil then 
+                dragonsOwned[info[2]] = 1;
+            else
+                dragonsOwned[info[2]] = dragonsOwned[info[2]] + 1;
+            end
         end
     end
     Init(rootParent);
     root = GetRoot();
     colors = GetColors();
-    Game = game;
     Close = close;
 
     for _, dragon in pairs(Mod.Settings.Dragons) do
-        if dragon.CanBeBought then
-            CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() pickTerritory(dragon); end);
-        else
+        if not dragon.CanBeBought then
             local line = CreateHorz(root);
             CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetInteractable(false);
             CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be purchased") end);
+        elseif dragon.MaxNumOfDragon <= dragonsOwned[dragon.ID] then
+            local line = CreateHorz(root);
+            CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetInteractable(false);
+            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("You already have the maximum number of this dragon. Note that also dragon purchase orders are counted") end);
+        else
+            CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() pickTerritory(dragon); end);
         end
     end
 end
@@ -81,7 +90,7 @@ function purchaseDragon(dragon)
         end
     end
     if index == 0 then index = #orders + 1; end
-    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Purchased " .. returnA(dragon); .. "'" .. dragon.Name .. "' on " .. selectedTerr.Name, "BuyWeb_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = dragon.Cost}, WL.TurnPhase.Deploys + 1));
+    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Purchased " .. returnA(dragon); .. "'" .. dragon.Name .. "' on " .. selectedTerr.Name, "Dragons_" .. dragon.ID .. selectedTerr.ID, {[WL.ResourceType.Gold] = dragon.Cost}, WL.TurnPhase.Deploys + 1));
     Game.Orders = orders;
     Close();
 end
@@ -90,3 +99,39 @@ function returnA(dragon)
     if dragon.IncludeABeforeName then return "a "; end
     return "";
 end
+
+function getOwnedDragons()
+    local t = {};
+    for _, terr in pairs(Game.LatestStanding.Territories) do
+        if #terr.NumArmies.SpecialUnits > 0 then
+            for _, sp in pairs(terr.NumArmies.SpecialUnits) do
+                if sp.proxyType == "CustomSpecialUnit" and sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonNamesIDs[sp.Name] ~= nil then
+                    if t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
+                        t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] = t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] + 1;
+                    else
+                        t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] == 1;
+                    end
+                end
+            end
+        end
+    end
+end
+
+function split(str, pat)
+    local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+    local fpat = "(.-)" .. pat
+    local last_end = 1
+    local s, e, cap = str:find(fpat, 1)
+    while s do
+       if s ~= 1 or cap ~= "" then
+          table.insert(t,cap)
+       end
+       last_end = e+1
+       s, e, cap = str:find(fpat, last_end)
+    end
+    if last_end <= #str then
+       cap = str:sub(last_end)
+       table.insert(t, cap)
+    end
+    return t
+ end

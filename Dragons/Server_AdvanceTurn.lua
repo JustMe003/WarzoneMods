@@ -70,14 +70,20 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             splitData[2] = tonumber(splitData[2]);
             splitData[3] = tonumber(splitData[3]);
             if splitData[2] ~= nil and splitData[3] ~= nil then
-                local mod = WL.TerritoryModification.Create(splitData[2]);
-                mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[3])};
-                local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[3]].Name .. "'", {}, {mod})
-                event.AddResourceOpt = {[order.PlayerID] = order.CostOpt};
-                event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[splitData[2]].MiddlePointX, game.Map.Territories[splitData[2]].MiddlePointY, game.Map.Territories[splitData[2]].MiddlePointX, game.Map.Territories[splitData[2]].MiddlePointY);
-                addNewOrder(event);
-                skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
+                if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon <= getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2]) then
+                    local mod = WL.TerritoryModification.Create(splitData[3]);
+                    mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[2])};
+                    local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "'", {}, {mod})
+                    event.AddResourceOpt = {[order.PlayerID] = order.CostOpt};
+                    event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY, game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY);
+                    addNewOrder(event);
+                else
+                    addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but you already have the maximum of this type of dragon"));
+                end
+            else
+                addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but something went wrong"));
             end
+            skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
         end
     end
     end
@@ -155,4 +161,18 @@ function getDragon(p, dragonID)
         builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
     end
     return builder.Build();
+end
+
+function getNumOfOwnedDragons(terrs, dragonID) 
+    local c = 0;
+    for _, terr in pairs(terrs) do
+        if not tableIsEmpty(terr.NumArmies.SpecialUnits) then
+            for _, sp in pairs(terr.NumArmies.SpecialUnits) do
+                if sp.proxyType == "CustomSpecialUnit" and sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonNamesIDs[sp.Name] ~= nil and Mod.PublicGameData.DragonNamesIDs[sp.Name] == dragonID then
+                    c = c + 1;
+                end
+            end
+        end
+    end
+    return c;
 end
