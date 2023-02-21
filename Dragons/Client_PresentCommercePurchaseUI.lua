@@ -109,7 +109,7 @@ function getOwnedDragons()
                     if t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
                         t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] = t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] + 1;
                     else
-                        t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] == 1;
+                        t[Mod.PublicGameData.DragonNamesIDs[sp.Name]] = 1;
                     end
                 end
             end
