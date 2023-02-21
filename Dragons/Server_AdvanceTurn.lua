@@ -72,11 +72,17 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             if splitData[2] ~= nil and splitData[3] ~= nil then
                 if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon <= getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2]) then
                     local mod = WL.TerritoryModification.Create(splitData[3]);
+                    print(1);
                     mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[2])};
+                    print(2);
                     local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "'", {}, {mod})
+                    print(3);
                     event.AddResourceOpt = {[order.PlayerID] = order.CostOpt};
+                    print(4);
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY, game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY);
+                    print(5);
                     addNewOrder(event);
+                    print(6);
                 else
                     addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but you already have the maximum of this type of dragon"));
                 end
