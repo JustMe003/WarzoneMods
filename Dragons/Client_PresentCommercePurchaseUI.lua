@@ -48,6 +48,7 @@ end
 
 function pickTerritory(dragon)
     DestroyWindow();
+    print(dragon);
     selected = CreateButton(root).SetText("Pick territory").SetColor(colors.Orange).SetOnClick(function() selectTerr(dragon); end);
     label = CreateLabel(root).SetText("").SetColor(colors.Ivory);
     purchase = CreateButton(root).SetText("Purchase").SetColor(colors.Green).SetOnClick(function() purchaseDragon(dragon); end).SetInteractable(false);
@@ -55,6 +56,7 @@ function pickTerritory(dragon)
 end
 
 function selectTerr(dragon)
+    print(dragon);
     UI.InterceptNextTerritoryClick(function(t) terrClicked(t, dragon); end);
     label.SetText("Click the territory you want to receive " .. returnA(dragon) .. "'" .. dragon.Name "' on. If needed you can move this dialog out of the way");
     selected.SetInteractable(false);
@@ -92,7 +94,6 @@ function purchaseDragon(dragon)
 end
 
 function returnA(dragon)
-    print(dragon);
     if dragon.IncludeABeforeName then return "a "; end
     return "";
 end
