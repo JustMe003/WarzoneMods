@@ -24,6 +24,7 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
         if order.proxyType == "GameOrderCustom" and order.Payload:sub(1, #"Dragons_") == "Dragons_" then
             local info = split(order.Payload, "_");
             info[2] = tonumber(info[2]);
+            print(info[2], type(info[2]))
             dragonsOwned[info[2]] = dragonsOwned[info[2]] + 1;
         end
     end
