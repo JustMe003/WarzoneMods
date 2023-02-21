@@ -65,15 +65,10 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             end
         end
     elseif order.proxyType == "GameOrderCustom" then
-        print(10);
         if order.Payload:sub(1, #"Dragons_") == "Dragons_" then
-            print(11);
             local splitData = split(order.Payload, "_");
-            print(12);
             splitData[2] = tonumber(splitData[2]);
-            print(13);
             splitData[3] = tonumber(splitData[3]);
-            print(14);
             if splitData[2] ~= nil and splitData[3] ~= nil then
                 if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon <= getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2]) then
                     local mod = WL.TerritoryModification.Create(splitData[3]);
@@ -184,5 +179,6 @@ function getNumOfOwnedDragons(terrs, dragonID)
             end
         end
     end
+    print(c);
     return c;
 end
