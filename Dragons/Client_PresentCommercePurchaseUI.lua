@@ -56,7 +56,7 @@ end
 
 function selectTerr(dragon)
     UI.InterceptNextTerritoryClick(function(t) terrClicked(t, dragon); end);
-    label.SetText("Click the territory you want to receive " .. returnA(dragon) .. "'" .. dragon.Name "' on. If needed you can move this dialog out of the way");
+    label.SetText("Click the territory you want to receive " .. tostring(returnA(dragon)) .. "'" .. dragon.Name "' on. If needed you can move this dialog out of the way");
     selected.SetInteractable(false);
 end
 
