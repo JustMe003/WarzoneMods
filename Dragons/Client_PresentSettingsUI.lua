@@ -24,7 +24,7 @@ function showMain()
     CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("For the dragon placements, see the mod menu").SetColor(colors.Textcolor);
 
-    local line = CreateHorz(root);
+    local line = CreateHorz(root).SetFlexibleWidth(1);
     local vertLeft = CreateVert(line).SetFlexibleWidth(0.5);
     CreateEmpty(vertLeft).SetFlexibleWidth(1);
     CreateLabel(vertLeft).SetText("Testing");
