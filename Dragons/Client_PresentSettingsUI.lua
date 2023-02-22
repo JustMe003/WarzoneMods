@@ -26,9 +26,9 @@ function showMain()
 
     local line = CreateHorz(root).SetFlexibleWidth(1);
     local vertLeft = CreateVert(line).SetFlexibleWidth(0.5);
-    CreateEmpty(vertLeft).SetFlexibleWidth(0.5);
-    CreateLabel(vertLeft).SetText("Testing");
-    CreateEmpty(vertLeft).SetFlexibleWidth(0.5);
+    local lineLeft = CreateHorz(vertLeft).SetFlexibleWidth(1);
+    CreateEmpty(lineLeft).SetFlexibleWidth(1);
+    CreateLabel(lineLeft).SetText("Testing");
     local vertButton = CreateVert(line);
     CreateButton(vertButton).SetText("?").SetColor(colors["Light Blue"]);
     local vertRight = CreateVert(line).SetFlexibleWidth(0.5);
