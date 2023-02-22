@@ -1,7 +1,7 @@
 require("UI");
 function Client_PresentSettingsUI(rootParent)
 	Init(rootParent);
-    root = GetRoot();
+    root = GetRoot().SetFlexibleWidth(1);
     colors = GetColors();
 
     showMain();
