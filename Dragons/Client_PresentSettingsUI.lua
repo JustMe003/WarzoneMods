@@ -340,13 +340,13 @@ end
 
 function showSetting(parent, settingName, helpText, setting, color)
     local line = CreateHorz(parent).SetFlexibleWidth(1);
-    local vertLeft = CreateVert(line).SetFlexibleWidth(0.5);
+    local vertLeft = CreateVert(line).SetFlexibleWidth(0.5).SetPreferredWidth(1000);
     local lineLeft = CreateHorz(vertLeft).SetFlexibleWidth(1);
     CreateEmpty(lineLeft).SetFlexibleWidth(1);
     CreateLabel(lineLeft).SetText(settingName).SetColor(colors.Textcolor);
     local vertButton = CreateVert(line);
     CreateButton(vertButton).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert(helpText); end);
-    local vertRight = CreateVert(line).SetFlexibleWidth(0.5);
+    local vertRight = CreateVert(line).SetFlexibleWidth(0.5).SetPreferredWidth(1000);
     CreateLabel(vertRight).SetText(setting).SetColor(color);
 end
 
