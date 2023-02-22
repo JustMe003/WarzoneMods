@@ -1,5 +1,4 @@
 function Server_StartGame(game, standing)
-    print("Mod: Dragons")
     local data = Mod.PublicGameData;
     local s = standing;
     for terr, arr in pairs(data.DragonPlacements) do
