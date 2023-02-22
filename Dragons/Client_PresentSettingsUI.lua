@@ -235,7 +235,7 @@ function showAllSettings()
     
     showCombatOrder(true);
     
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);\
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 end
 
 function showCombatOrder(showAll)
