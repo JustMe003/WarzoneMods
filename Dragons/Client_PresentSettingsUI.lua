@@ -35,9 +35,9 @@ function showDragonSettings(dragon, showAll)
         CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
     end
 
-    showSetting(vert, "Dragon name", "'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with", dragon.Name, colors.Tan);
+    showSetting(root, "Dragon name", "'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with", dragon.Name, colors.Tan);
 
-    showSetting(vert, "Dragon color", "'" .. dragon.ColorName .. "' is the color if this dragon icon on the map. Together with the name of this dragon (species) it will allow you to identify which dragon you're dealing/playing with", dragon.ColorName, dragon.Color);
+    showSetting(root, "Dragon color", "'" .. dragon.ColorName .. "' is the color if this dragon icon on the map. Together with the name of this dragon (species) it will allow you to identify which dragon you're dealing/playing with", dragon.ColorName, dragon.Color);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local generalCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(showAll);
