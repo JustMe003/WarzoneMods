@@ -28,6 +28,7 @@ function showMain()
     local vertLeft = CreateVert(line).SetFlexibleWidth(0.5);
     CreateEmpty(vertLeft).SetFlexibleWidth(0.5);
     CreateLabel(vertLeft).SetText("Testing");
+    CreateEmpty(vertLeft).SetFlexibleWidth(0.5);
     local vertButton = CreateVert(line);
     CreateButton(vertButton).SetText("?").SetColor(colors["Light Blue"]);
     local vertRight = CreateVert(line).SetFlexibleWidth(0.5);
