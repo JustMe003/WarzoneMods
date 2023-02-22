@@ -227,13 +227,15 @@ function showAllSettings()
     SetWindow("showAll");
 
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
-
+    
     for _, dragon in pairs(Mod.Settings.Dragons) do
         showDragonSettings(dragon, true);
         CreateEmpty(root).SetPreferredHeight(20);
     end
-
+    
     showCombatOrder(true);
+    
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);\
 end
 
 function showCombatOrder(showAll)
@@ -241,8 +243,8 @@ function showCombatOrder(showAll)
     if not showAll then
         DestroyWindow();
         SetWindow("CombatOrder");
+        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
     end
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 
     CreateEmpty(root).SetPreferredHeight(5);
 
@@ -253,8 +255,10 @@ function showCombatOrder(showAll)
     end
     for i, dragon in ipairs(t) do
         local line = CreateHorz(root);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
         CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
         CreateLabel(line).SetText(dragon.Name).SetColor(dragon.Color);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
     end
 end
 
