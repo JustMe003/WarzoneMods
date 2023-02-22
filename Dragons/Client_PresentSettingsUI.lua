@@ -18,7 +18,9 @@ function showMain()
     for _, dragon in pairs(Mod.Settings.Dragons) do
         CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() showDragonSettings(dragon); end);
     end
-    
+    CreateEmpty(root).SetPreferredHeight(5);
+    CreateButton(root).SetText("Combat Order").SetColor(colors.Orange).SetOnClick(showCombatOrder);
+
     CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("For the dragon placements, see the mod menu").SetColor(colors.Textcolor);
 end
@@ -318,6 +320,26 @@ function showAllSettings()
     for _, dragon in pairs(Mod.Settings.Dragons) do
         showDragonSettings(dragon, true);
         CreateEmpty(root).SetPreferredHeight(10);
+    end
+end
+
+function showCombatOrder()
+    DestroyWindow();
+    SetWindow("CombatOrder");
+
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+
+    CreateEmpty(root).SetPreferredHeight(5);
+
+    CreateLabel(root).SetText("The combat order determines in what order dragons take damage. When there are multiple dragons of different types on a territory, this is the order in which dragons are killed / take damage:").SetColor(colors.Textcolor);
+    local t = {};
+    for i, dragon in pairs(Mod.Settings.Dragons) do
+        t[dragon.CombatOrder] = dragon;
+    end
+    for i, dragon in pairs(t) do
+        local line = CreateHorz(root);
+        CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
+        CreateLabel(root).SetText(dragon.Name).SetColor(dragon.Color);
     end
 end
 
