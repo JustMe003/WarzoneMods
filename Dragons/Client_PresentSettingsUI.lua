@@ -247,54 +247,30 @@ function showPermissions(dragon, root)
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("This dragon is always visible for everyone ").SetColor(colors.Textcolor);
     if dragon.IsVisibleToAllPlayers then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("Whatever fog your game uses, everyone can see the territory that contains a dragon of this type"); end);
+        showSetting(vert, "This dragon is always visible for everyone", "Whatever fog your game uses, everyone can see the territory that contains a dragon of this type", "Yes", colors.Green);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("Whatever fog your game uses, everyone can NOT see the territory that contains a dragon of this type"); end);
+        showSetting(vert, "This dragon is always visible for everyone", "Whatever fog your game uses, everyone can NOT see the territory that contains a dragon of this type", "No", colors["Orange Red"]);
     end
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Players can airlift this dragon ").SetColor(colors.Textcolor);
     if dragon.CanBeAirliftedToSelf then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon can be airlifted"); end);
+        showSetting(vert, "Players can airlift this dragon:", "This dragon can be airlifted", "Yes", colors.Green);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(20);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be airlifted"); end);
+        showSetting(vert, "Players can airlift this dragon:", "This dragon cannot be airlifted", "No", colors["Orange Red"]);
     end
     
     if dragon.CanBeTransferredToTeammate ~= nil then
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("Players can transfer this dragon to teammates ").SetColor(colors.Textcolor);
         if dragon.CanBeTransferredToTeammate then
-            CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-            CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon can be transferred to teammates. If this dragon can be airlifted, then players can also airlift this dragon to their teammates"); end);
+            showSetting(vert, "Players can transfer this dragon to teammates:", "This dragon can be transferred to teammates. If this dragon can be airlifted, then players can also airlift this dragon to their teammates", "Yes", colors.Green);
         else
-            CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-            CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be transferred to teammates. Players can also not airlift this dragon to their teammates"); end);
+            showSetting(vert, "Players can transfer this dragon to teammates:", "This dragon cannot be transferred to teammates. Players can also not airlift this dragon to their teammates", "No", colors["Orange Red"]);
         end
     end
-    
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Players can gift this dragon to other players ").SetColor(colors.Textcolor);
+
     if dragon.CanBeGiftedWithGiftCard then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon can be gifted to other players"); end);
+        showSetting(vert, "Players can gift this dragon to other players:", "This dragon can be gifted to other players", "Yes", colors.Green);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be gifted to other players"); end);
+        showSetting(vert, "Players can gift this dragon to other players:", "This dragon cannot be gifted to other players", "No", colors["Orange Red"]);
     end
     
     if dragon.IncludeABeforeName then
