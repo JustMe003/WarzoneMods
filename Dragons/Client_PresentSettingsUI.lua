@@ -11,18 +11,35 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
 
-    CreateButton(root).SetText("Show all settings").SetColor(colors.Blue).SetOnClick(showAllSettings);
-
+    local line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(line).SetText("Show all settings").SetColor(colors.Blue).SetOnClick(showAllSettings);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    
     CreateEmpty(root).SetPreferredHeight(5);
-    CreateLabel(root).SetText("Select a Dragon to see the settings").SetColor(colors.Textcolor);
+    
+    line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("Select a Dragon to see the settings").SetColor(colors.Textcolor);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
     for _, dragon in pairs(Mod.Settings.Dragons) do
-        CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() showDragonSettings(dragon); end);
+        line = CreateHorz(root);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
+        CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() showDragonSettings(dragon); end);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
     end
     CreateEmpty(root).SetPreferredHeight(5);
-    CreateButton(root).SetText("Combat Order").SetColor(colors.Orange).SetOnClick(showCombatOrder);
-
+    
+    line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(line).SetText("Combat Order").SetColor(colors.Orange).SetOnClick(showCombatOrder);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    
     CreateEmpty(root).SetPreferredHeight(5);
-    CreateLabel(root).SetText("For the dragon placements, see the mod menu").SetColor(colors.Textcolor);
+    line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateLabel(line).SetText("For the dragon placements, see the mod menu").SetColor(colors.Textcolor);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
 
 end
 
