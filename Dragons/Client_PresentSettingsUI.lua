@@ -254,7 +254,7 @@ function showCombatOrder(showAll)
         t[dragon.CombatOrder + 1] = dragon;
     end
     for i, dragon in ipairs(t) do
-        local line = CreateHorz(root);
+        local line = CreateHorz(root).SetFlexibleWidth(1);
         CreateEmpty(line).SetFlexibleWidth(0.5);
         CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
         CreateLabel(line).SetText(dragon.Name).SetColor(dragon.Color);
