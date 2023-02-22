@@ -24,15 +24,6 @@ function showMain()
     CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("For the dragon placements, see the mod menu").SetColor(colors.Textcolor);
 
-    local line = CreateHorz(root).SetFlexibleWidth(1);
-    local vertLeft = CreateVert(line).SetFlexibleWidth(0.5);
-    local lineLeft = CreateHorz(vertLeft).SetFlexibleWidth(1);
-    CreateEmpty(lineLeft).SetFlexibleWidth(1);
-    CreateLabel(lineLeft).SetText("Testing");
-    local vertButton = CreateVert(line);
-    CreateButton(vertButton).SetText("?").SetColor(colors["Light Blue"]);
-    local vertRight = CreateVert(line).SetFlexibleWidth(0.5);
-    CreateLabel(vertRight).SetText("Setting 1");
 end
 
 function showDragonSettings(dragon, showAll)
@@ -306,16 +297,10 @@ function showPermissions(dragon, root)
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be gifted to other players"); end);
     end
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("automatically put the word 'A' before the name of this dragon ").SetColor(colors.Textcolor);
     if dragon.IncludeABeforeName then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("For better language, this mod and Warzone will put 'A' before the name of this dragon, indicating that there can be more than one of this dragon in the game"); end);
+        showSetting(vert, "automatically put the word 'A' before the name of this dragon:", "For better language, this mod and Warzone will put 'A' before the name of this dragon, indicating that there can be more than one of this dragon in the game", "Yes", colors.Green);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This mod and Warzone will not put 'A' before the name of this dragon"); end);
+        showSetting(vert, "automatically put the word 'A' before the name of this dragon:", "This mod and Warzone will not put 'A' before the name of this dragon", "No", colors["Orange Red"]);
     end
     
     SetWindow(parent);
@@ -351,6 +336,18 @@ function showCombatOrder()
         CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
         CreateLabel(line).SetText(dragon.Name).SetColor(dragon.Color);
     end
+end
+
+function showSetting(parent, settingName, helpText, setting, color)
+    local line = CreateHorz(parent).SetFlexibleWidth(1);
+    local vertLeft = CreateVert(line).SetFlexibleWidth(0.5);
+    local lineLeft = CreateHorz(vertLeft).SetFlexibleWidth(1);
+    CreateEmpty(lineLeft).SetFlexibleWidth(1);
+    CreateLabel(lineLeft).SetText(settingName).SetColor(colors.Textcolor);
+    local vertButton = CreateVert(line);
+    CreateButton(vertButton).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert(helpText); end);
+    local vertRight = CreateVert(line).SetFlexibleWidth(0.5);
+    CreateLabel(vertRight).SetText(setting).SetColor(color);
 end
 
 function getNumDigits(n)
