@@ -213,14 +213,18 @@ function showAllSettings()
 
     for _, dragon in pairs(Mod.Settings.Dragons) do
         showDragonSettings(dragon, true);
-        CreateEmpty(root).SetPreferredHeight(10);
+        CreateEmpty(root).SetPreferredHeight(20);
     end
+
+    showCombatOrder(true);
 end
 
-function showCombatOrder()
-    DestroyWindow();
-    SetWindow("CombatOrder");
-
+function showCombatOrder(showAll)
+    showAll = showAll or false;
+    if showAll then
+        DestroyWindow();
+        SetWindow("CombatOrder");
+    end
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 
     CreateEmpty(root).SetPreferredHeight(5);
