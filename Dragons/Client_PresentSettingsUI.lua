@@ -35,17 +35,9 @@ function showDragonSettings(dragon, showAll)
         CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
     end
 
-    local line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Dragon name ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(dragon.Name).SetColor(colors.Tan).SetPreferredWidth(#dragon.Name * 10);
-    CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with"); end);
-    
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Dragon color ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(dragon.ColorName).SetColor(dragon.Color).SetPreferredWidth(#dragon.Name * 10);
-    CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("'" .. dragon.Color .. "' is the color if this dragon icon on the map. Together with the name of this dragon (species) it will allow you to identify which dragon you're dealing/playing with"); end);
+    showSetting(vert, "Dragon name", "'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with", dragon.Name, colors.Tan);
+
+    showSetting(vert, "Dragon color", "'" .. dragon.ColorName .. "' is the color if this dragon icon on the map. Together with the name of this dragon (species) it will allow you to identify which dragon you're dealing/playing with", dragon.ColorName, dragon.Color);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     local generalCheckBox = CreateCheckBox(line).SetText(" ").SetIsChecked(showAll);
@@ -91,28 +83,14 @@ function showGeneralSettings(dragon, root)
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("This dragon can be bought ").SetColor(colors.Textcolor);
     if dragon.CanBeBought then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("Every player alive can buy this dragon (species) during the game"); end);
-        
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("Price of this dragon ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.Cost).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.Cost) + 20);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("A '" .. dragon.Name .. "' will cost you " .. dragon.Cost .. " gold to purchase"); end);
-        
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("The maximum number of dragons a player may have ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.MaxNumOfDragon).SetColor(colors.Teal).SetPreferredWidth(30);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("When a player has " .. dragon.MaxNumOfDragon .. " of these dragons, it can not purchase any more of this type"); end);
+        showSetting(vert, "This dragon can be bought", "Every player alive can buy this dragon (species) during the game", "Yes", colors.Green);
+
+        showSetting(vert, "Price of this dragon", "A '" .. dragon.Name .. "' will cost you " .. dragon.Cost .. " gold to purchase", dragon.Cost, colors.Teal);
+
+        showSetting(vert, "The maximum number of dragons a player may have", "When a player has " .. dragon.MaxNumOfDragon .. " of these dragons, it can not purchase any more of this type", dragon.MaxNumOfDragon, colors.Teal);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("No player can buy this dragon during the game. The only way to acquire this dragon (species) is to start with one or when one is given to you by another player"); end);
+        showSetting(vert, "This dragon can be bought", "No player can buy this dragon during the game. The only way to acquire this dragon (species) is to start with one or when one is given to you by another player", "No", colors["Orange Red"]);
     end
     
     SetWindow(parent);
