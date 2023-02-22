@@ -334,12 +334,12 @@ function showCombatOrder()
     CreateLabel(root).SetText("The combat order determines in what order dragons take damage. When there are multiple dragons of different types on a territory, this is the order in which dragons are killed / take damage:").SetColor(colors.Textcolor);
     local t = {};
     for i, dragon in pairs(Mod.Settings.Dragons) do
-        t[dragon.CombatOrder] = dragon;
+        t[dragon.CombatOrder + 1] = dragon;
     end
-    for i, dragon in pairs(t) do
+    for i, dragon in ipairs(t) do
         local line = CreateHorz(root);
         CreateLabel(line).SetText(i .. ". ").SetColor(colors.Textcolor);
-        CreateLabel(root).SetText(dragon.Name).SetColor(dragon.Color);
+        CreateLabel(line).SetText(dragon.Name).SetColor(dragon.Color);
     end
 end
 
