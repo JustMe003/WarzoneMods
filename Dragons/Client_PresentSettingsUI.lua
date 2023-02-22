@@ -138,9 +138,9 @@ function showHealthAndDamage(dragon, root)
     
     showSetting(vert, "The attack power of the dragon", "This dragon will deal " .. dragon.AttackPower .. " when it attacks", dragon.AttackPower, colors.Teal)
     
-    showSetting(vert, "The attack modifier of the dragon", "When part of an attack, this dragon will add " .. round(dragon.AttackPowerPercentage, 2) .. " damage. That is, when your attack (including this dragon) is 100 attack power, this dragon will buff it to " .. round(((dragon.AttackPowerPercentage / 100) + 1) * 100, 0), round(dragon.AttackPowerPercentage, 2) .. "%", colors.Cyan);
+    showSetting(vert, "The attack modifier of the dragon", "When part of an attack, this dragon will add " .. round(dragon.AttackPowerPercentage, 2) .. "% damage. That is, when your attack (including this dragon) is 100 attack power, this dragon will buff it to " .. round(((dragon.AttackPowerPercentage / 100) + 1) * 100, 0), round(dragon.AttackPowerPercentage, 2) .. "%", colors.Cyan);
     
-    showSetting(vert, "The defence modifier of the dragon", "When defending, this dragon will add " .. round(dragon.DefensePowerPercentage, 2) .. " damage. That is, when your defence (including this dragon) is equal to 100 defence power, this dragon will buff it to " .. round(((dragon.DefensePowerPercentage / 100) + 1) * 100, 0), round(dragon.DefensePowerPercentage, 2) .. "%", colors.Cyan);
+    showSetting(vert, "The defence modifier of the dragon", "When defending, this dragon will add " .. round(dragon.DefensePowerPercentage, 2) .. "% damage. That is, when your defence (including this dragon) is equal to 100 defence power, this dragon will buff it to " .. round(((dragon.DefensePowerPercentage / 100) + 1) * 100, 0), round(dragon.DefensePowerPercentage, 2) .. "%", colors.Cyan);
     
     if dragon.DragonBreathAttack then
         showSetting(vert, "Has Dragon Breath attack", "This dragon uses his dragon breath every time it attacks an territory. See 'Dragon Breath Attack damage' for a better explanation", "Yes", colors.Green);
