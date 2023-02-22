@@ -32,7 +32,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 modFrom.AddSpecialUnits = {};
                 modFrom.RemoveSpecialUnitsOpt = {};
                 for ID, v in pairs(orderResult.DamageToSpecialUnits) do 
-                    print(ID, v);
                     for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits) do
                         if sp.ID == ID then
                             if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DynamicDefencePower ~= nil and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
