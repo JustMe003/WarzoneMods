@@ -136,94 +136,39 @@ function showHealthAndDamage(dragon, root)
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateEmpty(vert).SetPreferredHeight(5);
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("This dragon uses dynamic health ").SetColor(colors.Textcolor);
     if dragon.UseHealth then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type will automatically reduce its health when it's part of combat where it receives damage, and automatically die if the health goes below 1\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending"); end);
+        showSetting(vert, "This dragon uses dynamic health", "This dragon type will automatically reduce its health when it's part of combat where it receives damage, and automatically die if the health goes below 1\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending", "Yes", colors.Green);
         
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("The initial health of this dragon ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.Health).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.Health) + 20);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type has started with " .. dragon.Health .. " health but it's health will reduce when it takes damage in combat, so it might have less health\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending"); end);
+        showSetting(vert, "The initial health of this dragon", "This dragon type has started with " .. dragon.Health .. " health but it's health will reduce when it takes damage in combat, so it might have less health\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending", dragon.Health, colors.Teal)
         
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("The defence power always equals the health ").SetColor(colors.Textcolor);
         if dragon.DynamicDefencePower then
-            CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-            CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This mod will update the defence power of this dragon type every time it takes damage in combat. This makes sure that the number of attacking armies this dragon type kills is equal to it's health (for most of the times)"); end);
+            showSetting(vert, "The defence power always equals the health", "This mod will update the defence power of this dragon type every time it takes damage in combat. This makes sure that the number of attacking armies this dragon type kills is equal to it's health (for most of the times)", "Yes", colors.Green);
         else
-            CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-            CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This mod will NOT update the defence power of this dragon type every time it takes damage in combat\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending"); end);
-            
-            line = CreateHorz(vert).SetFlexibleWidth(1);
-            CreateLabel(line).SetText("The fixed defence power of the dragon ").SetColor(colors.Textcolor);
-            CreateLabel(line).SetText(dragon.DefensePower).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.Health) + 20);
-            CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type has a fixed defense power of " .. dragon.DefensePower .. ". This is the amount of damage it will deal when defending a territory"); end);
+            showSetting(vert, "The defence power always equals the health", "This mod will NOT update the defence power of this dragon type every time it takes damage in combat\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending", "No", colors["Orange Red"]);
+
+            showSetting(vert, "The fixed defence power of the dragon", "This dragon type has a fixed defense power of " .. dragon.DefensePower .. ". This is the amount of damage it will deal when defending a territory", dragon.DefensePower, colors.Teal);
         end
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type will NOT automatically reduce its health when it's part of combat where it receives damage"); end);
+        showSetting(vert, "This dragon uses dynamic health", "This dragon type will NOT automatically reduce its health when it's part of combat where it receives damage", "No", colors["Orange Red"]);
         
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("The number of damage points it takes to kill this dragon ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DamageToKill).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.DamageToKill) + 20);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("To kill / remove this dragon from the game, you'll have to deal at least " .. dragon.DamageToKill .. " damage points in 1 blow (so not multiple attacks!). Note that you first need to kill all the normal armies on this territory before you can take down a dragon"); end);
+        showSetting(vert, "The number of damage points it takes to kill this dragon", "To kill / remove this dragon from the game, you'll have to deal at least " .. dragon.DamageToKill .. " damage points in 1 blow (so not multiple attacks!). Note that you first need to kill all the normal armies on this territory before you can take down a dragon", dragon.DamageToKill, colors.Teal);
         
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("Damage absorbed when this dragon takes damage ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DamageAbsorbedWhenAttacked).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.DamageAbsorbedWhenAttacked) + 20);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("When this dragon is attacked and this dragon is killed, it will reduce the remaining damage points (that would normally deal damage to the left over special units / dragons) by " .. dragon.DamageAbsorbedWhenAttacked); end);
+        showSetting(vert, "Damage absorbed when this dragon takes damage", "When this dragon is attacked and this dragon is killed, it will reduce the remaining damage points (that would normally deal damage to the left over special units / dragons) by " .. dragon.DamageAbsorbedWhenAttacked, dragon.DamageAbsorbedWhenAttacked, colors.Teal);
         
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("The fixed defence power of the dragon ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DefensePower).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.DefensePower) + 20);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon type has a fixed defense power of " .. dragon.DefensePower .. ". This is the amount of damage it will deal when defending a territory"); end);
+        showSetting(vert, "The fixed defence power of the dragon", "This dragon type has a fixed defense power of " .. dragon.DefensePower .. ". This is the amount of damage it will deal when defending a territory", dragon.DefensePower, colors.Teal);
     end
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("The attack power of the dragon ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(dragon.AttackPower).SetColor(colors.Teal).SetPreferredWidth(10 * getNumDigits(dragon.AttackPower) + 20);
-    CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon will deal " .. dragon.AttackPower .. " when it attacks"); end);
+    showSetting(vert, "The attack power of the dragon", "This dragon will deal " .. dragon.AttackPower .. " when it attacks", dragon.AttackPower, colors.Teal)
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("The attack modifier of the dragon ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(round(dragon.AttackPowerPercentage, 2) .. "%").SetColor(colors.Cyan).SetPreferredWidth(10 * (getNumDigits(dragon.AttackPowerPercentage) + 20));
-    CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("When part of an attack, this dragon will add " .. round(dragon.AttackPowerPercentage, 2) .. " damage. That is, when your attack (including this dragon) is 100 attack power, this dragon will buff it to " .. round(((dragon.AttackPowerPercentage / 100) + 1) * 100, 0)); end);
+    showSetting(vert, "The attack modifier of the dragon", "When part of an attack, this dragon will add " .. round(dragon.AttackPowerPercentage, 2) .. " damage. That is, when your attack (including this dragon) is 100 attack power, this dragon will buff it to " .. round(((dragon.AttackPowerPercentage / 100) + 1) * 100, 0), round(dragon.AttackPowerPercentage, 2) .. "%", colors.Cyan);
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("The defence modifier of the dragon ").SetColor(colors.Textcolor);
-    CreateLabel(line).SetText(round(dragon.DefensePowerPercentage, 2) .. "%").SetColor(colors.Cyan).SetPreferredWidth(10 * (getNumDigits(dragon.DefensePowerPercentage) + 20));;
-    CreateEmpty(line).SetFlexibleWidth(1);
-    CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("When defending, this dragon will add " .. round(dragon.DefensePowerPercentage, 2) .. " damage. That is, when your defence (including this dragon) is equal to 100 defence power, this dragon will buff it to " .. round(((dragon.DefensePowerPercentage / 100) + 1) * 100, 0)); end);
+    showSetting(vert, "The defence modifier of the dragon", "When defending, this dragon will add " .. round(dragon.DefensePowerPercentage, 2) .. " damage. That is, when your defence (including this dragon) is equal to 100 defence power, this dragon will buff it to " .. round(((dragon.DefensePowerPercentage / 100) + 1) * 100, 0), round(dragon.DefensePowerPercentage, 2) .. "%", colors.Cyan);
     
-    line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Has Dragon Breath attack ").SetColor(colors.Textcolor);
     if dragon.DragonBreathAttack then
-        CreateLabel(line).SetText("Yes").SetColor(colors.Green).SetPreferredWidth(50);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon uses his dragon breath every time it attacks an territory. See 'Dragon Breath Attack damage' for a better explanation"); end);
-        
-        line = CreateHorz(vert).SetFlexibleWidth(1);
-        CreateLabel(line).SetText("The damage of the Dragon Breath attack ").SetColor(colors.Textcolor);
-        CreateLabel(line).SetText(dragon.DragonBreathAttackDamage).SetColor(colors.Cyan).SetPreferredWidth(10 * getNumDigits(dragon.DragonBreathAttackDamage) + 20);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon uses his breath to damage bordering territories (of the attacked territory) when it attacks. It will remove " .. dragon.DragonBreathAttackDamage .. " armies from each bordering territory that is not controlled by the player who owns the dragon or their teammates"); end);
+        showSetting(vert, "Has Dragon Breath attack", "This dragon uses his dragon breath every time it attacks an territory. See 'Dragon Breath Attack damage' for a better explanation", "Yes", colors.Green);
+        showSetting(vert, "The damage of the Dragon Breath attack", "This dragon uses his breath to damage bordering territories (of the attacked territory) when it attacks. It will remove " .. dragon.DragonBreathAttackDamage .. " armies from each bordering territory that is not controlled by the player who owns the dragon or their teammates", dragon.DragonBreathAttackDamage, colors.Cyan);
     else
-        CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]).SetPreferredWidth(40);
-        CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon does not uses his dragon breath every time it attacks an territory"); end);
+        showSetting(vert, "Has Dragon Breath attack", "This dragon does not uses his dragon breath every time it attacks an territory", "No", colors["Orange Red"]);
     end
     
     SetWindow(parent);
