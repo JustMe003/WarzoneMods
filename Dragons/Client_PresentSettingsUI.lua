@@ -23,6 +23,15 @@ function showMain()
 
     CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("For the dragon placements, see the mod menu").SetColor(colors.Textcolor);
+
+    local line = CreateHorz(root);
+    local vertLeft = CreateVert(line).SetFlexibleWidth(0.5);
+    CreateEmpty(vertLeft).SetFlexibleWidth(1);
+    CreateLabel(vertLeft).SetText("Testing");
+    local vertButton = CreateVert(line);
+    CreateButton(vertButton).SetText("?").SetColor(colors["Light Blue"]);
+    local vertRight = CreateVert(line).SetFlexibleWidth(0.5);
+    CreateLabel(vertRight).SetText("Setting 1");
 end
 
 function showDragonSettings(dragon, showAll)
