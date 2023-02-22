@@ -238,7 +238,7 @@ end
 
 function showCombatOrder(showAll)
     showAll = showAll or false;
-    if showAll then
+    if not showAll then
         DestroyWindow();
         SetWindow("CombatOrder");
     end
