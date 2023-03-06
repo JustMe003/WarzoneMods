@@ -1,0 +1,1 @@
+Dragons allows game creators to enhance the normal gameplay with fully customizable, special units. Dragons can even be configured to spawn in pre-determined locations when the game start, allowing for even better scenario games
