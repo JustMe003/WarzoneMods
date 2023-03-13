@@ -1,1 +1,6 @@
 Dragons allows game creators to enhance the normal gameplay with fully customizable, special units. Dragons can even be configured to spawn in pre-determined locations when the game start, allowing for even better scenario games
+
+configurable settings:
+ - Cost and availability (gold price of each dragon, the max number of dragons a player can have of 1 type, etc)
+ - Health and damage (needs to be killed in 1 blow or not, damage absorbtion, damage modifiers, etc)
+ - permissions (allow dragons to be transferred to teammates, allow dragons to be airlifted using the airlift card, etc)
