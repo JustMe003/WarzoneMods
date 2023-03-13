@@ -25,7 +25,7 @@ function showMain()
     for _, dragon in pairs(Mod.Settings.Dragons) do
         line = CreateHorz(root).SetFlexibleWidth(1);
         CreateEmpty(line).SetFlexibleWidth(0.5);
-        CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() showDragonSettings(dragon); end);
+        CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() showDragonSettings(dragon, false); end);
         CreateEmpty(line).SetFlexibleWidth(0.5);
     end
     CreateEmpty(root).SetPreferredHeight(5);
@@ -44,13 +44,13 @@ function showMain()
 end
 
 function showDragonSettings(dragon, showAll)
-    if showAll ~= nil then
+    if showAll == false then
         DestroyWindow();
         SetWindow("dragonMain" .. dragon.ID);
 
         CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
     end
-    showAll = showAll or true;
+    showAll = true;
 
     showSetting(root, "Dragon name", "'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with", dragon.Name, colors.Tan);
 
