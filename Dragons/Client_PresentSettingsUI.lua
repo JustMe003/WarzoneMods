@@ -44,13 +44,13 @@ function showMain()
 end
 
 function showDragonSettings(dragon, showAll)
-    showAll = showAll or false;
-    if not showAll then
+    if showAll ~= nil then
         DestroyWindow();
         SetWindow("dragonMain" .. dragon.ID);
 
         CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
     end
+    showAll = showAll or true;
 
     showSetting(root, "Dragon name", "'" .. dragon.Name .. "' is the name of this particular dragon (species). Together with it's color it will allow you to identify which dragon you're dealing/playing with", dragon.Name, colors.Tan);
 
@@ -194,9 +194,9 @@ function showPermissions(dragon, root)
     end
     
     if dragon.CanBeAirliftedToSelf then
-        showSetting(vert, "Players can airlift this dragon:", "This dragon can be airlifted", "Yes", colors.Green);
+        showSetting(vert, "Players can airlift this dragon:", "This dragon can be airlifted using an airlift card", "Yes", colors.Green);
     else
-        showSetting(vert, "Players can airlift this dragon:", "This dragon cannot be airlifted", "No", colors["Orange Red"]);
+        showSetting(vert, "Players can airlift this dragon:", "This dragon cannot be airlifted using an airlift card", "No", colors["Orange Red"]);
     end
     
     if dragon.CanBeTransferredToTeammate ~= nil then
