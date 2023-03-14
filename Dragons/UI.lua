@@ -90,7 +90,7 @@ function DestroyWindow(win, bool)
 	end
 	if bool and subWindows_JAD[win] ~= nil and #subWindows_JAD[win] > 0 then
 		for _, subWin in pairs(subWindows_JAD[win]) do
-			DestroyWindow(subWin, false);
+			DestroyWindow(subWin, true);
 		end
 	end
 end
