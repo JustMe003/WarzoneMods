@@ -273,7 +273,7 @@ function AddOrdersConfirmes(inputs)
 	if appendTransfers == 0 then
 		appendTransfers = #orderTable - appendDeploys + 1;
 	end
-	print(appendDeploys, appendTransfers + appendDeploys);
+	print(appendDeploys, appendTransfers + appendDeploys, #orderTable);
 	local newOrder;
 	local lastDeploymentMade = {};
 
