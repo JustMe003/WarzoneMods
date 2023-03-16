@@ -262,8 +262,10 @@ function AddOrdersConfirmes(inputs)
 		print(i, order.OccursInPhase);
 		if order.OccursInPhase ~= nil then
 			if appendDeploys == 0 and order.OccursInPhase > WL.TurnPhase.Deploys then
+				print(order.proxyType, "appendDeploys: " .. i);
 				appendDeploys = i;
 			elseif appendTransfers == 0 and order.OccursInPhase > WL.TurnPhase.Attacks then
+				print(order.proxyType, "appendTransfers: " .. i);
 				appendTransfers = i;
 			end
 		end
