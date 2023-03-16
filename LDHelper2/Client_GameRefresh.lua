@@ -8,6 +8,7 @@ function Client_GameRefresh(game)
         if Mod.PlayerGameData.NewTurnAction == nil then
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetAction"); end);
         else
+            print("orderlist is empty: " .. tostring(tableIsEmpty(game.Orders)));
             if tableIsEmpty(game.Orders) then
                 if Mod.PlayerGameData.NewTurnAction == "AutoDeploy" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "AutoDeploy"); end);
