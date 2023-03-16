@@ -259,7 +259,7 @@ function AddOrdersConfirmes(inputs)
 	local appendDeploys = 0;
 	local appendTransfers = 0;
 	for i, order in pairs(orderTable) do
-		print(i);
+		print(i, order.OccursInPhase);
 		if order.OccursInPhase ~= nil then
 			if appendDeploys == 0 and order.OccursInPhase > WL.TurnPhase.Deploys then
 				appendDeploys = i;
