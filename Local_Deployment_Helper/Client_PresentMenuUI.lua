@@ -315,6 +315,7 @@ function AddOrdersConfirmes(inputs)
 					newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To, 3, order.ByPercent, order.NumArmies, false);
 				end
 				if orderExists(newOrder, orderTable) == 0 then
+					print(appendDeploys, appendTransfers, #orderTable);
 					table.insert(orderTable, appendDeploys + appendTransfers, newOrder);
 					appendTransfers = appendTransfers + 1;
 				end
