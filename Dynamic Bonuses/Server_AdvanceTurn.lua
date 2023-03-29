@@ -39,7 +39,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 	for _, bonus in pairs(game.Map.Bonuses) do
 		pID = holdsBonus(game, bonus.Territories);
-		if pID ~= WL.PlayerID.Neutral and getBonusValue(game, bonus.ID) ~= 0 then
+		if pID ~= WL.PlayerID.Neutral and getBonusValue(game, bonus.ID) ~= 0 and t[pID] ~= nil then
 			local array = {};
 			for _, terrID in pairs(bonus.Territories) do
 				table.insert(array, Mod.PublicGameData.WellBeingMultiplier[terrID])
