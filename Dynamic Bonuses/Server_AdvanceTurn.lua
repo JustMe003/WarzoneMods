@@ -29,7 +29,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 	for _, bonus in pairs(game.Map.Bonuses) do
 		local pID = holdsBonus(game, bonus.Territories)
-		if pID ~= WL.PlayerID.Neutral and getBonusValue(game, bonus.ID) ~= 0 then
+		if pID ~= WL.PlayerID.Neutral and getBonusValue(game, bonus.ID) ~= 0 and t[pID] ~= nil then
 			if not game.Settings.LocalDeployments then
 				table.insert(t[pID], WL.IncomeMod.Create(pID, -getBonusValue(game, bonus.ID), "Cancel out " .. bonus.Name))
 			else
