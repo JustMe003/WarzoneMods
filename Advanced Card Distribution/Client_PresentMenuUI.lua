@@ -96,7 +96,7 @@ end
 function getSlotName(i)
 	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 	local s = "";
-	if i > 26 then
+	if i >= 26 then
 		s = s .. c[math.floor(i / 26)];
 		i = i - math.floor(i / 26);
 	end
