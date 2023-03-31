@@ -3,6 +3,10 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	init(rootParent);
 	game = Game;
 		
+	for i = 0, 49 do
+		print(getSlotName(i));
+	end
+
 	setMaxSize(400, 500);
 	showMenu();
 end

@@ -1,5 +1,10 @@
 require("UI")
 function Client_PresentConfigureUI(rootParent)
+
+	for i = 0, 49 do
+		print(i);
+	end
+
 	init(rootParent);
 	
 	colorsList = {"Blue", "Light Blue", "Purple", "Dark Green", "Orange", "Red", "Dark Gray", "Green", "Hot Pink", "Brown", "Sea Green", "Orange Red", "Cyan", "Aqua", "Dark Magenta", "Deep Pink", "yellow", "Saddle Brown", "Ivory", "Copper Rose", "Electric Purple", "Tan", "Pink", "Lime", "Tan", "Tyrian Purple", "Smoky Black"};
