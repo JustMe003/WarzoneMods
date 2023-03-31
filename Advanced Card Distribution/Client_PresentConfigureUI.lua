@@ -2,7 +2,7 @@ require("UI")
 function Client_PresentConfigureUI(rootParent)
 
 	for i = 0, 49 do
-		print(i);
+		print(i, getSlotName(i));
 	end
 
 	init(rootParent);
