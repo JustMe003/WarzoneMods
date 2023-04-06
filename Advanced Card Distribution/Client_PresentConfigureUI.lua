@@ -148,14 +148,13 @@ function addCardConfig(vert, s)
 end
 
 function getSlotName(i)
-	i = i + 1;
 	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 	local s = "";
 	if i > 26 then
 		s = s .. c[math.floor(i / 26)];
 		i = i - math.floor(i / 26);
 	end
-	return s .. c[i % 26];
+	return s .. c[(i % 26) + 1];
 end
 
 function getZeroOrValue(s, slot, card)
