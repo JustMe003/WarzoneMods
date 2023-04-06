@@ -1,0 +1,4 @@
+When a territory gets fully surrounded by other players, it is more difficult to defend it. The game creator can configure the mod such that:
+- You cannot deploy on encircled territories anymore
+- You slowly lose armies on encircled territories
+- Encircled territories turn neutral immediately
