@@ -153,7 +153,7 @@ function getSlotName(i)
 	local s = "";
 	if i > 26 then
 		s = s .. c[math.floor(i / 26)];
-		i = (i % 26) + 1;
+		i = (i % 26);
 	end
 	print(i);
 	return s .. c[i];
