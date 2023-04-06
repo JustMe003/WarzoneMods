@@ -155,7 +155,6 @@ function getSlotName(i)
 		s = s .. c[math.floor(i / 26)];
 		i = (i % 26);
 	end
-	print(i);
 	return s .. c[i];
 end
 
