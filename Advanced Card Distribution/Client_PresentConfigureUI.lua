@@ -155,7 +155,7 @@ function getSlotName(i)
 		s = s .. c[math.floor(i / 26)];
 		i = i - math.floor(i / 26);
 	end
-	return s .. c[i % 26 + 1];
+	return s .. c[i % 26];
 end
 
 function getZeroOrValue(s, slot, card)
