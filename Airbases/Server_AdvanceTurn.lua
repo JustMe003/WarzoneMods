@@ -1,4 +1,4 @@
-Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
+function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
     if order.proxyType == "GameOrderPlayCardAirlift" then
         if not hasRequiredCities(game.ServerGame.LatestTurnStanding.Territories[order.ToTerritoryID]) or not hasRequiredCities(game.ServerGame.LatestTurnStanding.Territories[order.FromTerritoryID]) then
             skipThisOrder(WL.ModOrderControl.Skip);
