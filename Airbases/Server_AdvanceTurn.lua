@@ -7,5 +7,5 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 end
 
 function hasRequiredCities(terr)
-    return terr.Structures ~= nil and terr.Structures[WL.StructureType.City] ~= nil and terr.Structures[WL.StructureType.City] > Mod.Settings.RequiredCities;
+    return terr.Structures ~= nil and terr.Structures[WL.StructureType.City] ~= nil and terr.Structures[WL.StructureType.City] >= Mod.Settings.RequiredCities;
 end
