@@ -56,13 +56,18 @@ end
 
 function showCurve()
 	for k = 0, 7 do
-		local i = math.pow(2, k);
+		local i = getPower(2, k);
 		if formula == "ax + c" then		
 			newLabel(win .. i, vert, "after " .. i .. " turns:   " .. round(getValue(iA) * i + getValue(iC)));
 		else
 			newLabel(win .. i, vert, "after " .. i .. " turns:   " .. round(i * i * getValue(iA) + getValue(iC) + getValue(iB) * i));
 		end
 	end
+end
+
+function getPower(b, p)
+	if p == 0 then return 1; end
+	return b * getPower(b, p - 1);
 end
 
 function saveInputs()
