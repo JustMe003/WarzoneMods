@@ -23,16 +23,21 @@ function showMain()
     if toolInUse then
         CreateLabel(root).SetText("Click the button to stop using the Multi-Attack tool").SetColor(colors.TextColor);
         local line = CreateHorz(root).SetFlexibleWidth(1);
-        CreateEmpty(line).SetFlexibleWidth(0.5);
+        CreateEmpty(line).SetFlexibleWidth(0.33);
         CreateButton(line).SetText("End").SetColor(colors.Red).SetOnClick(function() toolInUse = false; showMain(); end);
-        CreateEmpty(line).SetFlexibleWidth(0.5);
+        CreateEmpty(line).SetFlexibleWidth(0.33);
+        CreateButton(line).SetText("Help").SetColor(colors.Orange).SetOnClick(showHelp);
+        CreateEmpty(line).SetFlexibleWidth(0.33);
     else
         CreateLabel(root).SetText("Click the button to start using the Multi-Attack tool").SetColor(colors.TextColor);
         local line = CreateHorz(root).SetFlexibleWidth(1);
-        CreateEmpty(line).SetFlexibleWidth(0.5);
+        CreateEmpty(line).SetFlexibleWidth(0.33);
         CreateButton(line).SetText("Begin").SetColor(colors.Lime).SetOnClick(function() getSource(); Close(); end);
-        CreateEmpty(line).SetFlexibleWidth(0.5);
+        CreateEmpty(line).SetFlexibleWidth(0.33);
+        CreateButton(line).SetText("Help").SetColor(colors.Orange).SetOnClick(showHelp);
+        CreateEmpty(line).SetFlexibleWidth(0.33);
     end
+    
 end
 
 function getSource()
