@@ -48,13 +48,21 @@ function showHelp()
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
     CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("How do I use the Multi-Attack Tool?").SetColor(colors.Green);
+    CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("When you have clicked the [start] button, you can click on any territory. The first territory you click will become the 'source' territory. This will become the territory where the armies are attacking/transfering from. Then, click a second territory. This will become the 'destination' territory, the territory that will be attacked/transfered to. The mod will automatically create the order for you. After this, you can click the next territory and the mod will create an order from the previous clicked territory (the last 'destination' territory) to the last clicked territory.").SetColor(colors.TextColor);
+    CreateEmpty(root).SetPreferredHeight(10);
     CreateLabel(root).SetText("How do I start attacking from a new territory?").SetColor(colors.Green);
+    CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("You can start a new 'chain' (attack/transfer orders connected and following eachother) by clicking a new territory (that is not connected to the latest clicked territory, otherwise it will create an normal order). It will automatically use the territory as the new source territory and you can use the tool like normal again.").SetColor(colors.TextColor);
+    CreateEmpty(root).SetPreferredHeight(10);
     CreateLabel(root).SetText("How do I make orders like normal again?").SetColor(colors.Green);
+    CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("Open the mod menu, and click the [end] button to stop using the tool. If the [end] button is not visible, you shouldn't be using the tool anymore. If you're still unable to make orders like normal, please contact me (see next question)").SetColor(colors.TextColor);
+    CreateEmpty(root).SetPreferredHeight(10);
     CreateLabel(root).SetText("Wow, amazing mod! How and when can I contact you about something mod related?").SetColor(colors.Green);
+    CreateEmpty(root).SetPreferredHeight(5);
     CreateLabel(root).SetText("You can contact me anytime! If you have troubles with any mod, found a bug or even if you have mod suggestions of any kind! I would advise you to join the Discord server, where me and other mod creators like to chill:").SetColor(colors.TextColor);
     CreateTextInputField(root).SetText("https://discord.gg/zbyVD7QSet").SetFlexibleWidth(1);
 end
