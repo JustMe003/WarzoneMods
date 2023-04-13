@@ -1,0 +1,2 @@
+The Multi-Attack Tool allows you to easily create Multi-Attack orders, the mod will automatically include all armies and all special units, with just 2 clicks!
+To start using the tool, open the mod menu and click the [start] button. To stop using the tool again, open the same menu and click the [stop] button
