@@ -1,6 +1,7 @@
 require("Client_PresentMenuUI");
 require("UI");
 function Client_GameRefresh(game)
+    print("LDHelper");
     if game.Us == nil or game.Us.IsAIOrHumanTurnedIntoAI then
         return;
     end
