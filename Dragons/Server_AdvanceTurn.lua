@@ -158,6 +158,11 @@ function getDragon(p, dragonID)
         builder.DamageToKill = Mod.Settings.Dragons[dragonID].DamageToKill;
         builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
     end
+    if Mod.Settings.Dragons[dragonID].DragonBreathAttack then
+        builder.ModData = "UnitDescription:\"This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. This unit also has the powerful 'Dragon Attack' ability. Whenever this unit attacks another territory, it will deal " .. Mod.Settings.Dragons[dragonID].DragonBreathAttackDamage .. " damage to all the connected territories. Be aware of this!\"";
+    else
+        builder.ModData = "UnitDescription:\"This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. This unit does not have the 'Dragon Attack' ability, but still might be a powerful unit!\"";
+    end
     return builder.Build();
 end
 
