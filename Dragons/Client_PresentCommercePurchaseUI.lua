@@ -15,14 +15,14 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
         UI.CreateEmpty(line).SetFlexibleWidth(1);
         UI.CreateButton(line).SetText("Buy a dragon").SetColor(colors.Orange).SetOnClick(function() close(); game.CreateDialog(createDialog); end);
 
-        CreateEmpty(root).SetPreferredHeight(5);
+        UI.CreateEmpty(root).SetPreferredHeight(5);
 
-        CreateLabel(root).SetText("These are the dragons in the game").SetColor(colors.Textcolor);
+        UI.CreateLabel(root).SetText("These are the dragons in the game").SetColor(colors.Textcolor);
         for _, dragon in pairs(Mod.Settings.Dragons) do
-            CreateLabel(root).SetText(dragon.Name).SetColor(dragon.Color);
+            UI.CreateLabel(root).SetText(dragon.Name).SetColor(dragon.Color);
         end
     else
-        CreateLabel(root).SetText("There a no dragons that can be bought").SetColor(colors.Textcolor);
+        UI.CreateLabel(root).SetText("There a no dragons that can be bought").SetColor(colors.Textcolor);
     end
 
 end
