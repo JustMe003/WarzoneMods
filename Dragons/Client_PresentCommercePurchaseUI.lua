@@ -1,4 +1,5 @@
 require("UI");
+require("Client_PresentSettingsUI")
 function Client_PresentCommercePurchaseUI(rootParent, game, close)
     colors = GetColors();
     local root = UI.CreateVerticalLayoutGroup(rootParent);
@@ -41,14 +42,20 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
     root = GetRoot();
     Close = close;
 
+    CreateLabel(root).SetText("Click on a dragon to pick which dragon you want to purchase").SetColor(colors.Textcolor);
+
     for _, dragon in pairs(Mod.Settings.Dragons) do
         if not dragon.CanBeBought then
             local line = CreateHorz(root);
             CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetInteractable(false);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() showDragonSettings(dragon, false); end);
             CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be purchased") end);
         elseif dragon.MaxNumOfDragon <= dragonsOwned[dragon.ID] then
             local line = CreateHorz(root);
             CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetInteractable(false);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() showDragonSettings(dragon, false); end);
             CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("You already have the maximum number of this dragon. Note that also dragon purchase orders are counted") end);
         else
             CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() pickTerritory(dragon); end);
