@@ -38,6 +38,9 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
 end
 
 function purchaseMain()
+    DestroyWindow();
+    SetWindow("purchaseMain");
+
     local dragonsOwned = getOwnedDragons();
     for _, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderCustom" and order.Payload:sub(1, #"Dragons_") == "Dragons_" then
