@@ -226,11 +226,11 @@ function inspectCustomUnit(sp)
 	
 	line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateLabel(line).SetText("Attack damage modifiers: ").SetColor(colors.TextColor);
-	CreateLabel(line).SetText(math.floor((sp.AttackPowerPercentage * 10000) + 0.5) / 100 .. "%").SetColor(colors.Cyan);
+	CreateLabel(line).SetText(math.floor((sp.AttackPowerPercentage * 10000) + 0.5) / 100 - 100 .. "%").SetColor(colors.Cyan);
 
 	line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateLabel(line).SetText("defense damage modifiers: ").SetColor(colors.TextColor);
-	CreateLabel(line).SetText(math.floor((sp.DefensePowerPercentage * 10000) + 0.5) / 100 .. "%").SetColor(colors.Cyan);
+	CreateLabel(line).SetText(math.floor((sp.DefensePowerPercentage * 10000) + 0.5) / 100 - 100 .. "%").SetColor(colors.Cyan);
 	
 	line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateLabel(line).SetText("Is visible for all players: ").SetColor(colors.TextColor);
