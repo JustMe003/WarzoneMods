@@ -58,7 +58,10 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
             CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() showDragonSettings(dragon, false); end);
             CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("You already have the maximum number of this dragon. Note that also dragon purchase orders are counted") end);
         else
-            CreateButton(root).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() pickTerritory(dragon); end);
+            local line = CreateHorz(root);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() showDragonSettings(dragon, false); end);
+            CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() pickTerritory(dragon); end);
         end
     end
 end
