@@ -158,11 +158,18 @@ function getDragon(p, dragonID)
         builder.DamageToKill = Mod.Settings.Dragons[dragonID].DamageToKill;
         builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
     end
+    local s = ""UnitDescription:\""UnitDescription:\"This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. ";
     if Mod.Settings.Dragons[dragonID].DragonBreathAttack then
-        builder.ModData = "UnitDescription:\"This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. This unit also has the powerful 'Dragon Attack' ability. Whenever this unit attacks another territory, it will deal " .. Mod.Settings.Dragons[dragonID].DragonBreathAttackDamage .. " damage to all the connected territories. Be aware of this!\"";
+        s = s .. "This unit also has the powerful 'Dragon Attack' ability. Whenever this unit attacks another territory, it will deal " .. Mod.Settings.Dragons[dragonID].DragonBreathAttackDamage .. " damage to all the connected territories. Be aware of this!\"";
     else
-        builder.ModData = "UnitDescription:\"This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. This unit does not have the 'Dragon Attack' ability, but still might be a powerful unit!\"";
+        s = s .. "This unit does not have the 'Dragon Attack' ability, but still might be a powerful unit!\"";
     end
+    if Mod.Settings.Dragons[dragonID].CanBeBought then
+        s = s .. "\n\nThis unit can be bought with " .. Mod.Settings.Dragons[dragonID].Cost .. " gold in the purchase menu (that is the same place where you buy cities)";
+    else
+        s = s .. "\n\nThis unit is not for sale! You can only acquire this unit if you started with it unfortunately...";
+    end
+    builder.ModData = s;
     return builder.Build();
 end
 
