@@ -41,6 +41,8 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
     Close = close;
+
+    purchaseMain();
 end
 
 function purchaseMain()
