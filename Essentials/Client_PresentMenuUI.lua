@@ -421,7 +421,12 @@ function showCombatOrder(callback, sp)
 				table.insert(t, getUnitName(unit));
 			end
 		end
-		CreateLabel(line).SetText(table.concat(t, "'s, ") .. "'s").SetColor("#EEEEEE");
+		local label = CreateLabel(line).SetText(table.concat(t, "'s, ") .. "'s");
+		if arr.CombatOrder == sp.CombatOrder then
+			label.SetColor(colors.Green);
+		else
+			label.SetColor("#EEEEEE");
+		end
 		CreateEmpty(line).SetFlexibleWidth(1);
 		CreateButton(line).SetText("Where?").SetColor(colors.Blue).SetOnClick(function() Game.HighlightTerritories(arr.Positions) for _, terrID in pairs(arr.Positions) do Game.CreateLocatorCircle(Game.Map.Territories[terrID].MiddlePointX, Game.Map.Territories[terrID].MiddlePointY); end; end);
 		
