@@ -369,8 +369,7 @@ end
 function showCombatOrder(callback, sp)
 	DestroyWindow();
 	SetWindow("CombatOrder");
-	print(callback, sp);
-	CreateButton(root).SetText("Return").SetColor(Colors.Orange).SetOnClick(callback);
+	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(callback);
 
 	local order = {};
 	for _, terr in pairs(Game.LatestStanding.Territories) do
