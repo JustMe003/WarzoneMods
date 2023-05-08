@@ -160,9 +160,9 @@ function getDragon(p, dragonID)
     end
     local s = "UnitDescription:\"This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. ";
     if Mod.Settings.Dragons[dragonID].DragonBreathAttack then
-        s = s .. "This unit also has the powerful 'Dragon Attack' ability. Whenever this unit attacks another territory, it will deal " .. Mod.Settings.Dragons[dragonID].DragonBreathAttackDamage .. " damage to all the connected territories. Be aware of this!";
+        s = s .. "It also has the powerful 'Dragon Attack' ability. Whenever this unit attacks another territory, it will deal " .. Mod.Settings.Dragons[dragonID].DragonBreathAttackDamage .. " damage to all the connected territories. Be aware of this!";
     else
-        s = s .. "This unit does not have the 'Dragon Attack' ability, but still might be a powerful unit!";
+        s = s .. "It does not have the 'Dragon Attack' ability, but still might be a powerful unit!";
     end
     if Mod.Settings.Dragons[dragonID].CanBeBought then
         s = s .. "\n\nThis unit can be bought with " .. Mod.Settings.Dragons[dragonID].Cost .. " gold in the purchase menu (that is the same place where you buy cities)";
