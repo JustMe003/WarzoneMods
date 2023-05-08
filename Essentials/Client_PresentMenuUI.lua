@@ -369,7 +369,7 @@ end
 function showCombatOrder(callback, sp)
 	DestroyWindow();
 	SetWindow("CombatOrder");
-	
+	print(callback, sp);
 	CreateButton(root).SetText("Return").SetColor(Colors.Orange).SetOnClick(callback);
 
 	local order = {};
