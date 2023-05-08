@@ -28,6 +28,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             builder.ImageFilename = "Medic.png";
             builder.IncludeABeforeName = true;
             builder.TextOverHeadOpt = "Medic";
+            builder.ModData = "UnitDescription:\"The medic does not like standing on the front lines, but rather wants to stay back to heal up any wounded soldiers. Any time the player owning this unit loses armies on a territory connected to this medic, it will recover " .. Mod.Settings.Percentage .. "% of armies lost\"";
             local mod = WL.TerritoryModification.Create(terrID);
             mod.AddSpecialUnits = {builder.Build()};
 
