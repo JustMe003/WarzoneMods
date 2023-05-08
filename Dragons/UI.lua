@@ -76,7 +76,7 @@ function CreateNumberInputField(parent)
 end
 
 function AddObjectToWindowAndReturnObject(obj)
-	table.insert(windows_JAD[currentWindow_JAD], obj)
+	table.insert(windows_JAD[currentWindow_JAD], obj);
 	return obj;
 end
 
