@@ -39,7 +39,7 @@ end
 
 function purchaseMain()
     local dragonsOwned = getOwnedDragons();
-    for _, order in pairs(game.Orders) do
+    for _, order in pairs(Game.Orders) do
         if order.proxyType == "GameOrderCustom" and order.Payload:sub(1, #"Dragons_") == "Dragons_" then
             local info = split(order.Payload, "_");
             info[2] = tonumber(info[2]);
