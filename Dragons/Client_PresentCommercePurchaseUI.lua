@@ -30,14 +30,6 @@ end
 
 function createDialog(rootParent, setMaxSize, setScrollable, game, close)
     Game = game;
-    local dragonsOwned = getOwnedDragons();
-    for _, order in pairs(game.Orders) do
-        if order.proxyType == "GameOrderCustom" and order.Payload:sub(1, #"Dragons_") == "Dragons_" then
-            local info = split(order.Payload, "_");
-            info[2] = tonumber(info[2]);
-            dragonsOwned[info[2]] = dragonsOwned[info[2]] + 1;
-        end
-    end
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
     Close = close;
@@ -46,6 +38,14 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
 end
 
 function purchaseMain()
+    local dragonsOwned = getOwnedDragons();
+    for _, order in pairs(game.Orders) do
+        if order.proxyType == "GameOrderCustom" and order.Payload:sub(1, #"Dragons_") == "Dragons_" then
+            local info = split(order.Payload, "_");
+            info[2] = tonumber(info[2]);
+            dragonsOwned[info[2]] = dragonsOwned[info[2]] + 1;
+        end
+    end
     
     CreateLabel(root).SetText("Click on a dragon to pick which dragon you want to purchase").SetColor(colors.Textcolor);
 
