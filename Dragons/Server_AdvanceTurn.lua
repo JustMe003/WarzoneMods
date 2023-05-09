@@ -169,7 +169,7 @@ function getDragon(p, dragonID)
     else
         s = s .. "\n\nThis unit is not for sale! You can only acquire this unit if you started with it unfortunately...";
     end
-    builder.ModData = s .. "\"";
+    builder.ModData = s .. "\n\nEach player can have up to " .. Mod.Settings.Dragons[dragonID].MaxNumOfDragon .. " of this particular unit type. Keep this in mind to gain an advantage over your enemies!\"";
     return builder.Build();
 end
 
