@@ -3,37 +3,50 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
     Init(rootParent);
 
     Game = game;
-    ClosePurchase = close;
-    rootPurchase = GetRoot();
+    Close = close;
+    root = GetRoot();
     colors = GetColors();
-    WebOrders = getNumWebOrders(Game.Orders);
 
-    local line = CreateHorz(rootPurchase).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("A Web cannot be moved, but will absorb " .. Mod.Settings.DamageAbsorbed .. " once when attacked").SetColor(colors.Textcolor).SetFlexibleWidth(0);
-    CreateButton(line).SetText("Purchase Web").SetColor(colors["Dark Green"]).SetOnClick(function() Game.CreateDialog(pickTerr); end).SetPreferredWidth(250).SetFlexibleWidth(0.2);
-    CreateLabel(rootPurchase).SetText("Your next Web will cost " .. Mod.Settings.Cost + ((Mod.PublicGameData.WebsBought[game.Us.ID] + WebOrders) * Mod.Settings.CostIncrease) .. ", after each time you buy a Web the price will go up by " .. Mod.Settings.CostIncrease .. " gold").SetColor(colors.Textcolor)
+    local line = CreateHorz(root);
+    CreateLabel(line).SetText("Landmines are a special type of unit that cannot be moved. When a territory with a landmine gets attacked it will explode, killing " .. Mod.Settings.Damage .. " attackers. A landmine costs " .. Mod.Settings.UnitCost .. ", but note you're only allowed a maximum of " .. Mod.Settings.MaxUnits .. "!").SetColor(colors.TextColor);
+    CreateButton(line).SetText("Purchase Landmine").SetColor(colors["Dark Green"]).SetOnClick(buyLandmine).SetPreferredWidth(250);
+end
+
+function buyLandmine()
+    Close();
+    local units = 0;
+    for _, terr in pairs(Game.LatestStanding.Territories) do
+        if terr.OwnerPlayerID == Game.Us.ID then
+            units = units + getNLandmines(terr);
+        end
+    end
+    for _,order in pairs(Game.Orders) do
+        if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyLandmine_") then
+            units = units + 1;
+        end
+    end
+    if units >= Mod.Settings.MaxUnits then
+        UI.Alert("You already have the maximum amount of Landmines");
+        return;
+    end
+    Game.CreateDialog(pickTerr)
 end
 
 function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
-    ClosePurchase();
-    if not(UI.IsDestroyed(root)) and Close ~= nil then
-        Close();
-    end
     Close = close;
-    Game = game;
 
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
 
     selected = CreateButton(root).SetText("Pick territory").SetColor(colors.Orange).SetOnClick(selectTerr);
-    label = CreateLabel(root).SetText("").SetColor(colors.Tan);
-    purchase = CreateButton(root).SetText("Purchase Web").SetColor(colors.Green).SetOnClick(purchaseLandmine).SetInteractable(false);
+    label = CreateLabel(root).SetText("").SetColor(colors.TextColor);
+    purchase = CreateButton(root).SetText("Purchase Landmine").SetColor(colors.Green).SetOnClick(purchaseLandmine).SetInteractable(false);
     selectTerr();
 end
 
 function selectTerr()
     UI.InterceptNextTerritoryClick(terrClicked);
-    label.SetText("Click the territory you want to deploy a Web on. If needed you can move this dialog out of the way");
+    label.SetText("Click the territory you want to receive the Landmine on. If needed you can move this dialog out of the way");
     selected.SetInteractable(false);
 end
 
@@ -44,9 +57,7 @@ function terrClicked(terrDetails)
         selectedTerr = nil;
     else
         if Game.LatestStanding.Territories[terrDetails.ID].OwnerPlayerID ~= Game.Us.ID then
-            label.SetText("You must select a territory you have own, you don't own " .. terrDetails.Name);
-            selectedTerr = terrDetails;
-            purchase.SetInteractable(false);
+            label.SetText("You can only receive a Landmine on a territory you own. Please try again");
         else
             label.SetText("Selected territory: " .. terrDetails.Name);
             selectedTerr = terrDetails;
@@ -59,27 +70,27 @@ function purchaseLandmine()
     local orders = Game.Orders;
     local index = 0;
     for i, order in pairs(orders) do
-        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Deploys + 1 then
+        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Deploys then
             index = i;
             break;
         end
     end
     if index == 0 then index = #orders + 1; end
-    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Web on " .. selectedTerr.Name, "BuyWeb_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost + ((Mod.PublicGameData.WebsBought[Game.Us.ID] + WebOrders) * Mod.Settings.CostIncrease)}, WL.TurnPhase.Deploys + 1));
+    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Landmine on " .. selectedTerr.Name, "BuyLandmine_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.UnitCost}, WL.TurnPhase.Deploys + 1));
     Game.Orders = orders;
     Close();
 end
 
-function startsWith(s, sub)
-    return string.sub(s, 1, #sub) == sub;
-end
-
-function getNumWebOrders(orders)
-    local c = 0;
-    for _, order in pairs(orders) do
-        if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyWeb_") then
-            c = c + 1;
+function getNLandmines(terr)
+    local ret = 0;
+    for _, sp in pairs(terr.NumArmies.SpecialUnits) do
+        if sp.proxyType == "CustomSpecialUnit" and sp.Name == "Landmine" then
+            ret = ret + 1;
         end
     end
-    return c;
+    return ret;
+end
+
+function startsWith(s, sub)
+    return string.sub(s, 1, #sub) == sub;
 end
