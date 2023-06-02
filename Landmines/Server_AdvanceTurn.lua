@@ -103,7 +103,7 @@ function createLandmine(game, p, bool)
     builder.CanBeGiftedWithGiftCard = false;
     builder.CanBeTransferredToTeammate = false;
     builder.CombatOrder = -9;
-    builder.DamageAbsorbedWhenAttacked = Mod.Settings.Damage * 2;
+    builder.DamageAbsorbedWhenAttacked = Mod.Settings.Damage * game.Settings.OffenseKillRate;
     builder.DamageToKill = 0;
     builder.DefensePower = Mod.Settings.Damage / game.Settings.DefenseKillRate;
     builder.IncludeABeforeName = true;
