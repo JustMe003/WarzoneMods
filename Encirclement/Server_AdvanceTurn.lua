@@ -32,6 +32,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 if Mod.Settings.TerritoriesTurnNeutral then
                     mod.SetOwnerOpt = WL.PlayerID.Neutral;
                 else
+                    print(Mod.Settings.PercentageLost);
                     mod.AddArmies = -math.ceil(terr.NumArmies.NumArmies * (Mod.Settings.PercentageLost / 100));
                     if terr.NumArmies.NumArmies + mod.AddArmies <= 0 then
                         mod.SetOwnerOpt = WL.PlayerID.Neutral;
