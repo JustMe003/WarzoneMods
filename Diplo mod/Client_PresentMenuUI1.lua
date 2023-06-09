@@ -376,7 +376,6 @@ function sendMessage()
 		local payload = {};
 		payload.Type = "sendMessage";
 		payload.Text = getText("showFactionChattypeMessage");
-		print(payload.Text);
 		if #payload.Text > 0 then
 			Close();
 			func = function() showFactionChat(factionName); end;
