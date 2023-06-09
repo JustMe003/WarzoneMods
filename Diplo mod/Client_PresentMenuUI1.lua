@@ -376,9 +376,14 @@ function sendMessage()
 		local payload = {};
 		payload.Type = "sendMessage";
 		payload.Text = getText("showFactionChattypeMessage");
-		Close();
-		func = function() showFactionChat(factionName); end;
-		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
+		print(payload.Text);
+		if #payload.Text > 0 then
+			Close();
+			func = function() showFactionChat(factionName); end;
+			game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
+		else
+			UI.Alert("You cannot send an empty message!");
+		end
 	else
 		UI.Alert("Something went wrong. Please re-open the chat to try again. If this message keeps popping up, please contact me");
 	end
