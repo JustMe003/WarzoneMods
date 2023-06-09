@@ -350,6 +350,7 @@ function pendingJoinRequests(factionName)
 end
 
 function sendMessage()
+	print("test");
 	if objectsID["showFactionChattypeMessage"] ~= nil and objects[objectsID["showFactionChattypeMessage"]].Object ~= nil then
 		local payload = {};
 		payload.Type = "sendMessage";
