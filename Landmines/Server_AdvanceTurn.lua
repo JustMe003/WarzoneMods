@@ -46,30 +46,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             end
             orderResult.ActualArmies = orderResult.ActualArmies.Subtract(WL.Armies.Create(0, t));
         end
-        --[[
-        if orderResult.IsAttack and not orderResult.IsNullified and #game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits > 0 then
-            local t = {};
-            for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits) do
-                if isLandmine(sp) then
-                    table.insert(t, sp); 
-                end
-            end
-            local c = #t
-            if c > 0 then
-            --    orderResult.AttackingArmiesKilled = orderResult.AttackingArmiesKilled.Add(WL.Armies.Create(c * Mod.Settings.Damage));
-                for _, sp in pairs(orderResult.DefendingArmiesKilled.SpecialUnits) do
-                    if isLandmine(sp) then
-                        for i, v in pairs(t) do
-                            if sp == v then
-                                table.remove(t, i);
-                                break;
-                            end
-                        end
-                    end
-                end
-                orderResult.DefendingArmiesKilled = orderResult.DefendingArmiesKilled.Add(WL.Armies.Create(0, t));
-            end
-        end ]]--
     end
 end
 
