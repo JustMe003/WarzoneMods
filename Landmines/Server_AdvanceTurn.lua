@@ -56,7 +56,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             local c = #t
             if c > 0 then
             --    orderResult.AttackingArmiesKilled = orderResult.AttackingArmiesKilled.Add(WL.Armies.Create(c * Mod.Settings.Damage));
-                for _, sp in pairs(orderResult.DefendingArmiesKilled) do
+                for _, sp in pairs(orderResult.DefendingArmiesKilled.SpecialUnits) do
                     if isLandmine(sp) then
                         for i, v in pairs(t) do
                             if sp == v then
