@@ -354,7 +354,7 @@ function sendMessage()
 		local payload = {};
 		payload.Type = "sendMessage";
 		payload.Text = getText("showFactionChattypeMessage");
-		if #getText("showFactionChattypeMessage") > 0 then
+		if #payload.Text > 0 then
 			Close();
 			func = function() showFactionChat(factionName); end;
 			game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
