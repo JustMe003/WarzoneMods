@@ -46,6 +46,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             end
             orderResult.ActualArmies = orderResult.ActualArmies.Subtract(WL.Armies.Create(0, t));
         end
+        --[[
         if orderResult.IsAttack and not orderResult.IsNullified and #game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits > 0 then
             local t = {};
             for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits) do
@@ -68,7 +69,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 end
                 orderResult.DefendingArmiesKilled = orderResult.DefendingArmiesKilled.Add(WL.Armies.Create(0, t));
             end
-        end
+        end ]]--
     end
 end
 
