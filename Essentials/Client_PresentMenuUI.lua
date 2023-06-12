@@ -24,10 +24,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 
 	-- makes sure the lines above stay
 	SetWindow("DummyWindow");
+	--[[
 	numOfClicks = 1;
 	terrClicked = -1;
 	UI.InterceptNextTerritoryClick(getTerritoryClickedTest);
-	print(numOfClicks);
+	]]--
 	showMainMenu();
 end
 
