@@ -24,7 +24,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 
 	-- makes sure the lines above stay
 	SetWindow("DummyWindow");
-	numOfClicks = 0;
+	numOfClicks = 1;
 	terrClicked = -1;
 	UI.InterceptNextTerritoryClick(getTerritoryClickedTest);
 	print(numOfClicks);
@@ -35,10 +35,13 @@ function getTerritoryClickedTest(terrDetails)
 	if terrDetails == nil then return WL.CancelClickIntercept; end
 	if terrClicked == terrDetails.ID then
 		numOfClicks = numOfClicks + 1;
+	else
+		numOfClicks = 1;
 	end
 	terrClicked = terrDetails.ID;
 	if numOfClicks == 3 then
 		print("Clicked " .. terrDetails.Name .. " 3 times!");
+		numOfClicks = 0;
 	end
 	UI.InterceptNextTerritoryClick(getTerritoryClickedTest);
 	return WL.CancelClickIntercept;
