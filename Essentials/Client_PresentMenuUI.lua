@@ -24,8 +24,22 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 
 	-- makes sure the lines above stay
 	SetWindow("DummyWindow");
+	numOfClicks = 0;
+	terrClicked = -1;
+	UI.InterceptNextTerritoryClick(getTerritoryClickedTest);
 
 	showMainMenu();
+end
+
+function getTerritoryClickedTest(terrDetails)
+	if terrDetails == nil then return WL.CancelClickIntercept; end
+	if terrClicked == terrDetails.ID then
+		numOfClicks = numOfClicks + 1;
+	end
+	terrClicked = terrDetails.ID;
+	if numOfClicks == 3 then
+		print("Clicked " .. terrDetails.Name .. " 3 times!");
+	end
 end
 
 function showMainMenu()
