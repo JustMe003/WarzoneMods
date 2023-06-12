@@ -30,6 +30,7 @@ function handleTerritoryClick(terrDetails)
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 1); end);
         end
     end
+    UI.InterceptNextTerritoryClick(handleTerritoryClick);
     return WL.CancelClickIntercept;
 end
 
@@ -51,5 +52,6 @@ function handleBonusLinkClick(bonusDetails)
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 2); end);
         end
     end
+    UI.InterceptNextBonusLinkClick(handleBonusLinkClick);
     return WL.CancelClickIntercept;
 end
