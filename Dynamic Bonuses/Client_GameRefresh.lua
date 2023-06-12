@@ -3,11 +3,11 @@ function Client_GameRefresh(Game)
 	if not refreshCalled then
         refreshCalled = true;
         game = Game;
-        numOfTerrClicks = 0;
-        lastTerrClicked = -1;
+--        numOfTerrClicks = 0;
+--        lastTerrClicked = -1;
         numOfBonusClicks = 0;
         lastBonusClicked = -1;
-        UI.InterceptNextTerritoryClick(handleTerritoryClick);
+--        UI.InterceptNextTerritoryClick(handleTerritoryClick);
         UI.InterceptNextBonusLinkClick(handleBonusLinkClick);
     end
 end
