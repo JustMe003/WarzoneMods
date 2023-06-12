@@ -13,7 +13,8 @@ function Client_GameRefresh(Game)
 end
 
 function handleTerritoryClick(terrDetails)
-    if terrDetails ~= nil then 
+    if terrDetails ~= nil then
+        print(terrDetails.Name);
         if terrDetails.ID == lastTerrClicked then
             numOfTerrClicks = numOfTerrClicks + 1;
         else
@@ -33,12 +34,13 @@ function handleTerritoryClick(terrDetails)
 end
 
 function handleBonusLinkClick(bonusDetails)
-    if terrDetails ~= nil then 
-        if terrDetails.ID == lastBonusClicked then
+    if bonusDetails ~= nil then 
+        print(bonusDetails.Name);
+        if bonusDetails.ID == lastBonusClicked then
             numOfBonusClicks = numOfBonusClicks + 1;
         else
             numOfBonusClicks = 1;
-            lastBonusClicked = terrDetails.ID;
+            lastBonusClicked = bonusDetails.ID;
         end
         if numOfBonusClicks == 3 then
             numOfBonusClicks = 0;
