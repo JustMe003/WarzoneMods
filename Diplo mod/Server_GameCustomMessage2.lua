@@ -627,6 +627,9 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	if payload.Index <= #playerData[playerID].PendingOffers then
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
+		if opponent == nil then
+			setReturn(setReturnPayload("The opponent was not found. If this message keeps popping up please let the mod creator know (Just_A_Dutchman_)", "Fail"));
+		end
 		if data.IsInFaction[playerID] and data.IsInFaction[opponent] then
 			local noFactionWar = true;
 			for _, faction in pairs(data.PlayerInFaction[playerID]) do
