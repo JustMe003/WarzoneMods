@@ -40,7 +40,14 @@ function getTerritoryClickedTest(terrDetails)
 	end
 	terrClicked = terrDetails.ID;
 	if numOfClicks == 3 then
-		print("Clicked " .. terrDetails.Name .. " 3 times!");
+		local sps = Game.LatestStanding.Territories[terrDetails.ID].NumArmies.SpecialUnits;
+		if not tableIsEmpty(sps) then
+			if #sps > 1 then
+				pickUnitOfList(sps);
+			else
+				inspectUnit(sps[1], inspectUnitMenu);
+			end
+		end
 		numOfClicks = 0;
 	end
 	UI.InterceptNextTerritoryClick(getTerritoryClickedTest);
