@@ -1,7 +1,8 @@
 require("Client_PresentMenuUI")
-function Client_GameRefresh(game)
+function Client_GameRefresh(Game)
 	if not refreshCalled then
         refreshCalled = true;
+        game = Game;
         numOfTerrClicks = 0;
         lastTerrClicked = -1;
         numOfBonusClicks = 0;
@@ -21,7 +22,11 @@ function handleTerritoryClick(terrDetails)
         end
         if numOfTerrClicks == 3 then
             numOfTerrClicks = 0;
-            -- open window with territory details
+            if Close ~= nil then
+                Close();
+                Close = nil;
+            end
+            game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 1); end);
         end
     end
     return WL.CancelClickIntercept;
@@ -37,7 +42,11 @@ function handleBonusLinkClick(bonusDetails)
         end
         if numOfBonusClicks == 3 then
             numOfBonusClicks = 0;
-            -- open window with territory details
+            if Close ~= nil then
+                Close();
+                Close = nil;
+            end
+            game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 2); end);
         end
     end
     return WL.CancelClickIntercept;

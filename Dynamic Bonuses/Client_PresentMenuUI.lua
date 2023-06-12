@@ -1,7 +1,7 @@
 require("UI");
 local colors;
 
-function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
+function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close, mode)
 	if Mod.PublicGameData.WellBeingMultiplier == nil then
 		UI.Alert("Due to a bug you'll have to wait till the next turn advances before the mod will start working correctly. If it is still not working after 1 turn, please let me know (Just_A_Dutchman_)");
 		close();
@@ -10,11 +10,20 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close
 	setMaxSize(500, 400);
 	game = Game;
 	colors = init();
+	Close = close;
 	vert = UI.CreateVerticalLayoutGroup(rootParent);
 	local horz = UI.CreateHorizontalLayoutGroup(vert);
 	UI.CreateLabel(horz).SetText("Mod author: ").SetColor(colors.TextColor);
 	UI.CreateLabel(horz).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
-	showMenu();
+	if mode == nil then
+		showMenu();
+	else
+		if mode == 1 then
+			validateTerritory(game.Map.Territories[lastTerrClicked]);
+		elseif mode == 2 then
+			validateBonus(game.Map.Bonuses[lastBonusClicked]);
+		end
+	end
 end
 
 function showMenu()
