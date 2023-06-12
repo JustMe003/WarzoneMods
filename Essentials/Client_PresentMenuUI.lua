@@ -40,6 +40,7 @@ function getTerritoryClickedTest(terrDetails)
 	if numOfClicks == 3 then
 		print("Clicked " .. terrDetails.Name .. " 3 times!");
 	end
+	return WL.CancelClickIntercept;
 end
 
 function showMainMenu()
