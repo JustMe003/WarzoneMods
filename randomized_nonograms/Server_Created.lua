@@ -53,7 +53,7 @@ function createNonogram(game, settings, n)
 	end
 	j = n;
 	while (j > 0) do
-		bonusNumber = (n * math.ceil(n / 2)) - rowSize * (j - 1) + 1;
+		bonusNumber = (n * math.ceil(n / 2)) + rowSize * (j - 1) + 1;
 		i = n;
 		while (i > 0) do
 			if mat[j][i] == 1 then
