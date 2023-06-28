@@ -7,10 +7,13 @@ end
 
 function createNonogram(game, settings, n)
 	local mat = {};
-	for i = 1, i < n do
+	local i = 1;
+	while i <= n do
 		mat[i] = {};
-		for j = 1, j < n do
+		local j = 1;
+		while j <= n do
 			mat[i][j] = getValue();
+			print(i, j, mat[i][j]);
 		end
 	end
 	local bonuses = {};
