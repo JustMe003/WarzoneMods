@@ -84,7 +84,7 @@ function createNonogram(game, settings, n)
 end
 
 function getValue()
-	if math.random(10000) / 100 <= Mod.Settings.Density then
+	if math.random(10000) / 100 <= Mod.Settings.NonogramDensity then
 		return 1;
 	end
 	return 0;
