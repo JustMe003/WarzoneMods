@@ -1,6 +1,6 @@
 
 function Server_Created(game, settings)
-	if settings.Map.ID = 103074 then
+	if settings.Map.ID == 103074 then
 		createNonogram(game, settings, 10);
 	end
 end
