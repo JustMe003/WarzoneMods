@@ -24,9 +24,9 @@ function createNonogram(game, settings, n)
 	local bonusSize = 0;
 	local bonusNumber = 0;
 	local i = n;
-	local j = n;
 	while (i > 0) do
 		bonusNumber = rowSize * (i - 1) + 1;
+		local j = n;
 		while (j > 0) do
 			if mat[i][j] == 1 then
 				bonusSize = bonusSize + 1;
@@ -51,10 +51,10 @@ function createNonogram(game, settings, n)
 		end
 		i = i - 1;
 	end
-	i = n;
 	j = n;
 	while (j > 0) do
-		bonusNumber = n * math.ceil(n / 2) + rowSize * (j - 0) + 1;
+		bonusNumber = math.ceil((n * math.ceil(n / 2)) / 2) + rowSize * (j - 0) + 1;
+		i = n;
 		while (i > 0) do
 			if mat[j][i] == 1 then
 				bonusSize = bonusSize + 1;
