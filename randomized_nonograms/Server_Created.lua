@@ -14,7 +14,9 @@ function createNonogram(game, settings, n)
 		while j <= n do
 			mat[i][j] = getValue();
 			print(i, j, mat[i][j]);
+			j = j + 1;
 		end
+		i = i + 1;
 	end
 	local bonuses = {};
 	local bonusData = {};
