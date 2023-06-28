@@ -1,102 +1,92 @@
 
 function Server_Created(game, settings)
---	We need to store the custom bonuses somewhere, so we call the PublicGameData of the mod
-	local publicGameData = Mod.PublicGameData;
---	overriddenBonuses will override the bonuses that we need to show the nonogram to the user, territoriesInBonus contains tables with the territories in a bonus
-	overriddenBonuses, territoriesInBonus = createNonogram(Mod.Settings.NonogramWidth, Mod.Settings.NonogramHeigth, Mod.Settings.NonogramDensity);
-	settings.OverriddenBonuses = overriddenBonuses;
-	publicGameData.Bonuses = territoriesInBonus;
-	Mod.PublicGameData = publicGameData;
-	if Mod.Settings.CustomDistribution == true then 
-		settings.AutomaticTerritoryDistribution = false;
-		settings.NumberOfWastelands = 0;
-		settings.WastelandSize = 0;
+	if settings.Map.ID = 103074 then
+		createNonogram(game, settings, 10);
 	end
-	
-	if Mod.Settings.LocalDeployments == false and settings.CommerceGame == false then
---		settings.CommerceGame, settings.CommerceArmyCostMultiplier, Settings.CommerceCityBaseCost = true, 0, 0;
-	else
---		settings.Cards[WL.CardID.Reinforcement] = WL.CardGameReinforcement.Create(1, 0, 0, 0);
-	end
-	
 end
 
-function createNonogram(width, heigth, density)
---	In here the nonogram gets created
-	nonogramData = {};
-	for i = 0, heigth - 1 do
-		for j = 0, width - 1 do
-			if math.random(100) < density then
-				nonogramData[(i*20) + j + 1] = 1;
-			else
-				nonogramData[(i*20) + j + 1] = 0;
-			end
+function createNonogram(game, settings, n)
+	local mat = {};
+	for i = 1, i < n do
+		mat[i] = {};
+		for j = 1, j < n do
+			mat[i][j] = getValue();
 		end
 	end
-
-	overrideBonuses, territoriesInBonus = {}, {};
---	Bonus 401 (with the ID 401) will cancel out all other bonuses cos they all contain the exact same territory (400)
---	If we wouldn't, the player owning territory 400 will get a bonus equal to the maximum income of all the bonuses combined
-	overrideBonuses[401] = 0;
---	We use i here to calculate the bonusID, so it is important that i ranges from 0 - heigth excluding heigth itself
-	for i = 0, heigth - 1 do
-		length = 0;
---		The bonusID's are all in order, with on the left side of the map 20 rows of 10 bonuses (ID: 1 - 200)
---		Together with the fact that bonusID #1 is always the most right bonus, and #2 besides it and so on
---		Allows us to keep track of a variable to overwrite the correct bonus
-		bonusID = (i*10) + 1;
---		Since the bonuses are from right to left, it is way easier to loop through the nonogram the same
---		Otherwise we only can assign the right bonus values to the right bonusID's after we're done looping through a rows
---		Since not all nonogram need 10 bonuses to show a row (in fact, this is the maximum count of sequences in a row / column for the size 20)
-		for j = width, 1, -1 do
-			if nonogramData[(i*20) + j] == 1 then
---				Update the length of the bonus
-				length = length + 1;
-			elseif nonogramData[(i*20) + j] == 0 and length ~= 0 then
---				We've reached the end of a bonus. Now we store the right value in the right bonusID and reset and update everything
-				overrideBonuses[bonusID] = length;
-				overrideBonuses[401] = overrideBonuses[401] - length
---				These 2 calculations make sure we take the right territories
-				territoriesInBonus[bonusID] = getTerritories((i*20) + j + 1,(i*20) + j + length,1)
-				length = 0
-				bonusID = bonusID + 1
+	local bonuses = {};
+	local bonusData = {};
+	local bonus = {};
+	local rowSize = math.ceil(n / 2);
+	local bonusSize = 0;
+	local bonusNumber = 0;
+	local i = n;
+	local j = n;
+	while (i > 0) do
+		bonusNumber = rowSize * (i - 1) + 1;
+		while (j > 0) do
+			if mat[i][j] == 1 then
+				bonusSize = bonusSize + 1;
+				table.insert(bonus, i * n + j);
+			elseif bonusSize > 0 then
+				bonuses[bonusNumber] = bonusSize;
+				bonusData[bonusNumber] = bonus;
+				bonus = {};
+				bonusNumber = bonusNumber + 1;
+				bonusSize = 0;
 			end
+			j = j - 1;
 		end
---		Quick check if length is not 0, if true we add the bonus and it's territories to the right variables
-		if length ~= 0 then
-			overrideBonuses[bonusID] = length
-			overrideBonuses[401] = overrideBonuses[401] - length
-			territoriesInBonus[bonusID] = getTerritories((i*20) + 1,(i*20) + length,1)
+		if bonusSize > 0 then
+			bonuses[bonusNumber] = bonusSize;
+			bonusData[bonusNumber] = bonus;
+			bonus = {};
+			bonusNumber = bonusNumber + 1;
+			bonusSize = 0;
 		end
+		i = i - 1;
 	end
---	No need to keep track of the combined bonus values a second time
-	overrideBonuses[401] = overrideBonuses[401] * 2
---	Now we do the same but for the top bonuses
-	for i = 1, width do
-		length = 0
-		bonusID = ((i-1)*10) + 201
-		for j = heigth - 1, 0, -1 do
-			if nonogramData[(j*20) + i] == 1 then
-				length = length + 1;
-			elseif nonogramData[(j*20) + i] == 0 and length ~= 0 then
-				overrideBonuses[bonusID] = length
-				territoriesInBonus[bonusID] = getTerritories((j*20) + i + 20, (j*20) + i + ((length)*20), 20)
-				length = 0
-				bonusID = bonusID + 1
+	i = n;
+	j = n;
+	while (j > 0) do
+		bonusNumber = n * math.ceil(n / 2) + rowSize * (j - 0) + 1;
+		while (i > 0) do
+			if mat[j][i] == 1 then
+				bonusSize = bonusSize + 1;
+				table.insert(bonus, i * n + j);
+			elseif bonusSize > 0 then
+				bonuses[bonusNumber] = bonusSize;
+				bonusData[bonusNumber] = bonus;
+				bonus = {};
+				bonusNumber = bonusNumber + 1;
+				bonusSize = 0;
 			end
+			i = i - 1;
 		end
-		if length ~= 0 then
-			overrideBonuses[bonusID] = length
-			territoriesInBonus[bonusID] = getTerritories(i, i + ((length-1)*20), 20)
+		if bonusSize > 0 then
+			bonuses[bonusNumber] = bonusSize;
+			bonusData[bonusNumber] = bonus;
+			bonus = {};
+			bonusNumber = bonusNumber + 1;
+			bonusSize = 0;
 		end
+		j = j - 1;
 	end
-	return overrideBonuses, territoriesInBonus;
+	local s = settings;
+	s.OverriddenBonuses = bonuses;
+	settings = s;
+	local data = Mod.PublicGameData;
+	data.Map = mat;
+	data.Bonuses = bonusData;
+	Mod.PublicGameData = data;
 end
---	Function to reduce code
-function getTerritories(start, ending, step)
-	list = {};
-	for i = start, ending, step do
-		table.insert(list, i);
+
+function getValue()
+	if math.random(10000) / 100 <= Mod.Settings.Density then
+		return 1;
 	end
-	return list;
+	return 0;
+end
+
+function round(n)
+	return math.floor(n + 0.5);
 end
