@@ -56,7 +56,7 @@ function createNonogram(game, settings, n)
 		bonusNumber = (n * math.ceil(n / 2)) + rowSize * (j - 1) + 1;
 		i = n;
 		while (i > 0) do
-			if mat[j][i] == 1 then
+			if mat[i][j] == 1 then
 				bonusSize = bonusSize + 1;
 				table.insert(bonus, i * n + j);
 			elseif bonusSize > 0 then
