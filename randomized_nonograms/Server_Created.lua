@@ -1,7 +1,10 @@
 
 function Server_Created(game, settings)
 	if settings.MapID == 103112 then
-		createNonogram(game, settings, 10);
+		for _, v in pairs(game.Map.Bonuses) do
+			print(v.ID, v.Name);
+		end
+		-- createNonogram(game, settings, 10);
 	end
 end
 
