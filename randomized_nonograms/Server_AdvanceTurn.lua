@@ -21,5 +21,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 				table.insert(incomeMods[p], WL.IncomeMod.Create(p, #bonus, "Controls bonus " .. bonusID));
 			end
 		end
+		for p, _ in pairs(game.Game.PlayingPlayers) do
+			addNewOrder(WL.GameOrderEvent.Create(p, "Added income", {}, {}, incomeMods[p]));
+		end
 	end
 end
