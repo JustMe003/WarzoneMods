@@ -12,7 +12,7 @@ function Client_PresentConfigureUI(rootParent)
 	CreateLabel(vert).SetText("This option will set the distribution to manual, everyone can see the solution of the nonogram back in the history").SetColor(textColor);
 	CreateLabel(vert).SetText("Only make the territories that will give you gold / armies pickable").SetColor(textColor);
 	setCustomDistribution = CreateCheckBox(vert).SetIsChecked(customDistribution).SetText(" ");
-	CreateLabel(line).SetText("Specify the density in percentages (60% or more is recommended!)").SetColor(textColor);
+	CreateLabel(vert).SetText("Specify the density in percentages (60% or more is recommended!)").SetColor(textColor);
 	setDensity = CreateNumberInputField(vert).SetSliderMinValue(25).SetSliderMaxValue(100).SetValue(initialValueDensity);
 	CreateLabel(vert).SetText("Check checkbox below to play with custom local deployments").SetColor(textColor);
 end
