@@ -30,7 +30,7 @@ function createNonogram(game, settings, n)
 		while (j > 0) do
 			if mat[i][j] == 1 then
 				bonusSize = bonusSize + 1;
-				table.insert(bonus, i * n + j);
+				table.insert(bonus, (i - ) * n + j);
 			elseif bonusSize > 0 then
 				bonuses[bonusNumber] = bonusSize;
 				bonusData[bonusNumber] = bonus;
@@ -56,7 +56,7 @@ function createNonogram(game, settings, n)
 		while (i > 0) do
 			if mat[i][j] == 1 then
 				bonusSize = bonusSize + 1;
-				table.insert(bonus, i * n + j);
+				table.insert(bonus, (i - 1) * n + j);
 			elseif bonusSize > 0 then
 				bonuses[bonusNumber] = bonusSize;
 				bonusData[bonusNumber] = bonus;
