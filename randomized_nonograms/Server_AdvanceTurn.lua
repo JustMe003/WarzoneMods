@@ -22,7 +22,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 			end
 		end
 		for p, _ in pairs(game.Game.PlayingPlayers) do
-			addNewOrder(WL.GameOrderEvent.Create(p, "Added income", {}, {}, incomeMods[p]));
+			addNewOrder(WL.GameOrderEvent.Create(p, "Added income", {}, {}, {}, incomeMods[p]));
 		end
 	end
 end
