@@ -1,6 +1,9 @@
 
 function Server_Created(game, settings)
 	if settings.MapID == 103120 then
+		local data = Mod.PublicGameData;
+		data.IsValid = true;
+		Mod.PublicGameData = data;
 		createNonogram(game, settings, 10);
 	end
 end
