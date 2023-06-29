@@ -9,10 +9,10 @@ end
 function handleBonusLinkClick(bonusDetails)
     if bonusDetails ~= nil then
         local t = {};
-        for _, id in pairs(Mod.PublicGameData.Bonuses) do
+        for _, id in pairs(Mod.PublicGameData.Bonuses[bonusDetails.ID]) do
             table.insert(t, id);
         end
-        game.HighlightTerritories(1);
+        game.HighlightTerritories(t);
     end
     UI.InterceptNextBonusLinkClick(handleBonusLinkClick);
 end
