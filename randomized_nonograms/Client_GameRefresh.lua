@@ -7,6 +7,7 @@ function Client_GameRefresh(Game)
 end
 
 function handleBonusLinkClick(bonusDetails)
+    print(bonusDetails);
     if bonusDetails ~= nil then
         local t = {};
         for _, id in pairs(Mod.PublicGameData.Bonuses[bonusDetails.ID]) do
