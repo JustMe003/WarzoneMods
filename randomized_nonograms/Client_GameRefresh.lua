@@ -12,7 +12,7 @@ function handleBonusLinkClick(bonusDetails)
         for _, id in pairs(Mod.PublicGameData.Bonuses) do
             table.insert(t, id);
         end
-        game.HighlightTerritories(t);
+        game.HighlightTerritories(1);
     end
     UI.InterceptNextBonusLinkClick(handleBonusLinkClick);
 end
