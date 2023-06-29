@@ -23,6 +23,7 @@ function createNonogram(game, settings, n)
 	local rowSize = math.ceil(n / 2);
 	local bonusSize = 0;
 	local bonusNumber = 0;
+	local solution = {};
 	local i = n;
 	while (i > 0) do
 		bonusNumber = rowSize * (i - 1) + 1;
@@ -31,6 +32,7 @@ function createNonogram(game, settings, n)
 			if mat[i][j] == 1 then
 				bonusSize = bonusSize + 1;
 				table.insert(bonus, (i - 1) * n + j);
+				table.insert(solution, (i - 1) * n + j);
 			elseif bonusSize > 0 then
 				bonuses[bonusNumber] = bonusSize;
 				bonusData[bonusNumber] = bonus;
@@ -57,6 +59,7 @@ function createNonogram(game, settings, n)
 			if mat[i][j] == 1 then
 				bonusSize = bonusSize + 1;
 				table.insert(bonus, (i - 1) * n + j);
+				table.insert(solution, (i - 1) * n + j);
 			elseif bonusSize > 0 then
 				bonuses[bonusNumber] = bonusSize;
 				bonusData[bonusNumber] = bonus;
@@ -75,6 +78,7 @@ function createNonogram(game, settings, n)
 		end
 		j = j - 1;
 	end
+	bonusData[n * n + 1] = solution;
 	local s = settings;
 	s.OverriddenBonuses = bonuses;
 	settings = s;
