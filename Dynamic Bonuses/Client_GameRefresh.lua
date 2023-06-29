@@ -23,9 +23,8 @@ function handleTerritoryClick(terrDetails)
         end
         if numOfTerrClicks == 3 then
             numOfTerrClicks = 0;
-            if Close ~= nil then
+            if not UI.IsDestroyed(vert) then
                 Close();
-                Close = nil;
             end
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 1); end);
         end
@@ -45,9 +44,8 @@ function handleBonusLinkClick(bonusDetails)
         end
         if numOfBonusClicks == 3 then
             numOfBonusClicks = 0;
-            if Close ~= nil then
+            if not UI.IsDestroyed(vert) then
                 Close();
-                Close = nil;
             end
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 2); end);
         end

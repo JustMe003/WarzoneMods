@@ -32,7 +32,6 @@ function createNonogram(game, settings, n)
 				bonusSize = bonusSize + 1;
 				table.insert(bonus, i * n + j);
 			elseif bonusSize > 0 then
-				print(bonusNumber, bonusSize, i, j);
 				bonuses[bonusNumber] = bonusSize;
 				bonusData[bonusNumber] = bonus;
 				bonus = {};
@@ -42,7 +41,6 @@ function createNonogram(game, settings, n)
 			j = j - 1;
 		end
 		if bonusSize > 0 then
-			print(bonusNumber, bonusSize);
 			bonuses[bonusNumber] = bonusSize;
 			bonusData[bonusNumber] = bonus;
 			bonus = {};
@@ -60,7 +58,6 @@ function createNonogram(game, settings, n)
 				bonusSize = bonusSize + 1;
 				table.insert(bonus, i * n + j);
 			elseif bonusSize > 0 then
-				print(bonusNumber, bonusSize, i, j);
 				bonuses[bonusNumber] = bonusSize;
 				bonusData[bonusNumber] = bonus;
 				bonus = {};
@@ -70,7 +67,6 @@ function createNonogram(game, settings, n)
 			i = i - 1;
 		end
 		if bonusSize > 0 then
-			print(bonusNumber, bonusSize);
 			bonuses[bonusNumber] = bonusSize;
 			bonusData[bonusNumber] = bonus;
 			bonus = {};
