@@ -94,8 +94,8 @@ function createNonogram(game, settings, n)
 		end
 		j = j - 1;
 	end
-	bonusData[n * n + 2 * n + 1] = solution;
-	bonuses[n * n + 2 * n + 1] = 1;
+	bonusData[math.ceil(n / 2) * 2 * n + 2 * n + 1] = solution;
+	bonuses[math.ceil(n / 2) * 2 * n + 2 * n + 1] = 1;
 	local s = settings;
 	s.OverriddenBonuses = bonuses;
 	settings = s;
