@@ -1,6 +1,6 @@
 
 function Server_Created(game, settings)
-	if settings.MapID == 103120 then
+	if settings.MapID == 103184 then
 		local data = Mod.PublicGameData;
 		data.IsValid = true;
 		Mod.PublicGameData = data;
@@ -26,10 +26,13 @@ function createNonogram(game, settings, n)
 	local rowSize = math.ceil(n / 2);
 	local bonusSize = 0;
 	local bonusNumber = 0;
+	local cancelBonusNumber = 0;
 	local solution = {};
 	local i = n;
 	while (i > 0) do
 		bonusNumber = rowSize * (i - 1) + 1;
+		cancelBonusNumber = n * n + i;
+		bonuses[cancelBonusNumber] = 0;
 		local j = n;
 		while (j > 0) do
 			if mat[i][j] == 1 then
@@ -38,6 +41,7 @@ function createNonogram(game, settings, n)
 				table.insert(solution, (i - 1) * n + j);
 			elseif bonusSize > 0 then
 				bonuses[bonusNumber] = bonusSize;
+				bonuses[cancelBonusNumber] = bonuses[cancelBonusNumber] - bonusSize;
 				bonusData[bonusNumber] = bonus;
 				bonus = {};
 				bonusNumber = bonusNumber + 1;
@@ -47,6 +51,7 @@ function createNonogram(game, settings, n)
 		end
 		if bonusSize > 0 then
 			bonuses[bonusNumber] = bonusSize;
+			bonuses[cancelBonusNumber] = bonuses[cancelBonusNumber] - bonusSize;
 			bonusData[bonusNumber] = bonus;
 			bonus = {};
 			bonusNumber = bonusNumber + 1;
@@ -57,14 +62,16 @@ function createNonogram(game, settings, n)
 	j = n;
 	while (j > 0) do
 		bonusNumber = (n * math.ceil(n / 2)) + rowSize * (j - 1) + 1;
+		cancelBonusNumber = n * n + n + j;
+		bonuses[cancelBonusNumber] = 0;
 		i = n;
 		while (i > 0) do
 			if mat[i][j] == 1 then
 				bonusSize = bonusSize + 1;
 				table.insert(bonus, (i - 1) * n + j);
-				table.insert(solution, (i - 1) * n + j);
 			elseif bonusSize > 0 then
 				bonuses[bonusNumber] = bonusSize;
+				bonuses[cancelBonusNumber] = bonuses[cancelBonusNumber] - bonusSize;
 				bonusData[bonusNumber] = bonus;
 				bonus = {};
 				bonusNumber = bonusNumber + 1;
@@ -74,6 +81,7 @@ function createNonogram(game, settings, n)
 		end
 		if bonusSize > 0 then
 			bonuses[bonusNumber] = bonusSize;
+			bonuses[cancelBonusNumber] = bonuses[cancelBonusNumber] - bonusSize;
 			bonusData[bonusNumber] = bonus;
 			bonus = {};
 			bonusNumber = bonusNumber + 1;
@@ -81,8 +89,8 @@ function createNonogram(game, settings, n)
 		end
 		j = j - 1;
 	end
-	bonusData[n * n + 1] = solution;
-	bonuses[n * n + 1] = 1;
+	bonusData[n * n + 2 * n + 1] = solution;
+	bonuses[n * n + 2 * n + 1] = 1;
 	local s = settings;
 	s.OverriddenBonuses = bonuses;
 	settings = s;
