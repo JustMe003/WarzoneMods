@@ -1,6 +1,6 @@
 
 function Server_Created(game, settings)
-	for i, v in pairs(game.Map.Readablekeys) do
+	for i, v in pairs(game.Map.readableKeys) do
 		print(i, v);
 	end
 	data = Mod.PublicGameData;
