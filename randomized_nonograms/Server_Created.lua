@@ -1,6 +1,6 @@
 
 function Server_Created(game, settings)
-	for i, v in pairs(game.Map.DistributionModes[0]) do
+	for i, v in pairs(game.Map.DistributionModes[-1]) do
 		print(i, v);
 	end
 	data = Mod.PublicGameData;
