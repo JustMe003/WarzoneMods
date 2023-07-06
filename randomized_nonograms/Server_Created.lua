@@ -36,7 +36,7 @@ function createNonogram(game, settings, n)
 	local i = n;
 	while (i > 0) do
 		bonusNumber = rowSize * (i - 1) + 1;
-		cancelBonusNumber = math.ceil(n / 2) * math.ceil(n / 2) * 4 + i;
+		cancelBonusNumber = math.ceil(n / 2) * n * 2 + i;
 		bonuses[cancelBonusNumber] = 0;
 		local j = n;
 		while (j > 0) do
@@ -67,7 +67,7 @@ function createNonogram(game, settings, n)
 	j = n;
 	while (j > 0) do
 		bonusNumber = (n * math.ceil(n / 2)) + rowSize * (j - 1) + 1;
-		cancelBonusNumber = math.ceil(n / 2) * math.ceil(n / 2) * 4 + n + j;
+		cancelBonusNumber = math.ceil(n / 2) * n * 2 + n + j;
 		bonuses[cancelBonusNumber] = 0;
 		i = n;
 		while (i > 0) do
