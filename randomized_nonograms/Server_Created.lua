@@ -1,7 +1,7 @@
 
 function Server_Created(game, settings)
-	for i, v in pairs(game.Map.DistributionModes[-1]) do
-		print(i, v);
+	for i, v in pairs(game.Map.readableKeys) do
+		print(v, game.Map[v]);
 	end
 	data = Mod.PublicGameData;
 	data.IsValid = false;
