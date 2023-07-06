@@ -1,16 +1,19 @@
 
 function Server_Created(game, settings)
-	if settings.MapID == 103184 then
-		local data = Mod.PublicGameData;
+	data = Mod.PublicGameData;
+	data.IsValid = false;
+	data.Size = 0;
+	if settings.MapID == 103187 then
 		data.IsValid = true;
-		Mod.PublicGameData = data;
-		createNonogram(game, settings, 10);
-	elseif settings.MapID == 103187 then
-		local data = Mod.PublicGameData;
+		data.Size = 5;
+	elseif settings.MapID == 103184 then
 		data.IsValid = true;
-		Mod.PublicGameData = data;
-		createNonogram(game, settings, 5);
+		data.Size = 10;
 	end
+	if data.Size > 0 then
+		createNonogram(game, settings, data.Size);
+	end
+	Mod.PublicGameData = data;
 end
 
 function createNonogram(game, settings, n)
@@ -99,10 +102,8 @@ function createNonogram(game, settings, n)
 	local s = settings;
 	s.OverriddenBonuses = bonuses;
 	settings = s;
-	local data = Mod.PublicGameData;
 	data.Map = mat;
 	data.Bonuses = bonusData;
-	Mod.PublicGameData = data;
 end
 
 function getValue()
