@@ -46,17 +46,28 @@ function modifyNormal(index, data)
     SetWindow("modifyNormal");
     local inputs = {};
     
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() showMain(); end)
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveNormalInputs(data, inputs); showMain(); end)
     
     CreateEmpty(root).SetPreferredHeight(10)
     
-    inputs.ChanceofFalling= CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
+    CreateLabel(root).SetText("Chance of falling each turn").SetColor(colors.TextColor);
+    inputs.ChanceofFalling = CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
     
     showGeneralInputs(index, data, inputs);
 end
 
 function showGeneralInputs(index, data, inputs)
-    
+    CreateLabel(root).SetText("Number of meteors falling").SetColor(colors.TextColor);
+    inputs.NumOfMeteors = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(20).SetValue(data.NumOfMeteors);
+end
+
+function saveNormalInputs(data, inputs)
+    data.ChanceofFalling = inputs.ChanceofFalling.GetValue();
+    saveInputs(data, inputs);
+end
+
+function saveInputs(data, inputs)
+    data.NumOfMeteors = inputs.NumOfMeteors.GetValue();
 end
 
 function showMoreData(data, vert, button)
@@ -65,9 +76,9 @@ function showMoreData(data, vert, button)
     AddSubWindow(win, currWin);
     SetWindow(currWin);
     
-    button.SetText("《》").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreData(data, vert, button) end) end);
+    button.SetText("!").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreData(data, vert, button) end) end);
     CreateLabel(vert).SetText("Chance of meteors falling: " .. data.ChanceofFalling).SetColor(colors.TextColor);
-    CreateLabel(vert).SetText("number of meteors: " .. getNumOfMeteorsString(data));
+    CreateLabel(vert).SetText("number of meteors: " .. getNumOfMeteorsString(data)).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("Meteor damage: " .. data.MeteorDamage).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("Can spawn an alien: " .. tostring(data.CanSpawnAlien)).SetColor(colors.TextColor);
     if data.CanSpawnAlien then
@@ -80,7 +91,7 @@ function showMoreData(data, vert, button)
 end
 
 function getDataString(data)
-    return data.ChanceofFalling .. "% | ○: " .. getNumOfMeteorsString(data) .. " | ¤: " .. data.MeteorDamage;
+    return data.ChanceofFalling .. "% | ○ " .. getNumOfMeteorsString(data) .. " | ¤ " .. data.MeteorDamage;
 end
 
 function getNumOfMeteorsString(data)
