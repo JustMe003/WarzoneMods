@@ -75,7 +75,7 @@ function showMoreData(data, vert, button)
 end
 
 function getDataString(data)
-    return s = data.ChanceofFalling .. "% | ○: " .. getNumOfMeteorsString(data) .. " | ¤: " .. data.MeteorDamage;
+    return data.ChanceofFalling .. "% | ○: " .. getNumOfMeteorsString(data) .. " | ¤: " .. data.MeteorDamage;
 end
 
 function getNumOfMeteorsString(data)
