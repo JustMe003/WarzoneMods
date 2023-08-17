@@ -14,7 +14,8 @@ function Client_PresentConfigureUI(rootParent)
         data.Special = {};
         counter = 1;
     end
-    
+
+    showMain();
 end
 
 function showMain()
