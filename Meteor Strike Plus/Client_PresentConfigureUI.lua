@@ -14,11 +14,14 @@ function Client_PresentConfigureUI(rootParent)
         data.Special = {};
         counter = 1;
     end
-
+    
     showMain();
 end
 
 function showMain()
+    DestroyWindow();
+    SetWindow("Main");
+    
     for i, rain in ipairs(data.Normal) do
         local line = CreateHorz(root);
         CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end);
@@ -35,6 +38,7 @@ function showMain()
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(data.Normal, t); modifyNormal(#data.Normal, t); end);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
 function modifyNormal(index, data)
