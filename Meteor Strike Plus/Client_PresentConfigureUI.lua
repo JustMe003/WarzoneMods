@@ -7,24 +7,60 @@ function Client_PresentConfigureUI(rootParent)
     colors = GetColors();
     
     data = Mod.Settings.Data;
+    counter = Mod.Settings.Counter;
     if data == nil then
         data = {};
         data.Normal = {};
         data.Special = {};
+        counter = 1;
     end
     
+end
+
+function showMain()
     for i, rain in ipairs(data.Normal) do
         local line = CreateHorz(root);
         CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end);
-        local vert = CreateVert(root);
+        local line2 = CreateHorz(root);
+        CreateEmpty(line2).SetPreferredWidth(20);
+        local vert = CreateVert(line2);
         local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
         showMoreButton.SetOnClick(function() showMoreData(rain, vert, showMoreButton); end);
         
     end
+    
+    CreateEmpty(root).SetPreferredHeight(5);
+    
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(data.Normal, t); modifyNormal(#data.Normal, t); end);
+end
+
+function modifyNormal(index, data)
+    DestroyWindow();
+    SetWindow("modifyNormal");
+    local inputs = {};
+    
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() showMain(); end)
+    
+    CreateEmpty(root).SetPreferredHeight(10)
+    
+    inputs.ChanceofFalling= CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
+    
+    showGeneralInputs(index, data, inputs);
+end
+
+function showGeneralInputs(index, data, inputs)
+    
 end
 
 function showMoreData(data, vert, button)
-    button.SetText("《》");
+    local win = GetCurrentWindow();
+    local currWin = "MoreData" .. data.ID;
+    AddSubWindow(win, currWin);
+    SetWindow(currWin);
+    
+    button.SetText("《》").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreData(data, vert, button) end) end);
     CreateLabel(vert).SetText("Chance of meteors falling: " .. data.ChanceofFalling).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("number of meteors: " .. getNumOfMeteorsString(data));
     CreateLabel(vert).SetText("Meteor damage: " .. data.MeteorDamage).SetColor(colors.TextColor);
@@ -35,6 +71,7 @@ function showMoreData(data, vert, button)
         CreateLabel(vert).SetText("Random number of aliens: " .. data.AlienRandomHealth).SetColor(colors.TextColor);
     end
     
+    SetWindow(win);
 end
 
 function getDataString(data)
@@ -65,7 +102,8 @@ function createSpecial()
 end
 
 function initializeVariables()
-    return {
+    local t = {
+        ID = counter;
         NumOfMeteors = 3,
         MeteorDamage = 5,
         UsesRandomMeteorNumber = false,
@@ -75,4 +113,6 @@ function initializeVariables()
         AlienDefaultHealth = 10,
         AlienRandomHealth = 3
     };
+    counter = counter + 1;
+    return t;
 end
