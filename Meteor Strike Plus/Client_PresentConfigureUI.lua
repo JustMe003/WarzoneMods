@@ -25,7 +25,7 @@ function showMain()
     for i, rain in ipairs(data.Normal) do
         local line = CreateHorz(root);
         CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetPreferredWidth(20);
-        local vert = CreateVert(line2);
+        local vert = CreateVert(line);
         local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
         showMoreButton.SetOnClick(function() showMoreData(rain, vert, showMoreButton); end);
         
