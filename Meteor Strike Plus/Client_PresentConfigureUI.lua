@@ -16,7 +16,7 @@ function Client_PresentConfigureUI(rootParent)
     end
     
     showMain();
-end
+ 
 
 function showMain()
     DestroyWindow();
@@ -24,9 +24,7 @@ function showMain()
     
     for i, rain in ipairs(data.Normal) do
         local line = CreateHorz(root);
-        CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end);
-        local line2 = CreateHorz(root);
-        CreateEmpty(line2).SetPreferredWidth(20);
+        CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetPreferredWidth(20);
         local vert = CreateVert(line2);
         local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
         showMoreButton.SetOnClick(function() showMoreData(rain, vert, showMoreButton); end);
@@ -59,6 +57,30 @@ end
 function showGeneralInputs(index, data, inputs)
     CreateLabel(root).SetText("Number of meteors falling").SetColor(colors.TextColor);
     inputs.NumOfMeteors = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(20).SetValue(data.NumOfMeteors);
+    
+    local line = CreateHorz(root);
+    local vert = CreateVert(root);
+    inputs.UsesRandomMeteorNumber = CreateCheckBox(line).SetText(" ").SetIsChecked(data.UsesRandomMeteorNumber).SetOnValueChanged(function() showRandNumMeteor(dats, inputs, vert); end);
+    CreateLabel(line).SetText("± random number of meteors").SetColor(colors.TextColor);
+    
+    CreateLabel(root).SetText("Meteor damage").SetColor(colors.TextColor);
+    inputs.MeteorDamage = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(data.MeteorDamage);
+    
+    line = CreateHorz(root);
+    inputs.CanHitSameTerrMoreThanOnce = CreateCheckBox(line).SetText(" ").SetIsChecked(data.CanHitSameTerrMoreThanOnce);
+    CreateLabel(line).SetText("Meteors can hit the same territory more than once").SetColor(colors.TextColor);
+end
+
+function showRandNumMeteor(data, inputs, vert)
+    local win = GetCurrentWindow();
+    local currWin = "RandNunOfMeteor";
+    AddSubWindow(win, currWin);
+    SetWindow(currWin);
+    
+    CreateLabel(vert).SetText("± range of meteors").SetColor(colors.TextColor);
+    inputs.MinMaxLimitNumRandomMeteor = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(data.MinMaxLimitNumRandomMeteor);
+    
+    SetWindow(win);
 end
 
 function saveNormalInputs(data, inputs)
@@ -68,6 +90,12 @@ end
 
 function saveInputs(data, inputs)
     data.NumOfMeteors = inputs.NumOfMeteors.GetValue();
+    data.UsesRandomMeteorNumber = inputs.UsesRandomMeteorNumber.GetIsChecked();
+    if data.UsesRandomMeteorNumber then
+        data.MinMaxLimitNumRandomMeteor = inputs.MinMaxLimitNumRandomMeteor.GetValue();
+    end
+    data.MeteorDamage = inputs.MeteorDamage.GetValue();
+    data.CanHitSameTerrMoreThanOnce = inputs.CanHitSameTerrMoreThanOnce.GetIsChecked();
 end
 
 function showMoreData(data, vert, button)
@@ -77,8 +105,8 @@ function showMoreData(data, vert, button)
     SetWindow(currWin);
     
     button.SetText("!").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreData(data, vert, button) end) end);
-    CreateLabel(vert).SetText("Chance of meteors falling: " .. data.ChanceofFalling).SetColor(colors.TextColor);
-    CreateLabel(vert).SetText("number of meteors: " .. getNumOfMeteorsString(data)).SetColor(colors.TextColor);
+    CreateLabel(vert).SetText("Chance of meteors falling: " .. round(data.ChanceofFalling, 2)).SetColor(colors.TextColor);
+    CreateLabel(vert).SetText("Number of meteors: " .. getNumOfMeteorsString(data)).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("Meteor damage: " .. data.MeteorDamage).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("Can spawn an alien: " .. tostring(data.CanSpawnAlien)).SetColor(colors.TextColor);
     if data.CanSpawnAlien then
@@ -91,7 +119,7 @@ function showMoreData(data, vert, button)
 end
 
 function getDataString(data)
-    return data.ChanceofFalling .. "% | ○ " .. getNumOfMeteorsString(data) .. " | ¤ " .. data.MeteorDamage;
+    return round(data.ChanceofFalling, 2) .. "% | ○ " .. getNumOfMeteorsString(data) .. " | ¤ " .. data.MeteorDamage;
 end
 
 function getNumOfMeteorsString(data)
@@ -124,6 +152,7 @@ function initializeVariables()
         MeteorDamage = 5,
         UsesRandomMeteorNumber = false,
         MinMaxLimitNumRandomMeteor = 2,
+        CanHitSameTerrMoreThanOnce = false,
         CanSpawnAlien = false,
         AlienSpawnChance = 20,
         AlienDefaultHealth = 10,
@@ -131,4 +160,9 @@ function initializeVariables()
     };
     counter = counter + 1;
     return t;
+end
+
+function round(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
 end
