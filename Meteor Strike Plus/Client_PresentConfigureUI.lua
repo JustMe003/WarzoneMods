@@ -241,7 +241,7 @@ function showMoreNormalData(data, vert, button)
     button.SetText("!").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreNormalData(data, vert, button) end) end);
     CreateLabel(vert).SetText("Chance of meteors falling: " .. round(data.ChanceofFalling, 2)).SetColor(colors.TextColor);
     
-    showMoreData(rain, vert);
+    showMoreData(data, vert);
     
     SetWindow(win);
 end
@@ -261,7 +261,7 @@ function showMoreSpecialData(data, vert, button)
         CreateLabel(vert).SetText("Doomsday turn: " .. data.FixedTurn).SetColor(colors.TextColor);
     end
     
-    showMoreData(rain, vert);
+    showMoreData(data, vert);
     
     SetWindow(win);
 end
