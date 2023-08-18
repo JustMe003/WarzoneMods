@@ -82,7 +82,7 @@ function modifyNormal(index, data)
     CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
-function modifySpecial(index, dats)
+function modifySpecial(index, data)
     DestroyWindow();
     SetWindow("modifySpecial");
     local inputs = {};
