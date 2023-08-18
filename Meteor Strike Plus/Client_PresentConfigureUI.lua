@@ -60,7 +60,7 @@ function showGeneralInputs(index, data, inputs)
     
     local line = CreateHorz(root);
     local vert = CreateVert(root);
-    inputs.UsesRandomMeteorNumber = CreateCheckBox(line).SetText(" ").SetIsChecked(data.UsesRandomMeteorNumber).SetOnValueChanged(function() showRandNumMeteor(dats, inputs, vert); end);
+    inputs.UsesRandomMeteorNumber = CreateCheckBox(line).SetText(" ").SetIsChecked(data.UsesRandomMeteorNumber).SetOnValueChanged(function() showRandNumMeteor(data, inputs, vert); end);
     CreateLabel(line).SetText("± random number of meteors").SetColor(colors.TextColor);
     
     CreateLabel(root).SetText("Meteor damage").SetColor(colors.TextColor);
