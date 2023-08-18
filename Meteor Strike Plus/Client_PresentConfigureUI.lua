@@ -6,12 +6,12 @@ function Client_PresentConfigureUI(rootParent)
     root = GetRoot();
     colors = GetColors();
     
-    data = Mod.Settings.Data;
+    conf = Mod.Settings.Data;
     counter = Mod.Settings.Counter;
-    if data == nil then
-        data = {};
-        data.Normal = {};
-        data.Special = {};
+    if conf == nil then
+        conf = {};
+        conf.Normal = {};
+        conf.Special = {};
         counter = 1;
     end
     
@@ -23,7 +23,7 @@ function showMain()
     SetWindow("Main");
     
     CreateLabel(root).SetText("Normal meteor storms").SetColor(colors.Orange);
-    for i, rain in ipairs(data.Normal) do
+    for i, rain in ipairs(conf.Normal) do
         local line = CreateHorz(root);
         CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end)
         local line2 = CreateHorz(root);
@@ -38,13 +38,13 @@ function showMain()
     
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(data.Normal, t); modifyNormal(#data.Normal, t); end);
+    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(conf.Normal, t); modifyNormal(#conf.Normal, t); end);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     
     CreateEmpty(root).SetPreferredHeight(10);
     
     CreateLabel(root).SetText("Doomsday meteor storms").SetColor(colors.Red);
-    for i, rain in ipairs(data.Special) do
+    for i, rain in ipairs(conf.Special) do
         line = CreateHorz(root);
         CreateButton(line).SetText(getSpecialDataString(rain)).SetColor(colors.Lime).SetOnClick(function() modifySpecial(i, rain) end);
         local line2 = CreateHorz(root);
@@ -53,6 +53,13 @@ function showMain()
         local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.TextColor);
         showMoreButton.SetOnClick(function() showMoreSpecialData(rain, vert, showMoreButton); end)
     end
+    
+    CreateEmpty(root).SetPreferredHeight(5);
+    
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(line).SetText("Create New").SetColor(colors.Yellow).SetOnClick(function() local t = createSpecial(); table.insert(conf.Special, t); modifySpecial(#conf.Special, t); end);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
 function modifyNormal(index, data)
@@ -68,6 +75,11 @@ function modifyNormal(index, data)
     inputs.ChanceofFalling = CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
     
     showGeneralInputs(data, inputs);
+    
+    local line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() conf.Normal[index] = conf.Normal[#conf.Normal]; table.remove(conf.Normal); end)
+    CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
 function modifySpecial(index, dats)
@@ -90,6 +102,11 @@ function modifySpecial(index, dats)
     end
     
     showGeneralInputs(data, inputs);
+    
+    local line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() conf.Special[index] = conf.Special[#conf.Special]; table.remove(conf.Special); end)
+    CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
 function showGeneralInputs(data, inputs)
