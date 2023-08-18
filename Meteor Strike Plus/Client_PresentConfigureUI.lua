@@ -234,7 +234,7 @@ end
 
 function showMoreNormalData(rain, vert, button)
     local win = GetCurrentWindow();
-    local currWin = "MoreData" .. data.ID;
+    local currWin = "MoreData" .. rain.ID;
     AddSubWindow(win, currWin);
     SetWindow(currWin);
     
