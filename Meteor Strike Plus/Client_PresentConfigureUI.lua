@@ -95,10 +95,9 @@ function modifySpecial(index, data)
     local vert = CreateVert(root);
     
     if data.RandomTurn then
-        inputs.RandomTurn.SetOnValueChanged(function() saveFixedTurn(data, inputs); showRandomTurn(data, inputs, vert); end);
-        showRandomTurn(data, inputs, vert);
+        showRandomTurn(data, inputs, vert, inputs.RandomTurn);
     else
-        showFixedTurn(data, inputs, vert, inputs.FixedTurn);
+        showFixedTurn(data, inputs, vert, inputs.RandomTurn);
     end
     
     showGeneralInputs(data, inputs);
