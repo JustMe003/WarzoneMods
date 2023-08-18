@@ -50,7 +50,7 @@ function showMain()
         local line2 = CreateHorz(root);
         local vert = CreateVert(root);
         CreateEmpty(line2).SetPreferredWidth(20);
-        local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.TextColor);
+        local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Lime);
         showMoreButton.SetOnClick(function() showMoreSpecialData(rain, vert, showMoreButton); end)
     end
     
@@ -87,7 +87,7 @@ function modifySpecial(index, data)
     SetWindow("modifySpecial");
     local inputs = {};
     
-    CreateButton(root).SetText("Return").SetColor(colors.TextColor).SetOnClick(function() saveSpecialInputs(data, inputs); showMain(); end)
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveSpecialInputs(data, inputs); showMain(); end)
     
     local line = CreateHorz(root);
     inputs.RandomTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.RandomTurn);
