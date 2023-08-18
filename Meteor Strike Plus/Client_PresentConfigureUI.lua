@@ -232,9 +232,9 @@ function saveRandomTurn(data, inputs)
     data.MaxTurnNumber = inputs.MaxTurnNumber.GetValue();
 end
 
-function showMoreNormalData(rain, vert, button)
+function showMoreNormalData(data, vert, button)
     local win = GetCurrentWindow();
-    local currWin = "MoreData" .. rain.ID;
+    local currWin = "MoreData" .. data.ID;
     AddSubWindow(win, currWin);
     SetWindow(currWin);
     
@@ -246,7 +246,7 @@ function showMoreNormalData(rain, vert, button)
     SetWindow(win);
 end
 
-function showMoreSpecialData(rain, vert, button)
+function showMoreSpecialData(data, vert, button)
     local win = GetCurrentWindow();
     local currWin = "MoreData" .. data.ID;
     AddSubWindow(win, currWin);
