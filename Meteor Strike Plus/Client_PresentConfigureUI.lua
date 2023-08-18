@@ -16,7 +16,7 @@ function Client_PresentConfigureUI(rootParent)
     end
     
     showMain();
- 
+end
 
 function showMain()
     DestroyWindow();
