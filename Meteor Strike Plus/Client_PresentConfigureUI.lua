@@ -30,7 +30,7 @@ function showMain()
         CreateEmpty(line2).SetPreferredWidth(20);
         local vert = CreateVert(line2);
         local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
-        showMoreButton.SetOnClick(function() showMoreData(rain, vert, showMoreButton); end);
+        showMoreButton.SetOnClick(function() showMoreNormalData(rain, vert, showMoreButton); end);
         
     end
     
