@@ -113,7 +113,7 @@ function showGeneralInputs(data, inputs)
     inputs.CanSpawnAlien = CreateCheckBox(line).SetText(" ").SetIsChecked(data.CanSpawnAlien);
     CreateLabel(line).SetText("Meteor can spawn an alien").SetColor(colors.TextColor);
     local vert2 = CreateVert(root);
-    inputs.CanSpawnAlien.SetOnValueChanged(function() showAlienConfig(data, inputs, vert, inputs.CanSpawnAlien); end)
+    inputs.CanSpawnAlien.SetOnValueChanged(function() showAlienConfig(data, inputs, vert2, inputs.CanSpawnAlien); end)
     if data.CanSpawnAlien then
         showAlienConfig(data, inputs, vert2, inputs.CanSpawnAlien);
     end
