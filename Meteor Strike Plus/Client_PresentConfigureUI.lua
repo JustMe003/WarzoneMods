@@ -8,6 +8,7 @@ function Client_PresentConfigureUI(rootParent)
     
     conf = Mod.Settings.Data;
     counter = Mod.Settings.Counter;
+    openConfig = "None";
     if conf == nil then
         conf = {};
         conf.Normal = {};
@@ -22,10 +23,12 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
     
-    CreateLabel(root).SetText("Normal meteor storms").SetColor(colors.Orange);
+    openConfig = "None";
+    
+    CreateLabel(root).SetText("Normal meteor storms").SetColor(colors.TextColor);
     for i, rain in ipairs(conf.Normal) do
         local line = CreateHorz(root);
-        CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end)
+        CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() openConfig = "Normal"; modifyNormal(i, rain); end)
         local line2 = CreateHorz(root);
         CreateEmpty(line2).SetPreferredWidth(20);
         local vert = CreateVert(line2);
@@ -38,19 +41,20 @@ function showMain()
     
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(conf.Normal, t); modifyNormal(#conf.Normal, t); end);
+    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(conf.Normal, t);
+        openConfig = "Normal"; modifyNormal(#conf.Normal, t); end);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     
     CreateEmpty(root).SetPreferredHeight(10);
     
-    CreateLabel(root).SetText("Doomsday meteor storms").SetColor(colors.Red);
+    CreateLabel(root).SetText("Doomsday meteor storms").SetColor(colors.TextColor);
     for i, rain in ipairs(conf.Special) do
         line = CreateHorz(root);
-        CreateButton(line).SetText(getSpecialDataString(rain)).SetColor(colors.Lime).SetOnClick(function() modifySpecial(i, rain) end);
+        CreateButton(line).SetText(getSpecialDataString(rain)).SetColor(colors.Blue).SetOnClick(function() openConfig = "Special"; modifySpecial(i, rain); end);
         local line2 = CreateHorz(root);
         local vert = CreateVert(root);
         CreateEmpty(line2).SetPreferredWidth(20);
-        local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Lime);
+        local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
         showMoreButton.SetOnClick(function() showMoreSpecialData(rain, vert, showMoreButton); end)
     end
     
@@ -58,7 +62,7 @@ function showMain()
     
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Create New").SetColor(colors.Yellow).SetOnClick(function() local t = createSpecial(); table.insert(conf.Special, t); modifySpecial(#conf.Special, t); end);
+    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createSpecial(); table.insert(conf.Special, t); openConfig = "Special"; modifySpecial(#conf.Special, t); end);
     CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
@@ -66,6 +70,8 @@ function modifyNormal(index, data)
     DestroyWindow();
     SetWindow("modifyNormal");
     local inputs = {};
+    
+    globalData = {data, inputs};
     
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveNormalInputs(data, inputs); showMain(); end)
     
@@ -86,6 +92,8 @@ function modifySpecial(index, data)
     DestroyWindow();
     SetWindow("modifySpecial");
     local inputs = {};
+    
+    globalData = {data, inputs};
     
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveSpecialInputs(data, inputs); showMain(); end)
     
