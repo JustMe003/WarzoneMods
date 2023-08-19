@@ -287,7 +287,7 @@ function getDataString(data)
 end
 
 function getNumOfMeteorsString(data)
-    return s = data.NumOfMeteors .. " + " .. data.RandomNumOfMeteor .. "?";
+    return s data.NumOfMeteors .. " + " .. data.RandomNumOfMeteor .. "?";
 end
 
 function getSpecialDataString(data)
