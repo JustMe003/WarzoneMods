@@ -125,10 +125,8 @@ function showGeneralInputs(data, inputs)
     inputs.UsesRandomMeteorNumber = CreateCheckBox(line).SetText(" ").SetIsChecked(data.UsesRandomMeteorNumber);
     CreateLabel(line).SetText("± random number of meteors").SetColor(colors.TextColor);
     
-    inputs.UsesRandomMeteorNumber.SetOnValueChanged(function() showRandNumMeteor(data, inputs, vert, inputs.UsesRandomMeteorNumber); end);
-    if data.UsesRandomMeteorNumber then
-        showRandNumMeteor(data, inputs, vert, inputs.UsesRandomMeteorNumber);
-    end
+    CreateLabel(vert).SetText("Additional (random) number of meteors").SetColor(colors.TextColor);
+    inputs.RandomNumOfMeteor = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(data.RandomNumOfMeteor);
     
     CreateLabel(root).SetText("Meteor damage").SetColor(colors.TextColor);
     inputs.MeteorDamage = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(data.MeteorDamage);
@@ -141,20 +139,6 @@ function showGeneralInputs(data, inputs)
     if data.CanSpawnAlien then
         showAlienConfig(data, inputs, vert2, inputs.CanSpawnAlien);
     end
-end
-
-function showRandNumMeteor(data, inputs, vert, box)
-    local win = GetCurrentWindow();
-    local currWin = "RandNumOfMeteor";
-    AddSubWindow(win, currWin);
-    SetWindow(currWin);
-    
-    box.SetOnValueChanged(function() DestroyWindow(currWin); saveRandNumMeteor(data, inputs); box.SetOnValueChanged(function() showRandNumMeteor(data, inputs, vert, box); end) end);
-    
-    CreateLabel(vert).SetText("± range of meteors").SetColor(colors.TextColor);
-    inputs.MinMaxLimitNumRandomMeteor = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(data.MinMaxLimitNumRandomMeteor);
-    
-    SetWindow(win);
 end
 
 function showAlienConfig(data, inputs, vert, box)
@@ -226,10 +210,7 @@ end
 
 function saveInputs(data, inputs)
     data.NumOfMeteors = inputs.NumOfMeteors.GetValue();
-    data.UsesRandomMeteorNumber = inputs.UsesRandomMeteorNumber.GetIsChecked();
-    if data.UsesRandomMeteorNumber then
-        saveRandNumMeteor(data, inputs);
-    end
+    saveRandNumMeteor(data, inputs);
     data.MeteorDamage = inputs.MeteorDamage.GetValue();
     data.CanSpawnAlien = inputs.CanSpawnAlien.GetIsChecked();
     if data.CanSpawnAlien then
@@ -238,7 +219,7 @@ function saveInputs(data, inputs)
 end
 
 function saveRandNumMeteor(data, inputs)
-    data.MinMaxLimitNumRandomMeteor = inputs.MinMaxLimitNumRandomMeteor.GetValue();
+    data.RandomNumOfMeteor = inputs.RandomNumOfMeteor.GetValue();
 end
 
 function saveAlienInputs(data, inputs)
@@ -306,11 +287,7 @@ function getDataString(data)
 end
 
 function getNumOfMeteorsString(data)
-    local s = data.NumOfMeteors;
-    if data.UsesRandomMeteorNumber then
-        s = s .. " ± " .. data.MinMaxLimitNumRandomMeteor;
-    end
-    return s;
+    return s = data.NumOfMeteors .. " + " .. data.RandomNumOfMeteor .. "?";
 end
 
 function getSpecialDataString(data)
@@ -343,8 +320,7 @@ function initializeVariables()
         ID = counter;
         NumOfMeteors = 3,
         MeteorDamage = 5,
-        UsesRandomMeteorNumber = false,
-        MinMaxLimitNumRandomMeteor = 2,
+        RandomNumOfMeteor = 2,
         CanSpawnAlien = false,
         AlienSpawnChance = 20,
         AlienDefaultHealth = 10,
