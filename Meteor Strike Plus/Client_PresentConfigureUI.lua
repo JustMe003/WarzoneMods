@@ -120,11 +120,6 @@ function showGeneralInputs(data, inputs)
     CreateLabel(root).SetText("Number of meteors falling").SetColor(colors.TextColor);
     inputs.NumOfMeteors = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(20).SetValue(data.NumOfMeteors);
     
-    local line = CreateHorz(root);
-    local vert = CreateVert(root);
-    inputs.UsesRandomMeteorNumber = CreateCheckBox(line).SetText(" ").SetIsChecked(data.UsesRandomMeteorNumber);
-    CreateLabel(line).SetText("± random number of meteors").SetColor(colors.TextColor);
-    
     CreateLabel(vert).SetText("Additional (random) number of meteors").SetColor(colors.TextColor);
     inputs.RandomNumOfMeteor = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(data.RandomNumOfMeteor);
     
