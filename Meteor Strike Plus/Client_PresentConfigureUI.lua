@@ -288,7 +288,7 @@ end
 function getSpecialDataString(data)
     local s = "t ";
     if data.RandomTurn then
-        s = s .. data.MinTurnNumber .. "-" .. data.MaxTurnNumber .. " | ";
+        s = s .. data.MinTurnNumber .. "-" .. data.MaxTurnNumber .. " | ○ ";
     else
         s = s .. data.FixedTurn .. " | ○ ";
     end
