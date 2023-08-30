@@ -96,9 +96,9 @@ function showMainConfig()
 	newButton(win .. "AddSlotConfig", line, "Add slot", pickSlot, "Aqua");
 	newButton(win .. "Return", line, "Return", showMain, "Orange");
 	if defaultFactionRelation then
-		newButton("defaultRelation", vert, "Default Faction relation: Peace", function() end, "Green");
-	else
 		newButton("defaultRelation", vert, "Default Faction relation: War", function() end, "Red");
+	else
+		newButton("defaultRelation", vert, "Default Faction relation: Peace", function() end, "Green");
 	end
 	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
 	local defaultRelationButton = getObject("defaultRelation");
