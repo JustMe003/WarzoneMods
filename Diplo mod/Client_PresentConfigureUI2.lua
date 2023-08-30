@@ -102,7 +102,7 @@ function showMainConfig()
 		newButton("defaultRelation", vert, "Default Faction relation: War", function() end, "Red");
 	end
 	local defaultRelationButton = getObject("defaultRelation");
-	defaultRelationButton.SetOnClick(if getColor("defaultRelation") == getColorFromString("Green") then defaultRelationButton.SetText("Default Faction relation: War").SetColor(colors.Red); else defaultRelationButton.SetText("Default Faction relation: Peace").SetColor(colors.Green); end end)
+	defaultRelationButton.SetOnClick(function() if getColor("defaultRelation") == getColorFromString("Green") then defaultRelationButton.SetText("Default Faction relation: War").SetColor(colors.Red); else defaultRelationButton.SetText("Default Faction relation: Peace").SetColor(colors.Green); end end)
 	for i, _ in pairs(config.Factions) do
 		newButton(win .. i, vert, i, function() showFactionConfig(i); end, getFactionColor(i));
 	end
