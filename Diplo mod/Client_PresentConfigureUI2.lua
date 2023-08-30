@@ -174,7 +174,7 @@ function createFaction()
 	else
 		local t = {}
 		for i, _ in pairs(config.Factions) do
-			t[i] = false;
+			t[i] = defaultFactionRelation;
 			config.Factions[i].AtWar[faction] = defaultFactionRelation;
 		end
 		config.Factions[faction] = {};
