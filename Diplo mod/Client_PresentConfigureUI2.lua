@@ -89,12 +89,20 @@ function showMainConfig()
 		resetWindow(win);
 	end
 	window(win);
+	if defaultFactionRelation == nil then defaultFactionRelation = false; end
 	local vert = newVerticalGroup("Vert", "root");
 	local line = newHorizontalGroup(win .. "line", vert);
 	newButton(win .. "AddFaction", line, "Add Faction", addFaction, "Lime");
 	newButton(win .. "AddSlotConfig", line, "Add slot", pickSlot, "Aqua");
 	newButton(win .. "Return", line, "Return", showMain, "Orange");
 	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
+	if defaultFactionRelation then
+		newButton("defaultRelation", vert, "Default Faction relation: Peace", function() end, "Green");
+	else
+		newButton("defaultRelation", vert, "Default Faction relation: War", function() end, "Red");
+	end
+	local defaultRelationButton = getObject("defaultRelation");
+	defaultRelationButton.SetOnClick(if getColor("defaultRelation") == getColorFromString("Green") then defaultRelationButton.SetText("Default Faction relation: War").SetColor(colors.Red); else defaultRelationButton.SetText("Default Faction relation: Peace").SetColor(colors.Green); end end)
 	for i, _ in pairs(config.Factions) do
 		newButton(win .. i, vert, i, function() showFactionConfig(i); end, getFactionColor(i));
 	end
@@ -167,7 +175,7 @@ function createFaction()
 		local t = {}
 		for i, _ in pairs(config.Factions) do
 			t[i] = false;
-			config.Factions[i].AtWar[faction] = false;
+			config.Factions[i].AtWar[faction] = defaultFactionRelation;
 		end
 		config.Factions[faction] = {};
 		config.Factions[faction].FactionMembers = {};
