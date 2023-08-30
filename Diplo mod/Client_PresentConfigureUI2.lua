@@ -95,14 +95,14 @@ function showMainConfig()
 	newButton(win .. "AddFaction", line, "Add Faction", addFaction, "Lime");
 	newButton(win .. "AddSlotConfig", line, "Add slot", pickSlot, "Aqua");
 	newButton(win .. "Return", line, "Return", showMain, "Orange");
-	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
 	if defaultFactionRelation then
 		newButton("defaultRelation", vert, "Default Faction relation: Peace", function() end, "Green");
 	else
 		newButton("defaultRelation", vert, "Default Faction relation: War", function() end, "Red");
 	end
+	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
 	local defaultRelationButton = getObject("defaultRelation");
-	defaultRelationButton.SetOnClick(function() if getColor("defaultRelation") == getColorFromString("Green") then defaultRelationButton.SetText("Default Faction relation: War").SetColor(colors.Red); else defaultRelationButton.SetText("Default Faction relation: Peace").SetColor(colors.Green); end end)
+	defaultRelationButton.SetOnClick(function() if getColor("defaultRelation") == getColorFromString("Green") then defaultFactionRelation = true; defaultRelationButton.SetText("Default Faction relation: War").SetColor(colors.Red); else defaultFactionRelation = false; defaultRelationButton.SetText("Default Faction relation: Peace").SetColor(colors.Green); end end)
 	for i, _ in pairs(config.Factions) do
 		newButton(win .. i, vert, i, function() showFactionConfig(i); end, getFactionColor(i));
 	end
