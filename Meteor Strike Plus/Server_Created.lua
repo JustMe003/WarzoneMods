@@ -13,6 +13,7 @@ function Server_GameCreated(game, settings)
     priv.Territories = terrs;
     priv.Doomsdays = doomsdays;
     Mod.PrivateGameData = priv;
+    print(Mod.PrivateGameData.Doomsdays);
 end
 
 function getDoomsdayTurn(data)
