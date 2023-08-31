@@ -1,5 +1,6 @@
 --  This function will return a WL.TerritoryModification and removes armies from the given territory, just like it was attacked
 --	This function will turn the territory neutral when it has no armies or special units left
+--	Modified to the needs of the Meteor Strike Plus mod
 --	
 --
 --  Inputs:
@@ -48,7 +49,7 @@ function removeArmies(terr, damage)
 			else
 				if getHealth(sp) <= damage then
 					table.insert(t, sp.ID);
-				elseif unitHasHealth(sp) then
+				elseif unitHasHealth(sp) and not unitIsAlien(sp) then
 					table.insert(t, sp.ID);
 					mod.AddSpecialUnits = {getClone(sp, damage)}
 				end
