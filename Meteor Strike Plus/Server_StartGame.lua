@@ -1,4 +1,4 @@
-function Server_Created(game, Settings)
+function Server_StartGame(game, Settings)
     print(1);
     local terrs = {};
     for i, _ in pairs(game.Map.Territories) do
