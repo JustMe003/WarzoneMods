@@ -1,4 +1,5 @@
-function Server_Created(game, settings)
+function Server_Created(game, Settings)
+    print(1);
     local terrs = {};
     for i, _ in pairs(game.Map.Territories) do
         table.insert(terrs, i);
