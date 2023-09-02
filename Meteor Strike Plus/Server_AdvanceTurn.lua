@@ -14,7 +14,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     
     local turnNumber = game.Game.TurnNumber;
     for _, data in ipairs(Mod.PrivateGameData.Doomsdays) do
-        if TurnNumber == data.Turn then
+        if turnNumber == data.Turn then
             local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
             table.insert(meteors, {Weight = num, Data = data.Data});
             totalWeight = totalWeight + num;
