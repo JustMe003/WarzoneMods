@@ -1,5 +1,4 @@
 function Server_StartGame(game, Settings)
-    print(1);
     local terrs = {};
     for i, _ in pairs(game.Map.Territories) do
         table.insert(terrs, i);
@@ -14,7 +13,6 @@ function Server_StartGame(game, Settings)
     priv.Territories = terrs;
     priv.Doomsdays = doomsdays;
     Mod.PrivateGameData = priv;
-    print(Mod.PrivateGameData.Doomsdays);
 end
 
 function getDoomsdayTurn(data)
