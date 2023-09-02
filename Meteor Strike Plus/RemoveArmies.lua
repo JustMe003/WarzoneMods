@@ -49,20 +49,22 @@ function removeArmies(terr, damage)
 				mod.AddArmies = math.max(-damage, -terr.NumArmies.NumArmies);
 				damage = damage - terr.NumArmies.NumArmies;
 				processedArmies = true;
-			else
-				print(sp.proxyType);
-				print(sp.Health, damage);
-				if getHealth(sp) <= damage then
-					table.insert(t, sp.ID);
-				elseif unitHasHealth(sp) and not unitIsAlien(sp) then
-					table.insert(t, sp.ID);
-					mod.AddSpecialUnits = {getClone(sp, damage)}
+				if damage <= 0 then
+					break;
 				end
-				
-				damage = damage - getHealth(sp);
-				if not unitHasHealth(sp) and sp.proxyType == "CustomSpecialUnit" and sp.DamageAbsorbedWhenAttacked ~= nil then
-					damage = damage - sp.DamageAbsorbedWhenAttacked;
-				end
+			end
+			print(sp.proxyType);
+			print(sp.Health, damage);
+			if getHealth(sp) <= damage then
+				table.insert(t, sp.ID);
+			elseif unitHasHealth(sp) and not unitIsAlien(sp) then
+				table.insert(t, sp.ID);
+				mod.AddSpecialUnits = {getClone(sp, damage)}
+			end
+			
+			damage = damage - getHealth(sp);
+			if not unitHasHealth(sp) and sp.proxyType == "CustomSpecialUnit" and sp.DamageAbsorbedWhenAttacked ~= nil then
+				damage = damage - sp.DamageAbsorbedWhenAttacked;
 			end
 			
 			if damage <= 0 then
