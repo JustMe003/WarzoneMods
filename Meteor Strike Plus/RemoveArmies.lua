@@ -41,6 +41,11 @@ function removeArmies(terr, damage)
 		
 		local processedArmies = false;
 		local t = {};
+
+		for i, v in ipairs(spInOrder) do
+			print(i, v);
+		end
+
 		for _, sp in ipairs(spInOrder) do
 			if not processedArmies and sp.CombatOrder >= 0 then
 				mod.AddArmies = math.max(-damage, -terr.NumArmies.NumArmies);
