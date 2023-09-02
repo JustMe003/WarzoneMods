@@ -42,10 +42,6 @@ function removeArmies(terr, damage)
 		local processedArmies = false;
 		local t = {};
 
-		for i, v in ipairs(spInOrder) do
-			print(i, v);
-		end
-
 		for _, sp in ipairs(spInOrder) do
 			if not processedArmies and sp.CombatOrder >= 0 then
 				mod.AddArmies = math.max(-damage, -terr.NumArmies.NumArmies);
@@ -53,10 +49,10 @@ function removeArmies(terr, damage)
 				processedArmies = true;
 			else
 				print(sp.proxyType);
+				print(sp.Health, damage);
 				if getHealth(sp) <= damage then
 					table.insert(t, sp.ID);
 				elseif unitHasHealth(sp) and not unitIsAlien(sp) then
-					print(sp.Health, damage);
 					table.insert(t, sp.ID);
 					mod.AddSpecialUnits = {getClone(sp, damage)}
 				end
