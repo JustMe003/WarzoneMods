@@ -42,9 +42,7 @@ function removeArmies(terr, damage)
 		local processedArmies = false;
 		local t = {};
 
-		print("start processing");
 		for _, sp in ipairs(spInOrder) do
-			print(sp.Name);
 			if not processedArmies and sp.CombatOrder >= 0 then
 				mod.AddArmies = math.max(-damage, -terr.NumArmies.NumArmies);
 				damage = damage - terr.NumArmies.NumArmies;
@@ -53,8 +51,6 @@ function removeArmies(terr, damage)
 					break;
 				end
 			end
-			print(sp.proxyType);
-			print(sp.Health, damage);
 			if getHealth(sp) <= damage then
 				table.insert(t, sp.ID);
 			elseif unitHasHealth(sp) and not unitIsAlien(sp) then
