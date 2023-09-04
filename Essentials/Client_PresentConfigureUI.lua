@@ -93,7 +93,7 @@ function modifyLink(links, link, i)
 	CreateEmpty(root).SetPreferredHeight(5);
 	local line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
-	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() links[i].Name = nameInput.GetText(); links[i].Link = linkInput.GetText(); showDocumentLinks(); end);
+	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() local link = {Name =  nameInput.GetText(), Link = linkInput.GetText()}; links[i] = link;  showDocumentLinks(); end);
 	CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showDocumentLinks);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
 end
