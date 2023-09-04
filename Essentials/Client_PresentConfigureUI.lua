@@ -75,25 +75,25 @@ function showDocumentLinks()
 	CreateLabel(root).SetText("Sharing (document) links has always been hard in some way. Putting them in the game description makes it impossible for mobile users to copy them, and putting them in the game chat will bury them under tens, maybe hundreds or even more messages. With the help of this mod, Essentials, you can allow all players to copy those documents you want to be available to all!").SetColor(colors.TextColor);
 
 	CreateEmpty(root).SetPreferredHeight(10);
-	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() links[#links] = modifyLink({Name = "", Link = ""}); showDocumentLinks(); end);
+	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() modifyLink(links, #links + 1); end);
 	
 	CreateEmpty(root).SetPreferredHeight(5);
 	for i, link in pairs(links) do
-		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() links[i] = modifyLink(link); showDocumentLinks(); end)
+		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() modifyLink(links, i); end);
 	end
 end
 
-function modifyLink(link)
+function modifyLink(links, i)
 	DestroyWindow();
 	SetWindow("modifyLink");
 
-	local nameInput = CreateTextInputField(root).SetText(link.Name or "").SetPlaceholderText("Name of the link").SetFlexibleWidth(1);
-	local linkInput = CreateTextInputField(root).SetText(link.Link or "").SetPlaceholderText("Browser link").SetFlexibleWidth(1);
+	local nameInput = CreateTextInputField(root).SetText(links[i].Name or "").SetPlaceholderText("Name of the link").SetFlexibleWidth(1);
+	local linkInput = CreateTextInputField(root).SetText(links[i].Link or "").SetPlaceholderText("Browser link").SetFlexibleWidth(1);
 	
 	CreateEmpty(root).SetPreferredHeight(5);
 	local line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
-	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() return {Name = nameInput.GetText(), Link = linkInput.GetText()}; end);
+	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() links[i].Name = nameInput.GetText(); links[i].Link = linkInput.GetText(); showDocumentLinks(); end);
 	CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showDocumentLinks);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
 end
