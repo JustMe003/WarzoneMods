@@ -75,20 +75,20 @@ function showDocumentLinks()
 	CreateLabel(root).SetText("Sharing (document) links has always been hard in some way. Putting them in the game description makes it impossible for mobile users to copy them, and putting them in the game chat will bury them under tens, maybe hundreds or even more messages. With the help of this mod, Essentials, you can allow all players to copy those documents you want to be available to all!").SetColor(colors.TextColor);
 
 	CreateEmpty(root).SetPreferredHeight(10);
-	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() modifyLink(links, #links + 1); end);
+	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() modifyLink(links, {}, #links + 1); end);
 	
 	CreateEmpty(root).SetPreferredHeight(5);
 	for i, link in pairs(links) do
-		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() modifyLink(links, i); end);
+		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() modifyLink(links, link, i); end);
 	end
 end
 
-function modifyLink(links, i)
+function modifyLink(links, link, i)
 	DestroyWindow();
 	SetWindow("modifyLink");
 
-	local nameInput = CreateTextInputField(root).SetText(links[i].Name or "").SetPlaceholderText("Name of the link").SetFlexibleWidth(1);
-	local linkInput = CreateTextInputField(root).SetText(links[i].Link or "").SetPlaceholderText("Browser link").SetFlexibleWidth(1);
+	local nameInput = CreateTextInputField(root).SetText(link.Name or "").SetPlaceholderText("Name of the link").SetFlexibleWidth(1);
+	local linkInput = CreateTextInputField(root).SetText(link.Link or "").SetPlaceholderText("Browser link").SetFlexibleWidth(1);
 	
 	CreateEmpty(root).SetPreferredHeight(5);
 	local line = CreateHorz(root).SetFlexibleWidth(1);
