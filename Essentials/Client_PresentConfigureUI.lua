@@ -75,11 +75,11 @@ function showDocumentLinks()
 	CreateLabel(root).SetText("Sharing (document) links has always been hard in some way. Putting them in the game description makes it impossible for mobile users to copy them, and putting them in the game chat will bury them under tens, maybe hundreds or even more messages. With the help of this mod, Essentials, you can allow all players to copy those documents you want to be available to all!").SetColor(colors.TextColor);
 
 	CreateEmpty(root).SetPreferredHeight(10);
-	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() links[#links] = modifyLink({Name = "", Link = ""}); end);
+	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() links[#links] = modifyLink({Name = "", Link = ""}); showDocumentLinks(); end);
 	
 	CreateEmpty(root).SetPreferredHeight(5);
 	for i, link in pairs(links) do
-		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() links[i] = modifyLink(link); end)
+		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() links[i] = modifyLink(link); showDocumentLinks(); end)
 	end
 end
 
