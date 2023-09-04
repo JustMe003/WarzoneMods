@@ -37,6 +37,7 @@ function showMain()
 	CreateLabel(root).SetText("Pick a feature here below to learn more about them").SetColor(colors.TextColor);
 	CreateButton(root).SetText("Mod Manuals").SetColor(colors.Lime).SetOnClick(showModManuals);
 	CreateButton(root).SetText("Unit Inspector").SetColor(colors.Blue).SetOnClick(showUnitInspector);
+	CreateButton(root).SetText("Document links").SetColor(colors.Yellow).SetOnClick(showDocumentLinks);
 	CreateButton(root).SetText("Order Finder").SetColor(colors.Orange).SetOnClick(showOrderFinder);
 	
 	CreateEmpty(root).SetPreferredHeight(5);
@@ -57,7 +58,49 @@ function showUnitInspector()
 	SetWindow("showUnitInspector");
 	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 	CreateEmpty(root).SetPreferredHeight(5);
-	CreateLabel(root).SetText("Now that mods are able to create their own custom units, it is sometimes hard to differentiate which unit is which, how much damage they do, if they can be damaged, etc. This tool allows you to select a unit and it will display all the information it knows, from attack damage to it's description")
+	CreateLabel(root).SetText("Now that mods are able to create their own custom units, it is sometimes hard to differentiate which unit is which, how much damage they do, if they can be damaged, etc. This tool allows you to select a unit and it will display all the information it knows, from attack damage to it's description").SetColor(colors.TextColor);
+end
+
+function showDocumentLinks()
+	DestroyWindow();
+	SetWindow("showDocumentLinks");
+
+	local links = links or Mod.Settings.Documents;
+	if links == nil then
+		links = {};
+	end
+
+	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+	CreateEmpty(root).SetPreferredHeight(5);
+	CreateLabel(root).SetText("Sharing (document) links has always been hard in some way. Putting them in the game description makes it impossible for mobile users to copy them, and putting them in the game chat will bury them under tens, maybe hundreds or even more messages. With the help of this mod, Essentials, you can allow all players to copy those documents you want to be available to all!").SetColor(colors.TextColor);
+
+	CreateEmpty(root).SetPreferredHeight(10);
+	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() addLink(links); end);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+	for _, link in pairs(links) do
+		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() modifyLink(link); end)
+	end
+end
+
+function addLink(links)
+	table.insert(links, {});
+	modifyLink(links[#links]);
+end
+
+function modifyLink(link)
+	DestroyWindow();
+	SetWindow("modifyLink");
+
+	local nameInput = CreateTextInputField(root).SetText(link.Name or "").SetPlaceholderText("Name of the link").SetFlexibleWidth(1);
+	local linkInput = CreateTextInputField(root).SetText(link.Link or "").SetPlaceholderText("Browser link").SetFlexibleWidth(1);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+	local line = CreateHorz(root).SetFlexibleWidth(1);
+	CreateEmpty(line).SetFlexibleWidth(0.5);
+	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() link.Name = nameInput.GetText(); link.Link = linkInput.GetText(); showDocumentLinks(); end);
+	CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showDocumentLinks);
+	CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
 function showOrderFinder()
