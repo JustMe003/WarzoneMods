@@ -65,7 +65,7 @@ function showDocumentLinks()
 	DestroyWindow();
 	SetWindow("showDocumentLinks");
 
-	links = links or Mod.Settings.Documents;
+	links = links or Mod.Settings.Links;
 	if links == nil then
 		links = {};
 	end
