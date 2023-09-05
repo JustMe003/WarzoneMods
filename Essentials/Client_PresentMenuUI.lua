@@ -463,6 +463,9 @@ function showCombatOrder(callback, sp)
 end
 
 function showDocumentLinks()
+	DestroyWindow();
+	SetWindow("showDocumentLinks");
+	
 	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainMenu);
 
 	CreateEmpty(root).SetPreferredHeight(10);
