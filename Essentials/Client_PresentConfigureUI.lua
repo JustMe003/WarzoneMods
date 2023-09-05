@@ -94,7 +94,8 @@ function modifyLink(link, i)
 	local line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
 	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() local link = {Name =  nameInput.GetText(), Link = linkInput.GetText()}; links[i] = link; showDocumentLinks(); end);
-	CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showDocumentLinks);
+	CreateButton(line).SetText("Cancel").SetColor(colors["Orange Red"]).SetOnClick(showDocumentLinks);
+	CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() if #links >= i then table.remove(links, i); end showDocumentLinks(); end)
 	CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
