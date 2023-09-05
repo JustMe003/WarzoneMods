@@ -61,7 +61,8 @@ function showMainMenu()
 	CreateLabel(root).SetText("Main Menu").SetColor(colors.TextColor);
 	CreateEmpty(root).SetPreferredHeight(5);
 	CreateButton(root).SetText("Mod Manuals").SetOnClick(function() showMods(1) end).SetColor(colors.Lime);
-	CreateButton(root).SetText("Unit Inspector").SetColor(colors.Blue).SetOnClick(inspectUnitMenu)
+	CreateButton(root).SetText("Unit Inspector").SetColor(colors.Blue).SetOnClick(inspectUnitMenu);
+	CreateButton(root).SetText("(Document) Links").SetColor(colors.Yellow).SetOnClick(showDocumentLinks);
 	CreateButton(root).SetText("Order Finder").SetOnClick(function() orderFinderMain(1) end).SetColor(colors.Orange).SetInteractable(Game.Us ~= nil and Game.Us.ID == 1311724);
 	CreateButton(root).SetText("Return").SetOnClick(function() Close() end).SetColor(colors["Green"]);
 end
@@ -458,6 +459,22 @@ function showCombatOrder(callback, sp)
 		CreateButton(line).SetText("Where?").SetColor(colors.Blue).SetOnClick(function() Game.HighlightTerritories(arr.Positions) for _, terrID in pairs(arr.Positions) do Game.CreateLocatorCircle(Game.Map.Territories[terrID].MiddlePointX, Game.Map.Territories[terrID].MiddlePointY); end; end);
 		
 		c = c + 1;
+	end
+end
+
+function showDocumentLinks()
+	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainMenu);
+
+	CreateEmpty(root).SetPreferredHeight(10);
+
+	if Mod.Settings.Links == nil then
+		CreateLabel(root).SetText("There are no links").SetColor(colors.TextColor);
+	else
+		for _, link in pairs(Mod.Settings.Links) do
+			CreateLabel(root).SetText(link.Name).SetColor(colors.TextColor);
+			CreateTextInputField(root).SetText(link.Link).SetFlexibleWidth(1);
+			CreateEmpty(root).SetPreferredHeight(5);
+		end
 	end
 end
 
