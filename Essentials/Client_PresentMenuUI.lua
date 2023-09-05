@@ -471,6 +471,7 @@ function showDocumentLinks()
 	SetWindow("showDocumentLinks");
 
 	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainMenu);
+	CreateLabel(root).SetText("In here you can find all the (document) links that the game creator wants you to have access to. You can copy the links to open them in your desired browser")
 
 	CreateEmpty(root).SetPreferredHeight(10);
 
