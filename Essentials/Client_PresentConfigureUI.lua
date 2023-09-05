@@ -65,7 +65,7 @@ function showDocumentLinks()
 	DestroyWindow();
 	SetWindow("showDocumentLinks");
 
-	local links = links or Mod.Settings.Documents;
+	links = links or Mod.Settings.Documents;
 	if links == nil then
 		links = {};
 	end
@@ -75,15 +75,15 @@ function showDocumentLinks()
 	CreateLabel(root).SetText("Sharing (document) links has always been hard in some way. Putting them in the game description makes it impossible for mobile users to copy them, and putting them in the game chat will bury them under tens, maybe hundreds or even more messages. With the help of this mod, Essentials, you can allow all players to copy those documents you want to be available to all!").SetColor(colors.TextColor);
 
 	CreateEmpty(root).SetPreferredHeight(10);
-	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() modifyLink(links, {}, #links + 1); end);
+	CreateButton(root).SetText("Add link").SetColor(colors.Blue).SetOnClick(function() modifyLink({Name = "", Link = ""}, #links + 1); end);
 	
 	CreateEmpty(root).SetPreferredHeight(5);
 	for i, link in pairs(links) do
-		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() modifyLink(links, link, i); end);
+		CreateButton(root).SetText(link.Name).SetColor(colors.Green).SetOnClick(function() modifyLink(link, i); end);
 	end
 end
 
-function modifyLink(links, link, i)
+function modifyLink(link, i)
 	DestroyWindow();
 	SetWindow("modifyLink");
 
@@ -93,7 +93,7 @@ function modifyLink(links, link, i)
 	CreateEmpty(root).SetPreferredHeight(5);
 	local line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
-	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() local link = {Name =  nameInput.GetText(), Link = linkInput.GetText()}; links[i] = link;  showDocumentLinks(); end);
+	CreateButton(line).SetText("Save").SetColor(colors.Green).SetOnClick(function() local link = {Name =  nameInput.GetText(), Link = linkInput.GetText()}; links[i] = link; showDocumentLinks(); end);
 	CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showDocumentLinks);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
 end
