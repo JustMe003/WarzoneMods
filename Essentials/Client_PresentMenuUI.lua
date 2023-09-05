@@ -1,7 +1,7 @@
 require("UI");
 require("utilities");
 
-function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
+function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, func)
 	setMaxSize(500, 585)
 	Close = close;
 	Init(rootParent);
@@ -29,7 +29,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	terrClicked = -1;
 	UI.InterceptNextTerritoryClick(getTerritoryClickedTest);
 	]]--
-	showMainMenu();
+	if func == nil then
+		showMainMenu();
+	else
+		func();
+	end
 end
 
 function getTerritoryClickedTest(terrDetails)
@@ -465,7 +469,7 @@ end
 function showDocumentLinks()
 	DestroyWindow();
 	SetWindow("showDocumentLinks");
-	
+
 	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainMenu);
 
 	CreateEmpty(root).SetPreferredHeight(10);
