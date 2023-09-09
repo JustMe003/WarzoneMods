@@ -15,7 +15,7 @@ function showMenu()
 	for terrID, terr in pairs(Game.LatestStanding.Territories) do
 		if terr.OwnerPlayerID == Game.Us.ID then
 			local line = CreateHorz(root).SetFlexibleWidth(1);
-			CreateLabel(line).SetText(Game.Map.Territories[terrID].Name).SetText(colors.TextColor);
+			CreateLabel(line).SetText(Game.Map.Territories[terrID].Name).SetColor(colors.TextColor);
 			CreateEmpty(line).SetFlexibleWidth(1);
 			CreateButton(line).SetText("Where?").SetColor(colors.Blue).SetOnClick(function() Game.HighlightTerritories({terrID}); Game.CreateLocatorCircle(Game.Map.Territories[terrID].MiddlePointX, Game.Map.Territories[terrID].MiddlePointY); end)
 		end
