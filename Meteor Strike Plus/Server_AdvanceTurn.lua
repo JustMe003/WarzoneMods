@@ -76,29 +76,44 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 end
 
 function moveAllAliens(game, addNewOrder)
+    local newAlienPlaces = {};
     for terrID, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
         if #terr.NumArmies.SpecialUnits > 0 then
             for _, sp in pairs(terr.NumArmies.SpecialUnits) do
-                if unitIsAlien(sp) and not alienHasMoved(game, sp) then
-                    moveAlien(game, addNewOrder, terr, sp)
+                if unitIsAlien(sp) then
+                    moveAlien(game, addNewOrder, terr, sp, newAlienPlaces);
+                    break;
                 end
             end
         end
     end
 end
 
-function moveAlien(game, addNewOrder, terr, alien)
+function moveAlien(game, addNewOrder, terr, alien, newAlienPlaces)
     local rand = math.random(#game.Map.Territories[terr.ID].ConnectedTo);
     for connID, _ in pairs(game.Map.Territories[terr.ID].ConnectedTo) do
+        rand = rand - 1;
         if rand == 0 then
-            local modFrom = WL.TerritoryModification.Create(terr.ID);
             local modTo = WL.TerritoryModification.Create(connID);
+            if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral then
+                modFrom.RemoveSpecialUnitsOpt = {alien.ID};
+                local clone = WL.CustomSpecialUnitBuilder.CreateCopy(alien);
+                if newAlienPlaces[connID] ~= nil then
+                    clone.Health = clone.Health + newAlienPlaces[connID].Health;
+                    clone.AttackPower = clone.Health;
+                    clone.DefensePower = clone.Health;
+                end
+                clone = clone.Build();
+                newAlienPlaces[connID] = clone;
+                modTo.AddSpecialUnits = {clone};
+                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Alien moved from " .. game.Map.Territories[terr.ID].Name .. " to " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
+                event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
+                addNewOrder(event);
+            else
+                modTo.AddArmies = -alien.Health;
+            end
         end
     end
-end
-
-function alienHasMoved(game, alien)
-    
 end
 
 function unitIsAlien(sp)
