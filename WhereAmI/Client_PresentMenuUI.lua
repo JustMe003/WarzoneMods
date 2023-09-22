@@ -26,6 +26,9 @@ function showMenu()
 end
 
 function showNthPage(n)
+	DestroyWindow();
+	SetWindow("showTerritories");
+	
 	for i = 1, math.min(10, #playerTerritories - (10 * (n - 1))) do
 		local terr = playerTerritories[10 * (n - 1) + i];
 		local line = CreateHorz(root).SetFlexibleWidth(1);
