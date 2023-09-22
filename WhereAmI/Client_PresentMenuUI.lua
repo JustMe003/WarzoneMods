@@ -76,8 +76,8 @@ function quickSort(arr, left, right, func)
         j = j + 1;
     end
     swap(arr, right, i);
-    quickSort(arr, left, mid);
-    quickSort(arr, mid + 1, right);
+    quickSort(arr, left, mid, func);
+    quickSort(arr, mid + 1, right, func);
 end
 
 function swap(arr, x, y)
