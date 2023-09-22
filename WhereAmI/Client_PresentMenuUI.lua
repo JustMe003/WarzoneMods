@@ -12,7 +12,8 @@ function showMenu()
 	if Game.Us == nil then UI.Alert("You are not in the game"); return; end
 	CreateLabel(root).SetText("Where am I?").SetColor(colors.Orange);
 
-	if playerTerritories == nil then
+	if playerTerritories == nil or turnNumber ~= Game.Game.TurnNumber then
+		turnNumber = Game.Game.TurnNumber;
 		playerTerritories = {};
 		
 		for terrID, terr in pairs(Game.LatestStanding.Territories) do
