@@ -51,6 +51,9 @@ function showNthPage(n)
 	CreateEmpty(line).SetFlexibleWidth(0.45);
 end
 
+function selectSorting()
+	
+end
 
 function quickSort(arr, left, right, func)
     if left >= right then return; end
