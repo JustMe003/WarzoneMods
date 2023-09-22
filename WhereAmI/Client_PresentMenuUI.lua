@@ -2,7 +2,7 @@ require("UI");
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
 	Init(rootParent);
-    root = GetRoot();
+    root = GetRoot().SetFlexibleWidth(1);
 	colors = GetColors();
 	setMaxSize(500, 400);
     Game = game;
@@ -11,8 +11,7 @@ end
 
 function showMenu()
 	if Game.Us == nil then UI.Alert("You are not in the game"); return; end
-	CreateLabel(root).SetText("Where am I?").SetColor(colors.Orange);
-
+	
 	if playerTerritories == nil or turnNumber ~= Game.Game.TurnNumber then
 		turnNumber = Game.Game.TurnNumber;
 		playerTerritories = {};
@@ -30,6 +29,11 @@ end
 function showNthPage(n)
 	DestroyWindow();
 	SetWindow("showTerritories");
+	
+	local title = CreateHorz(root).SetFlexibleWidth(1);
+	CreateLabel(line).SetText("Where am I?").SetColor(colors.Orange);
+	CreateEmpty(line).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Sort").SetColor(colors.Green).SetOnClick(selectSorting);
 
 	for i = 1, math.min(10, #playerTerritories - (10 * (n - 1))) do
 		local terr = playerTerritories[10 * (n - 1) + i];
@@ -45,4 +49,30 @@ function showNthPage(n)
 	CreateEmpty(line).SetFlexibleWidth(0.1);
 	CreateButton(line).SetText(">").SetColor(colors.Cyan).SetOnClick(function() showNthPage(n + 1); end).SetInteractable(#playerTerritories > n * 10);
 	CreateEmpty(line).SetFlexibleWidth(0.45);
+end
+
+
+function quickSort(arr, left, right, func)
+    if left >= right then return; end
+    local mid = left + math.floor((right - left) / 2);
+    swap(arr, right, mid);
+    local pivot = arr[right];
+    local i = left;
+    local j = left;
+    while j <= right do
+        if arr[j] < pivot then
+            swap(arr, i, j);
+            i = i + 1;
+        end
+        j = j + 1;
+    end
+    swap(arr, right, i);
+    quickSort(arr, left, mid);
+    quickSort(arr, mid + 1, right);
+end
+
+function swap(arr, x, y)
+    local z = arr[x];
+    arr[x] = arr[y];
+    arr[y] = z;
 end
