@@ -4,6 +4,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Init(rootParent);
     root = GetRoot();
 	colors = GetColors();
+	setMaxSize(500, 400);
     Game = game;
     showMenu();
 end
