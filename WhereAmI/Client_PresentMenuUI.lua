@@ -69,6 +69,7 @@ function quickSort(arr, left, right, func)
     local i = left;
     local j = left;
     while j <= right do
+		print(arr[i], arr[j], pivot);
         if func(arr[j], pivot) then
             swap(arr, i, j);
             i = i + 1;
