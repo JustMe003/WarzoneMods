@@ -52,7 +52,13 @@ function showNthPage(n)
 end
 
 function selectSorting()
-	
+	DestroyWindow();
+	SetWindow("SelectSorting");
+
+	CreateText(root).SetText("Select your sorting method").SetColor(colors.TextColor);
+	CreateEmpty(root).SetPreferredHeight(10);
+
+	CreateButton(root).SetText("By name").SetColor(colors.Green).SetOnClick(function() quickSort(playerTerritories, 1, #playerTerritories, function(a, b) return b.Data.name > a.Data.Name end); showNthPage(1); end)
 end
 
 function quickSort(arr, left, right, func)
@@ -63,7 +69,7 @@ function quickSort(arr, left, right, func)
     local i = left;
     local j = left;
     while j <= right do
-        if arr[j] < pivot then
+        if func(arr[j], pivot) then
             swap(arr, i, j);
             i = i + 1;
         end
