@@ -60,7 +60,7 @@ function selectSorting()
 
 	CreateButton(root).SetText("By name").SetColor(colors.Green).SetOnClick(function() table.sort(playerTerritories, function(a, b) return b.Data.Name > a.Data.Name end); showNthPage(1); end);
 
-	CreateButton(root).SetText("By armies").SetColor(colors.Lime).SetOnClick(function() table.sort(playerTerritories, function(a, b) print((#b.Standing.NumArmies.SpecialUnits * 1000000 + b.Standing.NumArmies.NumArmies) .. " > " .. (#a.Standing.NumArmies.SpecialUnits * 1000000 + a.Standing.NumArmies.NumArmies)); return (#b.Standing.NumArmies.SpecialUnits * 1000000 + b.Standing.NumArmies.NumArmies) > (#a.Standing.NumArmies.SpecialUnits * 1000000 + a.Standing.NumArmies.NumArmies); end); showNthPage(1); end);
+	CreateButton(root).SetText("By armies").SetColor(colors.Lime).SetOnClick(function() table.sort(playerTerritories, function(a, b) return (#b.Standing.NumArmies.SpecialUnits * 1000000 + b.Standing.NumArmies.NumArmies) < (#a.Standing.NumArmies.SpecialUnits * 1000000 + a.Standing.NumArmies.NumArmies); end); showNthPage(1); end);
 end
 
 function quickSort(arr, left, right, func)
