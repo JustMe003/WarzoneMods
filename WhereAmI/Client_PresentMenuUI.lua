@@ -58,7 +58,7 @@ function selectSorting()
 	CreateLabel(root).SetText("Select your sorting method").SetColor(colors.TextColor);
 	CreateEmpty(root).SetPreferredHeight(10);
 
-	CreateButton(root).SetText("By name").SetColor(colors.Green).SetOnClick(function() quickSort(playerTerritories, 1, #playerTerritories, function(a, b) return b.Data.Name > a.Data.Name end); showNthPage(1); end)
+	CreateButton(root).SetText("By name").SetColor(colors.Green).SetOnClick(function() quickSort(playerTerritories, 1, #playerTerritories, function(a, b) return print(b.Data.Name .. " > " .. a.Data.Name); b.Data.Name > a.Data.Name end); showNthPage(1); end)
 end
 
 function quickSort(arr, left, right, func)
