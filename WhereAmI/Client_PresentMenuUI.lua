@@ -55,7 +55,7 @@ function selectSorting()
 	DestroyWindow();
 	SetWindow("SelectSorting");
 
-	CreateText(root).SetText("Select your sorting method").SetColor(colors.TextColor);
+	CreateLabel(root).SetText("Select your sorting method").SetColor(colors.TextColor);
 	CreateEmpty(root).SetPreferredHeight(10);
 
 	CreateButton(root).SetText("By name").SetColor(colors.Green).SetOnClick(function() quickSort(playerTerritories, 1, #playerTerritories, function(a, b) return b.Data.name > a.Data.Name end); showNthPage(1); end)
