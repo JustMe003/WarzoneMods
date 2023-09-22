@@ -28,7 +28,7 @@ end
 function showNthPage(n)
 	DestroyWindow();
 	SetWindow("showTerritories");
-	
+
 	for i = 1, math.min(10, #playerTerritories - (10 * (n - 1))) do
 		local terr = playerTerritories[10 * (n - 1) + i];
 		local line = CreateHorz(root).SetFlexibleWidth(1);
@@ -41,6 +41,6 @@ function showNthPage(n)
 	CreateEmpty(line).SetFlexibleWidth(0.45);
 	CreateButton(line).SetText("<").SetColor(colors.Cyan).SetOnClick(function() showNthPage(n - 1); end).SetInteractable(n > 1);
 	CreateEmpty(line).SetFlexibleWidth(0.1);
-	CreateButton(line).SetText(">").SetColor(colors.Cyan).SetOnClick(function() showNthPage(n + 1); end).SetInteractable(#playerTerritories / 10 < n);
+	CreateButton(line).SetText(">").SetColor(colors.Cyan).SetOnClick(function() showNthPage(n + 1); end).SetInteractable(#playerTerritories > n * 10);
 	CreateEmpty(line).SetFlexibleWidth(0.45);
 end
