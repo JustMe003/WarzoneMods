@@ -33,7 +33,7 @@ function showNthPage(n)
 	local title = CreateHorz(root).SetFlexibleWidth(1);
 	CreateLabel(title).SetText("Where am I?").SetColor(colors.Orange);
 	CreateEmpty(title).SetFlexibleWidth(1);
-	CreateButton(title).SetText("Sort").SetColor(colors.Green).SetOnClick(selectSorting);
+	CreateButton(title).SetText("Sort").SetColor(colors.Green).SetOnClick(selectSorting).SetInteractable(Game.Us.ID == 1311724);
 
 	for i = 1, math.min(10, #playerTerritories - (10 * (n - 1))) do
 		local terr = playerTerritories[10 * (n - 1) + i];
