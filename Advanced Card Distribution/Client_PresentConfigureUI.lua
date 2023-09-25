@@ -108,20 +108,20 @@ end
 
 function pickSlotToCopy(copy)
 	local list = {};
-
+	needsEntry = {};
 	for i, v in pairs(CardPiecesFromStart) do
 		if v ~= nil and getTableLength(v) > 0 then
-			list[i] = true;
+			needsEntry[i] = true;
 		end
 	end
 
 	for i, v in pairs(CardPiecesEachTurn) do
-		if v ~= nil and getTableLength(v) > 0 and list[i] == nil then
-			list[i] = true;
+		if v ~= nil and getTableLength(v) > 0 and needsEntry[i] == nil then
+			needsEntry[i] = true;
 		end
 	end
-
-	for i, _ in pairs(list) do
+	
+	for i, _ in pairs(needsEntry) do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
 		t.selected = function() copySlot(copy, i); getConfig(i); end
