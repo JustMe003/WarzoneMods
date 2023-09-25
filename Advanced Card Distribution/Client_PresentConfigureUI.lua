@@ -117,7 +117,7 @@ function pickSlotToCopy(copy)
 		print(t.text);
 	end
 
-	for i, _ in pairs(CardPiecesFromStart) do
+	for i, _ in pairs(CardPiecesEachTurn) do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
 		t.selected = function() copySlot(copy, i); getConfig(i); end
