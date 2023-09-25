@@ -168,6 +168,7 @@ function getSlotName(i)
 end
 
 function getSlotNumberFromName(s)
+	print(s);
 	s = string.gsub(s, "%s+", "");
 	if #string.gsub(s, "%a+", "") ~= 0 then
 		return -1;
@@ -185,6 +186,7 @@ function getSlotNumberFromName(s)
 			end
 		end
 	end
+	print(slot);
 	return slot;
 end
 
