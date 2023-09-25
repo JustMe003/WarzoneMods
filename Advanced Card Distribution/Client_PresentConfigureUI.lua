@@ -151,8 +151,11 @@ end
 function getSlotName(i)
 	local alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 	local s = "";
+	local b = false;
 	while (i ~= 0) do
-		s = s .. alpha[(i % 26) + 1];
+		local index = (i % 26);
+		if not b then b = true; index = index + 1; end
+		s = s .. alpha[index];
 		i = (i - (i % 26)) / 26;
 	end
 	return s;
