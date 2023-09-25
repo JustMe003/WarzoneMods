@@ -12,7 +12,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	for _, p in pairs(game.ServerGame.Game.PlayingPlayers) do
 		local pieces = {};
 		local cardsToBeRemoved = {};
-		for card, amount in pairs(Mod.Settings.CardPiecesEachTurn[p.Slot]) do
+		for card, amount in pairs(Mod.Settings.CardPiecesEachTurn[p.Slot] or {}) do
 			if game.Settings.Cards[card] ~= nil then
 				if amount > 0 then
 					pieces[card] = amount;
