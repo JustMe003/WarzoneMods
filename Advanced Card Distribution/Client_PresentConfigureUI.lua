@@ -108,16 +108,20 @@ end
 
 function pickSlotToCopy(copy)
 	local list = {};
-	
-	for i, _ in pairs(CardPiecesFromStart) do
-		local t = {};
-		t.text = "Slot " .. getSlotName(i);
-		t.selected = function() copySlot(copy, i); getConfig(i); end
-		table.insert(list, t);
-		print(t.text);
+
+	for i, v in pairs(CardPiecesFromStart) do
+		if v ~= nil and getTableLength(v) > 0 then
+			list[i] = true;
+		end
 	end
 
-	for i, _ in pairs(CardPiecesEachTurn) do
+	for i, v in pairs(CardPiecesEachTurn) do
+		if v ~= nil and getTableLength(v) > 0 and needsButton[i] == nil then
+			list[i] = true;
+		end
+	end
+	
+	for i, _ in pairs(list) do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
 		t.selected = function() copySlot(copy, i); getConfig(i); end
@@ -178,7 +182,6 @@ function getSlotName(i)
 end
 
 function getSlotNumberFromName(s)
-	print(s);
 	s = string.gsub(s, "%s+", "");
 	if #string.gsub(s, "%a+", "") ~= 0 then
 		return -1;
@@ -197,7 +200,6 @@ function getSlotNumberFromName(s)
 		end
 		mult = mult * 26;
 	end
-	print(slot - 1);
 	return slot - 1;
 end
 
