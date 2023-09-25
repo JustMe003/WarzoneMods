@@ -125,16 +125,6 @@ function pickSlotToCopy(copy)
 		print(t.text);
 	end
 
-	
-
-	local i = 1;
-	while i < #list do
-		if list[i].text == list[i + 1].text then
-			table.remove(list, i);
-		end
-		i = i + 1;
-	end
-
 	UI.PromptFromList("Pick a slot to paste the configuration to", list);
 end
 
