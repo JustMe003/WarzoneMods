@@ -108,12 +108,31 @@ end
 
 function pickSlotToCopy(copy)
 	local list = {};
-	for i = 0, 49 do
+	
+	for i, _ in pairs(CardPiecesFromStart) do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
 		t.selected = function() copySlot(copy, i); getConfig(i); end
 		table.insert(list, t);
 	end
+
+	for i, _ in pairs(CardPiecesFromStart) do
+		local t = {};
+		t.text = "Slot " .. getSlotName(i);
+		t.selected = function() copySlot(copy, i); getConfig(i); end
+		table.insert(list, t);
+	end
+
+	table.sort(list, function(a, b) return b.text < a.text; end);
+
+	local i = 1;
+	while i < #list do
+		if list[i].text == list[i + 1].text then
+			table.remove(list, i);
+		end
+		i = i + 1;
+	end
+
 	UI.PromptFromList("Pick a slot to paste the configuration to", list);
 end
 
