@@ -43,6 +43,20 @@ function showMain()
 end
 
 function chooseSlot()
+	local win = "ChooseSlot";
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then
+		resetWindow(win);
+	end
+	
+	window(win);
+	local vert = newVerticalGroup("vert", "root");
+	local input = newTextField("SlotInput", vert, "Input Slot Name", "", 3);
+	updateFlexibleWidth(vert, 1);
+	updateFlexibleWidth(input, 1);
+	updatePreferredWidth(input, 300);
+	local submit = newButton("SubmitButton", vert, "Select", function() local slot = getSlotNumberFromName(string.upper(getText(input))); if slot >= 0 then getConfig(i); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Blue");
+
 	local list = {};
 	for i = 0, 49 do
 		local l = {};
@@ -151,6 +165,27 @@ function getSlotName(i)
 		i = (i % 26);
 	end
 	return s .. c[i];
+end
+
+function getSlotNumberFromName(s)
+	s = string.gsub(s, "%s+", "");
+	if #string.gsub(s, "%a+", "") ~= 0 then
+		return -1;
+	end
+	local slot = 0;
+	local index = 1;
+	local alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+	local c = string.sub(s, 1, 1);
+	for j = 0, #s do
+		slot = slot * 26;
+		for i = 1, 26 do
+			if c == alpha[i] then
+				slot = slot + i - 1;
+				break;
+			end
+		end
+	end
+	return slot;
 end
 
 function getZeroOrValue(s, slot, card)
