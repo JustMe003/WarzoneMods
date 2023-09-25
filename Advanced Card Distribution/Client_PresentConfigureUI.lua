@@ -124,7 +124,7 @@ function pickSlotToCopy(copy)
 	for i, _ in pairs(needsEntry) do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
-		t.selected = function() copySlot(copy, i); getConfig(i); end
+		t.selected = function() copySlot(i, copy); getConfig(copy); end
 		table.insert(list, t);
 		print(i);
 	end
