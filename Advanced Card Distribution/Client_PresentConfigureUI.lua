@@ -125,7 +125,7 @@ function pickSlotToCopy(copy)
 		print(t.text);
 	end
 
-	table.sort(list, function(a, b) return b.text < a.text; end);
+	
 
 	local i = 1;
 	while i < #list do
