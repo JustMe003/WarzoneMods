@@ -174,17 +174,18 @@ function getSlotNumberFromName(s)
 		return -1;
 	end
 	local slot = 0;
+	local mult = 1;
 	local index = 1;
 	local alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	local c = string.sub(s, 1, 1);
-	for j = 0, #s do
-		slot = slot * 26;
+	for j = #s, 1, -1 do
+		local c = string.sub(s, j, j);
 		for i = 1, 26 do
 			if c == alpha[i] then
-				slot = slot + i - 1;
+				slot = slot + (i - 1) * mult;
 				break;
 			end
 		end
+		mult = mult * 26;
 	end
 	print(slot);
 	return slot;
