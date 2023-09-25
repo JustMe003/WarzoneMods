@@ -19,7 +19,7 @@ function showMenu()
 	newLabel(win .. "label", vert, "These players have a modified card distribution");
 	for _, p in pairs(game.Game.Players) do
 		if p.State ~= WL.GamePlayerState.RemovedByHost and p.State ~= WL.GamePlayerState.Declined and p.Slot ~= nil then
-			print(p.Slot, getSlotName(p.Slot));
+			print(nil or {});
 			newButton(win .. p.ID .. "button", vert, p.DisplayName(nil, false) .. " (Slot " .. getSlotName(p.Slot) .. ")", function() showSlotSettings(p); end, p.Color.HtmlColor);
 		end
 	end
