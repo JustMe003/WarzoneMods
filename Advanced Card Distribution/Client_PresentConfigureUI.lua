@@ -57,14 +57,6 @@ function chooseSlot()
 	updatePreferredWidth(input, 300);
 	local submit = newButton("SubmitButton", vert, "Select", function() local slot = getSlotNumberFromName(string.upper(getText(input))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Blue");
 
-	local list = {};
-	for i = 0, 49 do
-		local l = {};
-		l.text = "Slot " .. getSlotName(i);
-		l.selected = function() getConfig(i) end;
-		table.insert(list, l);
-	end
-	UI.PromptFromList("Choose which slot you want to alter", list);
 end
 
 function getConfig(slot)
