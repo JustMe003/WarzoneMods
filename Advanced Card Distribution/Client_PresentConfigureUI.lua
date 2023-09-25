@@ -173,14 +173,14 @@ function getSlotNumberFromName(s)
 		local c = string.sub(s, j, j);
 		for i = 1, 26 do
 			if c == alpha[i] then
-				slot = slot + (i - 1) * mult;
+				slot = slot + i * mult;
 				break;
 			end
 		end
 		mult = mult * 26;
 	end
-	print(slot);
-	return slot;
+	print(slot - 1);
+	return slot - 1;
 end
 
 function getZeroOrValue(s, slot, card)
