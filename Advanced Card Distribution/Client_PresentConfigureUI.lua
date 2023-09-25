@@ -150,13 +150,13 @@ end
 
 function getSlotName(i)
 	i = i + 1;
-	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+	local alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 	local s = "";
-	if i > 26 then
-		s = s .. c[math.floor(i / 26)];
-		i = (i % 26);
+	while (i ~= 0) do
+		s = s .. alpha[i % mod 26];
+		i = (i - (i % 26)) / 26;
 	end
-	return s .. c[i];
+	return s;
 end
 
 function getSlotNumberFromName(s)
