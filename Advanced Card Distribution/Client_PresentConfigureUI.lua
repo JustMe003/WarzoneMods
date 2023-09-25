@@ -154,9 +154,14 @@ function getSlotName(i)
 	local s = "";
 	while (i ~= 0) do
 		local index = i % 26;
-		if index == 0 then index = 25; end
-		s = s .. alpha[index];
-		i = (i - (i % 26)) / 26;
+		if index == 0 then 
+			index = 25;
+			s = alpha[index] .. s;
+			i = (i - 26) / 26;
+		else
+			s = alpha[index] .. s;
+			i = (i - (i % 26)) / 26;
+		end
 	end
 	return s;
 end
