@@ -124,9 +124,9 @@ function pickSlotToCopy(copy)
 	for i, _ in pairs(needsEntry) do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
-		t.selected = function() copySlot(copy, i); getConfig(copy); end
+		t.selected = function() copySlot(copy, i); getConfig(i); end
 		table.insert(list, t);
-		print(t.text);
+		print(i);
 	end
 
 	UI.PromptFromList("Pick a slot to paste the configuration to", list);
