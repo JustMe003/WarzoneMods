@@ -55,7 +55,7 @@ function chooseSlot()
 	updateFlexibleWidth(vert, 1);
 	updateFlexibleWidth(input, 1);
 	updatePreferredWidth(input, 300);
-	local submit = newButton("SubmitButton", vert, "Select", function() local slot = getSlotNumberFromName(string.upper(getText(input))); if slot >= 0 then getConfig(i); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Blue");
+	local submit = newButton("SubmitButton", vert, "Select", function() local slot = getSlotNumberFromName(string.upper(getText(input))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Blue");
 
 	local list = {};
 	for i = 0, 49 do
