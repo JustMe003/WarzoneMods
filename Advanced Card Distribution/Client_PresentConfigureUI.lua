@@ -116,11 +116,11 @@ function pickSlotToCopy(copy)
 	end
 
 	for i, v in pairs(CardPiecesEachTurn) do
-		if v ~= nil and getTableLength(v) > 0 and needsButton[i] == nil then
+		if v ~= nil and getTableLength(v) > 0 and list[i] == nil then
 			list[i] = true;
 		end
 	end
-	
+
 	for i, _ in pairs(list) do
 		local t = {};
 		t.text = "Slot " .. getSlotName(i);
