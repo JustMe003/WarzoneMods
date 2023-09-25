@@ -114,6 +114,7 @@ function pickSlotToCopy(copy)
 		t.text = "Slot " .. getSlotName(i);
 		t.selected = function() copySlot(copy, i); getConfig(i); end
 		table.insert(list, t);
+		print(t.text);
 	end
 
 	for i, _ in pairs(CardPiecesFromStart) do
@@ -121,6 +122,7 @@ function pickSlotToCopy(copy)
 		t.text = "Slot " .. getSlotName(i);
 		t.selected = function() copySlot(copy, i); getConfig(i); end
 		table.insert(list, t);
+		print(t.text);
 	end
 
 	table.sort(list, function(a, b) return b.text < a.text; end);
