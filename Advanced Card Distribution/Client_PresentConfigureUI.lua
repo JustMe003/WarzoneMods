@@ -149,11 +149,10 @@ function addCardConfig(vert, s)
 end
 
 function getSlotName(i)
-	i = i + 1;
 	local alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 	local s = "";
 	while (i ~= 0) do
-		s = s .. alpha[(i % 26)];
+		s = s .. alpha[(i % 26) + 1];
 		i = (i - (i % 26)) / 26;
 	end
 	return s;
