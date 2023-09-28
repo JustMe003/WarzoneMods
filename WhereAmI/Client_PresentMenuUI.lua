@@ -64,7 +64,7 @@ function selectPlayer()
 		CreateButton(root).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function() territoriesOfPlayer = p; getTerritories(); showNthPage(1); end);
 	end
 	
-	CreateButton(root).SetText("Neutral").SetColor("#FFFFFF").SetOnClick(function() territoriesOfPlayer = {ID = WL.PlayerID.Neutral, Color = {HtmlColor = "FFFFFF"}, DisplayName = function(a, b) return "Neutral"; end}; getTerritories(); showNthPage(1); end);
+	CreateButton(root).SetText("Neutral").SetColor("#FFFFFF").SetOnClick(function() territoriesOfPlayer = {ID = WL.PlayerID.Neutral, Color = {HtmlColor = "#FFFFFF"}, DisplayName = function(a, b) return "Neutral"; end}; getTerritories(); showNthPage(1); end);
 end
 
 function selectSorting()
