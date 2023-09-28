@@ -140,6 +140,6 @@ function getTerritories()
 			table.insert(playerTerritories, {ID = terrID, Data = Game.Map.Territories[terrID], Standing = Game.LatestStanding.Territories[terrID]});
 		end
 	end
-	print(currentSort({Data = {Name = "A"}}, {Data = {Name = "A"}}));
+	print(type(currentSort));
 	table.sort(playerTerritories, currentSort);
 end
