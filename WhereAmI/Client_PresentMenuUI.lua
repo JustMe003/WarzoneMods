@@ -9,7 +9,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	sortingMethods = {
 						ByName = (function(a, b) return b.Data.Name > a.Data.Name end), 
 						ByArmies = (function(a, b) return (#b.Standing.NumArmies.SpecialUnits * 1000000 + b.Standing.NumArmies.NumArmies) < (#a.Standing.NumArmies.SpecialUnits * 1000000 + a.Standing.NumArmies.NumArmies); end),
-						ByLocation = (function(a, b) return (b.Data.MiddlePointX^2 * b.Data.MiddlePointY^2) > (a.Data.MiddlePointX^2 * a.Data.MiddlePointY^2); end)
+						ByLocation = (function(a, b) return (b.Data.MiddlePointX^2 + b.Data.MiddlePointY^2) > (a.Data.MiddlePointX^2 + a.Data.MiddlePointY^2); end)
 					}
 	currentSort = sortingMethods.ByName;
     showMenu();
