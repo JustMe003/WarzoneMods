@@ -6,6 +6,12 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	colors = GetColors();
 	setMaxSize(400, 500);
     Game = game;
+	sortingMethods = {
+						ByName = (function(a, b) return b.Data.Name > a.Data.Name end), 
+						ByArmies = (function(a, b) return (#b.Standing.NumArmies.SpecialUnits * 1000000 + b.Standing.NumArmies.NumArmies) < (#a.Standing.NumArmies.SpecialUnits * 1000000 + a.Standing.NumArmies.NumArmies); end),
+						ByLocation = (function(a, b) return (b.Data.MiddlePointX^2 * b.Data.MiddlePointY^2) > (a.Data.MiddlePointX^2 * a.Data.MiddlePointY^2); end)
+					}
+	currentSort = sortingMethods.ByName;
     showMenu();
 end
 
@@ -15,13 +21,7 @@ function showMenu()
 	if playerTerritories == nil or turnNumber ~= Game.Game.TurnNumber then
 		turnNumber = Game.Game.TurnNumber;
 		territoriesOfPlayer = Game.Us;
-		sortingMethods = {
-							ByName = (function(a, b) return b.Data.Name > a.Data.Name end), 
-							ByArmies = (function(a, b) return (#b.Standing.NumArmies.SpecialUnits * 1000000 + b.Standing.NumArmies.NumArmies) < (#a.Standing.NumArmies.SpecialUnits * 1000000 + a.Standing.NumArmies.NumArmies); end),
-							ByLocation = (function(a, b) return (b.Data.MiddlePointX^2 * b.Data.MiddlePointY^2) > (a.Data.MiddlePointX^2 * a.Data.MiddlePointY^2); end)
-						}
 		getTerritories();
-		currentSort = sortingMethods.ByName;
 	end
 
 	showNthPage(1)
