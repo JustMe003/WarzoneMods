@@ -75,27 +75,27 @@ function selectSorting()
 
 	-- Sort by territory name
 	local line = CreateHorz(root).SetFlexibleWidth(1);
-	local vert = CreateVert(root);
+	local vertByName = CreateVert(root);
 	CreateButton(line).SetText("By name").SetColor(colors.Green).SetOnClick(function() sortTerritories(sortingMethods.ByName); end);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	local button = CreateButton(line).SetText("?").SetColor(colors.Blue);
-	button.SetOnClick(function() if button.GetText() == "?" then newSubWindow("ByName", function() showTextByName(vert); end); button.SetText("^"); else DestroyWindow("ByName"); button.SetText("?") end; end);
+	local buttonByName = CreateButton(line).SetText("?").SetColor(colors.Blue);
+	buttonByName.SetOnClick(function() if buttonByName.GetText() == "?" then newSubWindow("ByName", function() showTextByName(vertByName); end); buttonByName.SetText("^"); else DestroyWindow("ByName"); buttonByName.SetText("?") end; end);
 	
 	-- Sort by army count (priority given to special units)
 	line = CreateHorz(root).SetFlexibleWidth(1);
-	vert = CreateVert(root);
+	vertByArmies = CreateVert(root);
 	CreateButton(line).SetText("By armies").SetColor(colors.Lime).SetOnClick(function() sortTerritories(sortingMethods.ByArmies); end);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	button = CreateButton(line).SetText("?").SetColor(colors.Blue);
-	button.SetOnClick(function() if button.GetText() == "?" then newSubWindow("ByArmies", function() showTextByArmies(vert); end); button.SetText("^"); else DestroyWindow("ByArmies"); button.SetText("?") end; end);
+	local buttonByArmies = CreateButton(line).SetText("?").SetColor(colors.Blue);
+	buttonByArmies.SetOnClick(function() if buttonByArmies.GetText() == "?" then newSubWindow("ByArmies", function() showTextByArmies(vertByArmies); end); buttonByArmies.SetText("^"); else DestroyWindow("ByArmies"); buttonByArmies.SetText("?") end; end);
 	
 	-- Sort by territory location, relative to (0,0)
 	line = CreateHorz(root).SetFlexibleWidth(1);
-	vert = CreateVert(root);
-	CreateButton(line).SetText("By location").SetColor(colors["Army Green"]).SetOnClick(function() sortTerritories(sortingMethods.ByLocation); end);
+	vertByLocation = CreateVert(root);
+	CreateButton(line).SetText("By location").SetColor(colors["Sea Green"]).SetOnClick(function() sortTerritories(sortingMethods.ByLocation); end);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	button = CreateButton(line).SetText("?").SetColor(colors.Blue);
-	button.SetOnClick(function() if button.GetText() == "?" then newSubWindow("ByLocation", function() showTextByLocation(vert); end); button.SetText("^"); else DestroyWindow("ByLocation"); button.SetText("?") end; end);
+	local buttonByLocation = CreateButton(line).SetText("?").SetColor(colors.Blue);
+	buttonByLocation.SetOnClick(function() if buttonByLocation.GetText() == "?" then newSubWindow("ByLocation", function() showTextByLocation(vertByLocation); end); buttonByLocation.SetText("^"); else DestroyWindow("ByLocation"); buttonByLocation.SetText("?") end; end);
 end
 
 function newSubWindow(name, func)
