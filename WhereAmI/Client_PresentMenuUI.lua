@@ -42,14 +42,14 @@ function showNthPage(n)
 		local line = CreateHorz(root).SetFlexibleWidth(1);
 		CreateLabel(line).SetText(terr.Data.Name).SetColor(colors.TextColor);
 		CreateEmpty(line).SetFlexibleWidth(1);
-		CreateButton(line).SetText("Where?").SetColor(colors.Blue).SetOnClick(function() Game.HighlightTerritories({terr.ID}); Game.CreateLocatorCircle(terr.Data.MiddlePointX, terr.Data.MiddlePointY); end);
+		CreateButton(line).SetText("Where?").SetColor(colors.Blue).SetOnClick(function() Game.HighlightTerritories({terr.ID}); Game.CreateLocatorCircle(terr.Data.MiddlePointX, terr.Data.MiddlePointY); print(terr.Data.MiddlePointX, terr.Data.MiddlePointY, terr.Data.MiddlePointX^2 + terr.Data.MiddlePointY^2) end);
 	end
 
 	local line = CreateHorz(root).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(0.45);
 	CreateButton(line).SetText("<").SetColor(colors.Cyan).SetOnClick(function() showNthPage(n - 1); end).SetInteractable(n > 1);
 	CreateEmpty(line).SetFlexibleWidth(0.05);
-	CreateLabel(line).SetText(n .. " / " .. math.ceil(#playerTerritories / 10)).SetColor(colors.TextColor);
+	CreateLabel(line).SetText(n .. " / " .. math.ceil(math.max(#playerTerritories, 1) / 10)).SetColor(colors.TextColor);
 	CreateEmpty(line).SetFlexibleWidth(0.05);
 	CreateButton(line).SetText(">").SetColor(colors.Cyan).SetOnClick(function() showNthPage(n + 1); end).SetInteractable(#playerTerritories > n * 10);
 	CreateEmpty(line).SetFlexibleWidth(0.45);
