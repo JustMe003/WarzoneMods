@@ -34,7 +34,7 @@ function showNthPage(n)
 	local title = CreateHorz(root).SetFlexibleWidth(1);
 	CreateLabel(title).SetText("Where am I?").SetColor(colors.Orange);
 	CreateEmpty(title).SetFlexibleWidth(1);
-	CreateButton(title).SetText(territoriesOfPlayer.DisplayName(nil, true)).SetColor(territoriesOfPlayer.HtmlColor).SetOnClick(selectPlayer);
+	CreateButton(title).SetText(territoriesOfPlayer.DisplayName(nil, true)).SetColor(territoriesOfPlayer.Color.HtmlColor).SetOnClick(selectPlayer);
 	CreateButton(title).SetText("Sort").SetColor(colors.Green).SetOnClick(selectSorting);
 
 	for i = 1, math.min(10, #playerTerritories - (10 * (n - 1))) do
@@ -64,7 +64,7 @@ function selectPlayer()
 		CreateButton(root).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function() territoriesOfPlayer = p; getTerritories(); showNthPage(1); end);
 	end
 	
-	CreateButton(root).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function() territoriesOfPlayer = {ID = WL.PlayerID.Neutral, HtmlColor = "FFFFFF", DisplayName = function(a, b) return "Neutral"; end}; getTerritories(); showNthPage(1); end);
+	CreateButton(root).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function() territoriesOfPlayer = {ID = WL.PlayerID.Neutral, Color = {HtmlColor = "FFFFFF"}, DisplayName = function(a, b) return "Neutral"; end}; getTerritories(); showNthPage(1); end);
 end
 
 function selectSorting()
