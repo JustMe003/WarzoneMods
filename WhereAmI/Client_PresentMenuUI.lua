@@ -42,7 +42,7 @@ function showNthPage(n)
 		local line = CreateHorz(root).SetFlexibleWidth(1);
 		CreateLabel(line).SetText(terr.Data.Name).SetColor(colors.TextColor);
 		CreateEmpty(line).SetFlexibleWidth(1);
-		CreateButton(line).SetText("Where?").SetColor(colors.Blue).SetOnClick(function() Game.HighlightTerritories({terr.ID}); Game.CreateLocatorCircle(terr.Data.MiddlePointX, terr.Data.MiddlePointY); print(terr.Data.MiddlePointX, terr.Data.MiddlePointY, terr.Data.MiddlePointX^2 + terr.Data.MiddlePointY^2) end);
+		CreateButton(line).SetText("Where?").SetColor(colors.Blue).SetOnClick(function() Game.HighlightTerritories({terr.ID}); Game.CreateLocatorCircle(terr.Data.MiddlePointX, terr.Data.MiddlePointY); end);
 	end
 
 	local line = CreateHorz(root).SetFlexibleWidth(1);
