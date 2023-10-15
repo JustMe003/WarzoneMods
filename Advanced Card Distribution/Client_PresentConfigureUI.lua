@@ -118,10 +118,10 @@ function pickSlotToCopy(copy)
 	newLabel(win .. "CopyToText", vert, "Pick the slot you want to copy the configuration to", "#DDDDDD");
 	local line = newHorizontalGroup(win .. "Horz", vert);
 	newLabel(win .. "SlotText", line, "Slot", "#DDDDDD");
-	slotNameinput = newTextField(win .. "SlotName", line, "For example: B", "");
+	slotNameinput = newTextField("SlotInput", vert, "Input Slot Name", "", 3);
 	updateFlexibleWidth(vert, 1);
-	updateFlexibleWidth(input, 1);
-	updatePreferredWidth(input, 300);
+	updateFlexibleWidth(slotNameinput, 1);
+	updatePreferredWidth(slotNameinput, 300);
 	newButton(win .. "SubmitButton", vert, "Copy", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(slotNameinput), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Royal Blue");
 end
 
