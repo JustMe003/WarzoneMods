@@ -55,7 +55,7 @@ function chooseSlot()
 	updateFlexibleWidth(vert, 1);
 	updateFlexibleWidth(input, 1);
 	updatePreferredWidth(input, 300);
-	local submit = newButton("SubmitButton", vert, "Select", function() local slot = getSlotNumberFromName(string.upper(getText(input))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Blue");
+	local submit = newButton("SubmitButton", vert, "Select", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(input), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Blue");
 
 end
 
@@ -107,6 +107,21 @@ function saveInputs(win, slot)
 end
 
 function pickSlotToCopy(copy)
+	local win = "coptyTo" .. copy;
+	destroyWindow(getCurrentWindow());
+	if windowExists(win) then 
+		resetWindow(win);
+	end
+	window(win);
+
+	local vert = newVerticalGroup("vert", "root");
+	newLabel(win .. "CopyToText", vert, "Pick the slot you want to copy the configuration to", "#DDDDDD");
+	local line = newHorizontalGroup(win .. "Horz", vert);
+	newLabel(win .. "SlotText", line, "Slot", "#DDDDDD");
+	slotNameinput = newTextField(win .. "SlotName", line, "For example: B", "");
+
+	newButton(win .. "SubmitButton", vert, "Copy", function() function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(input), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end end, "Royal Blue");
+	--[[
 	local list = {};
 	needsEntry = {};
 	for i, v in pairs(CardPiecesFromStart) do
@@ -130,6 +145,7 @@ function pickSlotToCopy(copy)
 	end
 
 	UI.PromptFromList("Pick a slot to paste the configuration to", list);
+	]]--
 end
 
 function copySlot(copy, slot)
