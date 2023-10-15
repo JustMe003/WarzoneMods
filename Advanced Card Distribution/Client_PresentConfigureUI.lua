@@ -38,7 +38,7 @@ function showMain()
 	end
 	for i, _ in pairs(needsButton) do
 		print(i);
-		newButton(win .. "Slot" .. i, vert, "Slot " .. getSlotName(i), function() getConfig(i) end, colorsList[i + 1]);
+		newButton(win .. "Slot" .. i, vert, "Slot " .. getSlotName(i), function() getConfig(i) end, colorsList[(i % #colorsList) + 1]);
 	end
 end
 
