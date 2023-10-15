@@ -122,7 +122,7 @@ function pickSlotToCopy(copy)
 	updateFlexibleWidth(vert, 1);
 	updateFlexibleWidth(slotNameinput, 1);
 	updatePreferredWidth(slotNameinput, 300);
-	newButton(win .. "SubmitButton", vert, "Copy", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(slotNameinput), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Royal Blue");
+	newButton(win .. "SubmitButton", vert, "Copy", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(slotNameinput), "%s", ""))); if slot >= 0 then copySlot(copy, slot); getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Royal Blue");
 end
 
 function copySlot(copy, slot)
