@@ -120,7 +120,7 @@ function pickSlotToCopy(copy)
 	newLabel(win .. "SlotText", line, "Slot", "#DDDDDD");
 	slotNameinput = newTextField(win .. "SlotName", line, "For example: B", "");
 
-	newButton(win .. "SubmitButton", vert, "Copy", function() function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(input), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end end, "Royal Blue");
+	newButton(win .. "SubmitButton", vert, "Copy", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(input), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Royal Blue");
 	--[[
 	local list = {};
 	needsEntry = {};
