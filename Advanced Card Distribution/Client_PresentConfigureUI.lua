@@ -119,33 +119,10 @@ function pickSlotToCopy(copy)
 	local line = newHorizontalGroup(win .. "Horz", vert);
 	newLabel(win .. "SlotText", line, "Slot", "#DDDDDD");
 	slotNameinput = newTextField(win .. "SlotName", line, "For example: B", "");
-
-	newButton(win .. "SubmitButton", vert, "Copy", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(input), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Royal Blue");
-	--[[
-	local list = {};
-	needsEntry = {};
-	for i, v in pairs(CardPiecesFromStart) do
-		if v ~= nil and getTableLength(v) > 0 then
-			needsEntry[i] = true;
-		end
-	end
-
-	for i, v in pairs(CardPiecesEachTurn) do
-		if v ~= nil and getTableLength(v) > 0 and needsEntry[i] == nil then
-			needsEntry[i] = true;
-		end
-	end
-	
-	for i, _ in pairs(needsEntry) do
-		local t = {};
-		t.text = "Slot " .. getSlotName(i);
-		t.selected = function() copySlot(i, copy); getConfig(copy); end
-		table.insert(list, t);
-		print(i);
-	end
-
-	UI.PromptFromList("Pick a slot to paste the configuration to", list);
-	]]--
+	updateFlexibleWidth(vert, 1);
+	updateFlexibleWidth(input, 1);
+	updatePreferredWidth(input, 300);
+	newButton(win .. "SubmitButton", vert, "Copy", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(slotNameinput), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Royal Blue");
 end
 
 function copySlot(copy, slot)
