@@ -106,7 +106,7 @@ function moveAlien(game, addNewOrder, terr, alien, newAlienPlaces)
                 clone = clone.Build();
                 newAlienPlaces[connID] = clone;
                 modTo.AddSpecialUnits = {clone};
-                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Alien moved from " .. game.Map.Territories[terr.ID].Name .. " to " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
+                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Aliens moved from " .. game.Map.Territories[terr.ID].Name .. " to " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
                 addNewOrder(event);
             else
