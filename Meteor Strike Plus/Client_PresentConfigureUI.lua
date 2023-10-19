@@ -3,17 +3,24 @@ require("UI");
 
 function Client_PresentConfigureUI(rootParent)
     Init(rootParent);
-    root = GetRoot();
+    root = GetRoot().SetFlexibleWidth(1);
     colors = GetColors();
     
     conf = Mod.Settings.Data;
     counter = Mod.Settings.Counter;
+    genSet = Mod.Settings.GeneralSettings;
     openConfig = "None";
     if conf == nil then
         conf = {};
         conf.Normal = {};
         conf.Special = {};
         counter = 1;
+    end
+    if genSet == nil then
+        genSet = {};
+        genSet.HitTerritoriesMultTimes = false;
+        genSet.UseDataGameCreator = false;
+        genSet.WeatherForcastMessage = "";
     end
     
     showMain();
@@ -33,19 +40,14 @@ function showMain()
         CreateEmpty(line2).SetPreferredWidth(20);
         local vert = CreateVert(line2);
         local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
-        showMoreButton.SetOnClick(function() showMoreNormalData(rain, vert, showMoreButton); end);
-        
+        showMoreButton.SetOnClick(function() showMoreNormalData(rain, vert, showMoreButton); end);    
     end
     
     CreateEmpty(root).SetPreferredHeight(5);
     
-    local line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(conf.Normal, t);
-        openConfig = "Normal"; modifyNormal(#conf.Normal, t); end);
-    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(root).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(conf.Normal, t); openConfig = "Normal"; modifyNormal(#conf.Normal, t); end);
     
-    CreateEmpty(root).SetPreferredHeight(10);
+    CreateEmpty(root).SetPreferredHeight(20);
     
     CreateLabel(root).SetText("Doomsday meteor storms").SetColor(colors.TextColor);
     for i, rain in ipairs(conf.Special) do
@@ -60,10 +62,46 @@ function showMain()
     
     CreateEmpty(root).SetPreferredHeight(5);
     
+    CreateButton(root).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createSpecial(); table.insert(conf.Special, t); openConfig = "Special"; modifySpecial(#conf.Special, t); end);
+
+    CreateEmpty(root).SetPreferredHeight(20);
+
+    CreateButton(root).SetText("General settings").SetColor(colors.Blue).SetOnClick(showGeneralSettings);
+end
+
+function showGeneralSettings()
+    DestroyWindow();
+    SetWindow("generalSettings");
+
+    local inputs = {};
+
     local line = CreateHorz(root).SetFlexibleWidth(1);
+    inputs.HitTerritoriesMultTimes = CreateCheckBox(line).SetText(" ").SetIsChecked(genSet.HitTerritoriesMultTimes);
+    CreateLabel(line).SetText("Meteors can hit the same territory multiple times").SetColor(colors.TextColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When unchecked, each territory can only be hit by 1 meteor. If checked, each territory can be hit multiple times") end);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    inputs.UseDataGameCreator = CreateCheckBox(line).SetText(" ").SetIsChecked(genSet.UseDataGameCreator);
+    CreateLabel(line).SetText("Presenter of weather forecast is game creator").SetColor(colors.TextColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked, the name of the \"presentor\" of the weather forecast will be the name of the game creator. If unchecked, the mod will use the data of the original game creator, Unfairerorb76"); end);
+
+    CreateLabel(root).SetText("Additional weather forecast message").SetColor(colors.TextColor);
+    inputs.WeatherForcastMessage = CreateTextInputField(root).SetFlexibleWidth(1).SetPreferredWidth(300).SetPlaceholderText("Enter message here").SetText(genSet.WeatherForcastMessage).SetCharacterLimit(200);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createSpecial(); table.insert(conf.Special, t); openConfig = "Special"; modifySpecial(#conf.Special, t); end);
+    CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveGeneralSettings(inputs); showMain(); end)
     CreateEmpty(line).SetFlexibleWidth(0.5);
+
+    generalSettingsInputs = inputs;
+end
+
+function saveGeneralSettings(inputs)
+    genSet.HitTerritoriesMultTimes = inputs.HitTerritoriesMultTimes.GetIsChecked();
+    genSet.UseDataGameCreator = inputs.UseDataGameCreator.GetIsChecked();
+    genSet.WeatherForcastMessage = inputs.WeatherForcastMessage.GetText();
 end
 
 function modifyNormal(index, data)
@@ -131,6 +169,10 @@ function showGeneralInputs(data, inputs)
     CreateLabel(line).SetText("Meteor can spawn an alien").SetColor(colors.TextColor);
     local vert2 = CreateVert(root);
     inputs.CanSpawnAlien.SetOnValueChanged(function() showAlienConfig(data, inputs, vert2, inputs.CanSpawnAlien); end)
+
+    CreateLabel(root).SetText("Name of the meteor storm").SetColor(colors.TextColor);
+    inputs.Name = CreateTextInputField(root).SetPlaceholderText("Name here").SetText(data.Name).SetFlexibleWidth(1).SetPreferredWidth(300).SetCharacterLimit(50);
+
     if data.CanSpawnAlien then
         showAlienConfig(data, inputs, vert2, inputs.CanSpawnAlien);
     end
@@ -204,6 +246,7 @@ function saveSpecialInputs(data, inputs)
 end
 
 function saveInputs(data, inputs)
+    data.Name = inputs.Name.GetText();
     data.NumOfMeteors = inputs.NumOfMeteors.GetValue();
     saveRandNumMeteor(data, inputs);
     data.MeteorDamage = inputs.MeteorDamage.GetValue();
@@ -312,7 +355,8 @@ end
 
 function initializeVariables()
     local t = {
-        ID = counter;
+        ID = counter,
+        Name = "Meteor storm " .. counter,
         NumOfMeteors = 3,
         MeteorDamage = 5,
         RandomNumOfMeteor = 2,

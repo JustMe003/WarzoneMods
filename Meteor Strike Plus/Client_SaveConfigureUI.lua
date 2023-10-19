@@ -13,6 +13,10 @@ function Client_SaveConfigureUI()
             data.MaxTurnNumber = x;
         end
     end
+    if generalSettingsInputs ~= nil then
+        saveGeneralSettings(generalSettingsInputs);
+    end
+    Mod.Settings.GeneralSettings = genSet;
     Mod.Settings.Data = conf;
     Mod.Settings.Counter = counter;
 end

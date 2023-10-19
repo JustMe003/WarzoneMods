@@ -5,10 +5,30 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 end
 
 function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addNewOrder)
-    
+    if order.proxyType == "GameOrderAttackTransfer" then
+        if orderDetails.DamageToSpecialUnits ~= nil and orderDetails.DamageToSpecialUnits ~= {} then
+            for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits or {}) do
+                if unitIsAlien(sp) then
+                    for i, v in pairs(orderDetails.DamageToSpecialUnits) do
+                        if i == sp.ID then
+                            local mod = WL.TerritoryModification.Create(order.To);
+                            mod.RemoveSpecialUnitsOpt = {i};
+                            local clone = getClone(sp, v);
+                            mod.AddSpecialUnits = {clone};
+                            local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated data", {}, {mod});
+                            event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY, game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY);
+                            addNewOrder(event, true);            
+                        end
+                    end
+                end
+            end
+        end
+    end
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
+    moveAllAliens(game, addNewOrder);
+
     local totalWeight = 0;
     local meteors = {};
     
@@ -46,20 +66,17 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 table.insert(terrsHit, terrID);
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage);
                 if meteor.Data.CanSpawnAlien and math.random(10000) / 100 <= meteor.Data.AlienSpawnChance and (terr.OwnerPlayerID == WL.PlayerID.Neutral or (mod.SetOwnerOpt ~= nil and mod.SetOwnerOpt == WL.PlayerID.Neutral)) then
-                	if armiesHasAlien(terr.NumArmies) then
-                        local alien = nil;
-                        for _, sp in ipairs(terr.NumArmies.SpecialUnits) do
-                            if unitIsAlien(sp) then alien = sp; break; end
-                        end
-                        local clone = getClone(alien, -(meteor.Data.AlienDefaultHealth + math.random(0, meteor.Data.AlienRandomHealth)));
-                        mod.AddSpecialUnits = concatArrays(mod.AddSpecialUnits, {clone});
-                        mod.RemoveSpecialUnitsOpt = concatArrays(mod.RemoveSpecialUnitsOpt, {alien});
+                	if newAlienPlaces[terrID] ~= nil then
+                        mod.RemoveSpecialUnitsOpt = {newAlienPlaces[terrID].ID};
+                        local clone = getClone(newAlienPlaces[terrID], -(meteor.Data.AlienDefaultHealth + math.random(0, meteor.Data.AlienRandomHealth)));
+                        newAlienPlaces[terrID] = clone;
+                        mod.AddSpecialUnits = {clone};
                     else
                         local alien = createAlien(meteor.Data.AlienDefaultHealth + math.random(0, meteor.Data.AlienRandomHealth));
                         mod.AddSpecialUnits = concatArrays(mod.AddSpecialUnits, {alien});
                     end
                 end
-                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Meteor landed on " .. game.Map.Territories[terrID].Name, {}, {mod});
+                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Meteor landed on " .. game.Map.Territories[terrID].Name .. " (" .. meteor.Data.Name .. ")", {}, {mod});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
                 table.insert(orders, event);
                 break;
@@ -76,12 +93,12 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 end
 
 function moveAllAliens(game, addNewOrder)
-    local newAlienPlaces = {};
+    newAlienPlaces = {};
     for terrID, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
         if #terr.NumArmies.SpecialUnits > 0 then
             for _, sp in pairs(terr.NumArmies.SpecialUnits) do
                 if unitIsAlien(sp) then
-                    moveAlien(game, addNewOrder, terr, sp, newAlienPlaces);
+                    moveAlien(game, addNewOrder, terr, sp);
                     break;
                 end
             end
@@ -89,31 +106,41 @@ function moveAllAliens(game, addNewOrder)
     end
 end
 
-function moveAlien(game, addNewOrder, terr, alien, newAlienPlaces)
+function moveAlien(game, addNewOrder, terr, alien)
     local rand = math.random(#game.Map.Territories[terr.ID].ConnectedTo);
     for connID, _ in pairs(game.Map.Territories[terr.ID].ConnectedTo) do
         rand = rand - 1;
         if rand == 0 then
             local modTo = WL.TerritoryModification.Create(connID);
-            if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral then
+            local modFrom = WL.TerritoryModification.Create(terr.ID);
+            if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral or game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.DefensePower <= alien.Health then
                 modFrom.RemoveSpecialUnitsOpt = {alien.ID};
-                local clone = WL.CustomSpecialUnitBuilder.CreateCopy(alien);
-                if newAlienPlaces[connID] ~= nil then
-                    clone.Health = clone.Health + newAlienPlaces[connID].Health;
-                    clone.AttackPower = clone.Health;
-                    clone.DefensePower = clone.Health;
-                end
-                clone = clone.Build();
-                newAlienPlaces[connID] = clone;
-                modTo.AddSpecialUnits = {clone};
+                modTo.AddSpecialUnits = {solveAlienConflicts(modTo, modFrom, alien, connID)};
+                modTo.AddArmies = -game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.NumArmies;
+                modTo.SetOwnerOpt = WL.PlayerID.Neutral;
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Aliens moved from " .. game.Map.Territories[terr.ID].Name .. " to " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
                 addNewOrder(event);
             else
+                solveAlienConflicts(modTo, modFrom, alien, terr.ID);
                 modTo.AddArmies = -alien.Health;
+                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Aliens attacked " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
+                event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
+                addNewOrder(event);
             end
         end
     end
+end
+
+function solveAlienConflicts(modTo, modFrom, alien, terrID)
+    local alienOnTerr = newAlienPlaces[terrID];
+    local clone = alien;
+    if alienOnTerr ~= nil then
+        clone = getClone(alien, -alienOnTerr.Health)
+        modTo.RemoveSpecialUnitsOpt = {alienOnTerr.ID}
+    end
+    newAlienPlaces[terrID] = clone;
+    return clone;
 end
 
 function unitIsAlien(sp)
@@ -123,6 +150,20 @@ end
 function createAlien(health)
 	local builder = WL.CustomSpecialUnitBuilder.Create(WL.PlayerID.Neutral);
 	builder.Health = health;
+    builder.AttackPower = health;
+    builder.DefensePower = health;
+    builder.CombatOrder = 478;
+    builder.ImageFilename = "Alien.png"
+    builder.Name = "Alien";
+    return builder.Build();
+end
+
+function getClone(alien, damage)
+    local clone = WL.CustomSpecialUnitBuilder.CreateCopy(alien);
+    clone.Health = clone.Health - damage;
+    clone.AttackPower = clone.Health;
+    clone.DefensePower = clone.Health;
+    return clone.Build();
 end
 
 function armiesHasAlien(armies)
