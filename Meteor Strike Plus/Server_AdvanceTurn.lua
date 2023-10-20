@@ -66,6 +66,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 table.remove(terrs, randTerr);
                 table.insert(terrsHit, terrID);
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage);
+                print(meteor.Data.Damage == 0, not Mod.Settings.GeneralSettings.ZeroDamageTotalDestruction)
                 if meteor.Data.Damage == 0 and not Mod.Settings.GeneralSettings.ZeroDamageTotalDestruction then
                     mod = WL.TerritoryModification.Create(terr.ID);
                 end
