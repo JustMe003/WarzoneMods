@@ -19,6 +19,7 @@ function Client_PresentConfigureUI(rootParent)
     if genSet == nil then
         genSet = {};
         genSet.HitTerritoriesMultTimes = false;
+        genSet.ZeroDamageTotalDestruction = false;
         genSet.UseDataGameCreator = false;
         genSet.WeatherForcastMessage = "";
     end
@@ -82,6 +83,12 @@ function showGeneralSettings()
     CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When unchecked, each territory can only be hit by 1 meteor. If checked, each territory can be hit multiple times") end);
     
     line = CreateHorz(root).SetFlexibleWidth(1);
+    inputs.ZeroDamageTotalDestruction = CreateCheckBox(line).SetText(" ").SetIsChecked(genSet.ZeroDamageTotalDestruction);
+    CreateLabel(line).SetText("0 damage is total destruction").SetColor(colors.TextColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked, any meteor that deals 0 damage will wipe out everything on the territory, including turning it neutral. If unchecked, 0 damage will be applied to the territory"); end);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
     inputs.UseDataGameCreator = CreateCheckBox(line).SetText(" ").SetIsChecked(genSet.UseDataGameCreator);
     CreateLabel(line).SetText("Presenter of weather forecast is game creator").SetColor(colors.TextColor);
     CreateEmpty(line).SetFlexibleWidth(1);
@@ -100,6 +107,7 @@ end
 
 function saveGeneralSettings(inputs)
     genSet.HitTerritoriesMultTimes = inputs.HitTerritoriesMultTimes.GetIsChecked();
+    genSet.ZeroDamageTotalDestruction = inputs.ZeroDamageTotalDestruction.GetIsChecked();
     genSet.UseDataGameCreator = inputs.UseDataGameCreator.GetIsChecked();
     genSet.WeatherForcastMessage = inputs.WeatherForcastMessage.GetText();
 end

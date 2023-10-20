@@ -2,16 +2,6 @@ require("RemoveArmies");
 
 function Server_AdvanceTurn_Start(game, addNewOrder)
     
-    if nil then
-        print(true)
-    else
-        print(false)
-    end
-    if not nil then
-        print(true)
-    else
-        print(false)
-    end
 end
 
 function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addNewOrder)
