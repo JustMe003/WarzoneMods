@@ -61,6 +61,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
             print(rand, meteor.Weight, totalWeight)
             rand = rand - meteor.Weight;
             if rand <= 0 then
+                meteor.Weight = meteor.Weight - 1;
                 local randTerr = math.random(#terrs);
                 local terrID = terrs[randTerr];
                 local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
