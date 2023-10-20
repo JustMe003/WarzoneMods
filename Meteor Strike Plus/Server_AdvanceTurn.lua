@@ -2,6 +2,16 @@ require("RemoveArmies");
 
 function Server_AdvanceTurn_Start(game, addNewOrder)
     
+    if nil then
+        print(true)
+    else
+        print(false)
+    end
+    if not nil then
+        print(true)
+    else
+        print(false)
+    end
 end
 
 function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addNewOrder)
@@ -66,6 +76,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 table.remove(terrs, randTerr);
                 table.insert(terrsHit, terrID);
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage);
+                if meteor.Data.Damage == 0 and not Mod.Settings.GeneralSettings.ZeroDamageTotalDestruction then
+                    mod = WL.TerritoryModification.Create(terr.ID);
+                end
                 if meteor.Data.CanSpawnAlien and math.random(10000) / 100 <= meteor.Data.AlienSpawnChance and (terr.OwnerPlayerID == WL.PlayerID.Neutral or (mod.SetOwnerOpt ~= nil and mod.SetOwnerOpt == WL.PlayerID.Neutral)) then
                 	if newAlienPlaces[terrID] ~= nil then
                         mod.RemoveSpecialUnitsOpt = {newAlienPlaces[terrID].ID};
