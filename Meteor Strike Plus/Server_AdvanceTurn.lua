@@ -44,7 +44,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     for _, data in pairs(Mod.Settings.Data.Normal) do
         if math.random(10000) / 100 <= data.ChanceofFalling then
             local num = data.NumOfMeteors + math.random(0, data.RandomNumOfMeteor);
-            print(num);
             table.insert(meteors, {Weight = num, Data = data});
             totalWeight = totalWeight + num;
         end
@@ -58,7 +57,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     for i = 1, math.min(totalWeight, numTerrs) do
         local rand = math.random(totalWeight);
         for _, meteor in ipairs(meteors) do
-            print(rand, meteor.Weight, totalWeight)
             rand = rand - meteor.Weight;
             if rand <= 0 then
                 meteor.Weight = meteor.Weight - 1;
