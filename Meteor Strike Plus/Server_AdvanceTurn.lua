@@ -57,6 +57,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     for i = 1, math.min(totalWeight, numTerrs) do
         local rand = math.random(totalWeight);
         for _, meteor in ipairs(meteors) do
+            print(rand, meteor.Weight, totalWeight)
             rand = rand - meteor.Weight;
             if rand <= 0 then
                 local randTerr = math.random(#terrs);
