@@ -44,6 +44,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     for _, data in pairs(Mod.Settings.Data.Normal) do
         if math.random(10000) / 100 <= data.ChanceofFalling then
             local num = data.NumOfMeteors + math.random(0, data.RandomNumOfMeteor);
+            print(num);
             table.insert(meteors, {Weight = num, Data = data});
             totalWeight = totalWeight + num;
         end
