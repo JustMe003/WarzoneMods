@@ -66,11 +66,10 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 table.remove(terrs, randTerr);
                 table.insert(terrsHit, terrID);
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage);
+                print(game.Map.Territories[terrID].Name, mod.AddArmies);
                 if meteor.Data.MeteorDamage == 0 and not Mod.Settings.GeneralSettings.ZeroDamageTotalDestruction then
-                    print(game.Map.Territories[terrID].Name);
                     mod = WL.TerritoryModification.Create(terr.ID);
                 end
-                printTable(mod);
                 if meteor.Data.CanSpawnAlien and math.random(10000) / 100 <= meteor.Data.AlienSpawnChance and (terr.OwnerPlayerID == WL.PlayerID.Neutral or (mod.SetOwnerOpt ~= nil and mod.SetOwnerOpt == WL.PlayerID.Neutral)) then
                 	if newAlienPlaces[terrID] ~= nil then
                         mod.RemoveSpecialUnitsOpt = {newAlienPlaces[terrID].ID};
@@ -197,16 +196,5 @@ function concatArrays(arr1, arr2)
             table.insert(arr2, v);
         end
         return arr2;
-    end
-end
-
-function printTable(t)
-    for i, v in pairs(t or {}) do
-        if type(v) == type({}) then
-            print(i);
-            printTable(t);
-        else
-            print(i, v);
-        end
     end
 end
