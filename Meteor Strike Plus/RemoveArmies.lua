@@ -67,6 +67,10 @@ function removeArmies(terr, damage)
 				break;
 			end
 		end
+
+		if not processedArmies then
+			mod.AddArmies = math.max(-damage, -terr.NumArmies.NumArmies);
+		end
 		
 		if #t ~= 0 then
 			mod.RemoveSpecialUnitsOpt = t;
