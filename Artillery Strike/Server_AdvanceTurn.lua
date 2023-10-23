@@ -73,10 +73,8 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 			armyCountChanges[i] = mod.SetArmiesTo;
 			table.insert(mods, mod);
 		end
-		-- WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {}, mods);
-		local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {});
+		local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {}, mods);
 		event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -Mod.Settings.GoldCost}};
-		print(Mod.Settings.GoldCost, event.AddResourceOpt[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID][WL.ResourceType.Gold]);
 		addNewOrder(event);
 	end
 end
