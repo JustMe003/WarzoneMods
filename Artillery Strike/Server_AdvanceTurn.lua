@@ -76,6 +76,7 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 		-- WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {}, mods);
 		local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {});
 		event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -Mod.Settings.GoldCost}};
+		print(Mod.Settings.GoldCost, event.AddResourceOpt[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID][WL.ResourceType.Gold]);
 		addNewOrder(event);
 	end
 end
