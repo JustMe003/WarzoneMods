@@ -82,7 +82,6 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 end
 
 function getNumArmies(game, terrID)
-	print(terrID, armyCountChanges[terrID]);
 	if armyCountChanges[terrID] ~= nil then
 		return armyCountChanges[terrID];
 	else
