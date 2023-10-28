@@ -57,7 +57,9 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 		mod.SetArmiesTo = armies - (armies * (per / 100));
 		armyCountChanges[terrID] = mod.SetArmiesTo;
 		local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a cannon at " .. game.Map.Territories[from].Name .. " for " .. per .. "% damage", {}, {mod});
-		event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -Mod.Settings.GoldCost}};
+		if game.Settings.CommerceGame then
+			event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -(Mod.Settings.GoldCost or 0)}};
+		end
 		addNewOrder(event);
 	elseif artillery == "Mortar" then
 		local mods = {};
@@ -66,15 +68,19 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 		armyCountChanges[terrID] = modTarget.SetArmiesTo;
 		table.insert(mods, modTarget);
 		local perForCon = per / getTableLength(game.Map.Territories[terrID].ConnectedTo);
+		print(modTarget.SetArmiesTo);
 		for i, _ in pairs(game.Map.Territories[terrID].ConnectedTo) do
 			local mod = WL.TerritoryModification.Create(i);
 			local armies = getNumArmies(game, i);
 			mod.SetArmiesTo = armies * ((100 - perForCon) / 100);
 			armyCountChanges[i] = mod.SetArmiesTo;
+			print(mod.SetArmiesTo);
 			table.insert(mods, mod);
 		end
 		local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {}, mods);
-		event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -Mod.Settings.GoldCost}};
+		if game.Settings.CommerceGame then
+			event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -(Mod.Settings.GoldCost or 0)}};
+		end
 		addNewOrder(event);
 	end
 end
