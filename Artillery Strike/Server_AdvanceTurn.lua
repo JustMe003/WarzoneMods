@@ -68,7 +68,7 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 		armyCountChanges[terrID] = modTarget.SetArmiesTo;
 		table.insert(mods, modTarget);
 		local perForCon = per / getTableLength(game.Map.Territories[terrID].ConnectedTo);
-		print(Mod.Settings.MortarDamage, 100 - Mod.Settings.MortarDamage + per, ((100 - Mod.Settings.MortarDamage + per) / 100, round(getNumArmies(game, terrID) * ((100 - Mod.Settings.MortarDamage + per) / 100)));
+		print(Mod.Settings.MortarDamage, 100 - Mod.Settings.MortarDamage + per, ((100 - Mod.Settings.MortarDamage + per) / 100), round(getNumArmies(game, terrID) * ((100 - Mod.Settings.MortarDamage + per) / 100)));
 		for i, _ in pairs(game.Map.Territories[terrID].ConnectedTo) do
 			local mod = WL.TerritoryModification.Create(i);
 			local armies = getNumArmies(game, i);
