@@ -118,17 +118,17 @@ function moveAlien(game, addNewOrder, terr, alien)
         if rand == 0 then
             local modTo = WL.TerritoryModification.Create(connID);
             local modFrom = WL.TerritoryModification.Create(terr.ID);
-            if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral or game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.DefensePower <= alien.Health then
+            if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= WL.PlayerID.Neutral then
+                modTo = removeArmies(game.ServerGame.LatestTurnStanding.Territories[connID], alien.Health);
+            end
+            if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral or modTo.SetOwnerOpt == WL.PlayerID.Neutral then
                 modFrom.RemoveSpecialUnitsOpt = {alien.ID};
-                modTo.AddSpecialUnits = {solveAlienConflicts(modTo, modFrom, alien, connID)};
-                modTo.AddArmies = -game.ServerGame.LatestTurnStanding.Territories[connID].NumArmies.NumArmies;
-                modTo.SetOwnerOpt = WL.PlayerID.Neutral;
-                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Aliens moved from " .. game.Map.Territories[terr.ID].Name .. " to " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
+                modTo.AddSpecialUnits = {solveAlienConflicts(modTo, alien, connID)};
+                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getEventMessage(modTo, Game.Map.Territories[connID].Name, Game.Map.Territories[terr.ID].Name), {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
                 addNewOrder(event);
             else
-                solveAlienConflicts(modTo, modFrom, alien, terr.ID);
-                modTo.AddArmies = -alien.Health;
+                solveAlienConflicts(modTo, alien, terr.ID);
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Aliens attacked " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
                 addNewOrder(event);
@@ -137,7 +137,7 @@ function moveAlien(game, addNewOrder, terr, alien)
     end
 end
 
-function solveAlienConflicts(modTo, modFrom, alien, terrID)
+function solveAlienConflicts(modTo, alien, terrID)
     local alienOnTerr = newAlienPlaces[terrID];
     local clone = alien;
     if alienOnTerr ~= nil then
@@ -196,5 +196,13 @@ function concatArrays(arr1, arr2)
             table.insert(arr2, v);
         end
         return arr2;
+    end
+end
+
+function getEventMessage(mod, to, from)
+    if mod.SetOwnerOpt == WL.PlayerID.Neutral then
+        return "Aliens attacked " .. to .. " from " .. from;
+    else
+        return "Aliens moved from " .. from .. " to " .. to;
     end
 end
