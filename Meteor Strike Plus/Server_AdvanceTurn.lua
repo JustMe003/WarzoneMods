@@ -124,7 +124,7 @@ function moveAlien(game, addNewOrder, terr, alien)
             if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral or modTo.SetOwnerOpt == WL.PlayerID.Neutral then
                 modFrom.RemoveSpecialUnitsOpt = {alien.ID};
                 modTo.AddSpecialUnits = {solveAlienConflicts(modTo, alien, connID)};
-                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getEventMessage(modTo, Game.Map.Territories[connID].Name, Game.Map.Territories[terr.ID].Name), {}, {modFrom, modTo});
+                local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getEventMessage(modTo, game.Map.Territories[connID].Name, game.Map.Territories[terr.ID].Name), {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
                 addNewOrder(event);
             else
