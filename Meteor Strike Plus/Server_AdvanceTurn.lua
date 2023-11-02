@@ -200,7 +200,7 @@ function concatArrays(arr1, arr2)
 end
 
 function getEventMessage(mod, to, from)
-    if mod.AddArmies ~= nil and mod.AddArmies ~= 0 then
+    if mod.AddArmies ~= nil and mod.AddArmies ~= 0 or mod.SetOwnerOpt == WL.PlayerID.Neutral then
         return "Aliens attacked " .. to .. " from " .. from;
     else
         return "Aliens moved from " .. from .. " to " .. to;
