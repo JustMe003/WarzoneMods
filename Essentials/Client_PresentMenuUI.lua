@@ -1,5 +1,6 @@
 require("UI");
 require("utilities");
+require("SpecialUnitsData");
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, func)
 	setMaxSize(500, 585)
@@ -512,16 +513,12 @@ end
 
 function getUnitDescription(sp)
 	if sp.ModData ~= nil then
-		print("has mod data");
-		local s, e = sp.ModData:find("UnitDescription:\"", 1);
-		if s ~= nil then
-			print("Prefix found");
-			local s2, e2 = sp.ModData:find("\"", e + 1);
-			if s2 ~= e + 1 then
-				print("suffix found");
-				return sp.ModData:sub(e + 1, e2 - 1);
-			end
+		print("Has mod data");
+		local data = stringToData(sp.ModData);
+		if data["UnitDescription"] ~= nil then
+			return data["UnitDescription"];
 		end
+		print("Has no unit description")
 	end
 	return "This unit does not have a description. Please read the mod description of the mod that created this unit to get to know more about it";
 end
