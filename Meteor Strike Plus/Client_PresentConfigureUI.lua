@@ -413,10 +413,10 @@ function initializeVariables()
         CanSpawnAlien = false,
         AlienSpawnChance = 20,
         AlienDefaultHealth = 10,
-        AlienRandomHealth = 3
-        Repeat = false;
-        RepeatAfterMin = 10;
-        RepeatAfterMax = 20;
+        AlienRandomHealth = 3,
+        Repeat = false,
+        RepeatAfterMin = 10,
+        RepeatAfterMax = 20,
     };
     counter = counter + 1;
     return t;
