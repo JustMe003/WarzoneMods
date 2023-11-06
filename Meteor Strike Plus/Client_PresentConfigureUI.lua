@@ -31,43 +31,68 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
     
-    openConfig = "None";
-    
-    CreateLabel(root).SetText("Normal meteor storms").SetColor(colors.TextColor);
-    for i, rain in ipairs(conf.Normal) do
-        local line = CreateHorz(root);
-        CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() openConfig = "Normal"; modifyNormal(i, rain); end)
-        local line2 = CreateHorz(root);
-        CreateEmpty(line2).SetPreferredWidth(20);
-        local vert = CreateVert(line2);
-        local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
-        showMoreButton.SetOnClick(function() showMoreNormalData(rain, vert, showMoreButton); end);    
-    end
-    
-    CreateEmpty(root).SetPreferredHeight(5);
-    
-    CreateButton(root).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(conf.Normal, t); openConfig = "Normal"; modifyNormal(#conf.Normal, t); end);
-    
-    CreateEmpty(root).SetPreferredHeight(20);
-    
-    CreateLabel(root).SetText("Doomsday meteor storms").SetColor(colors.TextColor);
-    for i, rain in ipairs(conf.Special) do
-        line = CreateHorz(root);
-        CreateButton(line).SetText(getSpecialDataString(rain)).SetColor(colors.Blue).SetOnClick(function() openConfig = "Special"; modifySpecial(i, rain); end);
-        local line2 = CreateHorz(root);
-        local vert = CreateVert(root);
-        CreateEmpty(line2).SetPreferredWidth(20);
-        local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
-        showMoreButton.SetOnClick(function() showMoreSpecialData(rain, vert, showMoreButton); end)
-    end
-    
-    CreateEmpty(root).SetPreferredHeight(5);
-    
-    CreateButton(root).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createSpecial(); table.insert(conf.Special, t); openConfig = "Special"; modifySpecial(#conf.Special, t); end);
+    local line = CreateHorz(root);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
+    CreateButton(line).SetText("Normal storms").SetColor(colors.Green).SetOnClick(function() saveConfig(); showNormalStorms(); end);
+    CreateButton(line).SetText("Doomsday storms").SetColor(colors.Yellow).SetOnClick(function() saveConfig(); showDoomsdayStorms(); end);
+    CreateButton(line).SetText("General settings").SetColor(colors.Blue).SetOnClick(function() saveConfig(); showGeneralSettings(); end);
+    CreateEmpty(line).SetFlexibleWidth(0.5);
 
     CreateEmpty(root).SetPreferredHeight(20);
 
-    CreateButton(root).SetText("General settings").SetColor(colors.Blue).SetOnClick(showGeneralSettings);
+    SetWindow("Dummy");
+
+    CreateLabel(root).SetText("Welcome to the Meteor Strike + mod!").SetColor(colors.TextColor);
+    CreateLabel(root).SetText("Number of normal storms: " .. #conf.Normal).SetColor(colors.TextColor);
+    CreateLabel(root).SetText("Number of doomsday storms: " .. #conf.Special).SetColor(colors.TextColor);
+end
+
+function showNormalStorms()
+    DestroyWindow();
+    SetWindow("NormalStorms");
+
+    CreateButton(root).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createNormal(); table.insert(conf.Normal, t); modifyNormal(#conf.Normal, t); end);
+
+    CreateEmpty(root).SetPreferredHeight(10);
+    
+    if #conf.Normal == 0 then
+        CreateLabel(root).SetText("There are no normal storms yet").SetColor(colors.TextColor);
+    else
+        CreateLabel(root).SetText("Normal meteor storms").SetColor(colors.TextColor);
+        for i, rain in ipairs(conf.Normal) do
+            line = CreateHorz(root);
+            CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end);
+            local line2 = CreateHorz(root);
+            CreateEmpty(line2).SetPreferredWidth(20);
+            local vert = CreateVert(line2);
+            local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
+            showMoreButton.SetOnClick(function() showMoreNormalData(rain, vert, showMoreButton); end)
+        end
+    end
+end
+
+function showDoomsdayStorms()
+    DestroyWindow();
+    SetWindow("DoomsdayStorms");
+    
+    CreateButton(root).SetText("Create New").SetColor(colors.Green).SetOnClick(function() local t = createSpecial(); table.insert(conf.Special, t); modifySpecial(#conf.Special, t); end);
+    
+    CreateEmpty(root).SetPreferredHeight(10);
+
+    if #conf.Special == 0 then
+        CreateLabel(root).SetText("There are no doomsday storms yet").SetColor(colors.TextColor);
+    else
+        CreateLabel(root).SetText("Doomsday meteor storms").SetColor(colors.TextColor);
+        for i, rain in ipairs(conf.Special) do
+            line = CreateHorz(root);
+            CreateButton(line).SetText(getSpecialDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifySpecial(i, rain); end);
+            local line2 = CreateHorz(root);
+            CreateEmpty(line2).SetPreferredWidth(20);
+            local vert = CreateVert(line2);
+            local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
+            showMoreButton.SetOnClick(function() showMoreSpecialData(rain, vert, showMoreButton); end)
+        end
+    end
 end
 
 function showGeneralSettings()
@@ -99,7 +124,7 @@ function showGeneralSettings()
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveGeneralSettings(inputs); showMain(); end)
+    CreateButton(line).SetText("Save").SetColor(colors.Orange).SetOnClick(function() saveGeneralSettings(inputs); end)
     CreateEmpty(line).SetFlexibleWidth(0.5);
 
     generalSettingsInputs = inputs;
@@ -117,15 +142,31 @@ function modifyNormal(index, data)
     SetWindow("modifyNormal");
     local inputs = {};
     
+    openConfig = "Normal";
     globalData = {data, inputs};
     
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveNormalInputs(data, inputs); showMain(); end)
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveNormalInputs(data, inputs); showNormalStorms(); end)
     
     CreateEmpty(root).SetPreferredHeight(10)
     
     CreateLabel(root).SetText("Chance of falling each turn").SetColor(colors.TextColor);
     inputs.ChanceofFalling = CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
     
+    CreateEmpty(root).SetPreferredHeight(5);
+    
+    local line = CreateHorz(root);
+    inputs.EveryTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.EveryTurn);
+    CreateLabel(line).SetText("Can fall every turn").SetColor(colors.TextColor);
+    local vert = CreateVert(root);
+    
+    if data.EveryTurn then
+        inputs.EveryTurn.SetOnValueChanged(function() showEveryTurnInputs(data, inputs, vert, inputs.EveryTurn); end);
+    else
+        showEveryTurnInputs(data, inputs, vert, inputs.EveryTurn);
+    end
+    
+    CreateEmpty(root).SetPreferredHeight(5);
+
     showGeneralInputs(data, inputs);
     
     local line = CreateHorz(root);
@@ -139,9 +180,10 @@ function modifySpecial(index, data)
     SetWindow("modifySpecial");
     local inputs = {};
     
+    openConfig = "Special";
     globalData = {data, inputs};
     
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveSpecialInputs(data, inputs); showMain(); end)
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(function() saveSpecialInputs(data, inputs); showDoomsdayStorms(); end)
     
     local line = CreateHorz(root);
     inputs.RandomTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.RandomTurn);
@@ -154,7 +196,11 @@ function modifySpecial(index, data)
         showFixedTurn(data, inputs, vert, inputs.RandomTurn);
     end
     
+    CreateEmpty(root).SetPreferredHeight(5);
+
     showGeneralInputs(data, inputs);
+
+    CreateEmpty(root).SetPreferredHeight(5);
 
     line = CreateHorz(root);
     inputs.Repeat = CreateCheckBox(line).SetText(" ").SetIsChecked(data.Repeat);
@@ -162,9 +208,9 @@ function modifySpecial(index, data)
     local vert = CreateVert(root);
 
     if data.Repeat then
-        inputs.Repeat.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert, inputs.Repeat); end)
-    else
         showRepeatInputs(data, inputs, vert, inputs.Repeat);
+    else
+        inputs.Repeat.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert, inputs.Repeat); end)
     end
     
     line = CreateHorz(root);
@@ -183,6 +229,8 @@ function showGeneralInputs(data, inputs)
     CreateLabel(root).SetText("Meteor damage").SetColor(colors.TextColor);
     inputs.MeteorDamage = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(data.MeteorDamage);
     
+    CreateEmpty(root).SetPreferredHeight(5);
+
     line = CreateHorz(root);
     inputs.CanSpawnAlien = CreateCheckBox(line).SetText(" ").SetIsChecked(data.CanSpawnAlien);
     CreateLabel(line).SetText("Meteor can spawn an alien").SetColor(colors.TextColor);
@@ -215,6 +263,36 @@ function showAlienConfig(data, inputs, vert, box)
     CreateLabel(vert).SetText("Additional (random) health").SetColor(colors.TextColor);
     inputs.AlienRandomHealth = CreateNumberInputField(vert).SetSliderMinValue(0).SetSliderMaxValue(10).SetValue(data.AlienRandomHealth);
     
+    SetWindow(win);
+end
+
+function showEveryTurnInputs(data, inputs, vert, box)
+    local win = GetCurrentWindow();
+    local currWin = "EveryTurn";
+    AddSubWindow(win, currWin);
+    SetWindow(currWin);
+    
+    box.SetOnValueChanged(function() saveEveryTurn(data, inputs); DestroyWindow(currWin); box.SetOnValueChanged(function() showEveryTurnInputs(data, inputs, vert, box); end); end)
+
+    CreateLabel(vert).SetText("The number of turns after the meteors can fall").SetColor(colors.TextColor);
+    inputs.StartStorm = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(20).SetValue(data.StartStorm);
+    
+    CreateLabel(vert).SetText("The number of turns after the meteors stop falling").SetColor(colors.TextColor);
+    inputs.EndStorm = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(data.EndStorm);
+
+    CreateEmpty(vert).SetPreferredHeight(5);
+
+    local line = CreateHorz(vert);
+    inputs.Repeat = CreateCheckBox(vert).SetText(" ").SetIsChecked(data.Repeat);
+    CreateLabel(line).SetText("This interval repeats itself").SetColor(colors.TextColor);
+    local vert2 = CreateVert(vert);
+
+    if data.Repeat then
+        showRepeatInputs(data, inputs, vert2, inputs.Repeat);
+    else
+        inputs.Repeat.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert2, inputs.Repeat); end);
+    end
+
     SetWindow(win);
 end
 
@@ -257,11 +335,9 @@ function showRepeatInputs(data, inputs, vert, box)
 
     box.SetOnValueChanged(function() saveRepeatInputs(data, inputs); DestroyWindow(currWin); box.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert, box); end) end);
 
-    local line = CreateHorz(vert);
     CreateLabel(vert).SetText("The minimum amount of turns until meteor storm is repeated").SetColor(colors.TextColor);
     inputs.RepeatAfterMin = CreateNumberInputField(vert).SetSliderMinValue(0).SetSliderMaxValue(50).SetValue(data.RepeatAfterMin);
     
-    line = CreateHorz(vert);
     CreateLabel(vert).SetText("The maximum amount of turns until meteor storm is repeated").SetColor(colors.TextColor);
     inputs.RepeatAfterMax = CreateNumberInputField(vert).SetSliderMinValue(0).SetSliderMaxValue(50).SetValue(data.RepeatAfterMax);
 
@@ -270,6 +346,10 @@ end
 
 function saveNormalInputs(data, inputs)
     data.ChanceofFalling = inputs.ChanceofFalling.GetValue();
+    data.EveryTurn = inputs.EveryTurn.GetIsChecked();
+    if not data.EveryTurn then
+        saveEveryTurn(data, inputs);
+    end
     saveInputs(data, inputs);
 end
 
@@ -306,6 +386,15 @@ function saveAlienInputs(data, inputs)
     data.AlienSpawnChance = inputs.AlienSpawnChance.GetValue();
     data.AlienDefaultHealth = inputs.AlienDefaultHealth.GetValue();
     data.AlienRandomHealth = inputs.AlienRandomHealth.GetValue();
+end
+
+function saveEveryTurn(data, inputs)
+    data.StartStorm = inputs.StartStorm.GetValue();
+    data.EndStorm = inputs.EndStorm.GetValue();
+    data.Repeat = inputs.Repeat.GetIsChecked();
+    if data.Repeat then
+        saveRepeatInputs(data, inputs);
+    end
 end
 
 function saveFixedTurn(data, inputs)
