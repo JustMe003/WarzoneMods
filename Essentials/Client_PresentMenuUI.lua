@@ -404,7 +404,7 @@ function showCombatOrder(callback, sp)
 	SetWindow("CombatOrder");
 	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(callback);
 
-	local order = {[0] = {Units = {"Armies"}, Positions = {}}};
+	local order = {[0] = {Units = {"Normal army"}, Positions = {}}};
 	for _, terr in pairs(Game.LatestStanding.Territories) do
 		if not tableIsEmpty(terr.NumArmies.SpecialUnits) then
 			for _, unit in pairs(terr.NumArmies.SpecialUnits) do
@@ -436,7 +436,7 @@ function showCombatOrder(callback, sp)
 	CreateEmpty(root).SetPreferredHeight(10);
 	CreateLabel(root).SetText("This is the order in which units take damage. Note that the units listed below are only the ones visible to you, there might be units hidden by the fog").SetColor(colors.TextColor);
 
-	local c = 2;
+	local c = 1;
 	for _, arr in pairs(order) do
 		local line = CreateHorz(root).SetFlexibleWidth(1);
 		if arr.CombatOrder == sp.CombatOrder then
