@@ -1,3 +1,5 @@
+require("SpecialUnitsData");
+
 function Server_AdvanceTurn_Start(game, addNewOrder)
     medics = {};
     for p, _ in pairs(game.Game.PlayingPlayers) do
