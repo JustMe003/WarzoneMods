@@ -155,8 +155,19 @@ function modifySpecial(index, data)
     end
     
     showGeneralInputs(data, inputs);
+
+    line = CreateHorz(root);
+    inputs.Repeat = CreateCheckBox(line).SetText(" ").SetIsChecked(data.Repeat);
+    CreateLabel(line).SetText("Repeat doomsday").SetColor(colors.TextColor);
+    local vert = CreateVert(root);
+
+    if data.Repeat then
+        inputs.Repeat.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert, inputs.Repeat); end)
+    else
+        showRepeatInputs(data, inputs, vert, inputs.Repeat);
+    end
     
-    local line = CreateHorz(root);
+    line = CreateHorz(root);
     CreateEmpty(line).SetFlexibleWidth(0.5);
     CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() conf.Special[index] = conf.Special[#conf.Special]; table.remove(conf.Special); showMain() end)
     CreateEmpty(line).SetFlexibleWidth(0.5);
@@ -227,7 +238,7 @@ function showRandomTurn(data, inputs, vert, box)
     AddSubWindow(win, currWin);
     SetWindow(currWin);
     
-    box.SetOnValueChanged(function()  saveRandomTurn(data, inputs); DestroyWindow(currWin); showFixedTurn(data, inputs, vert, box); end);
+    box.SetOnValueChanged(function() saveRandomTurn(data, inputs); DestroyWindow(currWin); showFixedTurn(data, inputs, vert, box); end);
     
     CreateLabel(vert).SetText("Minimum turn bound").SetColor(colors.TextColor);
     inputs.MinTurnNumber = CreateNumberInputField(vert).SetSliderMinValue(5).SetSliderMaxValue(20).SetValue(data.MinTurnNumber);
@@ -235,6 +246,25 @@ function showRandomTurn(data, inputs, vert, box)
     CreateLabel(vert).SetText("Maximum turn bound").SetColor(colors.TextColor);
     inputs.MaxTurnNumber = CreateNumberInputField(vert).SetSliderMinValue(10).SetSliderMaxValue(50).SetValue(data.MaxTurnNumber);
     
+    SetWindow(win);
+end
+
+function showRepeatInputs(data, inputs, vert, box)
+    local win = GetCurrentWindow();
+    local currWin = "Repeat";
+    AddSubWindow(win, currWin);
+    SetWindow(currWin);
+
+    box.SetOnValueChanged(function() saveRepeatInputs(data, inputs); DestroyWindow(currWin); box.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert, box); end) end);
+
+    local line = CreateHorz(vert);
+    CreateLabel(vert).SetText("The minimum amount of turns until meteor storm is repeated").SetColor(colors.TextColor);
+    inputs.RepeatAfterMin = CreateNumberInputField(vert).SetSliderMinValue(0).SetSliderMaxValue(50).SetValue(data.RepeatAfterMin);
+    
+    line = CreateHorz(vert);
+    CreateLabel(vert).SetText("The maximum amount of turns until meteor storm is repeated").SetColor(colors.TextColor);
+    inputs.RepeatAfterMax = CreateNumberInputField(vert).SetSliderMinValue(0).SetSliderMaxValue(50).SetValue(data.RepeatAfterMax);
+
     SetWindow(win);
 end
 
@@ -251,6 +281,10 @@ function saveSpecialInputs(data, inputs)
         saveFixedTurn(data, inputs);
     end
     saveInputs(data, inputs);
+    data.Repeat = inputs.Repeat.GetIsChecked();
+    if data.Repeat then
+        saveRepeatInputs(data, inputs);
+    end
 end
 
 function saveInputs(data, inputs)
@@ -281,6 +315,11 @@ end
 function saveRandomTurn(data, inputs)
     data.MinTurnNumber = inputs.MinTurnNumber.GetValue();
     data.MaxTurnNumber = inputs.MaxTurnNumber.GetValue();
+end
+
+function saveRepeatInputs(data, inputs)
+    data.RepeatAfterMin = inputs.RepeatAfterMin.GetValue();
+    data.RepeatAfterMax = inputs.RepeatAfterMax.GetValue();
 end
 
 function showMoreNormalData(data, vert, button)
@@ -349,6 +388,9 @@ end
 function createNormal()
     local t = initializeVariables();
     t.ChanceofFalling = 100;
+    t.EveryTurn = true;
+    t.StartStorm = 5;
+    t.EndStorm = 20;
     return t;
 end
 
@@ -372,6 +414,9 @@ function initializeVariables()
         AlienSpawnChance = 20,
         AlienDefaultHealth = 10,
         AlienRandomHealth = 3
+        Repeat = false;
+        RepeatAfterMin = 10;
+        RepeatAfterMax = 20;
     };
     counter = counter + 1;
     return t;
