@@ -5,6 +5,7 @@ function dataToString(t)
             table.insert(result, string.format("%s=%s", key, dataToString(value)));
         elseif type(value) == type("") then
             table.insert(result, string.format("%s=\"%s\"", key, value));
+            print(string.format("%s=\"%s\"", key, value));
         else
             table.insert(result, string.format("%s=%s", key, tostring(value)));
         end
