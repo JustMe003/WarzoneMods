@@ -419,6 +419,7 @@ function showCombatOrder(callback, sp)
 
 	local cos = {};
 	local t = {};
+	table.insert(t, 0, "Army");
 	for co, arr in pairs(order) do
 		local i = 1;
 		for i2, v in pairs(cos) do
@@ -436,12 +437,9 @@ function showCombatOrder(callback, sp)
 	CreateEmpty(root).SetPreferredHeight(10);
 	CreateLabel(root).SetText("This is the order in which units take damage. Note that the units listed below are only the ones visible to you, there might be units hidden by the fog").SetColor(colors.TextColor);
 
-	local line = CreateHorz(root).SetFlexibleWidth(1);
-	CreateLabel(line).SetText("1. ").SetColor(colors.TextColor);
-	CreateLabel(line).SetText("Armies").SetColor(colors.TextColor);
 	local c = 2;
 	for _, arr in pairs(order) do
-		line = CreateHorz(root).SetFlexibleWidth(1);
+		local line = CreateHorz(root).SetFlexibleWidth(1);
 		if arr.CombatOrder == sp.CombatOrder then
 			CreateLabel(line).SetText(c .. ". ").SetColor(colors.Green);
 		else
@@ -488,6 +486,7 @@ function showDocumentLinks()
 end
 
 function getUnitName(sp)
+	if type(sp) == type("") then return sp; end
 	if sp.proxyType == "CustomSpecialUnit" then
 		return sp.Name or "[No name]";
 	else 
