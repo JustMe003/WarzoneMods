@@ -38,6 +38,11 @@ function Server_AdvanceTurn_End(game, addNewOrder)
             local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
             table.insert(meteors, {Weight = num, Data = data.Data});
             totalWeight = totalWeight + num;
+            if nil then
+                print(true);
+            else
+                print(false);
+            end
         end
     end
     
