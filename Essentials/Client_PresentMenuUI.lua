@@ -404,7 +404,7 @@ function showCombatOrder(callback, sp)
 	SetWindow("CombatOrder");
 	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(callback);
 
-	local order = {[0] = {Units = "Armies", Positions = {}}};
+	local order = {[0] = {Units = {"Armies"}, Positions = {}}};
 	for _, terr in pairs(Game.LatestStanding.Territories) do
 		if not tableIsEmpty(terr.NumArmies.SpecialUnits) then
 			for _, unit in pairs(terr.NumArmies.SpecialUnits) do
