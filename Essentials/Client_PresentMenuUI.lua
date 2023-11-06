@@ -419,8 +419,8 @@ function showCombatOrder(callback, sp)
 
 	local cos = {};
 	local t = {};
-	table.insert(t, 1, "Army");
-	table.insert(cos, 1, 0);
+	table.insert(t, "Army");
+	table.insert(cos, 0);
 	for co, arr in pairs(order) do
 		local i = 1;
 		for i2, v in pairs(cos) do
