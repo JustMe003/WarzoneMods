@@ -12,7 +12,7 @@ function Client_SaveConfigureUI()
             data.RepeatAfterMax = x;
         end
     end
-    for _, data in ipiars(conf.Normal) do
+    for _, data in ipairs(conf.Normal) do
         if data.StartStorm > data.EndStorm then
             local x = data.StartStorm;
             data.StartStorm = data.EndStorm;
