@@ -59,7 +59,7 @@ function showForecast()
 
     CreateLabel(root).SetText("Expected storms coming turn");
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
-        if not rain.NotEveryTurn or (TurnNumber >= rain.StartStorm and TurnNumber <= rain.EndStorm) then
+        if not rain.NotEveryTurn or (TurnNumber >= rain.StartStorm and TurnNumber <= rain.EndStorm) or (rain.Repeat and Mod.PublicGameData.NormalStormsLastTurn[rain.ID] > 0 and TurnNumber - Mod.PublicGameData.NormalStormsLastTurn[rain.ID] >= rain.RepeatAfterMin and TurnNumber - Mod.PublicGameData.NormalStormsLastTurn[rain.ID] <= rain.RepeatAfterMax) then
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
