@@ -233,6 +233,6 @@ function getDoomsdayTurn(data)
     if data.RandomTurn then
         return math.random(0, data.MaxTurnNumber - data.MinTurnNumber);
     else
-        return data.FixedTurn;
+        return 0;
     end
 end
