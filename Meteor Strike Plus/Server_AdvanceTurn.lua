@@ -44,6 +44,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
             if data.Data.Repeat then
                 local doomsday = data;
                 doomsday.Turn = turnNumber + math.random(data.Data.RepeatAfterMin, data.Data.RepeatAfterMax) + math.random(0, getDoomsdayTurn(data.Data));
+                print(doomsday.Turn);
                 privData.Doomsdays[i] = doomsday;
             end
             if data.Data.Repeat or data.Data.RandomTurn then
