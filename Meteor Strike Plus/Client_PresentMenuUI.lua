@@ -83,13 +83,22 @@ function showForecast()
             createProbabilityLine(line, 100 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - rain.MinTurnNumber + 1));
             CreateEmpty(line).SetFlexibleWidth(0.1);
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
-        elseif not rain.RandomTurn and rain.Repeat and TurnNumber > rain.FixedTurn and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax then
-            local line = CreateHorz(root).SetFlexibleWidth(1);
-            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            createProbabilityLine(line, 100 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1));
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+        elseif rain.Repeat then
+            if not rain.RandomTurn and TurnNumber > rain.FixedTurn and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax then
+                local line = CreateHorz(root).SetFlexibleWidth(1);
+                CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
+                CreateEmpty(line).SetFlexibleWidth(0.1);
+                createProbabilityLine(line, 100 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1));
+                CreateEmpty(line).SetFlexibleWidth(0.1);
+                CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+            elseif rain.RandomTurn and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] > 0 and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax then
+                local line = CreateHorz(root).SetFlexibleWidth(1);
+                CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
+                CreateEmpty(line).SetFlexibleWidth(0.1);
+                createProbabilityLine(line, 100 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1) * 100 / ((rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + 1)));
+                CreateEmpty(line).SetFlexibleWidth(0.1);
+                CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+            end
         end
     end
 end
