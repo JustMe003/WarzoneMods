@@ -65,7 +65,7 @@ function showForecast()
             CreateEmpty(line).SetFlexibleWidth(0.1);
             createProbabilityLine(line, rain.ChanceofFalling);
             CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end)
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end);
         end
     end
     for _, rain in ipairs(Mod.Settings.Data.Special) do
@@ -75,7 +75,14 @@ function showForecast()
             CreateEmpty(line).SetFlexibleWidth(0.1);
             createProbabilityLine(line, 100);
             CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end)
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+        elseif rain.RandomTurn and TurnNumber >= rain.MinTurnNumber and TurnNumber <= rain.MaxTurnNumber then
+            local line = CreateHorz(root).SetFlexibleWidth(1);
+            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            createProbabilityLine(line, 1 / (rain.MaxTurnNumber - rain.MinTurnNumber * 2 + TurnNumber));
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
         end
     end
 end
