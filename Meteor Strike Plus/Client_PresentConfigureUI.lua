@@ -164,7 +164,7 @@ function modifyNormal(index, data)
     
     CreateLabel(root).SetText("Chance of falling each turn").SetColor(colors.TextColor);
     inputs.ChanceofFalling = CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
-    x
+    
     CreateEmpty(root).SetPreferredHeight(5);
 
     showGeneralInputs(data, inputs);
