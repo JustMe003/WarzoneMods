@@ -50,6 +50,10 @@ function showForecast()
     CreateLabel(root).SetText("Expected storms coming turn");
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
         if not rain.NotEveryTurn then
+            print(rain);
+            for i, v in pairs(rain) do
+                print(i, v);
+            end
             local line = CreateHorz(root);
             CreateLabel(line).SetText(rain.Name).SetColor(color.Cyan);
             CreateLabel(line).SetText(showDecimal(rain.ChanceofFalling, 2)).SetColor(colors.Aqua);
