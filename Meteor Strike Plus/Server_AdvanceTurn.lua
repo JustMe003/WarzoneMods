@@ -42,7 +42,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
             totalWeight = totalWeight + num;
             if data.Data.Repeat then
                 local doomsday = data;
-                doomsday.Turn = turnNumber + math.random(data.Data.RepeatAfterMin, data.Data.RepeatAfterMax) + math.random(0, data.Data.MaxTurnNumber - data.Data.MinTurnNumber);
+                doomsday.Turn = turnNumber + math.random(data.Data.RepeatAfterMin, data.Data.RepeatAfterMax) + math.random(0, getDoomsdayTurn(data.Data));
                 privData.Doomsdays[i] = doomsday;
             end
         end
@@ -219,5 +219,13 @@ function getEventMessage(mod, to, from)
         return "Aliens attacked " .. to .. " from " .. from;
     else
         return "Aliens moved from " .. from .. " to " .. to;
+    end
+end
+
+function getDoomsdayTurn(data)
+    if data.RandomTurn then
+        return math.random(0, data.MaxTurnNumber - data.MinTurnNumber);
+    else
+        return data.FixedTurn;
     end
 end
