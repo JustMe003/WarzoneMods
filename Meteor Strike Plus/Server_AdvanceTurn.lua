@@ -108,6 +108,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     for _, order in ipairs(orders) do
         addNewOrder(order);
     end
+
+    Mod.PrivateGameData = privData;
 end
 
 function moveAllAliens(game, addNewOrder)
