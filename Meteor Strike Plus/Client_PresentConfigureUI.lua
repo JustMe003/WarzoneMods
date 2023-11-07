@@ -347,7 +347,7 @@ end
 function saveNormalInputs(data, inputs)
     data.ChanceofFalling = inputs.ChanceofFalling.GetValue();
     data.NotEveryTurn = inputs.NotEveryTurn.GetIsChecked();
-    if not data.NotEveryTurn then
+    if data.NotEveryTurn then
         saveEveryTurn(data, inputs);
     end
     saveInputs(data, inputs);
