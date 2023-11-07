@@ -95,7 +95,9 @@ function showForecast()
                 local line = CreateHorz(root).SetFlexibleWidth(1);
                 CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
                 CreateEmpty(line).SetFlexibleWidth(0.1);
-                print(getProbability(0.3333333, 3, 0.2, 5, 4));
+                for i = 1, 6 do
+                    print(getProbability(0.3333333, 3, 0.2, 5, i));
+                end
                 createProbabilityLine(line, 1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1) / ((rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + 1)) * 100);
                 CreateEmpty(line).SetFlexibleWidth(0.1);
                 CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
@@ -138,6 +140,7 @@ function getProbability(p1, n1, p2, n2, x)
             res = res + (p1 * y) * (p2 * y2);
         end
     end
+    return res;
 end
 
 function showDecimal(x, n)
