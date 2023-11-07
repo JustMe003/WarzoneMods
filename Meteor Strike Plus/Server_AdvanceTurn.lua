@@ -51,7 +51,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     for i, data in pairs(privData.NormalStorms) do
         if (not data.NotEveryTurn or (turnNumber >= data.StartStorm and turnNumber <= data.EndStorm)) and math.random(10000) / 100 <= data.Data.ChanceofFalling then
             local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
-            table.insert(meteors, {Weight = num, Data = data});
+            table.insert(meteors, {Weight = num, Data = data.Data});
             totalWeight = totalWeight + num;
             if data.NotEveryTurn and turnNumber == data.EndStorm and data.Data.Repeat then
                 local storm = data;
