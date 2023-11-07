@@ -28,35 +28,43 @@ end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
     moveAllAliens(game, addNewOrder);
-
+    
     local totalWeight = 0;
     local meteors = {};
     
+    local privData = Mod.PrivateGameData;
     local turnNumber = game.Game.TurnNumber;
-    for _, data in ipairs(Mod.PrivateGameData.Doomsdays) do
+    
+    for i, data in ipairs(privData.Doomsdays) do
         if turnNumber == data.Turn then
             local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
             table.insert(meteors, {Weight = num, Data = data.Data});
             totalWeight = totalWeight + num;
-            if nil then
-                print(true);
-            else
-                print(false);
+            if data.Data.Repeat then
+                local doomsday = data;
+                doomsday.Turn = turnNumber + math.random(data.Data.RepeatAfterMin, data.Data.RepeatAfterMax) + math.random(0, data.Data.MaxTurnNumber - data.Data.MinTurnNumber);
+                privData.Doomsdays[i] = doomsday;
             end
         end
     end
     
-    for _, data in pairs(Mod.Settings.Data.Normal) do
-        if math.random(10000) / 100 <= data.ChanceofFalling then
-            local num = data.NumOfMeteors + math.random(0, data.RandomNumOfMeteor);
+    for i, data in pairs(privData.NormalStorms) do
+        if (not data.NotEveryTurn or (turnNumber >= data.StartStorm and turnNumber <= data.EndStorm)) and math.random(10000) / 100 <= data.Data.ChanceofFalling then
+            local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
             table.insert(meteors, {Weight = num, Data = data});
             totalWeight = totalWeight + num;
+            if data.NotEveryTurn and turnNumber == data.EndStorm and data.Data.Repeat then
+                local storm = data;
+                local interval = math.random(data.Data.RepeatAfterMin, data.Data.RepeatAfterMax);
+                storm.StartStorm = turnNumber + interval;
+                storm.EndStorm = turnNumber + interval + data.Data.EndStorm - data.Data.StartStorm;
+                privData.NormalStorms[i] = storm;
+            end
         end
     end
     
     local terrsHit = {};
     local orders = {};
-    local privData = Mod.PrivateGameData;
     local terrs = privData.Territories;
     local numTerrs = #terrs;
     for i = 1, math.min(totalWeight, numTerrs) do

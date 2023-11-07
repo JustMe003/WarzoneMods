@@ -155,14 +155,14 @@ function modifyNormal(index, data)
     CreateEmpty(root).SetPreferredHeight(5);
     
     local line = CreateHorz(root);
-    inputs.EveryTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.EveryTurn);
+    inputs.NotEveryTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.NotEveryTurn);
     CreateLabel(line).SetText("Can fall every turn").SetColor(colors.TextColor);
     local vert = CreateVert(root);
     
-    if data.EveryTurn then
-        inputs.EveryTurn.SetOnValueChanged(function() showEveryTurnInputs(data, inputs, vert, inputs.EveryTurn); end);
+    if data.NotEveryTurn then
+        inputs.NotEveryTurn.SetOnValueChanged(function() showEveryTurnInputs(data, inputs, vert, inputs.NotEveryTurn); end);
     else
-        showEveryTurnInputs(data, inputs, vert, inputs.EveryTurn);
+        showEveryTurnInputs(data, inputs, vert, inputs.NotEveryTurn);
     end
     
     CreateEmpty(root).SetPreferredHeight(5);
@@ -268,7 +268,7 @@ end
 
 function showEveryTurnInputs(data, inputs, vert, box)
     local win = GetCurrentWindow();
-    local currWin = "EveryTurn";
+    local currWin = "NotEveryTurn";
     AddSubWindow(win, currWin);
     SetWindow(currWin);
     
@@ -346,8 +346,8 @@ end
 
 function saveNormalInputs(data, inputs)
     data.ChanceofFalling = inputs.ChanceofFalling.GetValue();
-    data.EveryTurn = inputs.EveryTurn.GetIsChecked();
-    if not data.EveryTurn then
+    data.NotEveryTurn = inputs.NotEveryTurn.GetIsChecked();
+    if not data.NotEveryTurn then
         saveEveryTurn(data, inputs);
     end
     saveInputs(data, inputs);
@@ -477,7 +477,7 @@ end
 function createNormal()
     local t = initializeVariables();
     t.ChanceofFalling = 100;
-    t.EveryTurn = true;
+    t.NotEveryTurn = false;
     t.StartStorm = 5;
     t.EndStorm = 20;
     return t;
