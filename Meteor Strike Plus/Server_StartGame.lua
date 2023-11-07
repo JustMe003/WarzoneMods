@@ -5,15 +5,23 @@ function Server_StartGame(game, Settings)
     end
     
     local doomsdays = {};
+    local doomsdaysLastTurn = {};
     for _, data in ipairs(Mod.Settings.Data.Special) do
         table.insert(doomsdays, {Turn = getDoomsdayTurn(data), Data = data});
+        if data.Repeat then
+            doomsdaysLastTurn[data.ID] = 0;
+        end
     end
 
     local normalStorms = {};
+    local normalStormsLastTurn = {};
     for _, data in ipairs(Mod.Settings.Data.Normal) do
         local t = createNormal(data);
         t.Data = data;
         table.insert(normalStorms, t);
+        if data.NotEveryTurn and data.Repeat then
+            normalStormsLastTurn[data.ID] = 0;
+        end
     end
     
     local priv = Mod.PrivateGameData;
@@ -21,6 +29,10 @@ function Server_StartGame(game, Settings)
     priv.Doomsdays = doomsdays;
     priv.NormalStorms = normalStorms;
     Mod.PrivateGameData = priv;
+    local publ = Mod.PublicGameData;
+    publ.DoomsdaysLastTurn = doomsdaysLastTurn;
+    publ.NormalStormsLastTurn = normalStormsLastTurn;
+    Mod.PublicGameData = publ;
 end
 
 function getDoomsdayTurn(data)
