@@ -139,6 +139,7 @@ function getProbability(p1, n1, p2, n2, x)
         if y + y2 == x then
             print(y, y2, p1*y, p2*y2);
             res = res + (p1 * y) * (p2 * y2);
+            count = count + 1;
         end
     end
     return res / count;
