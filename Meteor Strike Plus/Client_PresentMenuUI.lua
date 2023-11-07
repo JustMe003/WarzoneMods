@@ -95,8 +95,8 @@ function showForecast()
                 local line = CreateHorz(root).SetFlexibleWidth(1);
                 CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
                 CreateEmpty(line).SetFlexibleWidth(0.1);
-                for i = 2, 8 do
-                    print(getProbability(0.3333333, 3, 0.2, 5, i));
+                for i = 2, 9 do
+                    print(getProbability(0.25, 4, 0.2, 5, i));
                 end
                 createProbabilityLine(line, 1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1) / ((rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + 1)) * 100);
                 CreateEmpty(line).SetFlexibleWidth(0.1);
