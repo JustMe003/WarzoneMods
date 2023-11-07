@@ -8,7 +8,7 @@ function Server_StartGame(game, Settings)
     local doomsdaysLastTurn = {};
     for _, data in ipairs(Mod.Settings.Data.Special) do
         table.insert(doomsdays, {Turn = getDoomsdayTurn(data), Data = data});
-        if data.Repeat then
+        if data.Repeat or data.RandomTurn then
             doomsdaysLastTurn[data.ID] = 0;
         end
     end
