@@ -6,6 +6,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     root = GetRoot();
     Game = game;
 
+    setMaxSize(400, 500);
+
     showMain();
 end
 
@@ -51,7 +53,7 @@ function showForecast()
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
         if not rain.NotEveryTurn then
             local line = CreateHorz(root);
-            CreateLabel(line).SetText(rain.Name).SetColor(colors.Cyan);
+            CreateLabel(line).SetText(rain.Name .. "\t").SetColor(colors["Light Blue"]);
             CreateLabel(line).SetText(showDecimal(rain.ChanceofFalling, 2)).SetColor(colors.Aqua);
         end
     end
