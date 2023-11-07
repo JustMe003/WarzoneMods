@@ -77,6 +77,7 @@ function showForecast()
             CreateEmpty(line).SetFlexibleWidth(0.1);
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
         elseif rain.RandomTurn and TurnNumber >= rain.MinTurnNumber and TurnNumber <= rain.MaxTurnNumber and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] then
+            print(Mod.PublicGameData.DoomsdaysLastTurn[rain.ID]);
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
