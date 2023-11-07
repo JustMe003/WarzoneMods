@@ -62,7 +62,7 @@ function showForecast()
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateLabel(line).SetText(showDecimal(rain.ChanceofFalling, 2) .. "%").SetColor(colors.Aqua);
+            createProbabilityLine(line, rain.ChanceofFalling);
             CreateEmpty(line).SetFlexibleWidth(0.1);
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end)
         end
@@ -72,11 +72,13 @@ function showForecast()
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateLabel(line).SetText("100%").SetColor(colors.Red);
+            createProbabilityLine(line, 100);
             CreateEmpty(line).SetFlexibleWidth(0.1);
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end)
-
         end
+    end
+    for i = 0, 10 do
+        createProbabilityLine(root, i * 10);
     end
 end
 
@@ -92,6 +94,11 @@ function showSpecialStormData(data)
     SetWindow("SpecialData");
 
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showForecast);
+end
+
+function createProbabilityLine(line, p)
+    local arr = {"#00ff00", "#1ee130", "#97db24", "#d0c82f", "#cfa830", "#bc8232", "#bd6937", "#d64329", "#ea1515", "#c80000", "#ff0000"}
+    CreateLabel(line).SetText(p .. "%").SetColor(arr[math.floor((p + 0.5) / 10) + 1]);
 end
 
 function getColorIfNil(color)
