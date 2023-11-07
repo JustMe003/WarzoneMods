@@ -12,7 +12,6 @@
 
 function removeArmies(terr, damage)
 	local mod = WL.TerritoryModification.Create(terr.ID);
-	print(terr.ID);
 	if damage == 0 or killsAllArmies(terr.NumArmies, damage) then
 		mod.AddArmies = -terr.NumArmies.NumArmies;
 		local t = {};
@@ -90,6 +89,7 @@ end
 
 function killsAllArmies(armies, damage)
 	damage = damage - armies.NumArmies;
+	print(armies.SpecialUnits);
 	for _, sp in ipairs(armies.SpecialUnits) do
 		if damage < 0 then return false; end
 		damage = damage - getHealth(sp);
