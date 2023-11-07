@@ -155,9 +155,9 @@ function modifyNormal(index, data)
     local vert = CreateVert(root);
     
     if data.NotEveryTurn then
-        inputs.NotEveryTurn.SetOnValueChanged(function() showEveryTurnInputs(data, inputs, vert, inputs.NotEveryTurn); end);
-    else
         showEveryTurnInputs(data, inputs, vert, inputs.NotEveryTurn);
+    else
+        inputs.NotEveryTurn.SetOnValueChanged(function() showEveryTurnInputs(data, inputs, vert, inputs.NotEveryTurn); end);
     end
 
     CreateEmpty(root).SetPreferredHeight(5);
