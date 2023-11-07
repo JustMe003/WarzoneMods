@@ -136,7 +136,6 @@ function getProbability(p1, p2, x)
         local y = math.min(x - i, n1);
         local y2 = math.min(i, n2);
         if y + y2 == x then
-            print(y, y2, p1*y, p2*y2);
             res = res + (p1 * y) * (p2 * y2);
             count = count + 1;
         end
