@@ -5,6 +5,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     colors = GetColors();
     root = GetRoot().SetFlexibleWidth(1);
     Game = game;
+    TurnNumber = game.Game.TurnNumber;
 
     setMaxSize(400, 500);
 
@@ -58,7 +59,7 @@ function showForecast()
 
     CreateLabel(root).SetText("Expected storms coming turn");
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
-        if not rain.NotEveryTurn then
+        if not rain.NotEveryTurn or (TurnNumber >= rain.StartStorm and TurnNumber <= rain.EndStorm) then
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
@@ -68,7 +69,7 @@ function showForecast()
         end
     end
     for _, rain in ipairs(Mod.Settings.Data.Special) do
-        if not rain.RandomTurn and Game.Game.TurnNumber == rain.FixedTurn then
+        if not rain.RandomTurn and TurnNumber == rain.FixedTurn then
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
@@ -76,9 +77,6 @@ function showForecast()
             CreateEmpty(line).SetFlexibleWidth(0.1);
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end)
         end
-    end
-    for i = 0, 10 do
-        createProbabilityLine(root, i * 10);
     end
 end
 
