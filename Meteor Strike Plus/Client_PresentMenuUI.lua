@@ -22,21 +22,28 @@ function showMain()
     
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.45);
-    CreateLabel(line).SetText("Created by: ").SetColor(colors.TextColor);
+    local vert1 = CreateVert(line);
     CreateEmpty(line).SetFlexibleWidth(0.1);
-    CreateLabel(line).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
+    local vert2 = CreateVert(line);
     CreateEmpty(line).SetFlexibleWidth(0.45);
 
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateEmpty(line).SetFlexibleWidth(0.45);
-    CreateLabel(line).SetText("Presented by: ").SetColor(colors.TextColor);
-    CreateEmpty(line).SetFlexibleWidth(0.1);
+    local lineVert1 = CreateHorz(vert1).SetFlexibleWidth(1);
+    CreateEmpty(lineVert1).SetFlexibleWidth(1);
+    CreateLabel(lineVert1).SetText("Created by: ").SetColor(colors.TextColor);
+    lineVert1 = CreateHorz(vert1).SetFlexibleWidth(1);
+    CreateEmpty(lineVert1).SetFlexibleWidth(1);
+    CreateLabel(lineVert1).SetText("Presented by: ").SetColor(colors.TextColor);
+    
+    local lineVert2 = CreateHorz(vert2).SetFlexibleWidth(1);
+    CreateLabel(lineVert2).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
+    CreateEmpty(lineVert2).SetFlexibleWidth(1);
+    lineVert2 = CreateHorz(vert2).SetFlexibleWidth(1);
     if Mod.Settings.GeneralSettings.UseDataGameCreator and Game.Settings.StartedBy ~= nil then
-        CreateLabel(line).SetText(Game.Game.Players[Game.Settings.StartedBy].DisplayName(nil, false)).SetColor(getColorIfNil(Game.Game.Players[Game.Settings.StartedBy].Color.HtmlColor));
+        CreateLabel(lineVert2).SetText(Game.Game.Players[Game.Settings.StartedBy].DisplayName(nil, false)).SetColor(getColorIfNil(Game.Game.Players[Game.Settings.StartedBy].Color.HtmlColor));
     else
-        CreateLabel(line).SetText("UnFairerOrb76").SetColor(colors.Yellow);
+        CreateLabel(lineVert2).SetText("UnFairerOrb76").SetColor(colors.Yellow);
     end
-    CreateEmpty(line).SetFlexibleWidth(0.45);
+    CreateEmpty(lineVert2).SetFlexibleWidth(1);
 
     CreateEmpty(root).SetPreferredHeight(20);
 
