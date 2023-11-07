@@ -98,7 +98,7 @@ end
 
 function createProbabilityLine(line, p)
     local arr = {"#00ff00", "#1ee130", "#97db24", "#d0c82f", "#cfa830", "#bc8232", "#bd6937", "#d64329", "#ea1515", "#d00000", "#bb0000"}
-    CreateLabel(line).SetText(p .. "%").SetColor(arr[math.floor((p + 0.5) / 10) + 1]);
+    CreateLabel(line).SetText(showDecimal(p, 2) .. "%").SetColor(arr[math.floor((p + 0.5) / 10) + 1]);
 end
 
 function getColorIfNil(color)
