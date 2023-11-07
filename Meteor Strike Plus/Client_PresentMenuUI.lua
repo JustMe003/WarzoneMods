@@ -38,10 +38,30 @@ function showMain()
 
     CreateEmpty(root).SetPreferredHeight(20);
 
-    CreateLabel(root).SetText("")
+    SetWindow("Dummy");
+
+    showForecast();
+end
+
+function showForecast()
+    DestroyWindow();
+    SetWindow("Forecast");
+
+    CreateLabel(root).SetText("Expected storms coming turn");
+    for _, rain in ipairs(Mod.Settings.Data.Normal) do
+        if not rain.NotEveryTurn then
+            local line = CreateHorz(root);
+            CreateLabel(line).SetText(rain.Name).SetColor(color.Cyan);
+            CreateLabel(line).SetText(showDecimal(rain.ChanceofFalling, 2)).SetColor(colors.Aqua);
+        end
+    end
 end
 
 function getColorIfNil(color)
     if color == nil then return colors.TextColor; end
     return color;
+end
+
+function showDecimal(x, n)
+    return math.floor((x * (10^n)) + 0.5) / (10^n);
 end
