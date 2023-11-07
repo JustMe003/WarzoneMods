@@ -80,7 +80,7 @@ function showForecast()
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
-            createProbabilityLine(line, 100 / (rain.MaxTurnNumber - TurnNumber + 2));
+            createProbabilityLine(line, 100 / (rain.MaxTurnNumber - rain.MinTurnNumber + 2) * (TurnNumber - rain.MinTurnNumber + 1));
             CreateEmpty(line).SetFlexibleWidth(0.1);
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
         end
