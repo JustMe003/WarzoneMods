@@ -149,14 +149,9 @@ function modifyNormal(index, data)
     
     CreateEmpty(root).SetPreferredHeight(10)
     
-    CreateLabel(root).SetText("Chance of falling each turn").SetColor(colors.TextColor);
-    inputs.ChanceofFalling = CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
-    
-    CreateEmpty(root).SetPreferredHeight(5);
-    
     local line = CreateHorz(root);
     inputs.NotEveryTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.NotEveryTurn);
-    CreateLabel(line).SetText("Can fall every turn").SetColor(colors.TextColor);
+    CreateLabel(line).SetText("Falls only between an interval").SetColor(colors.TextColor);
     local vert = CreateVert(root);
     
     if data.NotEveryTurn then
@@ -164,7 +159,12 @@ function modifyNormal(index, data)
     else
         showEveryTurnInputs(data, inputs, vert, inputs.NotEveryTurn);
     end
+
+    CreateEmpty(root).SetPreferredHeight(5);
     
+    CreateLabel(root).SetText("Chance of falling each turn").SetColor(colors.TextColor);
+    inputs.ChanceofFalling = CreateNumberInputField(root).SetWholeNumbers(false).SetSliderMinValue(0.1).SetSliderMaxValue(100).SetValue(data.ChanceofFalling);
+    x
     CreateEmpty(root).SetPreferredHeight(5);
 
     showGeneralInputs(data, inputs);
