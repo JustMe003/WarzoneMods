@@ -52,11 +52,21 @@ function showForecast()
     CreateLabel(root).SetText("Expected storms coming turn");
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
         if not rain.NotEveryTurn then
-            local line = CreateHorz(root);
-            CreateLabel(line).SetText(rain.Name .. "\t").SetColor(colors["Light Blue"]);
-            CreateLabel(line).SetText(showDecimal(rain.ChanceofFalling, 2)).SetColor(colors.Aqua);
+            local line = CreateHorz(root).SetFlexibleWidth(1);
+            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            CreateLabel(line).SetText(showDecimal(rain.ChanceofFalling, 2) .. "%").SetColor(colors.Aqua);
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end)
         end
     end
+end
+
+function showNormalStormData(data)
+    DestroyWindow();
+    SetWindow("NormalData");
+
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showForecast);
 end
 
 function getColorIfNil(color)
