@@ -3,7 +3,7 @@ require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
     Init(rootParent);
     colors = GetColors();
-    root = GetRoot();
+    root = GetRoot().SetFlexibleWidth(1);
     Game = game;
 
     setMaxSize(400, 500);
