@@ -283,7 +283,7 @@ function showEveryTurnInputs(data, inputs, vert, box)
     CreateEmpty(vert).SetPreferredHeight(5);
 
     local line = CreateHorz(vert);
-    inputs.Repeat = CreateCheckBox(vert).SetText(" ").SetIsChecked(data.Repeat);
+    inputs.Repeat = CreateCheckBox(line).SetText(" ").SetIsChecked(data.Repeat);
     CreateLabel(line).SetText("This interval repeats itself").SetColor(colors.TextColor);
     local vert2 = CreateVert(vert);
 
