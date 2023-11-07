@@ -67,11 +67,29 @@ function showForecast()
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end)
         end
     end
+    for _, rain in ipairs(Mod.Settings.Data.Special) do
+        if not rain.RandomTurn and Game.Game.TurnNumber == rain.FixedTurn then
+            local line = CreateHorz(root).SetFlexibleWidth(1);
+            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            CreateLabel(line).SetText("100%").SetColor(colors.Red);
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end)
+
+        end
+    end
 end
 
 function showNormalStormData(data)
     DestroyWindow();
     SetWindow("NormalData");
+
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showForecast);
+end
+
+function showSpecialStormData(data)
+    DestroyWindow();
+    SetWindow("SpecialData");
 
     CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showForecast);
 end
