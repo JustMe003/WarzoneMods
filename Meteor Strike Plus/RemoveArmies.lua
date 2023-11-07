@@ -88,7 +88,9 @@ end
 --		Boolean			[Boolean]			True if the damage is enough to kill all the armies, false if some units survive
 
 function killsAllArmies(armies, damage)
-	print(armies);
+	for _, v in ipairs(armies.readableKeys) do
+		print(v, armies[v]);
+	end
 	damage = damage - armies.NumArmies;
 	for _, sp in ipairs(armies.SpecialUnits) do
 		if damage < 0 then return false; end
