@@ -130,7 +130,7 @@ end
 
 function getProbability(p1, n1, p2, n2, x)
     local res = 0;
-    for i = 1, x do
+    for i = 1, x - 1 do
         local y = math.min(x - i, n1);
         local y2 = math.min(i, n2);
         if y + y2 == x then
