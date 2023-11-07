@@ -5,7 +5,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     colors = GetColors();
     root = GetRoot().SetFlexibleWidth(1);
     Game = game;
-    TurnNumber = game.Game.TurnNumber;
+    TurnNumber = game.Game.TurnNumber + 1;
 
     setMaxSize(400, 500);
 
