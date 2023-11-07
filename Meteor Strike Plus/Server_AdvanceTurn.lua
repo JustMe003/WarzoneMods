@@ -33,6 +33,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     local meteors = {};
     
     local privData = Mod.PrivateGameData;
+    local publData = Mod.PublicGameData;
     local turnNumber = game.Game.TurnNumber;
     
     for i, data in ipairs(privData.Doomsdays) do
@@ -44,6 +45,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 local doomsday = data;
                 doomsday.Turn = turnNumber + math.random(data.Data.RepeatAfterMin, data.Data.RepeatAfterMax) + math.random(0, getDoomsdayTurn(data.Data));
                 privData.Doomsdays[i] = doomsday;
+                publData.DoomsdaysLastTurn[data.Data.ID] = turnNumber;
             end
         end
     end
@@ -59,6 +61,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 storm.StartStorm = turnNumber + interval;
                 storm.EndStorm = turnNumber + interval + data.Data.EndStorm - data.Data.StartStorm;
                 privData.NormalStorms[i] = storm;
+                publData.NormalStormsLastTurn[data.Data.ID] = turnNumber;
             end
         end
     end
@@ -110,6 +113,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     end
 
     Mod.PrivateGameData = privData;
+    Mod.PublicGameData = publData;
 end
 
 function moveAllAliens(game, addNewOrder)
