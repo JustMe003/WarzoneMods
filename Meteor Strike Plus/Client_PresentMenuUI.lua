@@ -130,7 +130,7 @@ function showForecast()
         end
     end
     
-    allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) print(a, b); return a.TurnNumber <= b.TurnNumber; end);
+    allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) printTable(a); printTable(b); return a.TurnNumber <= b.TurnNumber; end);
     
     for _, rain in ipairs(allUpcomingStorms) do
         local line = CreateHorz(root).SetFlexibleWidth(1);
@@ -192,4 +192,8 @@ end
 
 function showDecimal(x, n)
     return math.floor((x * (10^n)) + 0.5) / (10^n);
+end
+
+function printTable(t)
+    for i, v in pairs(t) do print(i, v); end
 end
