@@ -74,6 +74,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 
     local orders = {};
     local terrs = privData.Territories;
+    local terrRem = {};
     local numTerrs = #terrs;
     print(numTerrs, totalWeight)
     for i = 1, math.min(totalWeight, numTerrs) do
@@ -87,6 +88,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
                 if not Mod.Settings.HitTerritoriesMultTimes then
                     table.remove(terrs, randTerr);
+                    table.insert(terrRem, randTerr);
                 end
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage);
             --    print(game.Map.Territories[terrID].Name, mod.AddArmies);
@@ -115,6 +117,10 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 
     for _, order in ipairs(orders) do
         addNewOrder(order);
+    end
+
+    if not Mod.Settings.GeneralSettings.HitTerritoriesMultTimes then
+        terrs = concatArrays(terrs, terrRem);
     end
 
     Mod.PrivateGameData = privData;
