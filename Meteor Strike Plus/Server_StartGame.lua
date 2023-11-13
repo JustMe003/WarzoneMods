@@ -15,12 +15,14 @@ function Server_StartGame(game, Settings)
 
     local normalStorms = {};
     local normalStormsLastTurn = {};
+    local normalStormsStartTurn = {};
     for _, data in ipairs(Mod.Settings.Data.Normal) do
         local t = createNormal(data);
         t.Data = data;
         table.insert(normalStorms, t);
         if data.NotEveryTurn and data.Repeat then
             normalStormsLastTurn[data.ID] = 0;
+            normalStormsStartTurn[data.ID] = 0;
         end
     end
     
@@ -32,6 +34,7 @@ function Server_StartGame(game, Settings)
     local publ = Mod.PublicGameData;
     publ.DoomsdaysLastTurn = doomsdaysLastTurn;
     publ.NormalStormsLastTurn = normalStormsLastTurn;
+    publ.NormalStormsStartTurn = normalStormsStartTurn;
     Mod.PublicGameData = publ;
 end
 

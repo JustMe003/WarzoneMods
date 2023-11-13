@@ -57,13 +57,25 @@ function showForecast()
     DestroyWindow();
     SetWindow("Forecast");
 
-    CreateLabel(root).SetText("Expected storms coming turn");
+    if Mod.Settings.WeatherForcastMessage ~= nil and #Mod.Settings.WeatherForcastMessage > 0 then
+        CreateLabel(root).SetText(Mod.Settings.WeatherForcastMessage).SetColor(colors.TextColor);
+        CreateEmpty(root).SetPreferredHeight(10);
+    end
+
+    CreateLabel(root).SetText("Expected storms coming turn").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
-        if not rain.NotEveryTurn or (TurnNumber >= rain.StartStorm and TurnNumber <= rain.EndStorm) then
+        if not rain.NotEveryTurn or (TurnNumber >= rain.StartStorm and TurnNumber <= rain.EndStorm) or (Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= 0 and TurnNumber >= Mod.PublicGameData.NormalStormsStartTurn[rain.ID] and TurnNumber <= (rain.EndStorm - rain.StartStorm + 1) + Mod.PublicGameData.NormalStormsStartTurn[rain.ID]) then
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
             CreateEmpty(line).SetFlexibleWidth(0.1);
             createProbabilityLine(line, rain.ChanceofFalling);
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end);
+        elseif rain.NotEveryTurn and rain.Repeat and Mod.PublicGameData.NormalStormsLastTurn[rain.ID] > 0 and TurnNumber >= Mod.PublicGameData.NormalStormsLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.NormalStormsLastTurn[rain.ID] + rain.RepeatAfterMax then
+            local line = CreateHorz(root).SetFlexibleWidth(1);
+            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
+            CreateEmpty(line).SetFlexibleWidth(0.1);
+            createProbabilityLine(line, rain.ChanceofFalling * (1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.NormalStormsLastTurn[rain.ID] - rain.RepeatAfterMin + 1)));
             CreateEmpty(line).SetFlexibleWidth(0.1);
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end);
         end

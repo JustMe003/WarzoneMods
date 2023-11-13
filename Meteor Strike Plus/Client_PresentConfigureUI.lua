@@ -20,6 +20,7 @@ function Client_PresentConfigureUI(rootParent)
         genSet = {};
         genSet.HitTerritoriesMultTimes = false;
         genSet.ZeroDamageTotalDestruction = false;
+        genSet.UseSuprise = true;
         genSet.UseDataGameCreator = false;
         genSet.WeatherForcastMessage = "";
     end
@@ -112,6 +113,12 @@ function showGeneralSettings()
     CreateLabel(line).SetText("0 damage is total destruction").SetColor(colors.TextColor);
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked, any meteor that deals 0 damage will wipe out everything on the territory, including turning it neutral. If unchecked, 0 damage will be applied to the territory"); end);
+    
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    inputs.UseSuprise = CreateCheckBox(line).SetText(" ").SetIsChecked(genSet.UseSuprise);
+    CreateLabel(line).SetText("Allow easter egg to occur").SetColor(colors.TextColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked, there is a small chance of a little easter egg. If unchecked, the mod will not use the easter egg"); end);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     inputs.UseDataGameCreator = CreateCheckBox(line).SetText(" ").SetIsChecked(genSet.UseDataGameCreator);
@@ -133,6 +140,7 @@ end
 function saveGeneralSettings(inputs)
     genSet.HitTerritoriesMultTimes = inputs.HitTerritoriesMultTimes.GetIsChecked();
     genSet.ZeroDamageTotalDestruction = inputs.ZeroDamageTotalDestruction.GetIsChecked();
+    genSet.UseSuprise = inputs.UseSuprise.GetIsChecked();
     genSet.UseDataGameCreator = inputs.UseDataGameCreator.GetIsChecked();
     genSet.WeatherForcastMessage = inputs.WeatherForcastMessage.GetText();
 end

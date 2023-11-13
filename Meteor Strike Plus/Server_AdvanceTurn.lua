@@ -54,6 +54,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     
     for i, data in pairs(privData.NormalStorms) do
         if (not data.NotEveryTurn or (turnNumber >= data.StartStorm and turnNumber <= data.EndStorm)) and math.random(10000) / 100 <= data.Data.ChanceofFalling then
+            if data.NotEveryTurn and data.StartStorm == turnNumber then
+                publData.NormalStormsStartTurn[data.Data.ID] = turnNumber;
+            end
             local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
             table.insert(meteors, {Weight = num, Data = data.Data});
             totalWeight = totalWeight + num;
@@ -67,8 +70,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
             end
         end
     end
-    
-    local terrsHit = {};
+
     local orders = {};
     local terrs = privData.Territories;
     local numTerrs = #terrs;
@@ -81,8 +83,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 local randTerr = math.random(#terrs);
                 local terrID = terrs[randTerr];
                 local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
-                table.remove(terrs, randTerr);
-                table.insert(terrsHit, terrID);
+                if not Mod.Settings.HitTerritoriesMultTimes then
+                    table.remove(terrs, randTerr);
+                end
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage);
             --    print(game.Map.Territories[terrID].Name, mod.AddArmies);
                 if meteor.Data.MeteorDamage == 0 and not Mod.Settings.GeneralSettings.ZeroDamageTotalDestruction then
@@ -107,8 +110,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
         end
         totalWeight = totalWeight - 1;
     end
-
-    terrs = concatArrays(terrsHit, terrs);
 
     for _, order in ipairs(orders) do
         addNewOrder(order);
@@ -162,25 +163,39 @@ function solveAlienConflicts(modTo, alien, terrID)
     local alienOnTerr = newAlienPlaces[terrID];
     local clone = alien;
     if alienOnTerr ~= nil then
-        clone = getClone(alien, -alienOnTerr.Health)
-        modTo.RemoveSpecialUnitsOpt = {alienOnTerr.ID}
+        if alienOnTerr.Name:find("UFO") > 0 then
+            clone = getClone(alienOnTerr, -alien.Health);
+            modTo.RemoveSpecialUnitsOpt = concatArrays({alien.ID}, modTo.RemoveSpecialUnitsOpt);
+        else
+            clone = getClone(alien, -alienOnTerr.Health);
+            modTo.RemoveSpecialUnitsOpt = concatArrays({alienOnTerr.ID}, modTo.RemoveSpecialUnitsOpt);
+        end
     end
     newAlienPlaces[terrID] = clone;
     return clone;
 end
 
 function unitIsAlien(sp)
-    return sp.proxyType == "CustomSpecialUnit" and sp.Name == "Alien";
+    return sp.proxyType == "CustomSpecialUnit" and sp.Name:find("Alien");
 end
 
 function createAlien(health)
 	local builder = WL.CustomSpecialUnitBuilder.Create(WL.PlayerID.Neutral);
-	builder.Health = health;
-    builder.AttackPower = health;
-    builder.DefensePower = health;
-    builder.CombatOrder = 478;
-    builder.ImageFilename = "Alien.png"
-    builder.Name = "Alien";
+    if Mod.Settings.UseSuprise and math.random(10000) / 100 <= 1 then
+        builder.Health = health * 2;
+        builder.AttackPower = health * 2;
+        builder.DefensePower = health * 2;
+        builder.CombatOrder = 477;
+        builder.ImageFilename = "UFO.png"
+        builder.Name = "Alien UFO " .. math.random(100);
+    else
+        builder.Health = health;
+        builder.AttackPower = health;
+        builder.DefensePower = health;
+        builder.CombatOrder = 478;
+        builder.ImageFilename = "Alien.png"
+        builder.Name = "Alien";
+    end
     return builder.Build();
 end
 
