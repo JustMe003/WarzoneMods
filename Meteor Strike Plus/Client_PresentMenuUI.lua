@@ -119,7 +119,7 @@ function showForecast()
             end
         else
             if rain.FixedTurn > TurnNumber then
-                table.insert(allUpcomingStorms, {Turn = rain.FixedTurn, Name = rain.Name, StormType = "Fixed Doomsday", Data = rain});
+                table.insert(allUpcomingStorms, {TurnNumber = rain.FixedTurn, Name = rain.Name, StormType = "Fixed Doomsday", Data = rain});
             elseif rain.Repeat and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] ~= 0 and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin > TurnNumber then
                 if rain.RepeatAfterMin == rain.RepeatAfterMax then
                     table.insert(allUpcomingStorms, {TurnNumber = Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin, Name = rain.Name, StormType = "Fixed Doomsday", Data = rain});
