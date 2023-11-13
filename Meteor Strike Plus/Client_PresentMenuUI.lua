@@ -57,7 +57,7 @@ function showForecast()
     DestroyWindow();
     SetWindow("Forecast");
 
-    if Mod.Settings.GeneralSettings.WeatherForcastMessage ~= nil and #Mod.Settings.WeatherForcastMessage > 0 then
+    if Mod.Settings.GeneralSettings.WeatherForcastMessage ~= nil and string.len(Mod.Settings.GeneralSettings.WeatherForcastMessage) > 0 then
         CreateLabel(root).SetText(Mod.Settings.GeneralSettings.WeatherForcastMessage).SetColor(colors.TextColor);
         CreateEmpty(root).SetPreferredHeight(10);
     end
