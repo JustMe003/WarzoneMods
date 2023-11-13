@@ -141,15 +141,24 @@ function showForecast()
     
     allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) printTable(a); printTable(b); return a.TurnNumber < b.TurnNumber; end);
     
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    nameVert = CreateVert(line).SetFlexibleWidth(1);
+    local turnVert = CreateVert(line).SetFlexibleWidth(1);
+    buttonVert = CreateVert(line).SetFlexibleWidth(1);
+
     for _, rain in ipairs(allUpcomingStorms) do
-        local line = CreateHorz(root).SetFlexibleWidth(1);
+        local line = CreateHorz(nameVert).SetFlexibleWidth(1);
         CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
         CreateEmpty(line).SetFlexibleWidth(1);
+        line = CreateHorz(turnVert).SetFlexibleWidth(1);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
         if rain.StormType == "Normal" or rain.StormType == "Fixed Doomsday" then
             CreateLabel(line).SetText("T" .. rain.TurnNumber).SetColor(colors.TextColor);
         else
             CreateLabel(line).SetText("T" .. rain.TurnNumber .. "~" .. rain.MaxTurnNumber).SetColor(colors.TextColor);
         end
+        CreateEmpty(line).SetFlexibleWidth(0.5);
+        line = CreateHorz(buttonVert).SetFlexibleWidth(1);
         CreateEmpty(line).SetFlexibleWidth(1);
         if rain.StormType == "Normal" then
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain.Data); end);
