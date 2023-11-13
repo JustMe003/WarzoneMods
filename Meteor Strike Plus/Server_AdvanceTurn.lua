@@ -171,7 +171,7 @@ function solveAlienConflicts(modTo, alien, terrID)
     if alienOnTerr ~= nil then
         if alienOnTerr.Name:find("UFO") ~= nil then
             clone = getClone(alienOnTerr, -alien.Health);
-            modTo.RemoveSpecialUnitsOpt = concatArrays({alien.ID}, modTo.RemoveSpecialUnitsOpt);
+            modTo.RemoveSpecialUnitsOpt = concatArrays({alienOnTerr.ID}, modTo.RemoveSpecialUnitsOpt);
         else
             clone = getClone(alien, -alienOnTerr.Health);
             modTo.RemoveSpecialUnitsOpt = concatArrays({alienOnTerr.ID}, modTo.RemoveSpecialUnitsOpt);
