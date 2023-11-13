@@ -75,7 +75,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     local orders = {};
     local terrs = privData.Territories;
     local numTerrs = #terrs;
-    print(numTerrs)
+    print(numTerrs, totalWeight)
     for i = 1, math.min(totalWeight, numTerrs) do
         local rand = math.random(totalWeight);
         for _, meteor in ipairs(meteors) do
