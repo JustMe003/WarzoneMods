@@ -57,60 +57,95 @@ function showForecast()
     DestroyWindow();
     SetWindow("Forecast");
 
-    if Mod.Settings.WeatherForcastMessage ~= nil and #Mod.Settings.WeatherForcastMessage > 0 then
-        CreateLabel(root).SetText(Mod.Settings.WeatherForcastMessage).SetColor(colors.TextColor);
+    if Mod.Settings.GeneralSettings.WeatherForcastMessage ~= nil and #Mod.Settings.WeatherForcastMessage > 0 then
+        CreateLabel(root).SetText(Mod.Settings.GeneralSettings.WeatherForcastMessage).SetColor(colors.TextColor);
         CreateEmpty(root).SetPreferredHeight(10);
     end
 
+    local stormsThisTurn = {};
     CreateLabel(root).SetText("Expected storms coming turn").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
         if not rain.NotEveryTurn or (TurnNumber >= rain.StartStorm and TurnNumber <= rain.EndStorm) or (Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= 0 and TurnNumber >= Mod.PublicGameData.NormalStormsStartTurn[rain.ID] and TurnNumber <= (rain.EndStorm - rain.StartStorm + 1) + Mod.PublicGameData.NormalStormsStartTurn[rain.ID]) then
-            local line = CreateHorz(root).SetFlexibleWidth(1);
-            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            createProbabilityLine(line, rain.ChanceofFalling);
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end);
+            table.insert(stormsThisTurn, {Probability = rain.ChanceofFalling, Name = rain.Name, StormType = "Normal", Data = rain});
         elseif rain.NotEveryTurn and rain.Repeat and Mod.PublicGameData.NormalStormsLastTurn[rain.ID] > 0 and TurnNumber >= Mod.PublicGameData.NormalStormsLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.NormalStormsLastTurn[rain.ID] + rain.RepeatAfterMax then
-            local line = CreateHorz(root).SetFlexibleWidth(1);
-            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Light Blue"]);
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            createProbabilityLine(line, rain.ChanceofFalling * (1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.NormalStormsLastTurn[rain.ID] - rain.RepeatAfterMin + 1)));
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain); end);
+            table.insert(stormsThisTurn, {Probability = rain.ChanceofFalling * (1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.NormalStormsLastTurn[rain.ID] - rain.RepeatAfterMin + 1)), Name = rain.Name, StormType = "Normal", Data = rain});
         end
     end
     for _, rain in ipairs(Mod.Settings.Data.Special) do
         if not rain.RandomTurn and TurnNumber == rain.FixedTurn then
-            local line = CreateHorz(root).SetFlexibleWidth(1);
-            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            createProbabilityLine(line, 100);
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+            table.insert(stormsThisTurn, {Probability = 100, Name = rain.Name, StormType = "Doomsday", Data = rain});
         elseif rain.RandomTurn and TurnNumber >= rain.MinTurnNumber and TurnNumber <= rain.MaxTurnNumber and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] == 0 then
-            local line = CreateHorz(root).SetFlexibleWidth(1);
-            CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            createProbabilityLine(line, 100 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - rain.MinTurnNumber + 1));
-            CreateEmpty(line).SetFlexibleWidth(0.1);
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+            table.insert(stormsThisTurn, {Probability = 100 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - rain.MinTurnNumber + 1), Name = rain.Name, StormType = "Doomsday", Data = rain.Data})
         elseif rain.Repeat then
             if not rain.RandomTurn and TurnNumber > rain.FixedTurn and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax then
-                local line = CreateHorz(root).SetFlexibleWidth(1);
-                CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
-                CreateEmpty(line).SetFlexibleWidth(0.1);
-                createProbabilityLine(line, 100 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1));
-                CreateEmpty(line).SetFlexibleWidth(0.1);
-                CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+                table.insert(stormsThisTurn, {Probability = 100 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1), Name = rain.Name, StormType = "Doomsday", Data = rain.Data})
             elseif rain.RandomTurn and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] > 0 and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax then
-                local line = CreateHorz(root).SetFlexibleWidth(1);
-                CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
-                CreateEmpty(line).SetFlexibleWidth(0.1);
-                createProbabilityLine(line, getProbability(1 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1), 1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1), TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 2) * 100);
-                CreateEmpty(line).SetFlexibleWidth(0.1);
-                CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain); end);
+                table.insert(stormsThisTurn, {Probability = getProbability(1 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1), 1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1), TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 2) * 100, Name = rain.Name, StormType = "Doomsday", Data = rain.Data})
             end
+        end
+    end
+    
+    stormsThisTurn = table.sort(stormsThisTurn, function(a, b) return a.Probability <= b.Probability; end);
+    
+    for _, rain in ipairs(stormsThisTurn) do
+        local line = CreateHorz(root).SetFlexibleWidth(1);
+        CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
+        CreateEmpty(line).SetFlexibleWidth(1);
+        createProbabilityLine(line, rain.Probability);
+        CreateEmpty(line).SetFlexibleWidth(1);
+        if rain.StormType == "Normal" then
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain.Data); end);
+        else
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain.Data); end);
+        end
+    end
+    
+    CreateEmpty(root).SetPreferredHeight(20);
+    
+    CreateLabel(root).SetText("All upcoming storms").SetColor(colors.TextColor);
+
+    local allUpcomingStorms = {};
+    for _, rain in ipairs(Mod.Settings.Data.Normal) do
+        if rain.NotEveryTurn and (rain.StartStorm > TurnNumber or (Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= 0 and TurnNumber < Mod.PublicGameData.NormalStormsStartTurn[rain.ID])) then
+            table.insert(allUpcomingStorms, {Turn = rain.StartStorm, Name = rain.Name, StormType = "Normal", Data = rain});
+        end
+    end
+    for _, rain in ipairs(Mod.Settings.Data.Special) do
+        if rain.RandomTurn then
+            if rain.MinTurnNumber > TurnNumber then
+                table.insert(allUpcomingStorms, {TurnNumber = rain.MinTurnNumber, MaxTurnNumber = rain.MaxTurnNumber, Name = rain.Name, StormType = "Random Doomsday", Data = rain}); 
+            elseif rain.Repeat and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] ~= 0 and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin > TurnNumber then
+                table.insert(allUpcomingStorms, {TurnNumber = Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin, MaxTurnNumber = Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax, Name = rain.Name, StormType = "Random Doomsday", Data = rain}); 
+            end
+        else
+            if rain.FixedTurn > TurnNumber then
+                table.insert(allUpcomingStorms, {Turn = rain.FixedTurn, Name = rain.Name, StormType = "Fixed Doomsday", Data = rain});
+            elseif rain.Repeat and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] ~= 0 and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin > TurnNumber then
+                if rain.RepeatAfterMin == rain.RepeatAfterMax then
+                    table.insert(allUpcomingStorms, {TurnNumber = Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin, Name = rain.Name, StormType = "Fixed Doomsday", Data = rain});
+                else
+                    table.insert(allUpcomingStorms, {TurnNumber = Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin, MaxTurnNumber = Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax, Name = rain.Name, StormType = "Random Doomsday", Data = rain});
+                end
+            end
+        end
+    end
+    
+    allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) return a.TurnNumber <= b.TurnNumber; end);
+    
+    for _, rain in ipairs(allUpcomingStorms) do
+        local line = CreateHorz(root).SetFlexibleWidth(1);
+        CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
+        CreateEmpty(line).SetFlexibleWidth(1);
+        if rain.StormType == "Normal" or rain.StormType == "Fixed Doomsday" then
+            CreateLabel(line).SetText("T" .. rain.TurnNumber).SetColor(colors.TextColor);
+        else
+            CreateLabel(line).SetText("T" .. rain.TurnNumber .. "~" .. rain.MaxTurnNumber).SetColor(colors.TextColor);
+        end
+        CreateEmpty(line).SetFlexibleWidth(1);
+        if rain.StormType == "Normal" then
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain.Data); end);
+        else
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain.Data); end);
         end
     end
 end
