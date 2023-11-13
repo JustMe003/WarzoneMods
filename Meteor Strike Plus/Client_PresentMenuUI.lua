@@ -85,7 +85,7 @@ function showForecast()
         end
     end
     
-    stormsThisTurn = table.sort(stormsThisTurn, function(a, b) return a.Probability <= b.Probability; end);
+    stormsThisTurn = table.sort(stormsThisTurn, function(a, b) return a.Probability < b.Probability; end);
     
     for _, rain in ipairs(stormsThisTurn) do
         local line = CreateHorz(root).SetFlexibleWidth(1);
@@ -130,7 +130,7 @@ function showForecast()
         end
     end
     
-    allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) return a.TurnNumber <= b.TurnNumber; end);
+    allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) return a.TurnNumber < b.TurnNumber; end);
     
     for _, rain in ipairs(allUpcomingStorms) do
         local line = CreateHorz(root).SetFlexibleWidth(1);
