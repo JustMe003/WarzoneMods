@@ -163,7 +163,7 @@ function solveAlienConflicts(modTo, alien, terrID)
     local alienOnTerr = newAlienPlaces[terrID];
     local clone = alien;
     if alienOnTerr ~= nil then
-        if alienOnTerr.Name:find("UFO") > 0 then
+        if alienOnTerr.Name:find("UFO") ~= nil then
             clone = getClone(alienOnTerr, -alien.Health);
             modTo.RemoveSpecialUnitsOpt = concatArrays({alien.ID}, modTo.RemoveSpecialUnitsOpt);
         else
@@ -176,7 +176,7 @@ function solveAlienConflicts(modTo, alien, terrID)
 end
 
 function unitIsAlien(sp)
-    return sp.proxyType == "CustomSpecialUnit" and sp.Name:find("Alien");
+    return sp.proxyType == "CustomSpecialUnit" and sp.Name:find("Alien") ~= nil;
 end
 
 function createAlien(health)
