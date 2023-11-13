@@ -37,6 +37,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     local turnNumber = game.Game.TurnNumber;
     
     for i, data in ipairs(privData.Doomsdays) do
+        print(data.Turn);
         if turnNumber == data.Turn then
             local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
             table.insert(meteors, {Weight = num, Data = data.Data});
