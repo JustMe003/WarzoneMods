@@ -107,7 +107,7 @@ function showForecast()
     local allUpcomingStorms = {};
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
         if rain.NotEveryTurn and (rain.StartStorm > TurnNumber or (Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= 0 and TurnNumber < Mod.PublicGameData.NormalStormsStartTurn[rain.ID])) then
-            table.insert(allUpcomingStorms, {Turn = rain.StartStorm, Name = rain.Name, StormType = "Normal", Data = rain});
+            table.insert(allUpcomingStorms, {TurnNumber = rain.StartStorm, Name = rain.Name, StormType = "Normal", Data = rain});
         end
     end
     for _, rain in ipairs(Mod.Settings.Data.Special) do
@@ -130,7 +130,7 @@ function showForecast()
         end
     end
     
-    allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) printTable(a); printTable(b); return a.TurnNumber <= b.TurnNumber; end);
+    allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) return a.TurnNumber <= b.TurnNumber; end);
     
     for _, rain in ipairs(allUpcomingStorms) do
         local line = CreateHorz(root).SetFlexibleWidth(1);
