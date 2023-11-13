@@ -190,7 +190,7 @@ end
 function createAlien(health)
 	local builder = WL.CustomSpecialUnitBuilder.Create(WL.PlayerID.Neutral);
     local rand = math.random(10000) / 100;
-    print(rand);
+    print(rand, Mod.Settings.UseSuprise);
     if Mod.Settings.UseSuprise and rand <= 1 then
         print("Easter egg!")
         builder.Health = health * 2;
