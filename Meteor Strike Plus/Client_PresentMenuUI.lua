@@ -87,11 +87,20 @@ function showForecast()
     
     stormsThisTurn = table.sort(stormsThisTurn, function(a, b) return a.Probability < b.Probability; end);
     
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    local nameVert = CreateVert(line).SetFlexibleWidth(1);
+    local probabilityVert = CreateVert(line).SetFlexibleWidth(1);
+    local buttonVert = CreateVert(line).SetFlexibleWidth(1);
+    
     for _, rain in ipairs(stormsThisTurn) do
-        local line = CreateHorz(root).SetFlexibleWidth(1);
+        local line = CreateHorz(nameVert).SetFlexibleWidth(1);
         CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
         CreateEmpty(line).SetFlexibleWidth(1);
+        line = CreateHorz(probabilityVert).SetFlexibleWidth(1);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
         createProbabilityLine(line, rain.Probability);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
+        line = CreateHorz(buttonVert).SetFlexibleWidth(1);
         CreateEmpty(line).SetFlexibleWidth(1);
         if rain.StormType == "Normal" then
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain.Data); end);
