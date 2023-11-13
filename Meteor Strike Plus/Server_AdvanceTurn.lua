@@ -85,10 +85,11 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 meteor.Weight = meteor.Weight - 1;
                 local randTerr = math.random(#terrs);
                 local terrID = terrs[randTerr];
+                print(terrID)
                 local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
                 if not Mod.Settings.HitTerritoriesMultTimes then
                     table.remove(terrs, randTerr);
-                    table.insert(terrRem, randTerr);
+                    table.insert(terrRem, terrID);
                 end
                 print(terr, "Meteors");
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage);
