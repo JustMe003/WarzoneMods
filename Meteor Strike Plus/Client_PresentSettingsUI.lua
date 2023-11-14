@@ -3,7 +3,7 @@ require("UI");
 function Client_PresentSettingsUI(rootParent)
 	Init(rootParent);
     colors = GetColors();
-    root = GetRoot().SetPreferredHeight(1000);
+    root = GetRoot();
 
     showMenu();
 end
@@ -158,7 +158,10 @@ function showAlienData(data)
     CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("Aliens have an amount of hitpoints equal to " .. data.AlienDefaultHealth .. " plus a random amount between 0 and " .. data.AlienRandomHealth); end)
 end
 
-function showAll() 
+function showAll()
+    DestroyWindow();
+    SetWindow("Show All");
+
     CreateButton(root).SetText("Close all").SetColor(colors.Orange).SetOnClick(showMenu);
     local empty;
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
