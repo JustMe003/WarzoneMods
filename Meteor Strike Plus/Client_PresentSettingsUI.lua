@@ -17,17 +17,14 @@ function showMenu()
 
     CreateLabel(root).SetText("There are " .. #Mod.Settings.Data.Normal .. " normal storms").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
-        for i, v in pairs(rain) do
-            print(i, v);
-        end
-        CreateButton(root).SetText(rain.Name).SetColor(colors.Aqua).SetOnClick(function() showNormalStorm(rain); end)
+        CreateButton(root).SetText(rain.Name).SetColor(colors.Cyan).SetOnClick(function() showNormalStorm(rain); end)
     end
 
     CreateEmpty(root).SetPreferredHeight(10);
 
     CreateLabel(root).SetText("There are " .. #Mod.Settings.Data.Special .. " doomsday storms").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Special) do
-        CreateButton(root).SetText(rain.Name).SetColor(colors.Aqua).SetOnClick(function() showDoomsdayStorm(rain); end)
+        CreateButton(root).SetText(rain.Name).SetColor(colors.Cyan).SetOnClick(function() showDoomsdayStorm(rain); end)
     end
 end
 
@@ -41,7 +38,7 @@ function showNormalStorm(data, b)
 
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Chance of falling:").SetColor(colors.TextColor);
-    CreateLabel(line).SetText(showDecimal(data.ChanceofFalling, 2) .. "%").SetColor(colors.Aqua);
+    CreateLabel(line).SetText(showDecimal(data.ChanceofFalling, 2) .. "%").SetColor(colors.Cyan);
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("Every turn this storm is active, it has a chance of actually damaging the map. 100% means that every active turn the map will be damages, 50% means half of the turns the storm is active and 1% means that on average, 1 in 100 turns the map will get damaged") end)
 
@@ -69,13 +66,13 @@ function showDoomsdayStorm(data, b)
         
         line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Minimum turn:").SetColor(colors.TextColor);
-        CreateLabel(line).SetText(data.MinTurnNumber).SetColor(colors.Aqua);
+        CreateLabel(line).SetText(data.MinTurnNumber).SetColor(colors.Cyan);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("The doomsday can only become active at turn " .. data.MinTurnNumber .. " or after it"); end);
         
         line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Maximum turn:").SetColor(colors.TextColor);
-        CreateLabel(line).SetText(data.MaxTurnNumber).SetColor(colors.Aqua);
+        CreateLabel(line).SetText(data.MaxTurnNumber).SetColor(colors.Cyan);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("The doomsday will become active at or before turn " .. data.MaxTurnNumber); end);
     else
@@ -85,7 +82,7 @@ function showDoomsdayStorm(data, b)
     
         line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Fixed turn:").SetColor(colors.TextColor);
-        CreateLabel(line).SetText(data.FixedTurn).SetColor(colors.Aqua);
+        CreateLabel(line).SetText(data.FixedTurn).SetColor(colors.Cyan);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("The doomsday will become active at turn " .. data.FixedTurn); end);    
     end
