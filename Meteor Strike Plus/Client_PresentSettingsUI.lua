@@ -17,6 +17,9 @@ function showMenu()
 
     CreateLabel(root).SetText("There are " .. #Mod.Settings.Data.Normal .. " normal storms").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
+        for i, v in pairs(rain) do
+            print(i, v);
+        end
         CreateButton(root).SetText(rain.Name).SetColor(colors.Aqua).SetOnClick(function() showNormalStorm(rain); end)
     end
 
@@ -103,7 +106,7 @@ function showName(data)
 end
 
 function showGeneralData(data)
-    
+
 end
 
 function showAll() 
