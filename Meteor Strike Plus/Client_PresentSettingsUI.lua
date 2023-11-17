@@ -106,6 +106,24 @@ function showDoomsdayStorm(data, b)
         CreateLabel(line).SetText(data.MinTurnNumber .. " ~ " .. data.MaxTurnNumber).SetColor(colors.Cyan);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday storm will become active somwhere between turn " .. data.MinTurnNumber .. " and " .. data.MaxTurnNumber); end);
+        
+        line = CreateHorz(root).SetFlexibleWidth(1);
+        CreateLabel(line).SetText("Doomsday is repeated:").SetColor(colors.TextColor);
+        if data.Repeat then
+            CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday storm will become active again after some turns"); end);
+            
+            line = CreateHorz(line).SetFlexibleWidth(1);
+            CreateLabel(line).SetText("Repeats after:").SetColor(colors.TextColor);
+            CreateLabel(line).SetText(data.RepeatAfterMin .. " ~ " .. data.RepeatAfterMax).SetColor(colors.Cyan);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("After each time the doomsday was active, it will take between " .. data.RepeatAfterMin .. " and " .. data.RepeatAfterMax .. " turns until it can become active again. Note that since this storm falls randomly, hence when the storm can become active again it does mean it will fall directly"); end);
+        else
+            CreateLabel(line).SetText("No").SetColor(colors.Red);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday storm will only be active once"); end);
+        end
     else
         CreateLabel(line).SetText("No").SetColor(colors.Red);
         CreateEmpty(line).SetFlexibleWidth(1);
@@ -116,6 +134,24 @@ function showDoomsdayStorm(data, b)
         CreateLabel(line).SetText(data.FixedTurn).SetColor(colors.Cyan);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday will become active at turn " .. data.FixedTurn); end);    
+        
+        line = CreateHorz(root).SetFlexibleWidth(1);
+        CreateLabel(line).SetText("Doomsday is repeated:").SetColor(colors.TextColor);
+        if data.Repeat then
+            CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday storm will become active again after some turns"); end);
+            
+            line = CreateHorz(line).SetFlexibleWidth(1);
+            CreateLabel(line).SetText("Repeats after:").SetColor(colors.TextColor);
+            CreateLabel(line).SetText(data.RepeatAfterMin .. " ~ " .. data.RepeatAfterMax).SetColor(colors.Cyan);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("After each time the doomsday was active, it will take between " .. data.RepeatAfterMin .. " and " .. data.RepeatAfterMax .. " turns until it can become active again. Note that since this storm falls randomly, hence when the storm can become active again it does mean it will fall directly"); end);
+        else
+            CreateLabel(line).SetText("No").SetColor(colors.Red);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday storm will only be active once"); end);
+        end
     end
 
     showGeneralData(data);
