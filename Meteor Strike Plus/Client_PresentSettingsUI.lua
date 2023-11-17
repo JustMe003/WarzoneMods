@@ -17,14 +17,14 @@ function showMenu()
 
     CreateLabel(root).SetText("There are " .. #Mod.Settings.Data.Normal .. " normal storms").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
-        CreateButton(root).SetText(rain.Name).SetColor(colors.Cyan).SetOnClick(function() showNormalStorm(rain); end)
+        CreateButton(root).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() showNormalStorm(rain); end)
     end
 
     CreateEmpty(root).SetPreferredHeight(10);
 
     CreateLabel(root).SetText("There are " .. #Mod.Settings.Data.Special .. " doomsday storms").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Special) do
-        CreateButton(root).SetText(rain.Name).SetColor(colors.Cyan).SetOnClick(function() showDoomsdayStorm(rain); end)
+        CreateButton(root).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() showDoomsdayStorm(rain); end)
     end
 end
 
@@ -47,13 +47,31 @@ function showNormalStorm(data, b)
         CreateLabel(line).SetText("Storm active:").SetColor(colors.TextColor);
         CreateLabel(line).SetText(data.StartStorm .. " - " .. data.EndStorm).SetColor(colors.Cyan);
         CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("THe storm will be active from turn " .. data.StartStorm .. " till (and including) " .. data.EndStorm); end);
+        CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The storm will be active from turn " .. data.StartStorm .. " till (and including) " .. data.EndStorm); end);
+        
+        line = CreateHorz(root).SetFlexibleWidth(1);
+        CreateLabel(line).SetText("Is repeated:").SetColor(colors.TextColor);
+        if data.Repeat then
+            CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("This storm will repeat itself after the interval has ended"); end);
+            
+            line = CreateHorz(root).SetFlexibleWidth(1);
+            CreateLabel(line).SetText("Repeat interval after:").SetColor(colors.TextColor);
+            CreateLabel(line).SetText(data.RepeatAfterMin .. " ~ " data.RepeatAfterMax).SetColor(colors.Cyan);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("After the first interval, it will take between " .. data.RepeatAfterMin .. " and " .. data.RepeatAfterMax .. " turns until the storms becomes active again for " .. data.EndStorm - data.StartStorm + 1 .. " turns"); end);
+        else
+            CreateLabel(line).SetText("No").SetColor(colors.Red);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("This storm will not repeat itself after the interval has ended"); end);
+        end
     else
         CreateLabel(line).SetText("Yes").SetColor(colors.Green);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("This storm is active throughout the whole game"); end);
     end
-
+    
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Chance of falling:").SetColor(colors.TextColor);
@@ -85,7 +103,7 @@ function showDoomsdayStorm(data, b)
         
         line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Active turn:").SetColor(colors.TextColor);
-        CreateLabel(line).SetText(data.MinTurnNumber .. " - " .. data.MaxTurnNumber).SetColor(colors.Cyan);
+        CreateLabel(line).SetText(data.MinTurnNumber .. " ~ " .. data.MaxTurnNumber).SetColor(colors.Cyan);
         CreateEmpty(line).SetFlexibleWidth(1);
         CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday storm will become active somwhere between turn " .. data.MinTurnNumber .. " and " .. data.MaxTurnNumber); end);
     else
