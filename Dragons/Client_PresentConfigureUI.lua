@@ -255,8 +255,6 @@ function changeColor(dragon)
     DestroyWindow();
     SetWindow("modifyDragon");
     
-    root.SetPreferredHeight(500);
-
     local c = {Blue=colors.Blue, Green=colors.Green, Red=colors.Red, Yellow=colors.Yellow, White=colors.Ivory};
     CreateLabel(root).SetText("Pick the color you want").SetColor(colors.Textcolor);
     for _, d in pairs(dragons) do
