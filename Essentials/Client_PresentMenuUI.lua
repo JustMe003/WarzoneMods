@@ -38,7 +38,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	CreateLabel(line).SetText("Version: ").SetColor(colors.TextColor);
 	CreateLabel(line).SetText("2.0").SetColor(colors["Royal Blue"]);
 	CreateEmpty(root).SetPreferredHeight(10);
-	print(win);
+
 	SetWindow(win);
 
 end

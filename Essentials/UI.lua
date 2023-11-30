@@ -15,7 +15,6 @@ function GetColors()
 end
 
 function SetWindow(win)
-	print(win);
 	currentWindow_POI = win
 	if windows_POI[win] == nil then
 		windows_POI[win] = {};
@@ -23,7 +22,7 @@ function SetWindow(win)
 end
 
 function GetCurrentWindow()
-	return currentWindow_JAD
+	return currentWindow_POI
 end
 
 
