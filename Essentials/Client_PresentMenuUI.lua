@@ -6,8 +6,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	setMaxSize(500, 585)
 	Close = close;
 	Init(rootParent);
-	root = GetRoot().SetFlexibleHeight(1);
-	root.SetFlexibleWidth(1);
+	root = GetRoot();
+	root.SetFlexibleWidth(1).SetFlexibleHeight(1).SetPreferredHeight(500);
 	colors = GetColors();
 	Path = "MAIN";
 	Game = game;
