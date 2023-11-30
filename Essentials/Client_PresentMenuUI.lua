@@ -6,7 +6,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	setMaxSize(500, 585)
 	Close = close;
 	Init(rootParent);
-	root = GetRoot();
+	root = GetRoot().SetFlexibleHeight(1);
 	root.SetFlexibleWidth(1);
 	colors = GetColors();
 	Path = "MAIN";
@@ -31,6 +31,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	SetWindow("DummyWindow");
 
 	-- permanent labels
+	CreateEmpty(root).SetFlexibleHeight(1);
 	local line = CreateHorz(root);
 	CreateLabel(line).SetText("Mod Author: ").SetColor(colors.TextColor);
 	CreateLabel(line).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
