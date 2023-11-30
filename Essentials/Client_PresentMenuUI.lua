@@ -14,17 +14,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	inspectToolInUse = false;
 	Filters = {};
 
-	-- permanent labels
-	local line = CreateHorz(root);
-	CreateLabel(line).SetText("Mod Author: ").SetColor(colors.TextColor);
-	CreateLabel(line).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
-	line = CreateHorz(root);
-	CreateLabel(line).SetText("Version: ").SetColor(colors.TextColor);
-	CreateLabel(line).SetText("2.0").SetColor(colors["Royal Blue"]);
-	CreateEmpty(root).SetPreferredHeight(10);
-
-	-- makes sure the lines above stay
-	SetWindow("DummyWindow");
+	
 	--[[
 	numOfClicks = 1;
 	terrClicked = -1;
@@ -35,6 +25,22 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	else
 		func();
 	end
+
+	-- makes sure the lines below stay
+	local win = GetCurrentWindow();
+	SetWindow("DummyWindow");
+
+	-- permanent labels
+	local line = CreateHorz(root);
+	CreateLabel(line).SetText("Mod Author: ").SetColor(colors.TextColor);
+	CreateLabel(line).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
+	line = CreateHorz(root);
+	CreateLabel(line).SetText("Version: ").SetColor(colors.TextColor);
+	CreateLabel(line).SetText("2.0").SetColor(colors["Royal Blue"]);
+	CreateEmpty(root).SetPreferredHeight(10);
+	
+	SetWindow(win);
+
 end
 
 function getTerritoryClickedTest(terrDetails)
@@ -464,13 +470,15 @@ function showCombatOrder(callback, sp)
 	end
 end
 
-function showDocumentLinks()
+function showDocumentLinks(b)
 	DestroyWindow();
 	SetWindow("showDocumentLinks");
 
-	CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainMenu);
-	CreateLabel(root).SetText("In here you can find all the (document) links that the game creator wants you to have access to. You can copy the links to open them in your desired browser")
+	if not b then
+		CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainMenu);
+	end
 
+	CreateLabel(root).SetText("In here you can find all the (document) links that the game creator wants you to have access to. You can copy the links to open them in your desired browser")
 	CreateEmpty(root).SetPreferredHeight(10);
 
 	if Mod.Settings.Links == nil then

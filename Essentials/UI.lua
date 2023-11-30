@@ -21,6 +21,11 @@ function SetWindow(win)
 	end
 end
 
+function GetCurrentWindow()
+	return currentWindow_JAD
+end
+
+
 function CreateVerticalLayoutGroup(parent)
 	return AddObjectToWindowAndReturnObject(UI.CreateVerticalLayoutGroup(parent));
 end
