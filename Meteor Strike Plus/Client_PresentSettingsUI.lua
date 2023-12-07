@@ -58,7 +58,7 @@ function showNormalStorm(data, b)
             
             line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText("Repeat interval after:").SetColor(colors.TextColor);
-            CreateLabel(line).SetText(data.RepeatAfterMin .. " ~ " data.RepeatAfterMax).SetColor(colors.Cyan);
+            CreateLabel(line).SetText(data.RepeatAfterMin .. " ~ " .. data.RepeatAfterMax).SetColor(colors.Cyan);
             CreateEmpty(line).SetFlexibleWidth(1);
             CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("After the first interval, it will take between " .. data.RepeatAfterMin .. " and " .. data.RepeatAfterMax .. " turns until the storms becomes active again for " .. data.EndStorm - data.StartStorm + 1 .. " turns"); end);
         else

@@ -4,9 +4,9 @@ function Server_StartDistribution(game, standing)
 		local map = Mod.PublicGameData.Map;
 		local size = Mod.PublicGameData.Size;
 		local i = 1;
-		while i <= size then
+		while i <= size do
 			local j = 1;
-			while j <= size then
+			while j <= size do
 				if map[i][j] == 1 then
 					s.Territories[(i - 1) * size + j].OwnerPlayerID = WL.PlayerID.AvailableForPicking;
 				else
