@@ -23,8 +23,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                         if t.TestingOnly.Counter == nil then
                             t.TestingOnly.Counter = 0;
                         end
-                        t.TestingOnly.Counter = t.TestingOnly.Counter + 1;
                     end
+                    t.TestingOnly.Counter = t.TestingOnly.Counter + 1;
                     clone.ModData = dataToString(t);
                     printTable(t);
                     table.insert(mod.RemoveSpecialUnitsOpt, sp.ID);
