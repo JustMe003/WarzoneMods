@@ -30,7 +30,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                     table.insert(mod.AddSpecialUnits, clone.Build());
                 end
             end
-            addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated units", {}, {}, {mod}));
+            addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated units", {}, {mod}));
         end
     end
 end
