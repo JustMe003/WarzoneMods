@@ -79,10 +79,9 @@
 
 
 function dataToString(t)
-    if t == nil then return "\29{}\29"; end
     local f;
     f = function(t)
-            if t == nil then return "\29{}\29"; end
+            if t == nil then return "{}"; end
             local result = {};
             for key, value in pairs(t) do
                 if key ~= "DO_NOT_MODIFY_NOR_READ" then

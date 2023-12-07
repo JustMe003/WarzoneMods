@@ -1,6 +1,6 @@
 require("UI");
 require("utilities");
-require("SpecialUnitsData");
+require("DataConverter");
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, func)
 	setMaxSize(500, 585)
@@ -99,6 +99,9 @@ function seeContents(path)
 	DestroyWindow();
 	SetWindow(path);
 	local contents = getContents(path);
+	if contents == nil then
+		CreateLabel(root).SetText("Something went wrong!").SetColor(colors.TextColor);
+	end
 	CreateLabel(root).SetText(path .. "\n\n").SetColor(colors.Lime);
 	if type(contents) == type(table) then
 		CreateLabel(root).SetText("Choose from one of the options").SetColor(colors["Orange"]);
@@ -522,10 +525,10 @@ function getUnitDescription(sp)
 	if sp.ModData ~= nil then
 		print("Has mod data");
 		local data = stringToData(sp.ModData);
-		if data["UnitDescription"] ~= nil then
-			return data["UnitDescription"];
+		if data.UnitDescription ~= nil then
+			return data.UnitDescription;
 		end
-		print("Has no unit description")
+		print("Has no unit description");
 	end
 	return "This unit does not have a description. Please read the mod description of the mod that created this unit to get to know more about it";
 end
