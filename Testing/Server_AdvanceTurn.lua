@@ -26,6 +26,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                         t.TestingOnly.Counter = t.TestingOnly.Counter + 1;
                     end
                     clone.ModData = dataToString(t);
+                    printTable(t);
                     table.insert(mod.RemoveSpecialUnitsOpt, sp.ID);
                     table.insert(mod.AddSpecialUnits, clone.Build());
                 end
