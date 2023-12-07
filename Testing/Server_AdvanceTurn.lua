@@ -12,8 +12,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
         if #terr.NumArmies.SpecialUnits > 0 then
             local mod = WL.TerritoryModification.Create(terr.ID);
-            mod.AddSpecialUnits = {};
-            mod.RemoveSpecialUnitsOpt = {};
+            local add = {};
+            local remove = {};
             for _, sp in ipairs(terr.NumArmies.SpecialUnits) do
                 if sp.proxyType == "CustomSpecialUnit" then
                     local clone = WL.CustomSpecialUnitBuilder.CreateCopy(sp);
@@ -27,10 +27,12 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                     t.TestingOnly.Counter = t.TestingOnly.Counter + 1;
                     clone.ModData = dataToString(t);
                     printTable(t);
-                    table.insert(mod.RemoveSpecialUnitsOpt, sp.ID);
-                    table.insert(mod.AddSpecialUnits, clone.Build());
+                    table.insert(remove, sp.ID);
+                    table.insert(add, clone.Build());
                 end
             end
+            mod.AddSpecialUnits = add;
+            mod.RemoveSpecialUnitsOpt = remove;
             addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated units", {}, {mod}));
         end
     end
