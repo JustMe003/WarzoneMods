@@ -26,7 +26,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                     end
                     t.TestingOnly.Counter = t.TestingOnly.Counter + 1;
                     clone.ModData = dataToString(t);
-                    print(clone.ModData);
                     printTable(t);
                     table.insert(remove, sp.ID);
                     table.insert(add, clone.Build());
@@ -42,7 +41,7 @@ end
 function printTable(t, s)
     if s == nil then s = ""; end
     for i, v in pairs(t) do
-        print(s .. i .. "\t" .. type(v) .. "\t" .. tostring(v));
+        print(s .. i .. "\t" .. type(v));
         if type(v) == type({}) then
             printTable(v, s .. "\t");
         end
