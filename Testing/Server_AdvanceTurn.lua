@@ -34,3 +34,13 @@ function Server_AdvanceTurn_End(game, addNewOrder)
         end
     end
 end
+
+function printTable(t, s)
+    if s == nil then s = ""; end
+    for i, v in pairs(t) do
+        print(s .. i .. "\t" .. type(v) .. "\t" .. tostring(v));
+        if type(v) == type({}) then
+            printTable(v, s .. "\t");
+        end
+    end
+end
