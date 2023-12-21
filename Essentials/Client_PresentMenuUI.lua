@@ -172,7 +172,7 @@ function inspectUnitMenu()
 end
 
 function clickedTerr(terrDetails)
-	if terrDetails == nil or not inspectToolInUse then return WL.CancelClickIntercept; end
+	if terrDetails == nil or not inspectToolInUse or UI.IsDestroyed(root) then return WL.CancelClickIntercept; end
 	local sps = Game.LatestStanding.Territories[terrDetails.ID].NumArmies.SpecialUnits;
 	if not tableIsEmpty(sps) then
 		if #sps > 1 then
