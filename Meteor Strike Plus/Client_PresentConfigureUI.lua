@@ -428,6 +428,17 @@ function showMoreNormalData(data, vert, button)
     button.SetText("!").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreNormalData(data, vert, button) end) end);
     CreateLabel(vert).SetText("Chance of meteors falling: " .. round(data.ChanceofFalling, 2)).SetColor(colors.TextColor);
     
+	CreateLabel(vert).SetText("Active every turn: " .. (not data.NotEveryTurn)).SetColor(colors.TextColor);
+	if data.NotEveryTurn then
+		CreateLabel(vert).SetText("Active from " .. data.MinTurnNumber .. " till " .. data.MaxTurnNumber).SetText(colors.TextColor);
+
+        CreateLabel(vert).SetText("Repeats: " .. data.Repeat).SetText(colors.TextColor);
+        if data.Repeat then
+            CreateLabel(vert).SetText("Repeat interval after " .. data.RepeatAfterMin .. " and before " .. data.RepeatAfterMax).SetColor(colors.TextColor);
+        end
+	end
+
+
     showMoreData(data, vert);
     
     SetWindow(win);
@@ -446,6 +457,11 @@ function showMoreSpecialData(data, vert, button)
         CreateLabel(vert).SetText("Doomsday turn: " .. data.MinTurnNumber .. "-" .. data.MaxTurnNumber).SetColor(colors.TextColor);
     else
         CreateLabel(vert).SetText("Doomsday turn: " .. data.FixedTurn).SetColor(colors.TextColor);
+    end
+
+    CreateLabel(vert).SetText("Repeat: " .. data.Repeat).SetColor(colors.TextColor);
+    if data.Repeat then
+        CreateLabel(vert).SetText("Repeat storm after " .. data.RepeatAfterMin .. " and before " .. data.RepeatAfterMax).SetColor(colors.TextColor);
     end
     
     showMoreData(data, vert);

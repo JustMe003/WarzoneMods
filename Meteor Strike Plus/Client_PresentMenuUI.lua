@@ -59,9 +59,11 @@ function showForecast()
 
     if Mod.Settings.GeneralSettings.WeatherForcastMessage ~= nil and #Mod.Settings.GeneralSettings.WeatherForcastMessage > 0 then
         CreateLabel(root).SetText(Mod.Settings.GeneralSettings.WeatherForcastMessage).SetColor(colors.TextColor);
-        CreateEmpty(root).SetPreferredHeight(10);
+    else
+        CreateLabel(root).SetText("While the world remains at war, somebody keeps trowing rocks down. Scientists still are not sure whether we are just extremely unfortunate with the weather or UnFairerOrb76 is actually behind all of this. Wait, is he not the CEO of this program?! Please standby, while we tr| to in<esti@ate w^at /xac'ly i] go*n) o- h#$e (~ tß© s®þæ³o.¼.").SetColor(colors.TextColor);        
     end
-
+    CreateEmpty(root).SetPreferredHeight(10);
+    
     local stormsThisTurn = {};
     CreateLabel(root).SetText("Expected storms coming turn").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
@@ -87,7 +89,7 @@ function showForecast()
     
     stormsThisTurn = table.sort(stormsThisTurn, function(a, b) return a.Probability < b.Probability; end);
     
-    for _, rain in ipairs(stormsThisTurn) do
+    for _, rain in ipairs(stormsThisTurn or {}) do
         local line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
         CreateEmpty(line).SetFlexibleWidth(1);
@@ -132,7 +134,7 @@ function showForecast()
     
     allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) return a.TurnNumber < b.TurnNumber; end);
     
-    for _, rain in ipairs(allUpcomingStorms) do
+    for _, rain in ipairs(allUpcomingStorms or {}) do
         local line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText(rain.Name .. ": ").SetColor(colors["Royal Blue"]);
         CreateEmpty(line).SetFlexibleWidth(1);
