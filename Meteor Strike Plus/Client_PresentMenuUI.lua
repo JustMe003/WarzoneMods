@@ -98,7 +98,9 @@ function showForecast()
         if rain.StormType == "Normal" then
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStorm(rain.Data, showForecast, false); end);
         else
-            print(rain.Data);
+            for i, v in pairs(rain) do
+                print(i, v);
+            end
             CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showDoomsdayStorm(rain.Data, showForecast, false); end);
         end
     end
