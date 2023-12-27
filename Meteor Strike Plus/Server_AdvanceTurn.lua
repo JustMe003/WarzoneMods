@@ -76,7 +76,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     local terrRem = {};
     local numTerrs = #terrs;
 
-    print(math.min(totalWeight, getMaxMeteors(numTerrs)));
+    print(math.min(totalWeight, getMaxMeteors(numTerrs)), totalWeight, numTerrs);
 
     for i = 1, math.min(totalWeight, getMaxMeteors(numTerrs)) do
         local rand = math.random(totalWeight);
