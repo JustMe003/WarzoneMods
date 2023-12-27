@@ -97,9 +97,9 @@ function showForecast()
         createProbabilityLine(line, rain.Probability);
         CreateEmpty(line).SetFlexibleWidth(1);
         if rain.StormType == "Normal" then
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain.Data); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStorm(rain.Data, false); end);
         else
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain.Data); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showDoomsdayStorm(rain.Data, false); end);
         end
     end
     
