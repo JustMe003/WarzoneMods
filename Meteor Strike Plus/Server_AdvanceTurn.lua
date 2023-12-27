@@ -27,6 +27,7 @@ function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addN
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
+    local start = WL.TickCount();
     moveAllAliens(game, addNewOrder);
 
     local totalWeight = 0;
@@ -122,6 +123,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     if not Mod.Settings.GeneralSettings.HitTerritoriesMultTimes then
         terrs = concatArrays(terrs, terrRem);
     end
+
+    print(WL.TickCount() - start);
 
     Mod.PrivateGameData = privData;
     Mod.PublicGameData = publData;
