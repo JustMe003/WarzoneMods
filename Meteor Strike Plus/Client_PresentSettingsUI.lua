@@ -17,18 +17,18 @@ function showMenu()
 
     CreateLabel(root).SetText("There are " .. #Mod.Settings.Data.Normal .. " normal storms").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
-        CreateButton(root).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() showNormalStorm(rain); end)
+        CreateButton(root).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() showNormalStorm(rain, showMenu); end)
     end
 
     CreateEmpty(root).SetPreferredHeight(10);
 
     CreateLabel(root).SetText("There are " .. #Mod.Settings.Data.Special .. " doomsday storms").SetColor(colors.TextColor);
     for _, rain in ipairs(Mod.Settings.Data.Special) do
-        CreateButton(root).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() showDoomsdayStorm(rain); end)
+        CreateButton(root).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() showDoomsdayStorm(rain, showMenu); end)
     end
 end
 
-function showNormalStorm(data, b)
+function showNormalStorm(data, func, b)
     if not b then
         DestroyWindow();
         SetWindow("Normal");
@@ -82,11 +82,11 @@ function showNormalStorm(data, b)
     showGeneralData(data);
 
     if not b then
-        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
+        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(func);
     end
 end
 
-function showDoomsdayStorm(data, b)
+function showDoomsdayStorm(data, func, b)
     if not b then
         DestroyWindow();
         SetWindow("Doomsday");
@@ -157,7 +157,7 @@ function showDoomsdayStorm(data, b)
     showGeneralData(data);
 
     if not b then
-        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
+        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(func);
     end
 end
 
@@ -219,7 +219,7 @@ function showAll()
     CreateButton(root).SetText("Close all").SetColor(colors.Orange).SetOnClick(showMenu);
     local empty;
     for _, rain in ipairs(Mod.Settings.Data.Normal) do
-        showNormalStorm(rain, true);
+        showNormalStorm(rain, showMenu, true);
         empty = CreateEmpty(root).SetPreferredHeight(10);
     end
     if empty ~= nil then
@@ -227,7 +227,7 @@ function showAll()
         CreateEmpty(root).SetPreferredHeight(20);
     end
     for _, rain in ipairs(Mod.Settings.Data.Special) do
-        showDoomsdayStorm(rain, true);
+        showDoomsdayStorm(rain, showMenu, true);
         empty = CreateEmpty(root).SetPreferredHeight(10);
     end
     if empty ~= nil then

@@ -54,7 +54,6 @@ end
 
 function showForecast()
     DestroyWindow();
-    SetWindow("Forecast");
 
     if Mod.Settings.GeneralSettings.WeatherForcastMessage ~= nil and #Mod.Settings.GeneralSettings.WeatherForcastMessage > 0 then
         CreateLabel(root).SetText(Mod.Settings.GeneralSettings.WeatherForcastMessage).SetColor(colors.TextColor);
@@ -95,9 +94,9 @@ function showForecast()
         createProbabilityLine(line, rain.Probability);
         CreateEmpty(line).SetFlexibleWidth(1);
         if rain.StormType == "Normal" then
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStorm(rain.Data, false); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStorm(rain.Data, showForecast, false); end);
         else
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showDoomsdayStorm(rain.Data, false); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showDoomsdayStorm(rain.Data, showForecast, false); end);
         end
     end
     
@@ -144,9 +143,9 @@ function showForecast()
         end
         CreateEmpty(line).SetFlexibleWidth(1);
         if rain.StormType == "Normal" then
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStorm(rain.Data, false); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStorm(rain.Data, showForecast, false); end);
         else
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showDoomsdayStorm(rain.Data, false); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showDoomsdayStorm(rain.Data, showForecast, false); end);
         end
     end
 end
