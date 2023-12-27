@@ -14,6 +14,10 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 end
 
 function showMain()
+    showForecast();
+end
+
+function showForecast()
     DestroyWindow();
     SetWindow("Main");
 
@@ -49,11 +53,6 @@ function showMain()
 
     CreateEmpty(root).SetPreferredHeight(20);
 
-    showForecast();
-end
-
-function showForecast()
-    DestroyWindow();
 
     if Mod.Settings.GeneralSettings.WeatherForcastMessage ~= nil and #Mod.Settings.GeneralSettings.WeatherForcastMessage > 0 then
         CreateLabel(root).SetText(Mod.Settings.GeneralSettings.WeatherForcastMessage).SetColor(colors.TextColor);
