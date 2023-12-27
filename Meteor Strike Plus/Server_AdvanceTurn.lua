@@ -124,7 +124,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
         terrs = concatArrays(terrs, terrRem);
     end
 
-    print(WL.TickCount() - start);
+    print("Time: " .. WL.TickCount() - start);
 
     Mod.PrivateGameData = privData;
     Mod.PublicGameData = publData;
