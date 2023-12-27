@@ -75,7 +75,10 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     local terrs = privData.Territories;
     local terrRem = {};
     local numTerrs = #terrs;
-    for i = 1, math.min(totalWeight, numTerrs) do
+
+    print(math.min(totalWeight, getMaxMeteors(numTerrs)));
+
+    for i = 1, math.min(totalWeight, getMaxMeteors(numTerrs)) do
         local rand = math.random(totalWeight);
         for _, meteor in ipairs(meteors) do
             rand = rand - meteor.Weight;
@@ -112,6 +115,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
         end
         totalWeight = totalWeight - 1;
     end
+
+    print(totalWeight);
 
     for _, order in ipairs(orders) do
         addNewOrder(order);
@@ -255,5 +260,13 @@ function getDoomsdayTurn(data)
         return math.random(0, data.MaxTurnNumber - data.MinTurnNumber);
     else
         return 0;
+    end
+end
+
+function getMaxMeteors(numTerrs)
+    if Mod.Settings.HitTerritoriesMultTimes then
+        return 10000;
+    else
+        return numTerrs;
     end
 end
