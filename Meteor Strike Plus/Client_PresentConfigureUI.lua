@@ -237,6 +237,9 @@ function showGeneralInputs(data, inputs)
     CreateLabel(root).SetText("Meteor damage").SetColor(colors.TextColor);
     inputs.MeteorDamage = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(data.MeteorDamage);
     
+    CreateLabel(root).SetText("Additional random damage").SetColor(colors.TextColor);
+    inputs.MeteorRandomDamage = CreateNumberInputField(root).SetSliderMinValue(0).SetSliderMaxValue(10).SetValue(data.MeteorRandomDamage);
+
     CreateEmpty(root).SetPreferredHeight(5);
 
     line = CreateHorz(root);
@@ -522,6 +525,7 @@ function initializeVariables()
         Name = "Meteor storm " .. counter,
         NumOfMeteors = 3,
         MeteorDamage = 5,
+        MeteorRandomDamage = 0,
         RandomNumOfMeteor = 2,
         CanSpawnAlien = false,
         AlienSpawnChance = 20,

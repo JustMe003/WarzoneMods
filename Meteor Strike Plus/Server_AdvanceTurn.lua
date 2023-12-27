@@ -88,7 +88,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                     table.remove(terrs, randTerr);
                     table.insert(terrRem, terrID);
                 end
-                local mod = removeArmies(terr, meteor.Data.MeteorDamage);
+                local mod = removeArmies(terr, meteor.Data.MeteorDamage + math.random(0, meteor.Data.MeteorRandomDamage));
             --    print(game.Map.Territories[terrID].Name, mod.AddArmies);
                 if meteor.Data.MeteorDamage == 0 and not Mod.Settings.GeneralSettings.ZeroDamageTotalDestruction then
                     mod = WL.TerritoryModification.Create(terr.ID);

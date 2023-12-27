@@ -183,6 +183,13 @@ function showGeneralData(data)
     CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The damage a meteor will inflict on a territory when hit. It takes special units into account, and when the territory is empty after the meteor landed it is turned to neutral"); end)
     
     line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("additional random damage:").SetColor(colors.TextColor);
+    CreateLabel(line).SetText(data.MeteorRandomDamage).SetColor(colors.Cyan);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The additional damage this meteor might inflict. This is random between 0 and " .. data.MeteorRandomDamage .. ", this will get added to the (fixed) meteor damage"); end)
+    
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Can spawn Alien:").SetColor(colors.TextColor);
     if data.CanSpawnAlien then
         CreateLabel(line).SetText("Yes").SetColor(colors.Green);
