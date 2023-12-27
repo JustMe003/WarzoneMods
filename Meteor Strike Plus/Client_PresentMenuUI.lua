@@ -1,4 +1,5 @@
 require("UI");
+require("Client_PresentSettingsUI");
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
     Init(rootParent);
@@ -60,7 +61,7 @@ function showForecast()
     if Mod.Settings.GeneralSettings.WeatherForcastMessage ~= nil and #Mod.Settings.GeneralSettings.WeatherForcastMessage > 0 then
         CreateLabel(root).SetText(Mod.Settings.GeneralSettings.WeatherForcastMessage).SetColor(colors.TextColor);
     else
-        CreateLabel(root).SetText("While the world remains at war, somebody keeps trowing rocks down. Scientists still are not sure whether we are just extremely unfortunate with the weather or UnFairerOrb76 is actually behind all of this. Wait, is he not the CEO of this program?! Please standby, while we tr| to in<esti@ate w^at /xac'ly i] go*n) o- h#$e (~ tß© s®þæ³o.¼.").SetColor(colors.TextColor);        
+        CreateLabel(root).SetText("While the world remains at war, somebody keeps trowing rocks down. Scientists still are not sure whether we are just extremely unfortunate with the weather or UnFairerOrb76 is actually behind all of this. Wait, is he not a big part of this program...?! \nUh... \nMmmmhh... \nOkay, will do \nPlease standby, while we tr| to in<esti@ate w^at /xac'ly i] go*n) o- h#$e (~ tß© s®þæ³o.¼.").SetColor(colors.TextColor);        
     end
     CreateEmpty(root).SetPreferredHeight(10);
     
@@ -145,28 +146,15 @@ function showForecast()
         end
         CreateEmpty(line).SetFlexibleWidth(1);
         if rain.StormType == "Normal" then
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStormData(rain.Data); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showNormalStorm(rain.Data, false); end);
         else
-            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showSpecialStormData(rain.Data); end);
+            CreateButton(line).SetText("Learn more").SetColor(colors["Orange Red"]).SetOnClick(function() showDoomsdayStorm(rain.Data, false); end);
         end
     end
 end
 
-function showNormalStormData(data)
-    DestroyWindow();
-    SetWindow("NormalData");
-
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showForecast);
-end
-
-function showSpecialStormData(data)
-    DestroyWindow();
-    SetWindow("SpecialData");
-
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showForecast);
-end
-
 function createProbabilityLine(line, p)
+    -- Colors ranging from light green to dark red
     local arr = {"#00ff00", "#1ee130", "#97db24", "#d0c82f", "#cfa830", "#bc8232", "#bd6937", "#d64329", "#ea1515", "#d00000", "#bb0000"}
     CreateLabel(line).SetText(showDecimal(p, 2) .. "%").SetColor(arr[math.floor((p + 0.5) / 10) + 1]);
 end

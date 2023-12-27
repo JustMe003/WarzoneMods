@@ -1,7 +1,7 @@
 require("RemoveArmies");
 
 function Server_AdvanceTurn_Start(game, addNewOrder)
-    
+
 end
 
 function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addNewOrder)
@@ -17,7 +17,7 @@ function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addN
                             mod.AddSpecialUnits = {clone};
                             local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated data", {}, {mod});
                             event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY, game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY);
-                            addNewOrder(event, true);            
+                            addNewOrder(event, true);
                         end
                     end
                 end
@@ -28,14 +28,14 @@ end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
     moveAllAliens(game, addNewOrder);
-    
+
     local totalWeight = 0;
     local meteors = {};
-    
+
     local privData = Mod.PrivateGameData;
     local publData = Mod.PublicGameData;
     local turnNumber = game.Game.TurnNumber;
-    
+
     for i, data in ipairs(privData.Doomsdays) do
         if turnNumber == data.Turn then
             local num = data.Data.NumOfMeteors + math.random(0, data.Data.RandomNumOfMeteor);
@@ -51,7 +51,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
             end
         end
     end
-    
+
     for i, data in pairs(privData.NormalStorms) do
         if (not data.NotEveryTurn or (turnNumber >= data.StartStorm and turnNumber <= data.EndStorm)) and math.random(10000) / 100 <= data.Data.ChanceofFalling then
             if data.NotEveryTurn and data.StartStorm == turnNumber then
@@ -127,7 +127,7 @@ end
 
 function moveAllAliens(game, addNewOrder)
     newAlienPlaces = {};
-    for terrID, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
+    for _, terr in pairs(game.ServerGame.LatestTurnStanding.Territories) do
         if #terr.NumArmies.SpecialUnits > 0 then
             for _, sp in pairs(terr.NumArmies.SpecialUnits) do
                 if unitIsAlien(sp) then
