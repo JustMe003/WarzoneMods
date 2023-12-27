@@ -87,8 +87,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 local randTerr = math.random(#terrs);
                 local terrID = terrs[randTerr];
                 local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
-                if not Mod.Settings.HitTerritoriesMultTimes then
-                    print("Removed territory")
+                if not Mod.Settings.GeneralSettings.HitTerritoriesMultTimes then
                     table.remove(terrs, randTerr);
                     table.insert(terrRem, terrID);
                 end
@@ -265,7 +264,7 @@ function getDoomsdayTurn(data)
 end
 
 function getMaxMeteors(numTerrs)
-    if Mod.Settings.HitTerritoriesMultTimes then
+    if Mod.Settings.GeneralSettings.HitTerritoriesMultTimes then
         return 10000;
     else
         return numTerrs;
