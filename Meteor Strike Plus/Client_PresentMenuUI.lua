@@ -49,8 +49,6 @@ function showMain()
 
     CreateEmpty(root).SetPreferredHeight(20);
 
-    SetWindow("Dummy");
-
     showForecast();
 end
 
