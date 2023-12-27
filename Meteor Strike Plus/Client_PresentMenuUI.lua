@@ -76,12 +76,12 @@ function showForecast()
             if not rain.RandomTurn and TurnNumber == rain.FixedTurn then
                 table.insert(stormsThisTurn, {Probability = 100, Name = rain.Name, StormType = "Doomsday", Data = rain});
             elseif rain.RandomTurn and TurnNumber >= rain.MinTurnNumber and TurnNumber <= rain.MaxTurnNumber and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] == 0 then
-                table.insert(stormsThisTurn, {Probability = 100 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - rain.MinTurnNumber + 1), Name = rain.Name, StormType = "Doomsday", Data = rain.Data})
+                table.insert(stormsThisTurn, {Probability = 100 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1) * (TurnNumber - rain.MinTurnNumber + 1), Name = rain.Name, StormType = "Doomsday", Data = rain})
             elseif rain.Repeat then
                 if not rain.RandomTurn and TurnNumber > rain.FixedTurn and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax then
-                    table.insert(stormsThisTurn, {Probability = 100 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1), Name = rain.Name, StormType = "Doomsday", Data = rain.Data})
+                    table.insert(stormsThisTurn, {Probability = 100 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1) * (TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 1), Name = rain.Name, StormType = "Doomsday", Data = rain})
                 elseif rain.RandomTurn and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] > 0 and TurnNumber >= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] + rain.RepeatAfterMax then
-                    table.insert(stormsThisTurn, {Probability = getProbability(1 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1), 1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1), TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 2) * 100, Name = rain.Name, StormType = "Doomsday", Data = rain.Data})
+                    table.insert(stormsThisTurn, {Probability = getProbability(1 / (rain.MaxTurnNumber - rain.MinTurnNumber + 1), 1 / (rain.RepeatAfterMax - rain.RepeatAfterMin + 1), TurnNumber - Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] - rain.RepeatAfterMin + 2) * 100, Name = rain.Name, StormType = "Doomsday", Data = rain})
                 end
             end
         end
