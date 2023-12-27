@@ -164,7 +164,6 @@ end
 function showName(data)
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Name:").SetColor(colors.TextColor);
-    print(data.Name, colors.Yellow);
     CreateLabel(line).SetText(data.Name).SetColor(colors.Yellow);
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The name of the storm. Mostly used to easily identify storms from each other") end)
