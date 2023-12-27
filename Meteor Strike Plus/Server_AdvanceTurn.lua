@@ -76,8 +76,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     local terrRem = {};
     local numTerrs = #terrs;
 
-    print(math.min(totalWeight, getMaxMeteors(numTerrs)), totalWeight, numTerrs);
-
     for i = 1, math.min(totalWeight, getMaxMeteors(numTerrs)) do
         local rand = math.random(totalWeight);
         for _, meteor in ipairs(meteors) do
@@ -105,6 +103,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                     else
                         local alien = createAlien(meteor.Data.AlienDefaultHealth + math.random(0, meteor.Data.AlienRandomHealth));
                         mod.AddSpecialUnits = concatArrays(mod.AddSpecialUnits, {alien});
+                        newAlienPlaces[terrID] = alien;
                     end
                 end
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Meteor landed on " .. game.Map.Territories[terrID].Name .. " (" .. meteor.Data.Name .. ")", {}, {mod});
@@ -115,8 +114,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
         end
         totalWeight = totalWeight - 1;
     end
-
-    print(totalWeight);
 
     for _, order in ipairs(orders) do
         addNewOrder(order);
