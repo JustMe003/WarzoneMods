@@ -27,7 +27,6 @@ function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addN
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
-    local start = WL.TickCount();
     moveAllAliens(game, addNewOrder);
 
     local totalWeight = 0;
@@ -127,7 +126,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     
     Mod.PrivateGameData = privData;
     Mod.PublicGameData = publData;
-    print("Time: " .. WL.TickCount() - start);
 end
 
 function moveAllAliens(game, addNewOrder)
@@ -265,8 +263,8 @@ end
 
 function getMaxMeteors(numTerrs)
     if Mod.Settings.GeneralSettings.HitTerritoriesMultTimes then
-        return 10000;
+        return 1000;        -- On a 4000 terr map, takes about 5 seconds
     else
-        return numTerrs;
+        return math.min(numTerrs, 1000);
     end
 end
