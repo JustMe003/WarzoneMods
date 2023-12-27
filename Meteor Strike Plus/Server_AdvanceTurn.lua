@@ -88,6 +88,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 local terrID = terrs[randTerr];
                 local terr = game.ServerGame.LatestTurnStanding.Territories[terrID];
                 if not Mod.Settings.HitTerritoriesMultTimes then
+                    print("Removed territory")
                     table.remove(terrs, randTerr);
                     table.insert(terrRem, terrID);
                 end
