@@ -41,7 +41,7 @@ function showNormalStorm(data, func, b)
     if data.NotEveryTurn then
         CreateLabel(line).SetText("No").SetColor(colors.Red);
         CreateEmpty(line).SetFlexibleWidth(1);
-        CreateButton(line).SetText("?").SetColor().SetOnClick(function() UI.Alert("This storm is only active on a certain interval of turns"); end);
+        CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("This storm is only active on a certain interval of turns"); end);
         
         line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText("Storm active:").SetColor(colors.TextColor);
