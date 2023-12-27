@@ -85,6 +85,7 @@ function DestroyWindow(win, bool)
 	bool = bool or false;
 	if windows_JAD[win] ~= nil then
 		for _, obj in pairs(windows_JAD[win]) do
+			print(obj.proxyType);
 			UI.Destroy(obj);
 		end
 	end
