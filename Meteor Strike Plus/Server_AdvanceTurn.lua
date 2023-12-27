@@ -124,10 +124,10 @@ function Server_AdvanceTurn_End(game, addNewOrder)
         terrs = concatArrays(terrs, terrRem);
     end
 
-    print("Time: " .. WL.TickCount() - start);
-
+    
     Mod.PrivateGameData = privData;
     Mod.PublicGameData = publData;
+    print("Time: " .. WL.TickCount() - start);
 end
 
 function moveAllAliens(game, addNewOrder)
