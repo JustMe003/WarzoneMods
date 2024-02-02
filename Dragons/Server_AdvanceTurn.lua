@@ -1,3 +1,5 @@
+require("DataConverter");
+
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack then
         if #orderResult.ActualArmies.SpecialUnits > 0 then
@@ -72,10 +74,17 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 if Mod.Settings.Dragons[splitData[2]].MaxNumOfDragon > getNumOfOwnedDragons(game.ServerGame.LatestTurnStanding.Territories, splitData[2], order.PlayerID) then
                     local mod = WL.TerritoryModification.Create(splitData[3]);
                     mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[2])};
-                    local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "'", {}, {mod})
+                    local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "'", {}, {mod});
+                    print("GameOrder: " .. event);
+                    print("GameOrder.Message: " .. event.Message);
                     event.AddResourceOpt = {[order.PlayerID] = {[WL.ResourceType.Gold] = -Mod.Settings.Dragons[splitData[2]].Cost}};
+                    print("GameOrder: " .. event);
+                    print("GameOrder.AddResourceOpt: " .. event.AddResourceOpt);
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY, game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY);
+                    print("GameOrder: " .. event);
+                    print("GameOrder.JumpToActionSpotOpt: " .. event.JumpToActionSpotOpt);
                     addNewOrder(event);
+                    print("Added order!");
                 else
                     addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but you already have the maximum of this type of dragon"));
                 end
@@ -169,7 +178,8 @@ function getDragon(p, dragonID)
     else
         s = s .. "\n\nThis unit is not for sale! You can only acquire this unit if you started with it unfortunately...";
     end
-    builder.ModData = s .. "\n\nEach player can have up to " .. Mod.Settings.Dragons[dragonID].MaxNumOfDragon .. " of this particular unit type. Keep this in mind to gain an advantage over your enemies!\"";
+    s = s .. "\n\nEach player can have up to " .. Mod.Settings.Dragons[dragonID].MaxNumOfDragon .. " of this particular unit type. Keep this in mind to gain an advantage over your enemies!\"";
+    builder.ModData = dataToString({UnitDescription = s});
     return builder.Build();
 end
 
