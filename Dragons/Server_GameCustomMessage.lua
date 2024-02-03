@@ -14,8 +14,15 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
         end
     elseif payload.Type == "updateNotification" then
         local pd = Mod.PlayerGameData;
-        pd[playerID] = {};
+        if pd == nil then pd = {}; end
+        if pd[playerID] == nil then pd[playerID] = {}; end
         pd[playerID].HasSeenNotification = true;
+        Mod.PlayerGameData = pd;
+    elseif payload.Type == "hasSeenCrashMessage" then
+        local pd = Mod.PlayerGameData;
+        if pd == nil then pd = {}; end
+        if pd[playerID] == nil then pd[playerID] = {}; end
+        pd[playerID].HasSeenCrashMessage = true;
         Mod.PlayerGameData = pd;
     end
     Mod.PublicGameData = data;

@@ -12,4 +12,8 @@ function Client_GameRefresh(game)
         UI.Alert(alert);
     end
     game.SendGameCustomMessage("Updating mod...", {Type="updateNotification"}, function(t) end);
+    if Mod.PlayerGameData ~= nil and Mod.PlayerGameData.HasSeenCrashMessage == nil then
+        UI.Alert("Due to an bug somewhere in the mod I had to change the code slightly. By doing this, I accidentally made the mod crash in every game. This message is mostly here to let you all know it is fixed now, sorry for the inconvenience!\n\nJAD");
+        game.SendGameCustomMessage("Updating mod...", {Type="hasSeenCrashMessage"}, function(t) end);
+    end
 end
