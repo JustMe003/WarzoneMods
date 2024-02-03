@@ -67,6 +67,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         end
     elseif order.proxyType == "GameOrderCustom" then
         if order.Payload:sub(1, #"Dragons_") == "Dragons_" then
+            print(order.Payload);
             local splitData = split(order.Payload, "_");
             splitData[2] = tonumber(splitData[2]);
             splitData[3] = tonumber(splitData[3]);
@@ -75,14 +76,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     local mod = WL.TerritoryModification.Create(splitData[3]);
                     mod.AddSpecialUnits = {getDragon(order.PlayerID, splitData[2])};
                     local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "'", {}, {mod});
-                    print("GameOrder: " .. event);
-                    print("GameOrder.Message: " .. event.Message);
                     event.AddResourceOpt = {[order.PlayerID] = {[WL.ResourceType.Gold] = -Mod.Settings.Dragons[splitData[2]].Cost}};
-                    print("GameOrder: " .. event);
-                    print("GameOrder.AddResourceOpt: " .. event.AddResourceOpt);
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY, game.Map.Territories[splitData[3]].MiddlePointX, game.Map.Territories[splitData[3]].MiddlePointY);
-                    print("GameOrder: " .. event);
-                    print("GameOrder.JumpToActionSpotOpt: " .. event.JumpToActionSpotOpt);
                     addNewOrder(event);
                     print("Added order!");
                 else
