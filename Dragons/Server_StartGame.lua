@@ -18,6 +18,14 @@ function Server_StartGame(game, standing)
     end
     standing = s;
     Mod.PublicGameData = data;
+
+    local pd = Mod.PlayerGameData;
+    if pd == nil then pd = {}; end
+    for p, _ in pairs(game.Game.Players) do
+        pd[p] = {};
+        pd[p].HasSeenCrashMessage = true;
+    end
+    Mod.PlayerGameData = pd;
 end
 
 function getDragon(p, dragonID)
