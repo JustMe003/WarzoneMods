@@ -81,10 +81,10 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     addNewOrder(event);
                     print("Added order!");
                 else
-                    addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but you already have the maximum of this type of dragon"));
+                    addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but you already have the maximum of this type of dragon", ""));
                 end
             else
-                addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but something went wrong"));
+                addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You tried to purchase a '" .. Mod.Settings.Dragons[splitData[2]].Name .. "', but something went wrong", ""));
             end
             skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
         end

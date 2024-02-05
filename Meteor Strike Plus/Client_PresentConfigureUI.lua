@@ -474,7 +474,7 @@ end
 
 function showMoreData(data, vert)
     CreateLabel(vert).SetText("Number of meteors: " .. getNumOfMeteorsString(data)).SetColor(colors.TextColor);
-    CreateLabel(vert).SetText("Meteor damage: " .. data.MeteorDamage).SetColor(colors.TextColor);
+    CreateLabel(vert).SetText("Meteor damage: " .. getMeteorDamageString(data)).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("Can spawn an alien: " .. tostring(data.CanSpawnAlien)).SetColor(colors.TextColor);
     if data.CanSpawnAlien then
         CreateLabel(vert).SetText("Alien spawn chance: " .. data.AlienSpawnChance).SetColor(colors.TextColor);
@@ -484,11 +484,15 @@ function showMoreData(data, vert)
 end
 
 function getDataString(data)
-    return round(data.ChanceofFalling, 2) .. "% | ○ " .. getNumOfMeteorsString(data) .. " | ¤ " .. data.MeteorDamage;
+    return round(data.ChanceofFalling, 2) .. "% | ○ " .. getNumOfMeteorsString(data) .. " | ¤ " .. getMeteorDamageString(data);
 end
 
 function getNumOfMeteorsString(data)
     return data.NumOfMeteors .. " + " .. data.RandomNumOfMeteor .. "?";
+end
+
+function getMeteorDamageString(data)
+    return data.MeteorDamage .. " + " .. data.MeteorRandomDamage .. "?";
 end
 
 function getSpecialDataString(data)
