@@ -114,7 +114,7 @@ function showDoomsdayStorm(data, func, b)
             CreateEmpty(line).SetFlexibleWidth(1);
             CreateButton(line).SetText("?").SetColor(colors["Light Blue"]).SetOnClick(function() UI.Alert("The doomsday storm will become active again after some turns"); end);
             
-            line = CreateHorz(line).SetFlexibleWidth(1);
+            line = CreateHorz(root).SetFlexibleWidth(1);
             CreateLabel(line).SetText("Repeats after:").SetColor(colors.TextColor);
             CreateLabel(line).SetText(data.RepeatAfterMin .. " ~ " .. data.RepeatAfterMax).SetColor(colors.Cyan);
             CreateEmpty(line).SetFlexibleWidth(1);
