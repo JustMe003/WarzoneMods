@@ -381,16 +381,13 @@ end
 function saveInputs(data, inputs)
     data.Name = inputs.Name.GetText();
     data.NumOfMeteors = inputs.NumOfMeteors.GetValue();
-    saveRandNumMeteor(data, inputs);
+    data.RandomNumOfMeteor = inputs.RandomNumOfMeteor.GetValue();
     data.MeteorDamage = inputs.MeteorDamage.GetValue();
+    data.MeteorRandomDamage = inputs.MeteorRandomDamage.GetValue();
     data.CanSpawnAlien = inputs.CanSpawnAlien.GetIsChecked();
     if data.CanSpawnAlien then
         saveAlienInputs(data, inputs);
     end
-end
-
-function saveRandNumMeteor(data, inputs)
-    data.RandomNumOfMeteor = inputs.RandomNumOfMeteor.GetValue();
 end
 
 function saveAlienInputs(data, inputs)
