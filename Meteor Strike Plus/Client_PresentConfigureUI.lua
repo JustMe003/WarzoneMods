@@ -160,6 +160,8 @@ function modifyNormal(index, data)
     local line = CreateHorz(root);
     inputs.NotEveryTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.NotEveryTurn);
     CreateLabel(line).SetText("Falls only between an interval").SetColor(colors.TextColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("If this checkbox is not ticked, then every turn there is a chance that this storm will drop its meteors. If it is ticked, the meteors of this storm will only fall between an interval of turns") end)
     local vert = CreateVert(root);
     
     if data.NotEveryTurn then
@@ -196,6 +198,8 @@ function modifySpecial(index, data)
     local line = CreateHorz(root);
     inputs.RandomTurn = CreateCheckBox(line).SetText(" ").SetIsChecked(data.RandomTurn);
     CreateLabel(line).SetText("Random doomsday turn").SetColor(colors.TextColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When ticked, this doomsday will happen on a random turn. When not ticked, this doomsday will happen on a known, fixed turn"); end);
     local vert = CreateVert(root);
     
     if data.RandomTurn then
@@ -213,12 +217,14 @@ function modifySpecial(index, data)
     line = CreateHorz(root);
     inputs.Repeat = CreateCheckBox(line).SetText(" ").SetIsChecked(data.Repeat);
     CreateLabel(line).SetText("Repeat doomsday").SetColor(colors.TextColor);
-    local vert = CreateVert(root);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When ticked, this doomsday will again after an interval. When not ticked, this doomsday will not happen again and will only happen once during the entire game"); end);
+    local vert2 = CreateVert(root);
 
     if data.Repeat then
-        showRepeatInputs(data, inputs, vert, inputs.Repeat);
+        showRepeatInputs(data, inputs, vert2, inputs.Repeat);
     else
-        inputs.Repeat.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert, inputs.Repeat); end)
+        inputs.Repeat.SetOnValueChanged(function() showRepeatInputs(data, inputs, vert2, inputs.Repeat); end)
     end
     
     line = CreateHorz(root);
@@ -296,6 +302,8 @@ function showEveryTurnInputs(data, inputs, vert, box)
     local line = CreateHorz(vert);
     inputs.Repeat = CreateCheckBox(line).SetText(" ").SetIsChecked(data.Repeat);
     CreateLabel(line).SetText("This interval repeats itself").SetColor(colors.TextColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When not ticked, the meteors of this storm will only fall during the given interval. When ticked, this interval will appear after a random amount of turns. You can set the amount of turns that need to pass and the maximum amount of turns before this interval repeats itself\n\nFor example, when an interval is set to 5 - 10 turns, it will drop its meteors during the 5th, 6th, ..., and 10th turn (6 turns in total). If this interval repeats after a minimum of 10 turns and a maximum of 20, this interval of 6 turns might start again at turn 20, 21, ..., or turn 30. It will go indefinitely") end)
     local vert2 = CreateVert(vert);
 
     if data.Repeat then
@@ -426,7 +434,7 @@ function showMoreNormalData(data, vert, button)
     SetWindow(currWin);
     
     button.SetText("^").SetOnClick(function() DestroyWindow(currWin); button.SetText("?").SetOnClick(function() showMoreNormalData(data, vert, button) end) end);
-    CreateLabel(vert).SetText("Chance of meteors falling: " .. round(data.ChanceofFalling, 2)).SetColor(colors.TextColor);
+    CreateLabel(vert).SetText("Chance of meteors falling: " .. round(data.ChanceofFalling, 2) .. "%").SetColor(colors.TextColor);
     
 	CreateLabel(vert).SetText("Active every turn: " .. tostring(not data.NotEveryTurn)).SetColor(colors.TextColor);
 	if data.NotEveryTurn then
@@ -474,9 +482,8 @@ function showMoreData(data, vert)
     CreateLabel(vert).SetText("Meteor damage: " .. getMeteorDamageString(data)).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("Can spawn an alien: " .. tostring(data.CanSpawnAlien)).SetColor(colors.TextColor);
     if data.CanSpawnAlien then
-        CreateLabel(vert).SetText("Alien spawn chance: " .. round(data.AlienSpawnChance, 2)).SetColor(colors.TextColor);
-        CreateLabel(vert).SetText("Health of the aliens: " .. data.AlienDefaultHealth).SetColor(colors.TextColor);
-        CreateLabel(vert).SetText("Maximum additional random health of aliens: " .. data.AlienRandomHealth).SetColor(colors.TextColor);
+        CreateLabel(vert).SetText("Alien spawn chance: " .. round(data.AlienSpawnChance, 2) .. "%").SetColor(colors.TextColor);
+        CreateLabel(vert).SetText("Health of the aliens: " .. data.AlienDefaultHealth .. " + " .. data.AlienRandomHealth .. "?").SetColor(colors.TextColor);
     end
 end
 
