@@ -179,7 +179,7 @@ function modifyNormal(index, data)
     
     local line = CreateHorz(root);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() conf.Normal[index] = conf.Normal[#conf.Normal]; table.remove(conf.Normal); showMain(); end)
+    CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() conf.Normal[index] = conf.Normal[#conf.Normal]; table.remove(conf.Normal); showNormalStorms(); end)
     CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
@@ -223,7 +223,7 @@ function modifySpecial(index, data)
     
     line = CreateHorz(root);
     CreateEmpty(line).SetFlexibleWidth(0.5);
-    CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() conf.Special[index] = conf.Special[#conf.Special]; table.remove(conf.Special); showMain() end)
+    CreateButton(line).SetText("Delete").SetColor(colors.Red).SetOnClick(function() conf.Special[index] = conf.Special[#conf.Special]; table.remove(conf.Special); showDoomsdayStorms() end)
     CreateEmpty(line).SetFlexibleWidth(0.5);
 end
 
