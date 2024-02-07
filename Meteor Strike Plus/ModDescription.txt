@@ -1,0 +1,5 @@
+My latest creation, Meteor Strike 2!
+
+It is a massive upgrade from the first one, allowing multiple storms and doomsdays to be configured, together with almost all configuration options available!
+
+Also introduces a Neutral special unit! The Alien (or UFO, which has a small chance to appear) can be allowed to spawn after the impact of a meteor on a territory that is neutral. Aliens are moved automatically and merge together when 2 of them end up on the same territory!
