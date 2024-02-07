@@ -526,11 +526,57 @@ function getUnitDescription(sp)
 		print("Has mod data");
 		local data = stringToData(sp.ModData);
 		if data.UnitDescription ~= nil then
-			return data.UnitDescription;
+			return subtitudeData(sp, data, data.UnitDescription);
 		end
 		print("Has no unit description");
 	end
 	return "This unit does not have a description. Please read the mod description of the mod that created this unit to get to know more about it";
+end
+
+function subtitudeData(sp, data, text)
+	local commandMap = {
+		Health = function() return sp.Health; end,
+		PlayerID = function() 
+						if sp.OwnerID == WL.PlayerID.Neutral then return "Neutral"; end
+						for pID, p in pairs(Game.Game.Players) do
+							if pID == sp.OwnerID then
+								return p.DisplayName(nil, false);
+							end
+						end
+						return "Player"
+					end,
+		DefensePower = function() return sp.DefensePower; end,
+		AttackingPower = function() return sp.AttackingPower; end,
+		DamageToKill = function() return sp.DamageToKill; end,
+		DamageAbsorbedWhenAttacked = function() return sp.DamageAbsorbedWhenAttacked; end,
+		DefensePowerPercentage = function() return round(sp.DefensePowerPercentage, 2); end,
+		AttackPowerPercentage = function() return round(sp.AttackPowerPercentage, 2); end,
+		CombatOrder = function() return sp.CombatOrder; end,
+		Name = function() return sp.Name; end,
+		TextOverHeadOpt = function() return sp.TextOverHeadOpt; end
+	};
+
+	for name, f in pairs(commandMap) do
+		text = text.gsub("{{" .. name .. "}}", f());
+	end
+
+	while text.find("{{[%w/]+}}") do
+		local start, ending = text.find("{{[%w/]+}}");
+		if start == nil or ending == nil then break; end
+		local path = text.sub(start + 2, ending - 2);
+		if path == nil then break; end
+		local pathComponents = split(path, "/");
+		if pathComponents == nil then break; end
+		local t = data;
+		for _, component in ipairs(pathComponents) do
+			if t[component] == nil then break; end
+			t = t[component];
+		end
+		if t == nil then break; end
+		text = text.gsub("{{" .. path .."}}");
+	end
+
+	return text;
 end
 
 function orderFinderMain(n)
@@ -769,6 +815,11 @@ function tableIsEmpty(t)
 		return false;
 	end
 	return true;
+end
+
+function round(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
 end
 
 -- 	Order details:
