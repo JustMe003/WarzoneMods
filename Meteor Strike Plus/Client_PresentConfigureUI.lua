@@ -66,7 +66,7 @@ function showNormalStorms()
             local line2 = CreateHorz(root);
             CreateEmpty(line2).SetPreferredWidth(20);
             local vert = CreateVert(line2);
-            local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
+            local showMoreButton = CreateButton(line).SetText("?").SetColor(colors.Green);
             showMoreButton.SetOnClick(function() showMoreNormalData(rain, vert, showMoreButton); end)
         end
     end
@@ -90,7 +90,7 @@ function showDoomsdayStorms()
             local line2 = CreateHorz(root);
             CreateEmpty(line2).SetPreferredWidth(20);
             local vert = CreateVert(line2);
-            local showMoreButton = CreateButton(line).SetText("^").SetColor(colors.Green);
+            local showMoreButton = CreateButton(line).SetText("?").SetColor(colors.Green);
             showMoreButton.SetOnClick(function() showMoreSpecialData(rain, vert, showMoreButton); end)
         end
     end
@@ -425,12 +425,12 @@ function showMoreNormalData(data, vert, button)
     AddSubWindow(win, currWin);
     SetWindow(currWin);
     
-    button.SetText("!").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreNormalData(data, vert, button) end) end);
+    button.SetText("^").SetOnClick(function() DestroyWindow(currWin); button.SetText("?").SetOnClick(function() showMoreNormalData(data, vert, button) end) end);
     CreateLabel(vert).SetText("Chance of meteors falling: " .. round(data.ChanceofFalling, 2)).SetColor(colors.TextColor);
     
 	CreateLabel(vert).SetText("Active every turn: " .. tostring(not data.NotEveryTurn)).SetColor(colors.TextColor);
 	if data.NotEveryTurn then
-		CreateLabel(vert).SetText("Active from " .. data.StartStorm .. " till " .. data.EndStorm).SetText(colors.TextColor);
+		CreateLabel(vert).SetText("Active from " .. data.StartStorm .. " till " .. data.EndStorm).SetColor(colors.TextColor);
 
         CreateLabel(vert).SetText("Repeats: " .. tostring(data.Repeat)).SetColor(colors.TextColor);
         if data.Repeat then
@@ -450,7 +450,7 @@ function showMoreSpecialData(data, vert, button)
     AddSubWindow(win, currWin);
     SetWindow(currWin);
     
-    button.SetText("!").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreSpecialData(data, vert, button) end) end);
+    button.SetText("^").SetOnClick(function() DestroyWindow(currWin); button.SetText("?").SetOnClick(function() showMoreSpecialData(data, vert, button) end) end);
     
     CreateLabel(vert).SetText("Random doomsday turn: " .. tostring(data.RandomTurn)).SetColor(colors.TextColor);
     if data.RandomTurn then
