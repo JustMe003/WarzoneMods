@@ -430,9 +430,9 @@ function showMoreNormalData(data, vert, button)
     
 	CreateLabel(vert).SetText("Active every turn: " .. tostring(not data.NotEveryTurn)).SetColor(colors.TextColor);
 	if data.NotEveryTurn then
-		CreateLabel(vert).SetText("Active from " .. data.RepeatAfterMin .. " till " .. data.RepeatAfterMax).SetText(colors.TextColor);
+		CreateLabel(vert).SetText("Active from " .. data.StartStorm .. " till " .. data.EndStorm).SetText(colors.TextColor);
 
-        CreateLabel(vert).SetText("Repeats: " .. data.Repeat).SetText(colors.TextColor);
+        CreateLabel(vert).SetText("Repeats: " .. tostring(data.Repeat)).SetColor(colors.TextColor);
         if data.Repeat then
             CreateLabel(vert).SetText("Repeat interval after " .. data.RepeatAfterMin .. " and before " .. data.RepeatAfterMax).SetColor(colors.TextColor);
         end
