@@ -62,7 +62,7 @@ function showNormalStorms()
         CreateLabel(root).SetText("Normal meteor storms").SetColor(colors.TextColor);
         for i, rain in ipairs(conf.Normal) do
             line = CreateHorz(root);
-            CreateButton(line).SetText(getDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end);
+            CreateButton(line).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() modifyNormal(i, rain); end);
             local line2 = CreateHorz(root);
             CreateEmpty(line2).SetPreferredWidth(20);
             local vert = CreateVert(line2);
@@ -86,7 +86,7 @@ function showDoomsdayStorms()
         CreateLabel(root).SetText("Doomsday meteor storms").SetColor(colors.TextColor);
         for i, rain in ipairs(conf.Special) do
             line = CreateHorz(root);
-            CreateButton(line).SetText(getSpecialDataString(rain)).SetColor(colors.Blue).SetOnClick(function() modifySpecial(i, rain); end);
+            CreateButton(line).SetText(rain.Name).SetColor(colors.Blue).SetOnClick(function() modifySpecial(i, rain); end);
             local line2 = CreateHorz(root);
             CreateEmpty(line2).SetPreferredWidth(20);
             local vert = CreateVert(line2);
