@@ -434,7 +434,7 @@ function showMoreNormalData(data, vert, button)
 
         CreateLabel(vert).SetText("Repeats: " .. tostring(data.Repeat)).SetColor(colors.TextColor);
         if data.Repeat then
-            CreateLabel(vert).SetText("Repeat interval after " .. data.RepeatAfterMin .. " and before " .. data.RepeatAfterMax).SetColor(colors.TextColor);
+            CreateLabel(vert).SetText("Repeat interval after " .. data.RepeatAfterMin .. " and before " .. data.RepeatAfterMax .. " turns").SetColor(colors.TextColor);
         end
 	end
 
@@ -454,14 +454,14 @@ function showMoreSpecialData(data, vert, button)
     
     CreateLabel(vert).SetText("Random doomsday turn: " .. tostring(data.RandomTurn)).SetColor(colors.TextColor);
     if data.RandomTurn then
-        CreateLabel(vert).SetText("Doomsday turn: " .. data.MinTurnNumber .. "-" .. data.MaxTurnNumber).SetColor(colors.TextColor);
+        CreateLabel(vert).SetText("Doomsday turn window: " .. data.MinTurnNumber .. " - " .. data.MaxTurnNumber).SetColor(colors.TextColor);
     else
         CreateLabel(vert).SetText("Doomsday turn: " .. data.FixedTurn).SetColor(colors.TextColor);
     end
 
-    CreateLabel(vert).SetText("Repeat: " .. data.Repeat).SetColor(colors.TextColor);
+    CreateLabel(vert).SetText("Repeat: " .. tostring(data.Repeat)).SetColor(colors.TextColor);
     if data.Repeat then
-        CreateLabel(vert).SetText("Repeat storm after " .. data.RepeatAfterMin .. " and before " .. data.RepeatAfterMax).SetColor(colors.TextColor);
+        CreateLabel(vert).SetText("Repeat storm after " .. data.RepeatAfterMin .. " and before " .. data.RepeatAfterMax .. " turns").SetColor(colors.TextColor);
     end
     
     showMoreData(data, vert);
