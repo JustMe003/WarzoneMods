@@ -430,7 +430,7 @@ function showMoreNormalData(data, vert, button)
     
 	CreateLabel(vert).SetText("Active every turn: " .. tostring(not data.NotEveryTurn)).SetColor(colors.TextColor);
 	if data.NotEveryTurn then
-		CreateLabel(vert).SetText("Active from " .. data.MinTurnNumber .. " till " .. data.MaxTurnNumber).SetText(colors.TextColor);
+		CreateLabel(vert).SetText("Active from " .. data.RepeatAfterMin .. " till " .. data.RepeatAfterMax).SetText(colors.TextColor);
 
         CreateLabel(vert).SetText("Repeats: " .. data.Repeat).SetText(colors.TextColor);
         if data.Repeat then
@@ -474,9 +474,9 @@ function showMoreData(data, vert)
     CreateLabel(vert).SetText("Meteor damage: " .. getMeteorDamageString(data)).SetColor(colors.TextColor);
     CreateLabel(vert).SetText("Can spawn an alien: " .. tostring(data.CanSpawnAlien)).SetColor(colors.TextColor);
     if data.CanSpawnAlien then
-        CreateLabel(vert).SetText("Alien spawn chance: " .. data.AlienSpawnChance).SetColor(colors.TextColor);
-        CreateLabel(vert).SetText("Number of aliens: " .. data.AlienDefaultHealth).SetColor(colors.TextColor);
-        CreateLabel(vert).SetText("Random number of aliens: " .. data.AlienRandomHealth).SetColor(colors.TextColor);
+        CreateLabel(vert).SetText("Alien spawn chance: " .. round(data.AlienSpawnChance, 2)).SetColor(colors.TextColor);
+        CreateLabel(vert).SetText("Health of the aliens: " .. data.AlienDefaultHealth).SetColor(colors.TextColor);
+        CreateLabel(vert).SetText("Maximum additional random health of aliens: " .. data.AlienRandomHealth).SetColor(colors.TextColor);
     end
 end
 
