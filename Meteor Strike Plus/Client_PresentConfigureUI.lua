@@ -431,7 +431,7 @@ function showMoreNormalData(data, vert, button)
     button.SetText("!").SetOnClick(function() DestroyWindow(currWin); button.SetText("^").SetOnClick(function() showMoreNormalData(data, vert, button) end) end);
     CreateLabel(vert).SetText("Chance of meteors falling: " .. round(data.ChanceofFalling, 2)).SetColor(colors.TextColor);
     
-	CreateLabel(vert).SetText("Active every turn: " .. (not data.NotEveryTurn)).SetColor(colors.TextColor);
+	CreateLabel(vert).SetText("Active every turn: " .. tostring(not data.NotEveryTurn)).SetColor(colors.TextColor);
 	if data.NotEveryTurn then
 		CreateLabel(vert).SetText("Active from " .. data.MinTurnNumber .. " till " .. data.MaxTurnNumber).SetText(colors.TextColor);
 
