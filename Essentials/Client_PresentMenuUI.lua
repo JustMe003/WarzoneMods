@@ -561,7 +561,7 @@ function subtitudeData(sp, data, text)
 		text = string.gsub(text, "{{" .. name .. "}}", f);
 	end
 
-	local limit = 10;
+	local limit = 100;
 	while string.find(text, "{{[%w/]+}}") do
 		print(string.find(text, "{{[%w/]+}}"));
 		local start, ending = string.find(text, "{{[%w/]+}}");
@@ -587,9 +587,9 @@ function subtitudeData(sp, data, text)
 			end
 		end
 		print(string.find(text, "{{[%w/]+}}"), start);
-		-- if string.find(text, "{{[%w/]+}}") == start then
-			text = string.gsub(text, "{{[%w/]+}}", "{{nil}}", 1);
-		-- end
+		if string.find(text, "{{[%w/]+}}") == start then
+			text = string.gsub(text, "{{[%w/]+}}", "[nil]", 1);
+		end
 		limit = limit - 1;
 		if limit == 0 then break; end
 	end
