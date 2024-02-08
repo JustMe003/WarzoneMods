@@ -580,7 +580,7 @@ function subtitudeData(sp, data, text)
 						v = v[component];
 					end
 					print(v);
-					if v ~= nil then 
+					if v ~= nil and v ~= data then 
 						text = string.gsub(text, "{{" .. path .."}}", tostring(v));
 					end
 				end
