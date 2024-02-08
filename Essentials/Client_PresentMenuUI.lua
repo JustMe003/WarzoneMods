@@ -563,30 +563,23 @@ function subtitudeData(sp, data, text)
 
 	local limit = 100;
 	while string.find(text, "{{[%w/]+}}") do
-		print(string.find(text, "{{[%w/]+}}"));
 		local start, ending = string.find(text, "{{[%w/]+}}");
-		print(start, ending);
 		if start ~= nil or ending ~= nil then 
 			local path = string.sub(text, start + 2, ending - 2);
-			print(path, string.sub(text, start + 2, ending - 2));
 			if path ~= nil then 
 				local pathComponents = split(path, "/");
-				print(pathComponents);
 				if pathComponents ~= nil then 
 					local v = data;
 					for _, component in ipairs(pathComponents) do
-						print(data, component);
 						if v[component] == nil then break; end
 						v = v[component];
 					end
-					print(v);
 					if v ~= nil and v ~= data then 
 						text = string.gsub(text, "{{" .. path .."}}", tostring(v));
 					end
 				end
 			end
 		end
-		print(string.find(text, "{{[%w/]+}}"), start);
 		if string.find(text, "{{[%w/]+}}") == start then
 			text = string.gsub(text, "{{[%w/]+}}", "[nil]", 1);
 		end
