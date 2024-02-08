@@ -162,7 +162,7 @@ function getDragon(p, dragonID)
         builder.DamageToKill = Mod.Settings.Dragons[dragonID].DamageToKill;
         builder.DefensePower = Mod.Settings.Dragons[dragonID].DefensePower;
     end
-    local s = "UnitDescription:\"This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. ";
+    local s = "This unit can be identified by it's " .. Mod.Settings.Dragons[dragonID].ColorName .. " dragon icon. ";
     if Mod.Settings.Dragons[dragonID].DragonBreathAttack then
         s = s .. "It also has the powerful 'Dragon Attack' ability. Whenever this unit attacks another territory, it will deal " .. Mod.Settings.Dragons[dragonID].DragonBreathAttackDamage .. " damage to all the connected territories. Be aware of this!";
     else
@@ -173,7 +173,7 @@ function getDragon(p, dragonID)
     else
         s = s .. "\n\nThis unit is not for sale! You can only acquire this unit if you started with it unfortunately...";
     end
-    s = s .. "\n\nEach player can have up to " .. Mod.Settings.Dragons[dragonID].MaxNumOfDragon .. " of this particular unit type. Keep this in mind to gain an advantage over your enemies!\"";
+    s = s .. "\n\nEach player can have up to " .. Mod.Settings.Dragons[dragonID].MaxNumOfDragon .. " of this particular unit type. Keep this in mind to gain an advantage over your enemies!";
     builder.ModData = dataToString({UnitDescription = s});
     return builder.Build();
 end
