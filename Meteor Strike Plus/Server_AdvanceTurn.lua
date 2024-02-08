@@ -191,7 +191,7 @@ end
 
 function createAlien(health)
 	local builder = WL.CustomSpecialUnitBuilder.Create(WL.PlayerID.Neutral);
-    builder.ModData = dataToString({ Testing = {Test = "ZYX"}, Test = "ABCDE" , UnitDescription = "This unit is controlled by no one, not even neutral itself...\nThe defensive ({{DefensePower}}) and attacking power ({{AttackPower}}) will always be the same as its health ({{Health}}). It can be damaged to reduce it power. \ntest: {{Test}}\ntest2: {{TEST}}\nTest3: {{Testing/Test}}"});
+    builder.ModData = dataToString({UnitDescription = "This is an {{Name}}. {{Name}} is controlled by no one, not even neutrals...\n\n{{Name}} has {{Health}} health, and its attacking and defensive power is always equal to its health. You can decrease the strength of {{Name}} by damaging it\n\n{{Name}} moves all by himself, he has a mind of its own. But be aware, they might attack you... When they attack, they deal damage equal to their health, so currently they would deal {{Health}} armies damage. If they deal enough damage to get rid of all armies and special units, they will take the territory from you\n\nWhen {{Name}} moves to another territory with a friend, they will do what {{Name}}s do best, and become one I guess?"});
     if Mod.Settings.GeneralSettings.UseSuprise and math.random(10000) / 100 <= 1 then
         print("Easter egg!")
         builder.Health = health * 2;
