@@ -536,7 +536,7 @@ end
 function subtitudeData(sp, data, text)
 	local commandMap = {
 		Health = function(n) return tostring(sp.Health); end,
-		PlayerID = function(n) 
+		Player = function(n) 
 						if sp.OwnerID == WL.PlayerID.Neutral then return "Neutral"; end
 						for pID, p in pairs(Game.Game.Players) do
 							if pID == sp.OwnerID then
