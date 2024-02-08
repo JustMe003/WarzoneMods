@@ -75,6 +75,7 @@ function DestroyWindow(win)
 	win = win or currentWindow_POI;
 	if windows_POI[win] ~= nil then
 		for _, obj in pairs(windows_POI[win]) do
+			print(obj.proxyType, obj);
 			UI.Destroy(obj);
 		end
 	end
