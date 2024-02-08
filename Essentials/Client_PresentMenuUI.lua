@@ -546,7 +546,7 @@ function subtitudeData(sp, data, text)
 						return "Player"
 					end,
 		DefensePower = function(n) return sp.DefensePower; end,
-		AttackingPower = function(n) return sp.AttackingPower; end,
+		AttackPower = function(n) return sp.AttackingPower; end,
 		DamageToKill = function(n) return sp.DamageToKill; end,
 		DamageAbsorbedWhenAttacked = function(n) return sp.DamageAbsorbedWhenAttacked; end,
 		DefensePowerPercentage = function(n) return round(sp.DefensePowerPercentage, 2); end,
