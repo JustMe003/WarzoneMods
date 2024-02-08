@@ -534,6 +534,7 @@ function getUnitDescription(sp)
 end
 
 function subtitudeData(sp, data, text)
+	print(sp, data, text);
 	local commandMap = {
 		Health = function() return sp.Health; end,
 		PlayerID = function() 
