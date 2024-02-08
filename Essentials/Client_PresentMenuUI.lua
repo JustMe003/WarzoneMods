@@ -561,7 +561,9 @@ function subtitudeData(sp, data, text)
 		text = string.gsub(text, "{{" .. name .. "}}", f);
 	end
 
+	print(string.find(text, "{{[%w/]+}}"));
 	while string.find(text, "{{[%w/]+}}") do
+		print(string.find(text, "{{[%w/]+}}"));
 		local start, ending = string.find(text, "{{[%w/]+}}");
 		print(start, ending);
 		if start ~= nil or ending ~= nil then 
