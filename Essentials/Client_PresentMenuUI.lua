@@ -585,9 +585,9 @@ function subtitudeData(sp, data, text)
 			end
 		end
 		print(string.find(text, "{{[%w/]+}}"), start);
-		if string.find(text, "{{[%w/]+}}") == start then
+		-- if string.find(text, "{{[%w/]+}}") == start then
 			text = string.gsub(text, "{{[%w/]+}}", "{{nil}}", 1);
-		end
+		-- end
 	end
 
 	return text;
