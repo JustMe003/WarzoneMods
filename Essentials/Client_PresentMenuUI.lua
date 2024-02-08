@@ -536,7 +536,7 @@ end
 function subtitudeData(sp, data, text)
 	local commandMap = {
 		Health = function(n) return sp.Health; end,
-		PlayerID = function() 
+		PlayerID = function(n) 
 						if sp.OwnerID == WL.PlayerID.Neutral then return "Neutral"; end
 						for pID, p in pairs(Game.Game.Players) do
 							if pID == sp.OwnerID then
@@ -545,38 +545,37 @@ function subtitudeData(sp, data, text)
 						end
 						return "Player"
 					end,
-		DefensePower = function() return sp.DefensePower; end,
-		AttackingPower = function() return sp.AttackingPower; end,
-		DamageToKill = function() return sp.DamageToKill; end,
-		DamageAbsorbedWhenAttacked = function() return sp.DamageAbsorbedWhenAttacked; end,
-		DefensePowerPercentage = function() return round(sp.DefensePowerPercentage, 2); end,
-		AttackPowerPercentage = function() return round(sp.AttackPowerPercentage, 2); end,
-		CombatOrder = function() return sp.CombatOrder; end,
-		Name = function() return sp.Name; end,
-		TextOverHeadOpt = function() return sp.TextOverHeadOpt; end
+		DefensePower = function(n) return sp.DefensePower; end,
+		AttackingPower = function(n) return sp.AttackingPower; end,
+		DamageToKill = function(n) return sp.DamageToKill; end,
+		DamageAbsorbedWhenAttacked = function(n) return sp.DamageAbsorbedWhenAttacked; end,
+		DefensePowerPercentage = function(n) return round(sp.DefensePowerPercentage, 2); end,
+		AttackPowerPercentage = function(n) return round(sp.AttackPowerPercentage, 2); end,
+		CombatOrder = function(n) return sp.CombatOrder; end,
+		Name = function(n) return sp.Name; end,
+		TextOverHeadOpt = function(n) return sp.TextOverHeadOpt; end
 	};
 
 	for name, f in pairs(commandMap) do
 		print("{{" .. name .. "}}");
 		text = string.gsub(text, "{{" .. name .. "}}", f);
-		print(text);
 	end
 
-	while string.find(text, "{{[%w/]+}}") do
-		local start, ending = string.find(text, "{{[%w/]+}}");
-		if start == nil or ending == nil then break; end
-		local path = text.sub(start + 2, ending - 2);
-		if path == nil then break; end
-		local pathComponents = split(path, "/");
-		if pathComponents == nil then break; end
-		local v = data;
-		for _, component in ipairs(pathComponents) do
-			if v[component] == nil then break; end
-			v = v[component];
-		end
-		if v == nil then break; end
-		text = string.gsub(text, "{{" .. path .."}}", v);
-	end
+	-- while string.find(text, "{{[%w/]+}}") do
+	-- 	local start, ending = string.find(text, "{{[%w/]+}}");
+	-- 	if start == nil or ending == nil then break; end
+	-- 	local path = text.sub(start + 2, ending - 2);
+	-- 	if path == nil then break; end
+	-- 	local pathComponents = split(path, "/");
+	-- 	if pathComponents == nil then break; end
+	-- 	local v = data;
+	-- 	for _, component in ipairs(pathComponents) do
+	-- 		if v[component] == nil then break; end
+	-- 		v = v[component];
+	-- 	end
+	-- 	if v == nil then break; end
+	-- 	text = string.gsub(text, "{{" .. path .."}}", v);
+	-- end
 
 	return text;
 end
