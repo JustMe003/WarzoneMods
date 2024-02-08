@@ -559,7 +559,7 @@ function subtitudeData(sp, data, text)
 
 	for name, f in pairs(commandMap) do
 		print("{{" .. name .. "}}");
-		text = text.gsub("{{" .. name .. "}}", f());
+		text = text.gsub("{{" .. name .. "}}", f);
 	end
 
 	while text.find("{{[%w/]+}}") do
