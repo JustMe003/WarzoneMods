@@ -534,7 +534,6 @@ function getUnitDescription(sp)
 end
 
 function subtitudeData(sp, data, text)
-	print(sp, data, text);
 	local commandMap = {
 		Health = function(n) return sp.Health; end,
 		PlayerID = function() 
@@ -560,22 +559,23 @@ function subtitudeData(sp, data, text)
 	for name, f in pairs(commandMap) do
 		print("{{" .. name .. "}}");
 		text = string.gsub(text, "{{" .. name .. "}}", f);
+		print(text);
 	end
 
-	while text.find("{{[%w/]+}}") do
-		local start, ending = text.find("{{[%w/]+}}");
+	while string.find(text, "{{[%w/]+}}") do
+		local start, ending = string.find(text, "{{[%w/]+}}");
 		if start == nil or ending == nil then break; end
 		local path = text.sub(start + 2, ending - 2);
 		if path == nil then break; end
 		local pathComponents = split(path, "/");
 		if pathComponents == nil then break; end
-		local t = data;
+		local v = data;
 		for _, component in ipairs(pathComponents) do
-			if t[component] == nil then break; end
-			t = t[component];
+			if v[component] == nil then break; end
+			v = v[component];
 		end
-		if t == nil then break; end
-		text = text.gsub("{{" .. path .."}}");
+		if v == nil then break; end
+		text = string.gsub(text, "{{" .. path .."}}", v);
 	end
 
 	return text;
