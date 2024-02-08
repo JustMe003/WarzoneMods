@@ -1,4 +1,5 @@
 require("RemoveArmies");
+require("DataConverter");
 
 function Server_AdvanceTurn_Start(game, addNewOrder)
 
@@ -190,6 +191,7 @@ end
 
 function createAlien(health)
 	local builder = WL.CustomSpecialUnitBuilder.Create(WL.PlayerID.Neutral);
+    builder.ModData = dataToString({UnitDescription = "This unit is controlled by no one, not even neutral itself..."});
     if Mod.Settings.GeneralSettings.UseSuprise and math.random(10000) / 100 <= 1 then
         print("Easter egg!")
         builder.Health = health * 2;
