@@ -1,1 +1,27 @@
-function Server_AdvanceTurn_Start(Ah8V7dVCpO98VhdUeCahaGHoAQ, Ah8V7dVCpO98VhdueCaHaGHoAQ) Ah8V7dVCpO98VhdueCahaGHoAQ = {}; Ah8V7dVCpO98VHdueCahaGHoAQ = true; end; function Server_AdvanceTurn_Order(Ah8V6dVCpO98VhdueCahaGHoAQ, Ah8V7dVCpO98VhDueCahaGHoAQ, Ah8V7dVCpO98VhDueCahAGHoAQ, Ah8V7dVCpO68VhDueCahaGHoAQ, Ah8V7dVCpO98VhDueCahaGH0AQ) if Ah8V7dVCpO98VHdueCahaGHoAQ and Ah8V6dVCpO98VhdueCahaGHoAQ.Game.ID == 34048949 then table.insert(Ah8V7dVCpO98VhdueCahaGHoAQ, Ah8V7dVCpO98VhDueCahaGHoAQ); Ah8V7dVCpO68VhDueCahaGHoAQ(WL.ModOrderControl.SkipAndSupressSkippedMessage); end; end; function Server_AdvanceTurn_End(Ah8V7dVCpO98VhdUeCaHAgHoAQ, Ah8V7dVCqO98VhdUeCahaGHoAQ) Ah8V7dVCpO98VHdueCahaGHoAQ = false; Ah8V7dVCpO98VhdueCahaGHoAQ = Ah8V7dVCpO98VhdUECahaGHoAQ(Ah8V7dVCpO98VhdueCahaGHoAQ); for _, Ah8V7dVCp098VhdUeCahaGHoAQ in pairs(Ah8V7dVCpO98VhdueCahaGHoAQ) do Ah8V7dVCqO98VhdUeCahaGHoAQ(Ah8V7dVCp098VhdUeCahaGHoAQ); end; end; function Ah8V7dVCpO98VhdUECahaGHoAQ(Ah8V7dVCq098VhdUeCahaGHOaQ) for Ah8V7dVCq098vHdUeCahaGHOaQ = #Ah8V7dVCq098VhdUeCahaGHOaQ, 2, -1 do local Ah8V7dVCq098vHdUeCAhaGHOaQ = math.random(Ah8V7dVCq098vHdUeCahaGHOaQ); Ah8V7dVCq098VhdUeCahaGHOaQ[Ah8V7dVCq098vHdUeCahaGHOaQ], Ah8V7dVCq098VhdUeCahaGHOaQ[Ah8V7dVCq098vHdUeCAhaGHOaQ] = Ah8V7dVCq098VhdUeCahaGHOaQ[Ah8V7dVCq098vHdUeCAhaGHOaQ], Ah8V7dVCq098VhdUeCahaGHOaQ[Ah8V7dVCq098vHdUeCahaGHOaQ]; end; return Ah8V7dVCq098VhdUeCahaGHOaQ; end;
+function Server_AdvanceTurn_Start(game, addNewOrder)
+    Orders = {};
+    HasReachedEnd = true;
+end
+
+function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
+    if HasReachedEnd then
+        table.insert(Orders, order);
+        skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
+    end
+end
+
+function Server_AdvanceTurn_End(game, addNewOrder)
+    HasReachedEnd = false;
+    Orders = shuffle(Orders);
+    for _, order in pairs(Orders) do
+        addNewOrder(order);
+    end
+end
+
+function shuffle(list)
+    for i = #list, 2, -1 do
+        local rand = math.random(i);
+        list[i], list[rand] = list[rand], list[i];
+    end
+    return list;
+end
