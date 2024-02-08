@@ -79,5 +79,6 @@ function DestroyWindow(win)
 			print(obj.proxyType, obj);
 			UI.Destroy(obj);
 		end
+		windows_POI[win] = {};
 	end
 end
