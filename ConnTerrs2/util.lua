@@ -1,3 +1,5 @@
+require("DataConverter");
+
 function split(str, pat)
    local t = {}  -- NOTE: use {n = 0} in Lua-5.0
    local fpat = "(.-)" .. pat
@@ -19,7 +21,7 @@ end
 
 function getAmountOfUnits(playerTerrs)
    if not Mod.Settings.NUnitsIsNTerrs then
-      return Mod.Settings.NumberOfUnits; 
+      return Mod.Settings.NumberOfUnits;
    end
    local min = 10000;
    for _, t in pairs(playerTerrs) do
@@ -29,6 +31,7 @@ function getAmountOfUnits(playerTerrs)
 end
 
 function buildUnit(p)
+   if MODDATA == nil then MODDATA = dataToString({ UnitDescription = "This is a {{Name}}. It should not be used for fighting, it only is 1 army worth.\n\nThis unit is like a beacon. Any territory that is (in)directly connected to this territory will be saved. Any territory you own, that is not (in)directly connected to this unit or another {{Name}} unit will be turned neutral\n\nA territory (say X) is connected to a {{Name}} unit when there is a path of connected territories that you control from territory X to a {{Name}} unit"}); end
    local builder = WL.CustomSpecialUnitBuilder.Create(p);
    builder.Name = "Link";
    builder.AttackPower = 1;
@@ -43,5 +46,6 @@ function buildUnit(p)
    builder.ImageFilename = "Link.png";
    builder.IncludeABeforeName = true;
    builder.TextOverHeadOpt = "Link";
+   builder.ModData = MODDATA;
    return builder.Build();
 end
