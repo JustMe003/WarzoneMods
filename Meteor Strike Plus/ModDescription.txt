@@ -1,5 +1,7 @@
-My latest creation, Meteor Strike 2!
+Meteor Strike 2, add global events that damages random territories all over the map.
 
-It is a massive upgrade from the first one, allowing multiple storms and doomsdays to be configured, together with almost all configuration options available!
+The game creator can create "meteor storms". There are 2 types of meteor storms, normal storms and doomsday storms. Normal storms are "active" for multiple turns, and doomsday storms are only active in 1 turn.
 
-Also introduces a Neutral special unit! The Alien (or UFO, which has a small chance to appear) can be allowed to spawn after the impact of a meteor on a territory that is neutral. Aliens are moved automatically and merge together when 2 of them end up on the same territory!
+Every storm can be configured from the damage it does, the amount of territories it damages, etc
+
+A meteor storm can be configured to create an Alien unit, a neutral controlled unit that moves on its own. Aliens might attack player controlled territories, dealing damage equal to their health. If the damage is sufficient enough, they will take the territory from the player. When 2 Aliens move to the same territory, they merge together, adding up the health.
