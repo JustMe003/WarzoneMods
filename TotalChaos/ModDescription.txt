@@ -1,1 +1,3 @@
-This mod completely shuffles the order list
+This mod shuffles the sequence in which the orders are executed. Everyone still will make their orders as normal, the difference is that the orders won't necessarily happen in the same sequence you enter them.
+
+Also be aware that this mod might be incompatible with other mods when used in the same game. Therefore it is highly recommended to test your template in singleplayer first!
