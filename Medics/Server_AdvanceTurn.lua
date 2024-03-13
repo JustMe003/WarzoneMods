@@ -1,6 +1,4 @@
 require("DataConverter");
-print(dataToString);
-MODDATA = dataToString({Testing = {[1] = true, [2] = false, Txt = "Txt"}, UnitDescription = "The medic does not like standing on the front lines, but rather wants to stay back to heal up any wounded soldiers. Any time the player owning this unit loses armies on a territory connected to this medic, it will recover " .. Mod.Settings.Percentage .. "% of the armies lost\n\nThis unit can be bought for " .. Mod.Settings.Cost .. " gold in the purchase menu (same place where you buy cities)\n\nEach player can have up to " .. Mod.Settings.MaxUnits .. " Medic(s), so you can't have an army of Medics unfortunately"});
 
 function Server_AdvanceTurn_Start(game, addNewOrder)
     medics = {};
@@ -32,7 +30,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             builder.ImageFilename = "Medic.png";
             builder.IncludeABeforeName = true;
             builder.TextOverHeadOpt = "Medic";
-            builder.ModData = MODDATA;
+            builder.ModData = dataToString({Testing = {[1] = true, [2] = false, Txt = "Txt"}, UnitDescription = "The medic does not like standing on the front lines, but rather wants to stay back to heal up any wounded soldiers. Any time the player owning this unit loses armies on a territory connected to this medic, it will recover " .. Mod.Settings.Percentage .. "% of the armies lost\n\nThis unit can be bought for " .. Mod.Settings.Cost .. " gold in the purchase menu (same place where you buy cities)\n\nEach player can have up to " .. Mod.Settings.MaxUnits .. " Medic(s), so you can't have an army of Medics unfortunately"});
             local mod = WL.TerritoryModification.Create(terrID);
             mod.AddSpecialUnits = {builder.Build()};
 
