@@ -4,11 +4,13 @@ function Server_Created(game, settings)
     local s = Mod.Settings.DragonPlacements
     local start, ending = s:find("%[[%d]+%]");
     local mapID = nil;
-    if #s > 0 then
+    if #s > 0 and start ~= nil and ending ~= nil then
         mapID = tonumber(s:sub(start + 1, ending - 1));
         s = s:sub(ending + 2, -1);
         data.DragonPlacements = getTable(s);
         if data.DragonPlacements == nil then data.DragonPlacements = {}; end
+    elseif #s > 0 then
+        table.insert(data.Errors, "The data was not configured correctly, are you sure you didn't modify the data yourself?");
     end
     if data.DragonPlacements == nil then
         data.DragonPlacements = {};
