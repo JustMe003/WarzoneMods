@@ -119,7 +119,7 @@ function showArtilleryOptions(terrDetails)
 			local count = 0;
 			for i, v in pairs(filter(filter(getTerritoriesInRange(Game, terrDetails.ID, Mod.Settings.RangeOfMortars), func1), func2)) do
 				if count == 5 then break; end
-				newButton(win .. "cannon" .. i, vert, Game.Map.Territories[i].Name .. ": " .. Mod.Settings.MortarDamage .. " - " .. Mod.PublicGameData.MissPercentages[v] .. "%", function() shootMortar(terrDetails.ID, i, Mod.PublicGameData.MissPercentages[v]); end, "Orange")
+				newButton(win .. "cannon" .. i, vert, Game.Map.Territories[i].Name .. ": " .. Mod.Settings.MortarDamage .. "% - " .. Mod.PublicGameData.MissPercentages[v] .. "%", function() shootMortar(terrDetails.ID, i, Mod.PublicGameData.MissPercentages[v]); end, "Orange")
 				count = count + 1;
 			end
 		end
