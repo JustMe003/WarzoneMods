@@ -432,18 +432,12 @@ function P.SetKey()
 end
 
 ---Gets the key of the mod. Will throw an error if something is not right
----@return string
+---@return string?
 function getKey()
-    if Mod == nil then
-        error("[DataConverter]: `Mod` is nil", 2);
+    if Mod == nil or Mod.Settings or Mod.Settings.DataConverter then
+        return nil;
     end
-    if Mod.Settings == nil then
-        error("[DataConverter]: `Mod.Settings` is nil", 2);
-    end
-    if Mod.Settings.DataConverter == nil then
-        error("[DataConverter]: `Mod.Settings.DataConverter` is nil, have you set up the key correctly?", 2);
-    end
-    return Mod.Settings.DataConverter.Key or "";      -- When Key == nil, return an empty string
+    return Mod.Settings.DataConverter.Key;      -- When Key == nil, return an empty string
 end
 
 ---Makes the table include the table key
