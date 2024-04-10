@@ -350,7 +350,9 @@ end
 ---@return string # The value between double quotation marks
 ---@return string # The rest of the input string
 function getStringValue(s)
-    local startKey, endKey = s:find("\".-[^\\]\"");
+    local startKey = s:find("\"");
+    s = s:sub(startKey, -1);        -- remove trailing characters
+    local _, endKey = s:find("[^\\]\"");
     return s:sub(startKey + 1, endKey -1):gsub("\\\"", "\""):gsub("\\\\", "\\"):gsub("&#125;", "}"):gsub("&#123;", "{"), s:sub(endKey + 1, -1);
 end
 
@@ -432,12 +434,18 @@ function P.SetKey()
 end
 
 ---Gets the key of the mod. Will throw an error if something is not right
----@return string?
+---@return string
 function getKey()
-    if Mod == nil or Mod.Settings or Mod.Settings.DataConverter then
-        return nil;
+    if Mod == nil then
+        error("[DataConverter]: `Mod` is nil", 2);
     end
-    return Mod.Settings.DataConverter.Key;      -- When Key == nil, return an empty string
+    if Mod.Settings == nil then
+        error("[DataConverter]: `Mod.Settings` is nil", 2);
+    end
+    if Mod.Settings.DataConverter == nil then
+        error("[DataConverter]: `Mod.Settings.DataConverter` is nil, have you set up the key correctly?", 2);
+    end
+    return Mod.Settings.DataConverter.Key or "";      -- When Key == nil, return an empty string
 end
 
 ---Makes the table include the table key
