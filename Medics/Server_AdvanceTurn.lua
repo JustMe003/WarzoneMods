@@ -1,4 +1,3 @@
-require("DataConverter");
 
 function Server_AdvanceTurn_Start(game, addNewOrder)
     medics = {};
@@ -16,6 +15,9 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
     if order.proxyType == "GameOrderCustom" and startsWith(order.Payload, "BuyMedic_") and medics[order.PlayerID] < Mod.Settings.MaxUnits then
         local terrID = tonumber(string.sub(order.Payload, #"BuyMedic_" + 1));
         if order.CostOpt ~= nil and Mod.Settings.Cost == order.CostOpt[WL.ResourceType.Gold] and game.ServerGame.LatestTurnStanding.Territories[terrID].OwnerPlayerID == order.PlayerID then
+            if DataConverter == nil then
+                require("DataConverter");
+            end
             local builder = WL.CustomSpecialUnitBuilder.Create(order.PlayerID);
             builder.Name = "Medic";
             builder.AttackPower = Mod.Settings.Health;
