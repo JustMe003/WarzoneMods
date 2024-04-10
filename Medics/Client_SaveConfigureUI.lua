@@ -1,3 +1,4 @@
+require("DataConverter")
 function Client_SaveConfigureUI(alert)
     Mod.Settings.Cost = costInput.GetValue();
     if Mod.Settings.Cost < 0 then alert("The Medic cost cannot be lower than 0"); end
@@ -7,4 +8,5 @@ function Client_SaveConfigureUI(alert)
     if Mod.Settings.Health < 0 then alert("The Medic cannot be less than 0 armies worth"); end
     Mod.Settings.MaxUnits = maxUnitsInput.GetValue();
     if Mod.Settings.MaxUnits < 1 then alert("You cannot allow 0 or less Medics, then you should remove the mod from your game"); end
+    DataConverter.SetKey();
 end
