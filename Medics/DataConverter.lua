@@ -41,7 +41,6 @@ local uuid = uuid;
 local tonumber = tonumber;
 local error = error;
 local Mod = Mod;
-print(Mod);
 local rawset = rawset;
 
 
@@ -421,7 +420,6 @@ end
 
 ---Set up an injectable key. When set-up, this key allows you to write to your tables
 function P.SetKey()
-    print(Mod);
     if Mod == nil then
         error("[DataConverter]: `Mod` is nil", 2);
     end
@@ -438,7 +436,6 @@ end
 ---Gets the key of the mod. Will throw an error if something is not right
 ---@return string
 function getKey()
-    print(Mod);
     if Mod == nil then
         error("[DataConverter]: `Mod` is nil", 2);
     end
@@ -446,7 +443,7 @@ function getKey()
         error("[DataConverter]: `Mod.Settings` is nil", 2);
     end
     if Mod.Settings.DataConverter == nil then
-        error("[DataConverter]: `Mod.Settings.DataConverter` is nil, have you set up the key correctly?", 2);
+        return "";    
     end
     return Mod.Settings.DataConverter.Key or "";      -- When Key == nil, return an empty string
 end
