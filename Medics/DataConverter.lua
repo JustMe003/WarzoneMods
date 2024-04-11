@@ -353,7 +353,7 @@ function getStringValue(s)
     local startKey = s:find("\"");
     s = s:sub(startKey, -1);        -- remove trailing characters
     local _, endKey = s:find("[^\\]\"");
-    return s:sub(startKey + 1, endKey -1):gsub("\\\"", "\""):gsub("\\\\", "\\"):gsub("&#125;", "}"):gsub("&#123;", "{"), s:sub(endKey + 1, -1);
+    return s:sub(2, endKey -1):gsub("\\\"", "\""):gsub("\\\\", "\\"):gsub("&#125;", "}"):gsub("&#123;", "{"), s:sub(endKey + 1, -1);
 end
 
 ---Returns the first number in the input string
