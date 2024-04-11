@@ -434,7 +434,7 @@ function P.SetKey()
 end
 
 ---Gets the key of the mod. Will throw an error if something is not right
----@return string
+---@return string?
 function getKey()
     if Mod == nil then
         error("[DataConverter]: `Mod` is nil", 2);
@@ -443,9 +443,9 @@ function getKey()
         error("[DataConverter]: `Mod.Settings` is nil", 2);
     end
     if Mod.Settings.DataConverter == nil then
-        return "";    
+        return;    
     end
-    return Mod.Settings.DataConverter.Key or "";      -- When Key == nil, return an empty string
+    return Mod.Settings.DataConverter.Key;
 end
 
 ---Makes the table include the table key
@@ -479,7 +479,7 @@ function makeReadOnly(t)
             return pairs(t);
         end
     };
-    if key ~= getKey() then
+    if getKey() ~= nil and key ~= getKey() then
         mt.__newindex = function(t2, k, v)
             error("[DataConverter]: You are not allowed to modify this table", 2);
         end
@@ -516,12 +516,12 @@ function tableValuesOnly(t)
         __newindex = function (t2, k, v)
             if type(v) == "table" then
                 local mt2 = getmetatable(t[k]);
-                if t[k] ~= nil and mt2 ~= nil and mt2.__key ~= getKey() then
+                if t[k] ~= nil and mt2 ~= nil and getkey() ~= nil and mt2.__key ~= getKey() then
                     error("[DataConverter]: You are not allowed to modify the value on index `" .. k .. "`");
                 end
                 rawset(t, k, v);
             else
-                error("[DataConverter]: value `" .. v .. "` must be a table");
+                error("[DataConverter]: value `" .. tostring(v) .. "` must be a table");
             end
         end,
         __pairs = function(t2, k, v)
