@@ -2067,7 +2067,7 @@ end
 ---@param t table # The table to be counted
 ---@return integer # The number of elements in the table
 function getTableLength(t)
-    print(tostring(t));
+    print(tostring(t), t == nil);
     local c = 0;
     for _, _ in pairs(t) do
         c = c + 1;
