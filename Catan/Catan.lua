@@ -1381,7 +1381,7 @@ function getPhasesInOrder()
         if index == 0 then index = #t + 1; end
         table.insert(t, index, n);
     end
-    return table.sort(t);
+    return t;
 end
 
 ---Returns true if the table contains all of the provided fields
