@@ -7,7 +7,7 @@ TEXTCOLOR = "#DDDDDD";
 function Client_GameRefresh(game);
     if game.Us ~= nil and LastRecordedTurn ~= nil and game.Game.TurnNumber < LastRecordedTurn then
         LastRecordedTurn = game.Game.TurnNumber;
-        if rootClientRefresh == nil or UI.IsDestroyed(vertClientRefresh) then
+        if not resourceWindowIsOpen() then
             game.CreateDialog(CreateResourcesWindow);
         else
             UI.Destroy(vertClientRefresh);
@@ -16,13 +16,26 @@ function Client_GameRefresh(game);
         end
     elseif game.Us ~= nil and game.Game.TurnNumber > 0 then
         LastRecordedTurn = game.Game.TurnNumber;
-        if rootClientRefresh == nil or UI.IsDestroyed(vertClientRefresh) then
+        if not resourceWindowIsOpen() then
             game.CreateDialog(CreateResourcesWindow);
         else
             updateLabels();
             updateExpectedGainsLabels(game);
         end
     end
+
+    if game.Us ~= nil and menuWindowIsOpen ~= nil and menuWindowIsOpen() and clientIsWaiting() then
+        print("Waiting! Showing main menu again");
+        showMain();
+        toggleWaiting();
+    end
+
+    LastTerrIDClick = -1;
+    TerrClickCount = 0;
+    UI.InterceptNextTerritoryClick(function(d) 
+        TripleTerrClickInterceptor(game, d); 
+        return WL.CancelClickIntercept;
+    end);
 end
 
 ---Client_PresentMenuUI hook
@@ -34,7 +47,8 @@ end
 function CreateResourcesWindow(rootParent, setMaxSize, setScrollable, game, close)
     setMaxSize(300, 440);
     rootClientRefresh = rootParent;
-    vertClientRefresh = UI.CreateVerticalLayoutGroup(rootParent);
+    vertClientRefresh = UI.CreateVerticalLayoutGroup(rootParent).SetFlexibleWidth(1);
+    resourcesCloseFunc = close;
     initResourceDataWindow(game);
 end
 
@@ -50,8 +64,9 @@ function showResourcesWindow()
     ResourceLabels = {};
     for i, n in ipairs(Mod.PlayerGameData.Resources) do
         local labels = {};
-        local line = UI.CreateHorizontalLayoutGroup(vertClientRefresh);
-        labels.ResourceName = UI.CreateLabel(line).SetText(getResourceName(i) .. ": ").SetColor(TEXTCOLOR);
+        local line = UI.CreateHorizontalLayoutGroup(vertClientRefresh).SetFlexibleWidth(1);
+        labels.ResourceName = UI.CreateLabel(line).SetText(getResourceName(i)).SetColor(getResourceColor(i));
+        UI.CreateLabel(line).SetText(": ").SetColor(TEXTCOLOR);
         labels.NumberOfResourceLabel = UI.CreateLabel(line).SetText(n).SetColor(TEXTCOLOR);
         labels.PotentiallyAddedLabel = UI.CreateLabel(line).SetText("").SetColor("#00DD00");
         labels.PotentiallyRemovedLabel = UI.CreateLabel(line).SetText("").SetColor("#DD0000");
@@ -71,7 +86,8 @@ function showExpectedGains(game)
     for i, v in ipairs(t) do
         local labels = {};
         local line = UI.CreateHorizontalLayoutGroup(vertClientRefresh);
-        labels.ResourceName = UI.CreateLabel(line).SetText(getResourceName(i) .. ": ").SetColor(TEXTCOLOR);
+        labels.ResourceName = UI.CreateLabel(line).SetText(getResourceName(i)).SetColor(getResourceColor(i));
+        UI.CreateLabel(line).SetText(": ").SetColor(TEXTCOLOR);
         labels.NumberOfResourceLabel = UI.CreateLabel(line).SetText(v).SetColor(TEXTCOLOR);
         labels.PotentiallyAddedLabel = UI.CreateLabel(line).SetText("").SetColor("#00DD00");
         labels.PotentiallyRemovedLabel = UI.CreateLabel(line).SetText("").SetColor("#DD0000");
@@ -89,7 +105,15 @@ function getExpectedGainsFromGame(game)
         t[res] = 0;
     end
 
-    local futureVillages = extractBuildVillageTerrIDs();
+    local futureVillages = extractBuildVillageTerrIDs(Mod.PlayerGameData);
+    local upgradedVillages = extractUpgradeVillageTerrIDs(Mod.PlayerGameData);
+
+    local f = function(terrID)
+        if valueInTable(upgradedVillages, terrID) then
+            return 1;
+        end
+        return 0;
+    end
 
     for _, terr in pairs(game.LatestStanding.Territories) do
         if terr.OwnerPlayerID == game.Us.ID and (terrHasVillage(terr.Structures) or valueInTable(futureVillages, terr.ID)) then
@@ -98,24 +122,12 @@ function getExpectedGainsFromGame(game)
                 local res = getResource(conn);
                 if res ~= nil and not (terrHasVillage(conn.Structures) or valueInTable(futureVillages, connID)) then
                     if terrHasVillage(terr.Structures) then
-                        t[res] = t[res] + (getNumberOfVillages(terr.Structures) * getExpectedGainsIn36Turns(getTerritoryDiceValue(Mod.PublicGameData, conn.ID)));
+                        t[res] = t[res] + ((getNumberOfVillages(terr.Structures) + f(terr.ID)) * getExpectedGainsIn36Turns(getTerritoryDiceValue(Mod.PublicGameData, conn.ID)));
                     else
                         t[res] = t[res] + getExpectedGainsIn36Turns(getTerritoryDiceValue(Mod.PublicGameData, conn.ID));
                     end
                 end
             end
-        end
-    end
-    return t;
-end
-
-function extractBuildVillageTerrIDs()
-    if Mod.PlayerGameData == nil or Mod.PlayerGameData.OrderList == nil then return {}; end
-    local t = {};
-    local enum = getBuildVillageEnum();
-    for _, order in ipairs(Mod.PlayerGameData.OrderList) do
-        if order.OrderType == enum then
-            table.insert(t, order.TerritoryID);
         end
     end
     return t;
@@ -164,9 +176,102 @@ function updateExpectedGainsLabels(game, b);
     end
 end
 
+function resourceWindowIsOpen()
+    return rootClientRefresh ~= nil and not UI.IsDestroyed(vertClientRefresh);
+end
 
---[[Hi Fizzer,
+function TripleTerrClickInterceptor(game, terrDetails)
+    if terrDetails == nil then return; end
 
-I'm working on a mod and keep running into this issue. It comes up now when I start the game, and it disallows me to play any turn.
+    if terrDetails.ID == LastTerrIDClick then
+        TerrClickCount = (TerrClickCount or 0) + 1;
+        if TerrClickCount > 2 then
+            TerrClickCount = 0;
+            if UI.IsDestroyed(RootTerritoryInfoDialog) then
+                game.CreateDialog(territoryInfoDialog)
+            else
+                UI.Destroy(VertTerritoryInfoDialog);
+                VertTerritoryInfoDialog = UI.CreateVerticalLayoutGroup(RootTerritoryInfoDialog);
+                showTerritoryInfoWindow(game);
+            end
+        end
+    else
+        LastTerrIDClick = terrDetails.ID;
+        TerrClickCount = 1;
+    end
 
-I think it has to do with [i]Client_GameRefresh[/i], I create a dialog here]]
+    UI.InterceptNextTerritoryClick(function(d)
+        TripleTerrClickInterceptor(game, d);
+        return WL.CancelClickIntercept
+    end)
+end
+
+function territoryInfoDialog(rootParent, setMaxSize, setScrollable, game, close)
+    RootTerritoryInfoDialog = rootParent;
+    VertTerritoryInfoDialog = UI.CreateVerticalLayoutGroup(rootParent);
+
+    showTerritoryInfoWindow(game);
+end
+
+function showTerritoryInfoWindow(game);
+    local details = game.Map.Territories[LastTerrIDClick];
+    UI.CreateButton(VertTerritoryInfoDialog).SetText(details.Name).SetColor("#00FF8C").SetOnClick(function()
+        game.CreateLocatorCircle(details.MiddlePointX, details.MiddlePointY);
+        game.HighlightTerritories({details.ID});
+    end);
+    UI.CreateEmpty(VertTerritoryInfoDialog).SetPreferredHeight(5);
+
+    local terr = game.LatestStanding.Territories[LastTerrIDClick];
+    if not canSeeStructure(terr) then
+        UI.CreateLabel(VertTerritoryInfoDialog).SetText("You don't have enough of this territory to show more information");
+    end
+
+    if terrHasVillage(terr.Structures) then
+        UI.CreateLabel(VertTerritoryInfoDialog).SetText("This territory has a village").SetColor(TEXTCOLOR);
+        local line = UI.CreateHorizontalLayoutGroup(VertTerritoryInfoDialog);
+        UI.CreateLabel(line).SetText("Level: ").SetColor(TEXTCOLOR);
+        UI.CreateLabel(line).SetText(getNumberOfVillages(terr.Structures)).SetColor("#00FF8C");
+
+        for res, n in ipairs(getGainScoreFromOneTerr(game.LatestStanding.Territories, details.ConnectedTo, Mod.PublicGameData, getNumberOfVillages(terr.Structures))) do
+            local line = UI.CreateHorizontalLayoutGroup(VertTerritoryInfoDialog);
+            UI.CreateLabel(line).SetText(getResourceName(res)).SetColor(getResourceColor(res));
+            UI.CreateLabel(line).SetText(": ").SetColor(TEXTCOLOR);
+            UI.CreateLabel(line).SetText(n).SetColor("#00FF8C");
+        end
+    elseif terrHasArmyCamp(terr.Structures) then
+        UI.CreateLabel(VertTerritoryInfoDialog).SetText("This territory has an army camp").SetColor(TEXTCOLOR);
+    else
+        if getResource(terr) ~= nil then
+            local line = UI.CreateHorizontalLayoutGroup(VertTerritoryInfoDialog);
+            UI.CreateLabel(line).SetText("This territory produces ").SetColor(TEXTCOLOR);
+            UI.CreateLabel(line).SetText(getResourceNameFromStructure(terr)).SetColor(getResourceColor(getResource(terr)));
+            local dieValue = getTerritoryDiceValue(Mod.PublicGameData, terr.ID);
+            line = UI.CreateHorizontalLayoutGroup(VertTerritoryInfoDialog);
+            UI.CreateLabel(line).SetText("Die value:").SetColor(TEXTCOLOR);
+            UI.CreateLabel(line).SetText(dieValue).SetColor("#00FF8C");
+            line = UI.CreateHorizontalLayoutGroup(VertTerritoryInfoDialog);
+            UI.CreateLabel(line).SetText("Exp. gain score: ").SetColor(TEXTCOLOR);
+            UI.CreateLabel(line).SetText(getExpectedGainsIn36Turns(dieValue)).SetColor("#00FF8C");
+
+            local vert;
+            UI.CreateLabel(VertTerritoryInfoDialog).SetText("Press the button below to show what the stats the village stats of this territory are");
+            local villageStatsButton = UI.CreateButton(VertTerritoryInfoDialog).SetText("Show").SetColor("#00FF8C")
+            villageStatsButton.SetOnClick(function()
+                if villageStatsButton.GetText() == "Show" then
+                    villageStatsButton.SetText("Hide");
+                    vert = UI.CreateVerticalLayoutGroup(VertTerritoryInfoDialog);
+                    
+                    for res, n in ipairs(getGainScoreFromOneTerr(game.LatestStanding.Territories, details.ConnectedTo, Mod.PublicGameData, 1)) do
+                        local line = UI.CreateHorizontalLayoutGroup(vert);
+                        UI.CreateLabel(line).SetText(getResourceName(res)).SetColor(getResourceColor(res));
+                        UI.CreateLabel(line).SetText(": ").SetColor(TEXTCOLOR);
+                        UI.CreateLabel(line).SetText(n).SetColor("#00FF8C");
+                    end
+                else
+                    villageStatsButton.SetText("Show");
+                    UI.Destroy(vert);
+                end 
+            end)
+        end
+    end
+end

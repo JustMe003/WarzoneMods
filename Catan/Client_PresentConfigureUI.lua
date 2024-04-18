@@ -4,6 +4,8 @@ function Client_PresentConfigureUI(rootParent)
     if config == nil then
         config = {};
         config.Recipes = initRecipes();
-        config.WarriorsPerVillage = 5;
+        config.StartInfantryPerVillage = 3;
+        config.Modifiers = initModifiers();
+        config.Techs = initDefaultTechs();
     end
 end
