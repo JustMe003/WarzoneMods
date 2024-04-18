@@ -1461,6 +1461,7 @@ function setupData(game, standing)
     data.DieGroups = orderedByNumber;
     Mod.PublicGameData = data;
 
+    print("test");
     for i, v in ipairs(Mod.PublicGameData) do
         print(i, tostring(v));
     end
