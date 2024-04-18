@@ -1458,6 +1458,8 @@ function setupData(game, standing)
     end
 
     data.DieNumbers = table.sort(dieNumbers, function(a, b) if a.TerrID <= b.TerrID then return false; else return true; end end);
+    print(data.DieNumbers);
+    print(#data.DieNumbers);
     data.DieGroups = orderedByNumber;
     Mod.PublicGameData = data;
 
