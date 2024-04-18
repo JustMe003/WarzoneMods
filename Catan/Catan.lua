@@ -1457,6 +1457,8 @@ function setupData(game, standing)
         table.insert(orderedByNumber[dieNumber - 1], terrID);
     end
 
+    print(tostring(dieNumbers));
+    print(table.sort(dieNumbers, function(a, b) if a.TerrID <= b.TerrID then return false; else return true; end end));
     data.DieNumbers = table.sort(dieNumbers, function(a, b) if a.TerrID <= b.TerrID then return false; else return true; end end);
     data.DieGroups = orderedByNumber;
     Mod.PublicGameData = data;
