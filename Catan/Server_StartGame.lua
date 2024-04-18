@@ -9,6 +9,7 @@ function Server_StartGame(game, standing)
         setupData(game, standing);
         print("Initialized data");
     end
+    print("Initialized?");
 
     local playerData = Mod.PlayerGameData;
     setOrderLists(game.Game.PlayingPlayers, playerData);
