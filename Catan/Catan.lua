@@ -1463,7 +1463,7 @@ function setupData(game, standing)
 
     print("test"); 
     for i, v in ipairs(Mod.PublicGameData) do
-        print(i, tostring(v));
+        print(i);
     end
 
     local playerData = Mod.PlayerGameData;
@@ -1765,7 +1765,7 @@ end
 ---@return integer # The dice value of the territory
 function getTerritoryDiceValue(data, terrID)
     for i, v in pairs(data) do
-        print(i, tostring(v));
+        print(i);
     end
     return getTerritoryData(data, terrID, 1, getTableLength(data.DieNumbers)).DiceValue;
 end
