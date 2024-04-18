@@ -1,8 +1,8 @@
 function Server_StartDistribution(game, standing)
-    setupData(game, standing);
+    adfgh(game, standing);
 end
 
-function setupData(game, standing)
+function adfgh(game, standing)
     local data = Mod.PublicGameData;
     local dieNumbers = {};
     local orderedByNumber = {};
