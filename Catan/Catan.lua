@@ -1371,10 +1371,17 @@ end
 function getPhasesInOrder()
     local t = {};
     for p, n in pairs(Catan.Phases) do
-        table.insert(t, n);
+        local index = 0;
+        for i, v in pairs(t) do
+            if n > v then
+                index = i;
+                break;
+            end
+        end
+        if index == 0 then index = #t + 1; end
+        table.insert(t, index, n);
     end
     return table.sort(t);
-
 end
 
 ---Returns true if the table contains all of the provided fields
