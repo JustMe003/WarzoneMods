@@ -11,26 +11,40 @@ require("Client_GameRefresh");
 ---@param close fun() # Zero parameter function that closes the dialog
 ---@param func fun()? # Zero parameter function that will be called if not nil
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, func)
+    print(101);
     if game.Game.TurnNumber < 1 then
         close();
         UI.Alert("You can only open the menu when the distribution has ended");
     end
+    print(102);
     if game.Us == nil then
         close();
         UI.Alert("Spectators are not allowed to view the menu");
     end
-
+    print(103);
     
+    
+    print(104);
     setMaxSize(400, 500);
+    print(105);
     
+    print(106);
     Init(rootParent);
+    print(107);
     vert = GetRoot().SetFlexibleWidth(1);
+    print(108);
     colors = GetColors();
+    print(109);
     Game = game;
+    print(110);
     territories = game.LatestStanding.Territories;
+    print(111);
     CancelClickIntercept = true;
+    print(112);
     Waiting = false;
+    print(113);
     Settings = Mod.Settings.Config;
+    print(114);
 
     showHomeButtons();
 

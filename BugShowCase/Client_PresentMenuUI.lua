@@ -1,5 +1,8 @@
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-    local orders = game.Orders;
-    table.insert(orders, WL.GameOrderCustom.Create(game.Us.ID, "Testing", ""));
-    game.Orders = orders;
+    local list = {9, 5, 6, 2, 7};
+    print(table.concat(list, ", "));
+
+    local output = table.sort(list);
+    print(tostring(output), output == nil);
+    print(table.concat(list, ", "));
 end

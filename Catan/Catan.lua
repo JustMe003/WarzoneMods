@@ -1,4 +1,6 @@
--- Resources 
+-- Resources window crashes when first loading up, data not yet initialized?
+-- Browser crashes a lot!
+-- Message Fizzer about table.sort not working correctly
 
 
 require("Annotations");
