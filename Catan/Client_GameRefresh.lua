@@ -5,37 +5,66 @@ TEXTCOLOR = "#DDDDDD";
 ---Client_GameRefresh hook
 ---@param game GameClientHook # The client game
 function Client_GameRefresh(game);
+    print(1);
     if game.Us ~= nil and LastRecordedTurn ~= nil and game.Game.TurnNumber < LastRecordedTurn then
+        print(2);
         LastRecordedTurn = game.Game.TurnNumber;
+        print(3);
         if not resourceWindowIsOpen() then
+            print(4);
             game.CreateDialog(CreateResourcesWindow);
+            print(5);
         else
+            print(6);
             UI.Destroy(vertClientRefresh);
+            print(7);
             vertClientRefresh = UI.CreateVerticalLayoutGroup(rootClientRefresh);
+            print(8);
             initResourceDataWindow(game);
+            print(9);
         end
+        print(10);
     elseif game.Us ~= nil and game.Game.TurnNumber > 0 then
+        print(11);
         LastRecordedTurn = game.Game.TurnNumber;
+        print(12);
         if not resourceWindowIsOpen() then
+            print(13);
             game.CreateDialog(CreateResourcesWindow);
+            print(14);
         else
+            print(15);
             updateLabels();
+            print(16);
             updateExpectedGainsLabels(game);
+            print(17);
         end
     end
-
+    print(18);
+    
+    print(19);
     if game.Us ~= nil and menuWindowIsOpen ~= nil and menuWindowIsOpen() and clientIsWaiting() then
+        print(20);
         print("Waiting! Showing main menu again");
+        print(21);
         showMain();
+        print(22);
         toggleWaiting();
+        print(23);
     end
-
+    print(24);
+    
     LastTerrIDClick = -1;
+    print(25);
     TerrClickCount = 0;
+    print(26);
     UI.InterceptNextTerritoryClick(function(d) 
+        print(27);
         TripleTerrClickInterceptor(game, d); 
+        print(28);
         return WL.CancelClickIntercept;
     end);
+    print(30);
 end
 
 ---Client_PresentMenuUI hook

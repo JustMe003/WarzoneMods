@@ -1,3 +1,6 @@
+-- Resources 
+
+
 require("Annotations");
 
 ---@class Catan # Enums for the Catan structure
