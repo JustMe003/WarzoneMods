@@ -1454,7 +1454,6 @@ function setupData(game, standing)
         standing.Territories[terrID].Structures = terrStructures;
         local dieNumber = math.random(2, 12);
         table.insert(dieNumbers, {TerrID = terrID, DiceValue = dieNumber});
-        print(terrID);
         table.insert(orderedByNumber[dieNumber - 1], terrID);
     end
 
