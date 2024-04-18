@@ -1759,6 +1759,9 @@ end
 ---@param terrID integer # the territory ID that identifies the data location
 ---@return integer # The dice value of the territory
 function getTerritoryDiceValue(data, terrID)
+    for i, v in pairs(data) do
+        print(i, v);
+    end
     return getTerritoryData(data, terrID, 1, #data.DieNumbers).DiceValue;
 end
 

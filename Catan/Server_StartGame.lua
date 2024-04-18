@@ -7,6 +7,7 @@ require("Annotations");
 function Server_StartGame(game, standing)
     if game.Settings.AutomaticTerritoryDistribution then
         setupData(game, standing);
+        print("Initialized data");
     end
 
     local playerData = Mod.PlayerGameData;
@@ -20,6 +21,7 @@ function Server_StartGame(game, standing)
         terr.NumArmies = WL.Armies.Create(0);
         if terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
             standing.Territories[terrID].Structures = {[WL.StructureType.City] = 1};
+            print("Setting terr to village")
             setToVillage(data, terrID);
             if Mod.Settings.Config.StartInfantryPerVillage > 0 then
                 local infantry = {};
