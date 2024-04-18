@@ -1457,8 +1457,7 @@ function setupData(game, standing)
         table.insert(orderedByNumber[dieNumber - 1], terrID);
     end
 
-    print(table.sort(dieNumbers, function(a, b) if a.TerrID <= b.TerrID then return false; else return true; end end));
-    data.DieNumbers = table.sort(dieNumbers, sortOnTerrID);
+    data.DieNumbers = sortOnTerrID(dieNumbers) --table.sort(dieNumbers, sortOnTerrID);
     data.DieGroups = orderedByNumber;
     Mod.PublicGameData = data;
 
@@ -2121,11 +2120,17 @@ function getRomanNumber(n)
     return res;
 end
 
-function sortOnTerrID(a, b)
-    print(a.TerrID, b.TerrID);
-    if a.TerrID <= b.TerrID then 
-        return false; 
-    else 
-        return true; 
-    end 
+function sortOnTerrID(l)
+    local t = {};
+    for _, v in pairs(l) do
+        local index = 0;
+        for i, v2 in pairs(t) do
+            if v2.TerrID <= v.TerrID then
+                index = i;
+                break;
+            end
+        end
+        if index == 0 then index = #t + 1; end
+        table.insert(t, index, v);
+    end
 end
