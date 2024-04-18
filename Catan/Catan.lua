@@ -1458,10 +1458,12 @@ function setupData(game, standing)
     end
 
     data.DieNumbers = table.sort(dieNumbers, function(a, b) if a.TerrID <= b.TerrID then return false; else return true; end end);
-    print(tostring(data.DieNumbers));
-    print(tostring(#data.DieNumbers));
     data.DieGroups = orderedByNumber;
     Mod.PublicGameData = data;
+
+    for i, v in ipairs(Mod.PublicGameData) do
+        print(i, tostring(v));
+    end
 
     local playerData = Mod.PlayerGameData;
     setResourcesTable(game.Game.PlayingPlayers, playerData);
