@@ -1767,7 +1767,7 @@ function getTerritoryDiceValue(data, terrID)
     for i, v in pairs(data) do
         print(i);
     end
-    return getTerritoryData(data, terrID, 1, getTableLength(data.DieNumbers)).DiceValue;
+    return getTerritoryData(data, terrID, 1, #data.DieNumbers).DiceValue;
 end
 
 ---Returns the index of which the territory data is located, performs binary search
