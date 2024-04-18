@@ -7,9 +7,11 @@ require("Annotations");
 function Server_StartGame(game, standing)
     if game.Settings.AutomaticTerritoryDistribution then
         setupData(game, standing);
-        print("Initialized data");
     end
-    print("Initialized?");
+
+    for i, _ in pairs(Mod.PublicGameData) do
+        print(i);
+    end
 
     local playerData = Mod.PlayerGameData;
     setOrderLists(game.Game.PlayingPlayers, playerData);
