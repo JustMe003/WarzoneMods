@@ -2133,4 +2133,5 @@ function sortOnTerrID(l)
         if index == 0 then index = #t + 1; end
         table.insert(t, index, v);
     end
+    return t;
 end
