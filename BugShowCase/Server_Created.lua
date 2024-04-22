@@ -7,6 +7,7 @@ function Server_Created(game, settings)
 		local t = {};
 		table.insert(lastTable, t);
 		lastTable = t;
+		print("Attempting to save...");
 		Mod.PublicGameData = data;
 		print("Saved");
 	end
