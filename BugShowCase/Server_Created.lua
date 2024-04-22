@@ -5,9 +5,13 @@ function Server_Created(game, settings)
 	for i = 1, 100 do
 		print("Level: " .. i);
 		local t = {};
+		print("Level: " .. i);
 		table.insert(lastTable, t);
+		print("Level: " .. i);
 		lastTable = t;
+		print("Level: " .. i);
 		Mod.PlayerGameData = data;
+		print("Level: " .. i);
 	end
 
 end
