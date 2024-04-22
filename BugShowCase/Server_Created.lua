@@ -11,7 +11,7 @@ function Server_Created(game, settings)
 		print("lastTable[1] = " .. tostring(lastTable[1]));
 		lastTable = t;
 		print("lastTable = " .. tostring(lastTable));
-		Mod.PlayerGameData = data;
+		Mod.PublicGameData = data;
 		print("Saved");
 	end
 
