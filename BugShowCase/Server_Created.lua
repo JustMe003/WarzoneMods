@@ -1,6 +1,6 @@
 
 function Server_Created(game, settings)
-	local data = Mod.PlayerGameData;
+	local data = Mod.PublicGameData;
 	local lastTable = data;		-- AI 1 has ID 1
 	for i = 1, 100 do
 		print("Level: " .. i);
