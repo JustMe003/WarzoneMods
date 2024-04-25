@@ -68,12 +68,10 @@ function P.DataToString(t)
         print("[DataConverter]: Table input for `DataToString` was nil");
         return _EMPTY_TABLE_STRING;
     end
-
     local f;
     local version;
 
-    local metaData = t.DO_NOT_MODIFY_NOR_READ;        -- Extract prefix, suffix and version
-    t.DO_NOT_MODIFY_NOR_READ = nil;                   -- Set DO_NOT_MODIFY_NOR_READ field to nil, we don't want to save this in the string
+    local metaData = getMetaData(t);        -- Extract prefix, suffix and version
     if metaData ~= nil then
         f = getFunction_TToS(metaData.Version_DataConverter_JAD);
         version = metaData.Version_DataConverter_JAD or _VERSION_DATA_CONVERTER_JAD;
@@ -109,7 +107,6 @@ function P.DataToString(t)
     if metaData ~= nil and metaData.Suffix_DataConverter_JAD ~= nil then
         s = s .. metaData.Suffix_DataConverter_JAD;         -- Append suffix (for compatibility)
     end
-    t.DO_NOT_MODIFY_NOR_READ = metaData;
     return s;
 end
 
@@ -123,7 +120,7 @@ function P.StringToData(s)
         return {};
     end
 
-    print("[DataConverter]: Input string = `" .. s .. "`");       -- Debugging purposes
+    -- print("[DataConverter]: Input string = `" .. s .. "`");       -- Debugging purposes
 
     local testForVersionZero = string.find(s, "\29%b{}\29");
     if testForVersionZero ~= nil then
@@ -145,7 +142,7 @@ function P.StringToData(s)
         if startOfData ~= nil and endOfData ~= nil then
             local version = findAndReturnSubString(s:sub(startOfData, -1), _VERSION_PATTERN);
             if version ~= nil then
-                print("[DataConverter]: Version = " .. version);
+                -- print("[DataConverter]: Version = " .. version);
                 f = getFunction_SToT(version);
                 local data = string.gsub(s:sub(startOfData, endOfData), string.format("%s(%%b{})%s", _SIGNATURE_PATTERN, _SIGNATURE_PATTERN), "%1"):sub(2, -2);
                 local prefix = s:sub(1, startOfData - 1);
@@ -190,12 +187,20 @@ end
 ---@param version string # The version string
 ---@return table # The original table including the meta data (read only)
 function addMetaData(t, prefix, suffix, version)
-    t.DO_NOT_MODIFY_NOR_READ = readOnly({
+    local mt = getmetatable(t);
+    mt.data = readOnly({
         Prefix_DataConverter_JAD = prefix,
         Suffix_DataConverter_JAD = suffix,
         Version_DataConverter_JAD = version
     });
+    setmetatable(t, mt);
     return t;
+end
+
+---Returns the meta data of the table
+---@param t table # The input table
+function getMetaData(t)
+    return (getmetatable(t) or {}).data or {};
 end
 
 
@@ -224,7 +229,7 @@ function getFunction_TToS(version)
         ["V1.1"] = conversionFunction_TToS_V1_1
     };
     if version == nil then
-        return conversionFunction_TToS_V0;
+        return conversionFunction_TToS_V1_1;
     else
         return functions[version];
     end
@@ -240,13 +245,13 @@ function conversionFunction_TToS_V1_1(t)
     for key, value in pairs(t) do
         hasValues = true
         if type(key) == "string" then
-            key = string.format("\"%s\"", string.gsub(string.gsub(string.gsub(string.gsub(key, "\\", "\\\\"), "}", "&#125;"), "{", "&#123;"), "\"", "\\\""));
+            key = string.format("\"%s\"", string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(key, "=", "&#061"), ";", "&#059"), "\\", "\\\\"), "}", "&#125"), "{", "&#123"), "\"", "\\\""));
         end
         if type(value) == "table" then
             table.insert(result, string.format("%s=%s", key, conversionFunction_TToS_V1_1(includeKey(value))));
             removeKey(value);
         elseif type(value) == "string" then
-            table.insert(result, string.format("%s=\"%s\"", key, string.gsub(string.gsub(string.gsub(string.gsub(value, "\\", "\\\\"), "}", "&#125;"), "{", "&#123;"), "\"", "\\\"")));
+            table.insert(result, string.format("%s=\"%s\"", key, string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(value, "=", "&#061"), ";", "&#059"), "\\", "\\\\"), "}", "&#125"), "{", "&#123"), "\"", "\\\"")));
         elseif type(value) == "number" or type(value) == "boolean" then
             table.insert(result, string.format("%s=%s", key, tostring(value)));
         else
@@ -254,7 +259,7 @@ function conversionFunction_TToS_V1_1(t)
         end
     end
     if hasValues then
-        return "{" .. table.concat(result, ";") .. "}";
+        return "{" .. table.concat(result, ";") .. ";}";
     else
         return "{}";
     end
@@ -351,9 +356,9 @@ end
 ---@return string # The rest of the input string
 function getStringValue(s)
     local startKey = s:find("\"");
-    s = s:sub(startKey, -1);        -- remove trailing characters
-    local _, endKey = s:find("[^\\]\"");
-    return s:sub(2, endKey -1):gsub("\\\"", "\""):gsub("\\\\", "\\"):gsub("&#125;", "}"):gsub("&#123;", "{"), s:sub(endKey + 1, -1);
+    s = s:sub((startKey or 1) + 1, -1);        -- remove preceding characters
+    local _, endKey = s:find("\"[;=]");
+    return s:sub(1, endKey - 2):gsub("\\\"", "\""):gsub("&#125", "}"):gsub("&#123", "{"):gsub("\\\\", "\\"):gsub("&#059", ";"):gsub("&#061", "="), s:sub(endKey + 0, -1);
 end
 
 ---Returns the first number in the input string
