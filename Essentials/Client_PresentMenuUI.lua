@@ -14,7 +14,6 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	inspectToolInUse = false;
 	Filters = {};
 
-	
 	--[[
 	numOfClicks = 1;
 	terrClicked = -1;
@@ -524,9 +523,13 @@ end
 function getUnitDescription(sp)
 	if sp.ModData ~= nil then
 		print("Has mod data");
-		local data = stringToData(sp.ModData);
-		if data.UnitDescription ~= nil then
-			return subtitudeData(sp, data, data.UnitDescription);
+		local data = DataConverter.StringToData(sp.ModData);
+		if data.Essentials ~= nil and data.Essentials.UnitDescription ~= nil then
+			return subtitudeData(sp, data, tostring(data.Essentials.UnitDescription));
+		elseif data.UnitDescription ~= nil then		-- Old version (V0)
+			return subtitudeData(sp, data, tostring(data.UnitDescription));
+		else
+			return "This unit does not have a unit description.";
 		end
 		print("Has no unit description");
 	end
