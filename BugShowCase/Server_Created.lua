@@ -1,15 +1,39 @@
 
 function Server_Created(game, settings)
 	local data = Mod.PublicGameData;
-	local lastTable = data;		-- AI 1 has ID 1
 	for i = 1, 100 do
-		print("Level: " .. i);
-		local t = {};
-		table.insert(lastTable, t);
-		lastTable = t;
-		print("Attempting to save...");
+		local t = createRandomTable();
+		print("Number of tables: " .. tostring(getNumberOfTables(t)));
+		print("Deepness: " .. tostring(getMaxDeepness(t)));
+		data.Test = t;
 		Mod.PublicGameData = data;
-		print("Saved");
 	end
 
+end
+
+function createRandomTable(p)
+	p = p or 1;
+	local t = {};
+	for _ = 0, 10 do
+		if math.random() <= p then
+			table.insert(t, createRandomTable(p - 0.08));
+		end
+	end
+end
+
+function getNumberOfTables(t)
+	local c = 1;
+	for _, v in pairs(t) do
+		c = c + getNumberOfTables(v);
+	end
+	return c;
+end
+
+function getMaxDeepness(t, level)
+	level = level or 1;
+	local max = level;
+	for _, v in pairs(t) do
+		max = math.max(max, getMaxDeepness(v, level + 1));
+	end
+	return max;
 end
