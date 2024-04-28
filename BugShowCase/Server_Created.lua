@@ -6,13 +6,10 @@ function Server_Created(game, settings)
 		print("Number of tables: " .. tostring(getNumberOfTables(t)));
 		print("Deepness: " .. tostring(getMaxDeepness(t)));
 		data.Test = t;
-		print("data == " .. tostring(data));
-		print("data.Test == " .. tostring(data.Test));
-		print("Next line: Mod.PublicGameData = data");
 		Mod.PublicGameData = data;
-		print("Just saved data to Mod.PublicGameData again, here's how the `Mod` now looks");
-		printTable(Mod);
-		print("Mod.PublicGameData == " .. tostring(Mod.PublicGameData));
+		print("This line runs fine");
+		print(tostring(Mod.PublicGameData));
+		print("When it crashes, this line is not reached");
 		if Mod.PublicGameData == nil then error("Mod.PublicGameData was nil"); end
 	end
 end
