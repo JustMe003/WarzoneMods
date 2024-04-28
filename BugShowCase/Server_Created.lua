@@ -7,7 +7,7 @@ function Server_Created(game, settings)
 		print("Deepness: " .. tostring(getMaxDeepness(t)));
 		data.Test = t;
 		Mod.PublicGameData = data;
-		if Mod.PublicGameData == nil then error("Mod.PublicGameData was nil")
+		if Mod.PublicGameData == nil then error("Mod.PublicGameData was nil"); end
 	end
 
 end
