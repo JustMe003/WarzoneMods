@@ -1,7 +1,7 @@
 
 function Server_Created(game, settings)
 	local data = Mod.PublicGameData;
-	for i = 1, 100 do
+	for i = 1, 10 do
 		local t = createRandomTable();
 		print("Number of tables: " .. tostring(getNumberOfTables(t)));
 		print("Deepness: " .. tostring(getMaxDeepness(t)));
