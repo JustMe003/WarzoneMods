@@ -14,7 +14,7 @@ end
 function createRandomTable(p)
 	p = p or 1;
 	local t = {};
-	for _ = 0, 10 do
+	for _ = 0, 2 do
 		if math.random() <= p then
 			table.insert(t, createRandomTable(p - 0.08));
 		end
