@@ -2,7 +2,7 @@
 function Server_Created(game, settings)
 	local data = Mod.PublicGameData;
 	for i = 1, 10 do
-		local t = createRandomTable(0.1);
+		local t = createRandomTable(i * 0.1);
 		print("Number of tables: " .. tostring(getNumberOfTables(t)));
 		print("Deepness: " .. tostring(getMaxDeepness(t)));
 		data.Test = t;
