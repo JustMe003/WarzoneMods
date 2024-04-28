@@ -19,6 +19,7 @@ function createRandomTable(p)
 			table.insert(t, createRandomTable(p - 0.08));
 		end
 	end
+	return t;
 end
 
 function getNumberOfTables(t)
