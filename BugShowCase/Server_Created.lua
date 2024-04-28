@@ -10,7 +10,7 @@ function Server_Created(game, settings)
 		print("data.Test == " .. tostring(data.Test));
 		print("Next line: Mod.PublicGameData = data");
 		Mod.PublicGameData = data;
-		print(tostring(Mod.PublicGameData));
+		print(Mod.PublicGameData);
 		print("Mod.PublicGameData == " .. tostring(Mod.PublicGameData));
 		if Mod.PublicGameData == nil then error("Mod.PublicGameData was nil"); end
 	end
