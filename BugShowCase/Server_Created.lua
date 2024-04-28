@@ -1,12 +1,13 @@
 
 function Server_Created(game, settings)
 	local data = Mod.PublicGameData;
-	for i = 1, 1 do
+	for i = 1, 10 do
 		local t = createRandomTable();
 		print("Number of tables: " .. tostring(getNumberOfTables(t)));
 		print("Deepness: " .. tostring(getMaxDeepness(t)));
 		data.Test = t;
 		Mod.PublicGameData = data;
+		if Mod.PublicGameData == nil then error("Mod.PublicGameData was nil")
 	end
 
 end
