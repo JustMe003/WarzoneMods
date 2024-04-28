@@ -10,11 +10,17 @@ function Server_Created(game, settings)
 		print("data.Test == " .. tostring(data.Test));
 		print("Next line: Mod.PublicGameData = data");
 		Mod.PublicGameData = data;
-		print(Mod.PublicGameData);
+		print("Just saved data to Mod.PublicGameData again, here's how the `Mod` now looks");
+		printTable(Mod);
 		print("Mod.PublicGameData == " .. tostring(Mod.PublicGameData));
 		if Mod.PublicGameData == nil then error("Mod.PublicGameData was nil"); end
 	end
+end
 
+function printTable(t)
+	for i, v in pairs(t) do
+		print(i .. " = " .. tostring(v));
+	end
 end
 
 function createRandomTable(p)
