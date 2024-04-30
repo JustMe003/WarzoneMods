@@ -15,8 +15,31 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
     for _ = 1, 2 do
         table.insert(dieValues, throwDice());
     end
+    
+        for p, _ in pairs(game.Game.PlayingPlayers) do
+            updatePassiveResourceGeneration(playerData[p].Modifiers, playerData[p].PassiveResourceGeneration);
+            local recipe = getEmptyResourceTable();
+            for res, n in ipairs(playerData[p].PassiveResourceGeneration) do
+                if n >= 1 then
+                    recipe[res] = math.floor(n);
+                    playerData[p].PassiveResourceGeneration[res] = n - math.floor(n);
+                    addNewOrder(WL.GameOrderCustom.Create(p, "Received " .. math.floor(n) .. " " .. getResourceName(res) .. " (passively generated)", CatanReceiveResourcesOrder));
+                end
+            end
+            if countTotalResources(recipe) > 0 then
+                addPlayerResources(privateData.PlayerData, p, recipe);
+            end
+        end
 
     addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "The die have been rolled! All territory with die value " .. table.concat(dieValues, ", ") .. " will produce resources", nil, {}, {}));
+
+    local resourcesAreDoubled = function(b)
+        if b then 
+            return " (2x)";
+        else
+            return "";
+        end 
+    end
 
     for _, dieValue in ipairs(dieValues) do
         for _, terrID in ipairs(getDieGroup(publicData, dieValue)) do
@@ -24,8 +47,15 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
                 local terr = standing.Territories[connID];
                 if terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
                     if terr.Structures ~= nil and terr.Structures[Catan.Village] ~= nil and terr.Structures[Catan.Village] > 0 then
-                        addNewOrder(WL.GameOrderCustom.Create(terr.OwnerPlayerID, "Recieved " .. terr.Structures[Catan.Village] .. " " .. getResourceNameFromStructure(standing.Territories[terrID]), CatanReceiveResourcesOrder));
-                        updatePlayerResource(privateData.PlayerData, terr.OwnerPlayerID, getResource(standing.Territories[terrID]), terr.Structures[Catan.Village]);
+                        local numRes = getNumberOfVillages(terr.Structures);
+                        local res = getResource(standing.Territories[terrID]);
+                        local b = false;
+                        if math.random() < getResourceDoubleModifiers(playerData[terr.OwnerPlayerID].Modifiers)[res] then
+                            numRes = numRes * 2;
+                            b = true;
+                        end
+                        addNewOrder(WL.GameOrderCustom.Create(terr.OwnerPlayerID, "Recieved " .. numRes .. " " .. getResourceName(res) .. resourcesAreDoubled(b), CatanReceiveResourcesOrder));
+                        updatePlayerResource(privateData.PlayerData, terr.OwnerPlayerID, getResource(standing.Territories[terrID]), numRes);
                     end
                 end
             end
@@ -486,12 +516,18 @@ function addSplitUnitStackOrder(game, standing, addNewOrder, order)
     end
 
     local mod = WL.TerritoryModification.Create(order.TerritoryID);
-    mod.RemoveSpecialUnitsOpt = {unit.ID};
     mod.AddSpecialUnits = splitUnit(Mod.PlayerGameData[order.PlayerID].Modifiers, unit, order.UnitType, order.SplitPercentage);
+    if #mod.AddSpecialUnits > 1 then
+        mod.RemoveSpecialUnitsOpt = {unit.ID};
+        local event = WL.GameOrderEvent.Create(order.PlayerID, "Splitted " .. tostring(getUnitNameByType(order.UnitType)) .. " unit", {}, {mod});
+        setActionWindow(event, game.Map.Territories[order.TerritoryID]);
+        addNewOrder(event);
+    else
+        local event = WL.GameOrderEvent.Create(order.PlayerID, "Attempted to split units", {}, {});
+        setActionWindow(event, game.Map.Territories[order.TerritoryID]);
+        addNewOrder(event);
+    end
 
-    local event = WL.GameOrderEvent.Create(order.PlayerID, "Splitted " .. tostring(getUnitNameByType(order.UnitType)) .. " unit", {}, {mod});
-    setActionWindow(event, game.Map.Territories[order.TerritoryID]);
-    addNewOrder(event);
 end
 
 function createMissingFieldOrder(playerID, action, field)

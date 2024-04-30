@@ -9,14 +9,12 @@ function Server_StartGame(game, standing)
         setupData(game, standing);
     end
 
-    for i, _ in pairs(Mod.PublicGameData) do
-        print(i);
-    end
-
     local playerData = Mod.PlayerGameData;
     setOrderLists(game.Game.PlayingPlayers, playerData);
     setPlayerModifiers(game.Game.PlayingPlayers, playerData, Mod.Settings.Config);
-    setPlayerResearchTrees(game.Game.PlayingPlayers, playerData, Mod.Settings.Config.ResearchTrees);
+    setPlayerResearchTrees(game.Game.PlayingPlayers, playerData, Mod.Settings.Config);     -- Crashes on browser, send report to Fizzer
+    setPlayerSettings(game.Game.PlayingPlayers, playerData);
+    setPlayerPassiveResourceGeneration(game.Game.PlayingPlayers, playerData, Mod.Settings.Config);
     Mod.PlayerGameData = playerData;
     
     local data = Mod.PublicGameData;
@@ -24,7 +22,6 @@ function Server_StartGame(game, standing)
         terr.NumArmies = WL.Armies.Create(0);
         if terr.OwnerPlayerID ~= WL.PlayerID.Neutral then
             standing.Territories[terrID].Structures = {[WL.StructureType.City] = 1};
-            print("Setting terr to village")
             setToVillage(data, terrID);
             if Mod.Settings.Config.StartInfantryPerVillage > 0 then
                 local infantry = {};
@@ -51,4 +48,14 @@ function Server_StartGame(game, standing)
     privateData.PlayerData = {};
     setResourcesTable(game.Game.PlayingPlayers, privateData.PlayerData);
     Mod.PrivateGameData = privateData;
+end
+
+function printTable(t, s)
+    s = s or "";
+    for i, v in pairs(t) do
+        print(s .. i .. " = " .. tostring(v));
+        if type(v) == "table" then
+            printTable(v, s .. "  ");
+        end
+    end
 end

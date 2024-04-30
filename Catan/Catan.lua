@@ -1,8 +1,3 @@
--- Resources window crashes when first loading up, data not yet initialized?
--- Browser crashes a lot!
--- Message Fizzer about table.sort not working correctly
-
-
 require("Annotations");
 
 ---@class Catan # Enums for the Catan structure
@@ -69,6 +64,14 @@ require("Annotations");
 
 ---@alias CatanUnitType integer
 
+---@alias EnumCardType
+---| 'GainResourcesOfChoice'
+---| 'BanditDeployment'
+---| 'FreeCityUpgrade'
+---| 'RemoveOpponentResources'
+
+---@alias CatanCardType integer
+
 ---@alias UnitBuildFunction fun(modifiers: table, playerID: PlayerID, count: integer): CustomSpecialUnit
 
 ---@alias Resource
@@ -108,7 +111,7 @@ Catan = {
         [3] = 3, 
         [10] = 4, 
         [13] = 5
-    }, 
+    },
     ResourceStructures = {4, 15, 3, 10, 13},
     Phases = {
         ExchangeResources = 0,
@@ -139,7 +142,8 @@ Catan = {
         Bandit = 5
     },
     TechTrees = {
-        UnitTechTree = 1
+        UnitTechTree = 1,
+        ResourcesTree = 2
     },
     Research = {
         BoostUnitHealth = 1,
@@ -147,11 +151,54 @@ Catan = {
         BoostUnitDefensePower = 3,
         IncreaseUnitPurchaseLimit = 4,
         UnlockUnit = 5,
+        IncreaseResourceDoubleModifier = 6,
+        DecreaseBankExchangeRate = 7,
+        IncreasePassiveResourceGeneration = 8,
     },
     Village = 1,
     ArmyCamp = 2
 };
 
+---@alias CatanTech integer
+---@alias EnumTech
+---| 'UnlockInfantryUnit'
+---| 'BoostInfantryHealth'
+---| 'BoostInfantryAttackPower'
+---| 'BoostInfantryDefensePower'
+---| 'IncreaseInfantryPurchaseLimit'
+---| 'UnlockArtilleryUnit'
+---| 'BoostArtilleryHealth'
+---| 'BoostArtilleryAttackPower'
+---| 'BoostArtilleryDefensePower'
+---| 'IncreaseArtilleryPurchaseLimit'
+---| 'UnlockTankUnit'
+---| 'BoostTankHealth'
+---| 'BoostTankAttackPower'
+---| 'BoostTankDefensePower'
+---| 'IncreaseTankPurchaseLimit'
+---| 'UnlockPlaneUnit'
+---| 'BoostPlaneHealth'
+---| 'BoostPlaneAttackPower'
+---| 'BoostPlaneDefensePower'
+---| 'IncreasePlanePurchaseLimit'
+---| 'IncreaseFirstResourceDoubleModifier'
+---| 'IncreaseSecondResourceDoubleModifier'
+---| 'IncreaseThirdResourceDoubleModifier'
+---| 'IncreaseFourthResourceDoubleModifier'
+---| 'IncreaseFifthhResourceDoubleModifier'
+---| 'DecreaseBankExchangeRateFirstResource'
+---| 'DecreaseBankExchangeRateSecondResource'
+---| 'DecreaseBankExchangeRateThirdResource'
+---| 'DecreaseBankExchangeRateFourthResource'
+---| 'DecreaseBankExchangeRateFifthResource'
+---| 'IncreasePassiveFirstResourceGeneration'
+---| 'IncreasePassiveSecondResourceGeneration'
+---| 'IncreasePassiveThirdResourceGeneration'
+---| 'IncreasePassiveFourthResourceGeneration'
+---| 'IncreasePassiveFifthResourceGeneration'
+
+
+---@type table<EnumTech, CatanTech>
 _DefaultCatanTechs = {
     UnlockInfantryUnit = 1,
     BoostInfantryHealth = 2,
@@ -172,7 +219,22 @@ _DefaultCatanTechs = {
     BoostPlaneHealth = 17,
     BoostPlaneAttackPower = 18,
     BoostPlaneDefensePower = 19,
-    IncreasePlanePurchaseLimit = 20
+    IncreasePlanePurchaseLimit = 20,
+    IncreaseFirstResourceDoubleModifier = 21,
+    IncreaseSecondResourceDoubleModifier = 22,
+    IncreaseThirdResourceDoubleModifier = 23,
+    IncreaseFourthResourceDoubleModifier = 24,
+    IncreaseFifthhResourceDoubleModifier = 25,
+    DecreaseBankExchangeRateFirstResource = 26,
+    DecreaseBankExchangeRateSecondResource = 27,
+    DecreaseBankExchangeRateThirdResource = 28,
+    DecreaseBankExchangeRateFourthResource = 29,
+    DecreaseBankExchangeRateFifthResource = 30,
+    IncreasePassiveFirstResourceGeneration = 31,
+    IncreasePassiveSecondResourceGeneration = 32,
+    IncreasePassiveThirdResourceGeneration = 33,
+    IncreasePassiveFourthResourceGeneration = 34,
+    IncreasePassiveFifthResourceGeneration = 35,
 }
 
 ---@class CatanOrder # The base class for a Catan order
@@ -197,7 +259,7 @@ _DefaultCatanTechs = {
 ---@field Units table<CatanUnitType, integer> # Table containing the number of each unit that will be bought
 
 ---@class SplitUnitStack: CatanOrder # Catan order for splitting an army stack
----@field UnitType EnumUnitType # The type of the unit
+---@field UnitType CatanUnitType # The type of the unit
 ---@field SplitPercentage number # The percentage of units that will split off
 
 
@@ -239,10 +301,28 @@ _DefaultCatanTechs = {
 ---@field ResearchOccurance integer # The number of the same research are before this + 1
 ---@field Unlocked boolean # True if the player has unlocked this research
 
+---@class ResearchTreePath
+---@field Tree PlayerTechTree
+---@field Nodes integer[]
+---@field TechTreeID integer
+---@field IsInLoop boolean?
+---@field LoopCounter integer?
+---@field FixedCostMultiplier number?
+---@field FreeCostMultiplier number?
+
+
+---@class Tech
+---@field Command CatanTech 
+---@field Name string
+---@field Description string
+---@field Parameters table
+
+
 ---@alias CatanResearch integer
 
 ---@alias EnumTechTree
 ---| 'UnitTechTree'
+---| 'ResourcesTree'
 
 ---@alias EnumResearch
 ---| 'BoostUnitHealth'
@@ -250,8 +330,9 @@ _DefaultCatanTechs = {
 ---| 'BoostUnitDefensePower'
 ---| 'IncreaseUnitPurchaseLimit'
 ---| 'UnlockUnit'
----| 'IncreaseResourceDoubleModifier'
----| 'DecreaseBankExchangeRate'
+---| 'IncreaseResourceDoubleModifier'           -- small chance to double resource gained from 1 territory to a city
+---| 'DecreaseBankExchangeRate'                 -- Decrease the exchange rate of a resource with the bank
+---| 'IncreasePassiveResourceGeneration'        -- Increase the passive resource generation
 
 
 ---@alias EnumTechTreeNodeMode
@@ -275,7 +356,9 @@ end
 function initModifiers()
     local t = {
         Resources = {
-            ExchangeRateBank = {};
+            ExchangeRateBank = {},                  -- Exchanging resources with the bank
+            PassiveResourceGeneration = {},         -- Passive resource generation
+            DoubleResourceChance = {},               -- Chance to gain double resources
         },
         Units = {
             [Catan.UnitType.Infantry] = {
@@ -320,16 +403,27 @@ function initModifiers()
                 AttackPower = 4,
                 DefensePower = 4
             }
+        },
+        Cards = {
+            Cost = {2, 2, 0, 1, 0},
+            HandLimit = 3,
+            CardsData = {
+
+            }
         }
     };
 
     for res, _ in ipairs(Catan.Resources) do
         t.Resources.ExchangeRateBank[res] = 4;
+        t.Resources.PassiveResourceGeneration[res] = 0;
+        t.Resources.DoubleResourceChance[res] = 0;
     end
 
     return t;
 end
 
+---Initializes the default techs
+---@return table<CatanTech, Tech>
 function initDefaultTechs()
     local techs = {
         [_DefaultCatanTechs.UnlockInfantryUnit] = {
@@ -511,34 +605,95 @@ function initDefaultTechs()
 
     };
 
+    for res, key in ipairs({[Catan.Resources[1]] = _DefaultCatanTechs.IncreaseFirstResourceDoubleModifier, [Catan.Resources[2]] = _DefaultCatanTechs.IncreaseSecondResourceDoubleModifier, [Catan.Resources[3]] = _DefaultCatanTechs.IncreaseThirdResourceDoubleModifier, [Catan.Resources[4]] = _DefaultCatanTechs.IncreaseFourthResourceDoubleModifier, [Catan.Resources[5]] = _DefaultCatanTechs.IncreaseFifthhResourceDoubleModifier}) do
+        techs[key] = {
+            Command = Catan.Research.IncreaseResourceDoubleModifier,
+            Name = getResourceName(res) .. " double modifier",
+            Description = "Increases the chance of doubling any gain of " .. getResourceName(res) .. " by 2%",
+            Parameters = {
+                Resource = res,
+                Increment = 0.02,
+            }
+        };
+    end
+
+    for res, key in ipairs({[Catan.Resources[1]] = _DefaultCatanTechs.DecreaseBankExchangeRateFirstResource, [Catan.Resources[2]] = _DefaultCatanTechs.DecreaseBankExchangeRateSecondResource, [Catan.Resources[3]] = _DefaultCatanTechs.DecreaseBankExchangeRateThirdResource, [Catan.Resources[4]] = _DefaultCatanTechs.DecreaseBankExchangeRateFourthResource, [Catan.Resources[5]] = _DefaultCatanTechs.DecreaseBankExchangeRateFifthResource}) do
+        techs[key] = {
+            Command = Catan.Research.DecreaseBankExchangeRate,
+            Name = getResourceName(res) .. " trading deal",
+            Description = "Decreases the amount of " .. getResourceName(res) .. " you need to exchange for another resource by 1",
+            Parameters = {
+                Resource = res,
+                Decrement = 1,
+            }
+        };
+    end
+
+    for res, key in ipairs({[Catan.Resources[1]] = _DefaultCatanTechs.IncreasePassiveFirstResourceGeneration, [Catan.Resources[2]] = _DefaultCatanTechs.IncreasePassiveSecondResourceGeneration, [Catan.Resources[3]] = _DefaultCatanTechs.IncreasePassiveThirdResourceGeneration, [Catan.Resources[4]] = _DefaultCatanTechs.IncreasePassiveFourthResourceGeneration, [Catan.Resources[5]] = _DefaultCatanTechs.IncreasePassiveFifthResourceGeneration}) do
+        techs[key] = {
+            Command = Catan.Research.IncreasePassiveResourceGeneration,
+            Name = getResourceName(res) .. " passive generation",
+            Description = "Increases the passive generation of " .. getResourceName(res) .. " by 0.1 each turn",
+            Parameters = {
+                Resource = res,
+                Increment = 0.1,
+            }
+        };
+    end
+
     return techs;
 end
 
+---Returns the tech command
+---@param settings table # The config of the game
+---@param type CatanResearch # The research type
+---@return table # The name of tech
 function getTechName(settings, type)
     return settings.Techs[type].Name;
 end
 
+---Returns the tech command
+---@param settings table # The config of the game
+---@param type CatanResearch # The research type
+---@return table # The description of the tech
 function getTechDescription(settings, type)
     return settings.Techs[type].Description;
 end
 
+---Returns the tech command
+---@param settings table # The config of the game
+---@param type CatanResearch # The research type
+---@return table # The parameters of tech
 function getTechParameters(settings, type)
     return settings.Techs[type].Parameters;
 end
 
+---Returns the tech command
+---@param settings table # The config of the game
+---@param type CatanResearch # The research type
+---@return CatanTech # The command of tech
 function getTechCommand(settings, type)
     return settings.Techs[type].Command;
 end
 
+---Perform a technical 'research'
+---@param settings table # The config of the game
+---@param data table # The PlayerGameData of the player
+---@param playerID PlayerID # The player ID
+---@param type CatanResearch # The research type
 function performTech(settings, data, playerID, type)
     local commandMap = {
         [Catan.Research.BoostUnitHealth] = techBoostUnitHealth,
         [Catan.Research.BoostUnitAttackPower] = techBoostUnitAttackPower,
         [Catan.Research.BoostUnitDefensePower] = techBoostUnitDefensePower,
         [Catan.Research.IncreaseUnitPurchaseLimit] = techIncreaseUnitPurchaseLimit,
-        [Catan.Research.UnlockUnit] = techUnlockUnit
+        [Catan.Research.UnlockUnit] = techUnlockUnit,
+        [Catan.Research.IncreaseResourceDoubleModifier] = techIncreaseResourceDoubleModifier,
+        [Catan.Research.DecreaseBankExchangeRate] = techDecreaseBankExchangeRate,
+        [Catan.Research.IncreasePassiveResourceGeneration] = techIncreasePassiveResourceGeneration,
     }
 
+    
     local techCommand = getTechCommand(settings, type);
     if valueInTable({Catan.Research.BoostUnitHealth, Catan.Research.BoostUnitAttackPower, Catan.Research.BoostUnitDefensePower}, techCommand) then
         data[playerID].UpdateUnits = data[playerID].UpdateUnits or {};
@@ -549,6 +704,9 @@ function performTech(settings, data, playerID, type)
     commandMap[techCommand](data[playerID].Modifiers, getTechParameters(settings, type));
 end
 
+---Boost the healt of a unit
+---@param modifiers table # The modifiers of the player
+---@param params table # Research specific parameters
 function techBoostUnitHealth(modifiers, params)
     local bool, field = tableHasFields(params, {"Type", "Boost"});
     if not bool then
@@ -557,6 +715,9 @@ function techBoostUnitHealth(modifiers, params)
     modifiers.Units[params.Type].Health = modifiers.Units[params.Type].Health + params.Boost;
 end
 
+---Boost the attack power of a unit
+---@param modifiers table # The modifiers of the player
+---@param params table # Research specific parameters
 function techBoostUnitAttackPower(modifiers, params)
     local bool, field = tableHasFields(params, {"Type", "Boost"});
     if not bool then
@@ -565,6 +726,9 @@ function techBoostUnitAttackPower(modifiers, params)
     modifiers.Units[params.Type].AttackPower = modifiers.Units[params.Type].AttackPower + params.Boost;
 end
 
+---Boost the defense power of a unit
+---@param modifiers table # The modifiers of the player
+---@param params table # Research specific parameters
 function techBoostUnitDefensePower(modifiers, params)
     local bool, field = tableHasFields(params, {"Type", "Boost"});
     if not bool then
@@ -573,6 +737,9 @@ function techBoostUnitDefensePower(modifiers, params)
     modifiers.Units[params.Type].DefensePower = modifiers.Units[params.Type].DefensePower + params.Boost;
 end
 
+---Increases a unit purchase limit of a player
+---@param modifiers table # The modifiers of the player
+---@param params table # Research specific parameters
 function techIncreaseUnitPurchaseLimit(modifiers, params)
     local bool, field = tableHasFields(params, {"Type", "Increment"});
     if not bool then
@@ -581,6 +748,9 @@ function techIncreaseUnitPurchaseLimit(modifiers, params)
     modifiers.Units[params.Type].MaxPurchasePerCamp = modifiers.Units[params.Type].MaxPurchasePerCamp + params.Increment;
 end
 
+---Unlocks a unit for the player
+---@param modifiers table # The modifiers of the player
+---@param params table # Research specific parameters
 function techUnlockUnit(modifiers, params)
     local bool, field = tableHasFields(params, {"Type"});
     if not bool then
@@ -589,7 +759,33 @@ function techUnlockUnit(modifiers, params)
     modifiers.Units[params.Type].Unlocked = true;
 end
 
+function techIncreaseResourceDoubleModifier(modifiers, params)
+    local bool, field = tableHasFields(params, {"Resource", "Increment"});
+    if not bool then
+        error(field .. " was not found in tech increase resource double modifier");
+    end
+    modifiers.Resources.DoubleResourceChance[params.Resource] = modifiers.Resources.DoubleResourceChance[params.Resource] + params.Increment;
+    print(modifiers.Resources.DoubleResourceChance[params.Resource]);
+end
 
+function techDecreaseBankExchangeRate(modifiers, params)
+    local bool, field = tableHasFields(params, {"Resource", "Decrement"});
+    if not bool then
+        error(field .. " was not found in tech decrease bank exchange rate");
+    end
+    modifiers.Resources.ExchangeRateBank[params.Resource] = modifiers.Resources.ExchangeRateBank[params.Resource] + params.Decrement;
+end
+
+function techIncreasePassiveResourceGeneration(modifiers, params)
+    local bool, field = tableHasFields(params, {"Resource", "Increment"});
+    if not bool then
+        error(field .. " was not found in tech increase passive resource generation");
+    end
+    modifiers.Resources.PassiveResourceGeneration[params.Resource] = modifiers.Resources.PassiveResourceGeneration[params.Resource] + params.Increment;
+end
+
+---Creates the initial, default unit tech tree
+---@return TechTree # The unit tech tree
 function initDefaultunitTree()
 
     ---@type fun(mode: EnumTechTreeNodeMode, nodes: TechTreeChildNode[], isLoop: boolean, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
@@ -602,17 +798,17 @@ function initDefaultunitTree()
             FixedCostMultiplier = fixedCostMultiplier,
             FreeCostMultiplier = freeCostMultiplier,
             loopLimit = loopLimit
-        }
+        };
     end
 
 
-    ---@type fun(nodes: TechTreeChildNode[], isLoop: boolean, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
+    ---@type fun(nodes: TechTreeChildNode[], isLoop: boolean?, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
     local par = function(nodes, isLoop, fixedCostMultiplier, freeCostMultiplier, loopLimit)
-        return newNode("Parallel", nodes, isLoop, fixedCostMultiplier, freeCostMultiplier, loopLimit);
+        return newNode("Parallel", nodes, isLoop or false, fixedCostMultiplier, freeCostMultiplier, loopLimit);
     end
-    ---@type fun(nodes: TechTreeChildNode[], isLoop: boolean, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
+    ---@type fun(nodes: TechTreeChildNode[], isLoop: boolean?, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
     local ser = function(nodes, isLoop, fixedCostMultiplier, freeCostMultiplier, loopLimit)
-        return newNode("Serial", nodes, isLoop, fixedCostMultiplier, freeCostMultiplier, loopLimit);
+        return newNode("Serial", nodes, isLoop or false, fixedCostMultiplier, freeCostMultiplier, loopLimit);
     end
 
     ---@type fun(type: CatanResearch, fixed: Recipe, free: integer): ResearchNode
@@ -713,31 +909,31 @@ function initDefaultunitTree()
                     inHP({1, 1, 1, 1, 1}, 0),
                     inAP({1, 1, 1, 1, 1}, 0),
                     inDP({1, 1, 1, 1, 1}, 0),
-                }, false),
+                }),
                 inPLI({1, 1, 1, 1, 1}, 5),
                 par({
                     inHP({2, 2, 2, 2, 2}, 0),
                     inAP({2, 2, 2, 2, 2}, 0),
                     inDP({2, 2, 2, 2, 2}, 0),
-                }, false),
+                }),
                 inPLI({2, 2, 2, 2, 2}, 5)
-            }, false),
+            }),
             ser({
                 par({
                     inHP({1, 1, 1, 1, 1}, 0),
                     inAP({1, 1, 1, 1, 1}, 0),
                     inDP({1, 1, 1, 1, 1}, 0),
-                }, false),
+                }),
                 par({
                     inHP({1, 1, 1, 1, 1}, 5),
                     inAP({1, 1, 1, 1, 1}, 5),
                     inDP({1, 1, 1, 1, 1}, 5),
-                }, false),
+                }),
                 par({
                     inHP({2, 2, 2, 2, 2}, 0),
                     inAP({2, 2, 2, 2, 2}, 0),
                     inDP({2, 2, 2, 2, 2}, 0),
-                }, false),
+                }),
                 inPLI({2, 2, 2, 2, 2}, 5),
                 par({
                     ser({
@@ -746,34 +942,34 @@ function initDefaultunitTree()
                             arHP({2, 2, 2, 2, 2}, 0),
                             arAP({2, 2, 2, 2, 2}, 0),
                             arDP({2, 2, 2, 2, 2}, 0),
-                        }, false),
+                        }),
                         par({
                             ser({
                                 arHP({2, 2, 2, 2, 2}, 5),
                                 arHP({2, 2, 2, 2, 2}, 5),
                                 arPLI({0, 0, 0, 0, 0}, 20)
-                            }, false),
+                            }),
                             ser({
                                 arAP({2, 2, 2, 2, 2}, 5),
                                 arAP({2, 2, 2, 2, 2}, 5),
                                 arPLI({0, 0, 0, 0, 0}, 20)
-                            }, false),
+                            }),
                             ser({
                                 arDP({2, 2, 2, 2, 2}, 5),
                                 arDP({2, 2, 2, 2, 2}, 5),
                                 arPLI({0, 0, 0, 0, 0}, 20)
-                            }, false)
-                        }, false),
+                            })
+                        }),
                         par({
                             arHP({3, 3, 3, 3, 3}, 0),
                             arAP({3, 3, 3, 3, 3}, 0),
                             arDP({3, 3, 3, 3, 3}, 0),
-                        }, false),
+                        }),
                         par({
                             arHP({3, 3, 3, 3, 3}, 5),
                             arAP({3, 3, 3, 3, 3}, 5),
                             arDP({3, 3, 3, 3, 3}, 5),
-                        }, false),
+                        }),
                         par({
                             ser({
                                 arPLI({4, 4, 4, 4, 4}, 0),
@@ -782,7 +978,7 @@ function initDefaultunitTree()
                                     taHP({3, 3, 3, 3, 3}, 10),
                                     taDP({3, 3, 3, 3, 3}, 10),
                                     taAP({3, 3, 3, 3, 3}, 10),
-                                }, false),
+                                }),
                                 par({
                                     ser({
                                         taPLI({5, 5, 5, 0, 0}, 10),
@@ -790,13 +986,13 @@ function initDefaultunitTree()
                                             taHP({3, 3, 3, 3, 3}, 15),
                                             taDP({3, 3, 3, 3, 3}, 15),
                                             taAP({3, 3, 3, 3, 3}, 15),
-                                        }, false),
+                                        }),
                                         taPLI({5, 5, 5, 0, 0}, 10),
                                         par({
                                             taHP({3, 3, 3, 3, 3}, 20),
                                             taDP({3, 3, 3, 3, 3}, 20),
                                             taAP({3, 3, 3, 3, 3}, 20),
-                                        }, false),
+                                        }),
                                         taPLI({5, 5, 5, 0, 0}, 10),
                                         par({
                                             ser({
@@ -805,118 +1001,354 @@ function initDefaultunitTree()
                                                     plHP({3, 3, 3, 3, 3}, 10),
                                                     plDP({3, 3, 3, 3, 3}, 10),
                                                     plAP({3, 3, 3, 3, 3}, 10),
-                                                }, false),
+                                                }),
                                                 plPLI({4, 4, 4, 4, 4}, 10),
                                                 par({
                                                     plHP({3, 3, 3, 3, 3}, 15),
                                                     plDP({3, 3, 3, 3, 3}, 15),
                                                     plAP({3, 3, 3, 3, 3}, 15),
-                                                }, false),
+                                                }),
                                                 par({
                                                     plHP({3, 3, 3, 3, 3}, 15),
                                                     plDP({3, 3, 3, 3, 3}, 15),
                                                     plAP({3, 3, 3, 3, 3}, 15),
-                                                }, false),
+                                                }),
                                                 ser({
                                                     plPLI({2, 2, 2, 2, 2}, 20),
                                                     par({
                                                         plHP({3, 3, 3, 3, 3}, 15),
                                                         plDP({3, 3, 3, 3, 3}, 15),
                                                         plAP({3, 3, 3, 3, 3}, 15),
-                                                    }, false),
+                                                    }),
                                                     par({
                                                         plHP({3, 3, 3, 3, 3}, 20),
                                                         plDP({3, 3, 3, 3, 3}, 20),
                                                         plAP({3, 3, 3, 3, 3}, 20),
-                                                    }, false),
-                                                }, true)
-                                            }, false),
+                                                    }),
+                                                }, true, 2, 2)
+                                            }),
                                             ser({
                                                 par({
                                                     taHP({3, 3, 3, 3, 3}, 20),
                                                     taDP({3, 3, 3, 3, 3}, 20),
                                                     taAP({3, 3, 3, 3, 3}, 20),
-                                                }, false),
+                                                }),
                                                 par({
                                                     taHP({3, 3, 3, 3, 3}, 25),
                                                     taDP({3, 3, 3, 3, 3}, 25),
                                                     taAP({3, 3, 3, 3, 3}, 25),
-                                                }, false),
+                                                }),
                                                 taPLI({4, 4, 4, 4, 4}, 20)
-                                            }, true)
-                                        }, false)
-                                    }, false),
+                                            }, true, 2, 2)
+                                        })
+                                    }),
                                     ser({
                                         par({
                                             taHP({3, 3, 3, 3, 3}, 15),
                                             taDP({3, 3, 3, 3, 3}, 15),
                                             taAP({3, 3, 3, 3, 3}, 15),
-                                        }, false),
+                                        }),
                                         taPLI({5, 5, 5, 0, 0}, 10),
                                         par({
                                             taHP({3, 3, 3, 3, 3}, 15),
                                             taDP({3, 3, 3, 3, 3}, 15),
                                             taAP({3, 3, 3, 3, 3}, 15),
-                                        }, false),
+                                        }),
                                         par({
                                             taHP({3, 3, 3, 3, 3}, 15),
                                             taDP({3, 3, 3, 3, 3}, 15),
                                             taAP({3, 3, 3, 3, 3}, 15),
-                                        }, false),
+                                        }),
                                         taPLI({6, 6, 6, 0, 0}, 12),
-                                    }, false)
-                                }, false)
-                            }, false),
+                                    })
+                                })
+                            }),
                             ser({
                                 arPLI({2, 2, 2, 2, 2}, 20),
                                 par({
                                     arHP({3, 3, 3, 3, 3}, 5),
                                     arAP({3, 3, 3, 3, 3}, 5),
                                     arDP({3, 3, 3, 3, 3}, 5),
-                                }, false),
+                                }),
                                 par({
                                     arHP({4, 4, 4, 4, 4}, 5),
                                     arAP({4, 4, 4, 4, 4}, 5),
                                     arDP({4, 4, 4, 4, 4}, 5),
-                                }, false)
-                            }, true)
-                        }, false)
-                    }, false),
+                                })
+                            }, true, 2, 2)
+                        })
+                    }),
                     par({
                         ser({
                             inHP({2, 2, 2, 2, 2}, 4),
                             inHP({2, 2, 2, 2, 2}, 4),
                             inHP({2, 2, 2, 2, 2}, 4),
                             inPLI({3, 3, 3, 3, 3}, 5)
-                        }, false),
-                    }, true),
+                        }),
+                    }, true, 2, 2),
                     par({
                         ser({
                             inAP({2, 2, 2, 2, 2}, 4),
                             inAP({2, 2, 2, 2, 2}, 4),
                             inAP({2, 2, 2, 2, 2}, 4),
                             inPLI({3, 3, 3, 3, 3}, 5)
-                        }, false),
-                    }, true),
+                        }),
+                    }, true, 2, 2),
                     par({
                         ser({
                             inDP({2, 2, 2, 2, 2}, 4),
                             inDP({2, 2, 2, 2, 2}, 4),
                             inDP({2, 2, 2, 2, 2}, 4),
                             inPLI({3, 3, 3, 3, 3}, 5)
-                        }, false)
-                    }, true),
-                }, false)
-            }, false)
-        }, false)
+                        })
+                    }, true, 2, 2),
+                })
+            })
+        })
     };
     return unitTechTree;
 end
 
+function initDefaultResourcesTree()
+    
+    ---@type fun(mode: EnumTechTreeNodeMode, nodes: TechTreeChildNode[], isLoop: boolean, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
+    local newNode = function(mode, nodes, isLoop, fixedCostMultiplier, freeCostMultiplier, loopLimit)
+        return {
+            Mode = mode,
+            IsLoop = isLoop,
+            Nodes = nodes,
+            IsResearch = false,
+            FixedCostMultiplier = fixedCostMultiplier,
+            FreeCostMultiplier = freeCostMultiplier,
+            loopLimit = loopLimit
+        };
+    end
+
+
+    ---@type fun(nodes: TechTreeChildNode[], isLoop: boolean?, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
+    local par = function(nodes, isLoop, fixedCostMultiplier, freeCostMultiplier, loopLimit)
+        return newNode("Parallel", nodes, isLoop or false, fixedCostMultiplier, freeCostMultiplier, loopLimit);
+    end
+    ---@type fun(nodes: TechTreeChildNode[], isLoop: boolean?, fixedCostMultiplier: number?, freeCostMultiplier: number?, loopLimit: integer?): TechTreeNode 
+    local ser = function(nodes, isLoop, fixedCostMultiplier, freeCostMultiplier, loopLimit)
+        return newNode("Serial", nodes, isLoop or false, fixedCostMultiplier, freeCostMultiplier, loopLimit);
+    end
+
+    ---@type fun(type: CatanResearch, fixed: Recipe, free: integer): ResearchNode
+    local newResearch = function(type, fixed, free)
+        return {
+            Type = type,
+            IsResearch = true,
+            FixedCost = fixed,
+            FreeCost = free
+        }
+    end
+
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local woodDM = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreaseFirstResourceDoubleModifier, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local stoneDM = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreaseSecondResourceDoubleModifier, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local metalDM = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreaseThirdResourceDoubleModifier, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local wheatDM = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreaseFourthResourceDoubleModifier, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local liveDM = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreaseFifthhResourceDoubleModifier, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local woodBER = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.DecreaseBankExchangeRateFirstResource, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local stoneBER = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.DecreaseBankExchangeRateSecondResource, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local metalBER = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.DecreaseBankExchangeRateThirdResource, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local wheatBER = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.DecreaseBankExchangeRateFourthResource, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local liveBER = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.DecreaseBankExchangeRateFifthResource, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local woodPRG = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreasePassiveFirstResourceGeneration, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local stonePRG = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreasePassiveSecondResourceGeneration, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local metalPRG = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreasePassiveThirdResourceGeneration, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local wheatPRG = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreasePassiveFourthResourceGeneration, fixed, free);
+    end
+    ---@type fun(fixed: Recipe, free: integer): ResearchNode
+    local livePRG = function(fixed, free)
+        return newResearch(_DefaultCatanTechs.IncreasePassiveFifthResourceGeneration, fixed, free);
+    end
+
+    local resourceTree = {
+        Name = "Resource tree",
+        Node = par({
+            -- Wood
+            ser({
+                woodDM({3, 0, 0, 0, 0}, 0),
+                woodPRG({5, 0, 0, 0, 0}, 0),
+                woodDM({8, 0, 0, 0, 0}, 0),
+                woodPRG({10, 0, 0, 0, 0}, 0),
+                woodDM({12, 0, 0, 0, 0}, 0),
+                woodPRG({15, 0, 0, 0, 0}, 0),
+                woodBER({20, 0, 0, 0, 0}, 0),
+                woodDM({23, 0, 0, 0, 0}, 0),
+                woodPRG({25, 0, 0, 0, 0}, 0),
+                woodDM({28, 0, 0, 0, 0}, 0),
+                woodPRG({30, 0, 0, 0, 0}, 0),
+                woodDM({32, 0, 0, 0, 0}, 0),
+                woodPRG({35, 0, 0, 0, 0}, 0),
+                woodBER({40, 0, 0, 0, 0}, 0),
+                par({
+                    ser({
+                        woodDM({40, 0, 0, 0, 0}, 0)
+                    }, true, 0.1, 0),
+                    ser({
+                        woodPRG({40, 0, 0, 0, 0}, 0)
+                    }, true, 0.1, 0)
+                })
+            }),
+            -- Stone
+            ser({
+                stoneDM({0, 3, 0, 0, 0}, 0),
+                stonePRG({0, 5, 0, 0, 0}, 0),
+                stoneDM({0, 8, 0, 0, 0}, 0),
+                stonePRG({0, 10, 0, 0, 0}, 0),
+                stoneDM({0, 12, 0, 0, 0}, 0),
+                stonePRG({0, 15, 0, 0, 0}, 0),
+                stoneBER({0, 20, 0, 0, 0}, 0),
+                stoneDM({-0, 23, 0, 0, 0}, 0),
+                stonePRG({0, 25, 0, 0, 0}, 0),
+                stoneDM({0, 28, 0, 0, 0}, 0),
+                stonePRG({0, 30, 0, 0, 0}, 0),
+                stoneDM({0, 32, 0, 0, 0}, 0),
+                stonePRG({0, 35, 0, 0, 0}, 0),
+                stoneBER({0, 40, 0, 0, 0}, 0),
+                par({
+                    ser({
+                        stoneDM({0, 40, 0, 0, 0}, 0)
+                    }, true, 0.1, 0),
+                    ser({
+                        stonePRG({0, 40, 0, 0, 0}, 0)
+                    }, true, 0.1, 0)
+                })
+            }),
+            -- Metal
+            ser({
+                metalDM({0, 0, 3, 0, 0}, 0),
+                metalPRG({0, 0, 5, 0, 0}, 0),
+                metalDM({0, 0, 8, 0, 0}, 0),
+                metalPRG({0, 0, 10, 0, 0}, 0),
+                metalDM({0, 0, 12, 0, 0}, 0),
+                metalPRG({0, 0, 15, 0, 0}, 0),
+                metalBER({0, 0, 20, 0, 0}, 0),
+                metalDM({0, 0, 23, 0, 0}, 0),
+                metalPRG({0, 0, 25, 0, 0}, 0),
+                metalDM({0, 0, 28, 0, 0}, 0),
+                metalPRG({0, 0, 30, 0, 0}, 0),
+                metalDM({0, 0, 32, 0, 0}, 0),
+                metalPRG({0, 0, 35, 0, 0}, 0),
+                metalBER({0, 0, 40, 0, 0}, 0),
+                par({
+                    ser({
+                        metalDM({0, 0, 40, 0, 0}, 0)
+                    }, true, 0.1, 0),
+                    ser({
+                        metalPRG({0, 0, 40, 0, 0}, 0)
+                    }, true, 0.1, 0)
+                })
+            }),
+            -- Wheat
+            ser({
+                wheatDM({0, 0, 0, 3, 0}, 0),
+                wheatPRG({0, 0, 0, 5, 0}, 0),
+                wheatDM({0, 0, 0, 8, 0}, 0),
+                wheatPRG({0, 0, 0, 10, 0}, 0),
+                wheatDM({0, 0, 0, 12, 0}, 0),
+                wheatPRG({0, 0, 0, 15, 0}, 0),
+                wheatBER({0, 0, 0, 20, 0}, 0),
+                wheatDM({0, 0, 0, 23, 0}, 0),
+                wheatPRG({0, 0, 0, 25, 0}, 0),
+                wheatDM({0, 0, 0, 28, 0}, 0),
+                wheatPRG({0, 0, 0, 30, 0}, 0),
+                wheatDM({0, 0, 0, 32, 0}, 0),
+                wheatPRG({0, 0, 0, 35, 0}, 0),
+                wheatBER({0, 0, 0, 40, 0}, 0),
+                par({
+                    ser({
+                        wheatDM({0, 0, 0, 40, 0}, 0)
+                    }, true, 0.1, 0),
+                    ser({
+                        wheatPRG({0, 0, 0, 40, 0}, 0)
+                    }, true, 0.1, 0)
+                })
+            }),
+            -- Livestock
+            ser({
+                liveDM({0, 0, 0, 0, 3}, 0),
+                livePRG({0, 0, 0, 0, 5}, 0),
+                liveDM({0, 0, 0, 0, 8}, 0),
+                livePRG({0, 0, 0, 0, 10}, 0),
+                liveDM({0, 0, 0, 0, 12}, 0),
+                livePRG({0, 0, 0, 0, 15}, 0),
+                liveBER({0, 0, 0, 0, 20}, 0),
+                liveDM({0, 0, 0, 0, 23}, 0),
+                livePRG({0, 0, 0, 0, 25}, 0),
+                liveDM({0, 0, 0, 0, 28}, 0),
+                livePRG({0, 0, 0, 0, 30}, 0),
+                liveDM({0, 0, 0, 0, 32}, 0),
+                livePRG({0, 0, 0, 0, 35}, 0),
+                liveBER({0, 0, 0, 0, 40}, 0),
+                par({
+                    ser({
+                        liveDM({0, 0, 0, 0, 40}, 0)
+                    }, true, 0.1, 0),
+                    ser({
+                        livePRG({0, 0, 0, 0, 40}, 0)
+                    }, true, 0.1, 0)
+                })
+            }),
+        })
+    }
+    return resourceTree;
+end
+
+---Sets the player research trees
+---@param players table<PlayerID, any> # The table containing all Player IDs
+---@param data table # The PlayerGameData
+---@param trees any
 function setPlayerResearchTrees(players, data, trees)
+    local unitTree = initDefaultunitTree();
+    local resourceTree = initDefaultResourcesTree();
     for i, _ in pairs(players) do
         data[i].ResearchTrees = {};
-        data[i].ResearchTrees[Catan.TechTrees.UnitTechTree] = convertToPlayerTree(initDefaultunitTree());
+        data[i].ResearchTrees[Catan.TechTrees.UnitTechTree] = convertToPlayerTree(unitTree);
+        data[i].ResearchTrees[Catan.TechTrees.ResourcesTree] = convertToPlayerTree(resourceTree);
     end
 end
 
@@ -932,6 +1364,9 @@ function convertToPlayerTree(tree)
     return t;
 end
 
+---Initializes a player tree node
+---@param node PlayerTechTreeChildNode
+---@param occurances table<CatanResearch, integer> # The number of occurances of each research
 function initPlayerTreeNode(node, occurances)
     for _, child in ipairs(node.Nodes) do
         if child.IsResearch then
@@ -947,6 +1382,8 @@ function initPlayerTreeNode(node, occurances)
     resetAllChildNodes(node);
 end
 
+---Resets this and all children
+---@param node PlayerTechTreeChildNode # The starting node
 function resetAllChildNodes(node)
     node.Unlocked = false;
     if node.IsResearch then
@@ -958,6 +1395,9 @@ function resetAllChildNodes(node)
     end
 end
 
+---Counts the number of research nodes
+---@param node PlayerTechTreeChildNode # The start node
+---@return integer # The number of researches that are not in a loop
 function countResearchNodes(node)
     if node.IsLoop then return 0; end
     local c = 0;
@@ -971,6 +1411,10 @@ function countResearchNodes(node)
     return c;
 end
 
+---Research the node in the tree
+---@param tree PlayerTechTree
+---@param node PlayerResearchNode
+---@param isInLoop boolean # True if the node is in a loop
 function researchNode(tree, node, isInLoop)
     if not node.IsResearch then
         error("This node is not a research node: " .. tree.Name .. " " .. tostring(node)); 
@@ -982,6 +1426,8 @@ function researchNode(tree, node, isInLoop)
     checkTreeLocks(tree.Node);
 end
 
+---Unlocks this nod and the child nodes
+---@param node PlayerTechTreeChildNode
 function unlockNode(node)
     node.Unlocked = true;
     if node.IsResearch then
@@ -998,6 +1444,9 @@ function unlockNode(node)
     end
 end
 
+---Recursively checks and sets all locks on the nodes
+---@param node PlayerTechTreeChildNode # The starting node
+---@return boolean # True if the childs are all researched
 function checkTreeLocks(node)
     if node.IsResearch then
         -- print(getTechName(nil, node.Type));
@@ -1017,7 +1466,7 @@ function checkTreeLocks(node)
         if node.IsLoop then
             -- Node (serial) has been fully researched
             resetAllChildNodes(node);
-            node.LoopCounter = (node.LoopCounter or 0) + 1;
+            node.LoopCounter = (node.LoopCounter or 1) + 1;
             unlockNode(node);
             return false;
         end
@@ -1034,11 +1483,41 @@ function checkTreeLocks(node)
         end
         if isFullyResearched and node.IsLoop then
             resetAllChildNodes(node);
-            node.LoopCounter = (node.LoopCounter or 0) + 1;
+            node.LoopCounter = (node.LoopCounter or 1) + 1;
             unlockNode(node);
             return false;
         end
         return hasResearchedChild and not node.IsLoop;
+    end
+end
+
+---Returns the fixed cost of a research
+---@param research ResearchNode # The research node
+---@param path ResearchTreePath # The path to the research
+---@return Recipe # The fixed cost of the research
+function getResearchFixedCost(research, path)
+    if path.IsInLoop == nil or path.LoopCounter == 1 then
+        return research.FixedCost;
+    else
+        print(path.LoopCounter);
+        print(path.FixedCostMultiplier);
+        local recipe = getRecipeLevel(research.FixedCost, path.LoopCounter, path.FixedCostMultiplier);
+        for i, n in ipairs(recipe) do
+            recipe[i] = round(n);
+        end
+        return recipe;
+    end
+end
+
+---Returns the free cost of a research
+---@param research ResearchNode # The research node
+---@param path ResearchTreePath # The path to the research
+---@return integer # The free cost of the research 
+function getResearchFreeCost(research, path)
+    if path.IsInLoop == nil or path.LoopCounter == 1 then
+        return research.FreeCost;
+    else
+        return round(research.FreeCost * (path.FreeCostMultiplier ^ (path.LoopCounter - 1)));
     end
 end
 
@@ -1124,6 +1603,12 @@ function createBuildArmyCampOrder(playerID, terrID)
     };
 end
 
+---Creates and returns a SplitUnitStack order
+---@param playerID PlayerID # The player ID
+---@param terrID TerritoryID # The ID of the territory
+---@param units table<CatanUnitType, integer> # Table containing which and how many of each unit will be purchased
+---@param cost Recipe # The total cost of the order
+---@return PurchaseUnitsOrder # The created order
 function createPurchaseUnitsOrder(playerID, terrID, units, cost)
     ---@type PurchaseUnitsOrder
     return {
@@ -1136,6 +1621,12 @@ function createPurchaseUnitsOrder(playerID, terrID, units, cost)
     }
 end
 
+---Creates and returns a SplitUnitStack order
+---@param playerID PlayerID # The player ID
+---@param terrID TerritoryID # The ID of the territory
+---@param per number # The percentage that will split off
+---@param type CatanUnitType # The unit type
+---@return SplitUnitStack # The created order
 function createSplitUnitOrder(playerID, terrID, per, type)
     ---@type SplitUnitStack
     return {
@@ -1200,10 +1691,6 @@ function createTurnOrderList(players, moveOrder, playerGameData)
     return list;
 end
 
-function hasResearch(researchTree, research)
-    return false;
-end
-
 ---Returns true if the resources table contains enough resources for the passed recipe 
 ---@param recipe Recipe # The recipe
 ---@param resources table<Resource, integer> # The resources
@@ -1266,6 +1753,30 @@ function getEmptyResourceTable()
     return t;
 end
 
+---Initializes the player settings for each player
+---@param players table<PlayerID, any> # The table containing the player IDs
+---@param playerData table # The PlayerGameData table
+function setPlayerSettings(players, playerData)
+    for p, _ in pairs(players) do
+        playerData[p].Settings = {
+            AutoOpenResourceWindow = true,
+            UnusedUnitsWarning = true,
+        }
+    end
+end
+
+function setPlayerPassiveResourceGeneration(players, playerData, config)
+    for p, _ in pairs(players) do
+        playerData[p].PassiveResourceGeneration = getEmptyResourceTable();
+    end
+end
+
+function updatePassiveResourceGeneration(modifiers, t)
+    for res, n in ipairs(modifiers.Resources.PassiveResourceGeneration) do
+        t[res] = t[res] + n;
+    end
+end
+
 ---Returns the ExchangeResourceWithBank enum
 ---@return CatanOrderType # The ExchangeResourceWithBank enum
 function getExchangeResourcesWithBankEnum()
@@ -1309,6 +1820,10 @@ function getRecipe(id)
     return Mod.Settings.Config.Recipes[id];
 end
 
+---Returns true if the player has unlocked the unit
+---@param modifiers table # Table containing the modifiers of the player
+---@param unit CatanUnitType # The unit type
+---@return boolean # True if the player has unlocked the unit, false otherwise
 function hasUnlockedUnit(modifiers, unit)
     return modifiers.Units[unit].Unlocked;
 end
@@ -1376,16 +1891,9 @@ end
 function getPhasesInOrder()
     local t = {};
     for p, n in pairs(Catan.Phases) do
-        local index = 0;
-        for i, v in pairs(t) do
-            if n > v then
-                index = i;
-                break;
-            end
-        end
-        if index == 0 then index = #t + 1; end
-        table.insert(t, index, n);
+        table.insert(t, n);
     end
+    table.sort(t);
     return t;
 end
 
@@ -1469,14 +1977,10 @@ function setupData(game, standing)
         table.insert(orderedByNumber[dieNumber - 1], terrID);
     end
 
-    data.DieNumbers = sortOnTerrID(dieNumbers) --table.sort(dieNumbers, sortOnTerrID);
+    table.sort(dieNumbers, function(a, b) if a.TerrID <= b.TerrID then return false; else return true; end end);
+    data.DieNumbers = dieNumbers;
     data.DieGroups = orderedByNumber;
     Mod.PublicGameData = data;
-
-    print("test"); 
-    for i, v in ipairs(Mod.PublicGameData) do
-        print(i);
-    end
 
     local playerData = Mod.PlayerGameData;
     setResourcesTable(game.Game.PlayingPlayers, playerData);
@@ -1490,7 +1994,8 @@ function setResourcesTable(players, data)
     for playerID, _ in pairs(players) do
         data[playerID] = {};
         local t = {};
-        local recipe = multiplyRecipe(getRecipe(Catan.Recipes.Village), 2);
+        -- local recipe = multiplyRecipe(getRecipe(Catan.Recipes.Village), 2);
+        local recipe = {1000, 1000, 1000, 1000, 1000};
         for _, resource in ipairs(Catan.Resources) do
             t[resource] = recipe[resource];
         end
@@ -1552,6 +2057,10 @@ function setPlayerModifiers(players, playerGameData, config)
     end
 end
 
+function getResourceDoubleModifiers(modifiers)
+    return modifiers.Resources.DoubleResourceChance;
+end
+
 ---Returns the Infantry enum
 ---@return CatanUnitType # Returns the Infantry unit type
 function getInfantryEnum()
@@ -1595,6 +2104,9 @@ function getArmyCampUnits()
     return c;
 end
 
+---Returns true if the unit is a Catan unit
+---@param unit CustomSpecialUnit # The unit
+---@return boolean # True if the unit is a Catan unit, false otherwise
 function isCatanUnit(unit)
     local enum = unit.Name:gsub("%d* (%w*)", "%1");
     if enum:sub(-1, -1) == "s" then enum = enum:sub(1, -2); end
@@ -1761,9 +2273,19 @@ function mergeUnits(units, type, modifiers)
     return getUnitBuildFunctions()[type](modifiers, units[1].OwnerID, unitCount);
 end
 
+---Splits a unit stack into 2 units, if the split results in a 0 unit it will not split
+---@param modifiers table # The table containing the modifiers of the owner of the unit
+---@param unit CustomSpecialUnit # The unit
+---@param type CatanUnitType # The unit type
+---@param splitPercentage number # The percentage of units that will split off
+---@return CustomSpecialUnit[] # Array containing 1 or 2 special units
 function splitUnit(modifiers, unit, type, splitPercentage)
     local unitCount = getNumberOfUnits(modifiers, unit);
     local splitCount = round(unitCount * splitPercentage);
+    if splitCount == 0 or math.ceil(unitCount) == splitCount then
+        -- Would create a 0 count unit
+        return {};
+    end
     local f = getUnitBuildFunctions()[type];
     return {
         f(modifiers, unit.OwnerID, unitCount - splitCount),
@@ -1776,9 +2298,6 @@ end
 ---@param terrID integer # the territory ID that identifies the data location
 ---@return integer # The dice value of the territory
 function getTerritoryDiceValue(data, terrID)
-    for i, v in pairs(data) do
-        print(i);
-    end
     return getTerritoryData(data, terrID, 1, #data.DieNumbers).DiceValue;
 end
 
@@ -1991,6 +2510,9 @@ function extractUpgradeVillageTerrIDs(data)
     return extractTerrIDsFromOrders(data, getUpgradeVillageEnum());
 end
 
+---Returns a list of all territory IDs which have any type of build order
+---@param data table # Table containing the OrderList data
+---@return TerritoryID[] # The list of territoryIDs
 function extractBuildOrdersTerrIDs(data)
     return mergeTables(extractTerrIDsFromOrders(data, getBuildVillageEnum()), extractTerrIDsFromOrders(data, getUpgradeVillageEnum()));
 end
@@ -2046,10 +2568,16 @@ function extractTerrIDsFromOrders(data, type)
     return t;
 end
 
+---Returns true if the player has full vision over the territory, false otherwise
+---@param terr TerritoryStanding # The territory
+---@return boolean # True if the player has full vision over the territory, false otherwise 
 function territoryIsFullyVisible(terr)
     return terr.FogLevel == WL.StandingFogLevel.You or terr.FogLevel == WL.StandingFogLevel.Visible;
 end
 
+---Returns true if the player can see the structure on the territory, false otherwise
+---@param terr TerritoryStanding # The territory
+---@return boolean # True if the player can see the structure on the territory, false otherwise
 function canSeeStructure(terr)
     return territoryIsFullyVisible(terr) or terr.FogLevel == WL.StandingFogLevel.OwnerOnly;
 end
@@ -2079,7 +2607,6 @@ end
 ---@param t table # The table to be counted
 ---@return integer # The number of elements in the table
 function getTableLength(t)
-    print(tostring(t), t == nil);
     local c = 0;
     for _, _ in pairs(t) do
         c = c + 1;
@@ -2094,6 +2621,9 @@ function getExchangeRateOfPlayer(modifiers)
     return modifiers.Resources.ExchangeRateBank;
 end
 
+---Count and returns the total number of resources
+---@param resources Recipe # The number of resources
+---@return integer # The total number of resources in the given table
 function countTotalResources(resources)
     local c = 0;
     for _, n in ipairs(resources) do
@@ -2102,11 +2632,18 @@ function countTotalResources(resources)
     return c;
 end
 
+---Rounds and returns a number to a certain number of decimals
+---@param n number # the number to be rounded
+---@param dec integer? # The amount of decimals after the dot, default is 0
+---@return number | integer # Returns the rounded number
 function round(n, dec)
     local mult = 10^(dec or 0)
     return math.floor(n * mult + 0.5) / mult
 end
 
+---Removes all duplicate values from a table
+---@param array any[] # The array
+---@return any[] # The array with the duplicates removed
 function makeSet(array)
     local t = {};
     for _, v in pairs(array) do
@@ -2117,6 +2654,9 @@ function makeSet(array)
     return t;
 end
 
+---Converts an integer into a Roman number
+---@param n integer # The integer to be converted
+---@return string # The string representing the Roman number
 function getRomanNumber(n)
     local letters = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
     local values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
@@ -2130,20 +2670,4 @@ function getRomanNumber(n)
     end
 
     return res;
-end
-
-function sortOnTerrID(l)
-    local t = {};
-    for _, v in pairs(l) do
-        local index = 0;
-        for i, v2 in pairs(t) do
-            if v2.TerrID <= v.TerrID then
-                index = i;
-                break;
-            end
-        end
-        if index == 0 then index = #t + 1; end
-        table.insert(t, index, v);
-    end
-    return t;
 end

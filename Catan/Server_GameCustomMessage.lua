@@ -6,6 +6,8 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 
 	local commandHandler = {
         UpdateClient = function(_, _, _, s) returnSuccess(s, "Updated client"); end,
+        OpenedGame = openedGame,
+        SaveSettings = saveSettings,
         BuildVillage = buildVillage,
         BuildMultipleVillages = buildMultipleVillages,
         UpgradeVillage = upgradeVillage,
@@ -30,6 +32,16 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
     
     Mod.PlayerGameData = playerGameData;
     Mod.PublicGameData = publicGameData;
+end
+
+function openedGame(game, playerID, payload, setReturn)
+    playerGameData[playerID].HasOpenedGame = true;
+    returnSuccess(setReturn, "Successfully updated the server");
+end
+
+function saveSettings(game, playerID, payload, setReturn)
+    playerGameData[playerID].Settings.AutoOpenResourceWindow = payload.AutoOpenResourceWindow;
+    playerGameData[playerID].Settings.UnusedUnitsWarning = payload.UnusedUnitsWarning;
 end
 
 function buildVillage(game, playerID, payload, setReturn)
@@ -291,7 +303,8 @@ function deleteOrders(game, playerID, payload, setReturn)
         returnError(setReturn, field .. " was nil while building army camp");
         return false;
     end
-    local t = table.sort(payload.OrderIndexes, function(v, v2) return v > v2; end);
+    local t = payload.OrderIndexes;
+    table.sort(t, function(v, v2) return v > v2; end);
     local exchangeResourceEnum = getExchangeResourcesWithBankEnum();
     for _, k in ipairs(t) do
         local order = playerGameData[playerID].OrderList[k];
@@ -344,6 +357,11 @@ function purchaseResearch(game, playerID, payload, setReturn)
         return false;
     end
 
+    if payload.Path.IsInLoop and not payload.Path.LoopCounter then
+        returnError(setReturn, "LoopCounter was nil while purchasing research");
+        return false;
+    end
+
     local tree = playerGameData[playerID].ResearchTrees[payload.Path.TechTreeID];
     if tree == nil then
         returnError(setReturn, "Tree was nil when trying to research");
@@ -377,13 +395,13 @@ function purchaseResearch(game, playerID, payload, setReturn)
         return false;
     end
 
-    if node.FreeCost ~= countTotalResources(payload.FreeCost) then
-        returnError(setReturn, "Research details are not the same");
+    if countTotalResources(payload.FreeCost) ~= getResearchFreeCost(node, payload.Path) then
+        returnError(setReturn, "Free cost does not add up to the right amount: " .. countTotalResources(payload.FreeCost) .. " and " .. getResearchFreeCost(node, payload.Path));
         return false;
     end
 
-    local totalCost = combineRecipes(node.FixedCost, payload.FreeCost)
-    if not hasEnoughResources(totalCost, playerGameData[playerID].Resources) then
+    local totalCost = combineRecipes(getResearchFixedCost(node, payload.Path), payload.FreeCost)
+    if not hasEnoughResources(totalCost, playerGameData[playerID].Resources) or not hasEnoughResources(totalCost, Mod.PrivateGameData.PlayerData[playerID].Resources) then
         returnInsufficientResources(setReturn, "Purchase research");
         return false;
     end

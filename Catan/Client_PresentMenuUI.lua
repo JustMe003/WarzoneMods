@@ -11,40 +11,26 @@ require("Client_GameRefresh");
 ---@param close fun() # Zero parameter function that closes the dialog
 ---@param func fun()? # Zero parameter function that will be called if not nil
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, func)
-    print(101);
     if game.Game.TurnNumber < 1 then
         close();
         UI.Alert("You can only open the menu when the distribution has ended");
     end
-    print(102);
     if game.Us == nil then
         close();
         UI.Alert("Spectators are not allowed to view the menu");
     end
-    print(103);
+
     
-    
-    print(104);
     setMaxSize(400, 500);
-    print(105);
     
-    print(106);
     Init(rootParent);
-    print(107);
     vert = GetRoot().SetFlexibleWidth(1);
-    print(108);
     colors = GetColors();
-    print(109);
     Game = game;
-    print(110);
     territories = game.LatestStanding.Territories;
-    print(111);
     CancelClickIntercept = true;
-    print(112);
     Waiting = false;
-    print(113);
     Settings = Mod.Settings.Config;
-    print(114);
 
     showHomeButtons();
 
@@ -65,8 +51,9 @@ function showMain()
     DestroyWindow();
     SetWindow("Main");
     Resources = copyTable(Mod.PlayerGameData.Resources)
+    CancelClickIntercept = true;
 
-    updateHomeButtons(void, showMain, TODO);
+    updateHomeButtons(void, showMain, showHelpMain);
 
     CreateButton(root).SetText("Build village").SetColor(colors.Blue).SetInteractable(hasEnoughResources(getRecipe(Catan.Recipes.Village), Resources)).SetOnClick(function() selectTerritory(addBuildVillageOrder); end);
     CreateButton(root).SetText("Upgrade village").SetColor(colors.Green).SetInteractable(hasEnoughResources(getRecipe(Catan.Recipes.UpgradeVillage), Resources)).SetOnClick(function() selectTerritory(addUpgradeVillageOrder); end);
@@ -79,6 +66,7 @@ function showMain()
     CreateButton(root).SetText("Show orders").SetColor(colors.Orange).SetOnClick(showOrders)
     CreateButton(root).SetText("Exchange resources").SetColor(colors.Yellow).SetOnClick(exchangeResourcesWindow);
     CreateButton(root).SetText("Tech tree").SetColor(colors.Lime).SetOnClick(showAllTechTrees);
+    CreateButton(root).SetText("Settings").SetColor(colors["Royal Blue"]).SetOnClick(function() Game.CreateDialog(createPlayerSettingsDialog); end);
 end
 
 function showHomeButtons();
@@ -108,7 +96,11 @@ function updateHomeButtons(homeFunc, returnFunc, helpFunc)
         showMain();    
     end);
     HomeButtons.Return.SetOnClick(returnFunc);
-    HomeButtons.Help.SetOnClick(helpFunc);
+    HomeButtons.Help.SetOnClick(function() 
+        Game.CreateDialog(function(a, b, c, d, e)
+            createHelpDialog(a, b, c, d, e, helpFunc);
+        end)
+    end);
 end
 
 
@@ -120,7 +112,7 @@ function showOrders()
     DestroyWindow()
     SetWindow("showOrders");
 
-    updateHomeButtons(void, showMain, TODO);
+    updateHomeButtons(void, showMain, showHelpOrders);
 
     local orderTypes = {};
     for _, type in pairs(Catan.OrderType) do
@@ -178,7 +170,7 @@ function viewTypeOrders(orders, message, selectedForDeletion, unselectedForDelet
     updateHomeButtons(resetAllResourceLabels, function()
         resetAllResourceLabels();
         showOrders(); 
-    end, TODO);
+    end, showHelpTypeOrders);
 
     local deleteMode = false;
     local deleteButtons = {};
@@ -244,7 +236,7 @@ function viewTypeOrders(orders, message, selectedForDeletion, unselectedForDelet
     local line = CreateHorz(root);
     deleteSelectedButton = CreateButton(line).SetText("Delete").SetColor(colors.Red).SetInteractable(deleteMode).SetOnClick(function()  
         if #deleteOrders > 0 then
-            deleteOrders = table.sort(deleteOrders, function(v, v2) return v > v2; end);
+            table.sort(deleteOrders, function(v, v2) return v > v2; end);
             local t = {};
             for _, k in ipairs(deleteOrders) do
                 table.insert(t, orders[k]);
@@ -262,7 +254,7 @@ function showUnitPurchaseOrdersList(orders)
     updateHomeButtons(resetAllResourceLabels, function()
         resetAllResourceLabels();
         showOrders(); 
-    end, TODO);
+    end, showHelpUnitPurchaseOrdersLists);
 
     local deleteMode = false;
     local deleteButtons = {};
@@ -341,7 +333,7 @@ function showUnitPurchaseOrdersList(orders)
     local line = CreateHorz(root);
     deleteSelectedButton = CreateButton(line).SetText("Delete").SetColor(colors.Red).SetInteractable(deleteMode).SetOnClick(function()  
         if #deleteOrders > 0 then
-            deleteOrders = table.sort(deleteOrders, function(v, v2) return v > v2; end);
+            table.sort(deleteOrders, function(v, v2) return v > v2; end);
             local t = {};
             for _, k in ipairs(deleteOrders) do
                 table.insert(t, orders[k]);
@@ -359,7 +351,7 @@ function showResourceExchangeOrders(orders)
     updateHomeButtons(resetAllResourceLabels, function()
         resetAllResourceLabels();
         showOrders(); 
-    end, TODO);
+    end, showHelpResourceExchangeOrders);
 
     local deleteMode = false;
     local deleteButtons = {};
@@ -439,7 +431,7 @@ function showResourceExchangeOrders(orders)
     local line = CreateHorz(root);
     deleteSelectedButton = CreateButton(line).SetText("Delete").SetColor(colors.Red).SetInteractable(deleteMode).SetOnClick(function()  
         if #deleteOrders > 0 then
-            deleteOrders = table.sort(deleteOrders, function(v, v2) return v > v2; end);
+            table.sort(deleteOrders, function(v, v2) return v > v2; end);
             local t = {};
             for _, k in ipairs(deleteOrders) do
                 table.insert(t, orders[k]);
@@ -489,7 +481,7 @@ function showBuildVillageOrders(terrDetails)
     updateHomeButtons(reset, function()
         reset();
         showMain();
-    end, TODO);
+    end, showHelpBuildVillageOrders);
 
     selectTerritoryWithAlerts(addBuildVillageOrder);
 
@@ -548,7 +540,7 @@ function showUpgradeVillageOrders(terrDetails)
     updateHomeButtons(reset, function()
         reset();
         showMain();
-    end, TODO);
+    end, showHelpUpgradeVillageOrders);
 
     selectTerritoryWithAlerts(addUpgradeVillageOrder);
 
@@ -606,7 +598,7 @@ function showBuildArmyCampOrder(terrDetails)
     updateHomeButtons(reset, function()
         reset();
         showMain();
-    end, TODO);
+    end, showHelpBuildArmyCampOrders);
 
     selectTerritoryWithAlerts(addBuildArmyCampOrder);
     local recipe = getRecipe(Catan.Recipes.ArmyCamp);
@@ -667,7 +659,7 @@ function showPurchaseUnitsWindow(order, cancelFunc, returnFunc, callback, revers
         else
             showMain();
         end
-    end, TODO);
+    end, showHelpPurchaseUnits);
 
     local orderCopy = copyTable(order);
 
@@ -752,7 +744,7 @@ function showPurchaseUnitsOrders(order)
     updateHomeButtons(reset, function()
         reset();
         showMain();
-    end, TODO);
+    end, showHelpPurchaseUnitsOrders);
 
     selectTerritoryWithAlerts(addPurchaseUnitsOrder)
 
@@ -813,7 +805,7 @@ function showSplitUnitOrders(data)
     updateHomeButtons(reset, function()
         reset();
         showMain();
-    end, TODO);
+    end, showHelpSplitUnitOrders);
 
     SplitUnitOrders = SplitUnitOrders or {};
     if data then
@@ -867,27 +859,14 @@ function addBuildVillageOrder(terrDetails)
     else
         f = selectTerritoryWithAlerts;
     end
-    
-    if terr.OwnerPlayerID ~= Game.Us.ID then
-        f(addBuildVillageOrder, "You must select a territory you own. Please select a territory again");
-        return;
-    end
-    if terrHasVillage(terr.Structures) then
-        f(addBuildVillageOrder, "You cannot build a village on a territory that already has a village. Please select a territory again");
-        return;
-    end
-    if BuildVillageOrderList and terrInTable(BuildVillageOrderList, terrDetails) then
-        f(addBuildVillageOrder, "You already have an existing build village order for this territory");
-        return;
-    end
-    if not hasEnoughResources(getRecipe(Catan.Recipes.Village), Resources) then
-        f(addBuildVillageOrder, "You cannot build a village, you don't have enough resources to build one");
-        return;
-    end
-    if Mod.PlayerGameData.OrderList and valueInTable(extractBuildVillageTerrIDs(Mod.PlayerGameData), terrDetails.ID) then
-        f(addBuildVillageOrder, "You already have a existing build village order for this territory");
-        return;
-    end
+
+    if not conditionsMet(f, addBuildVillageOrder, {
+        createCondition(terr.OwnerPlayerID == Game.Us.ID, "You must select a territory you own. Please select a territory again"),
+        createCondition(not terrHasVillage(terr.Structures), "You cannot build a village on a territory that already has a village. Please select a territory again"),
+        createCondition(not (BuildVillageOrderList and terrInTable(BuildVillageOrderList, terrDetails)), "You already have an existing build village order for this territory"),
+        createCondition(hasEnoughResources(getRecipe(Catan.Recipes.Village), Resources), "You cannot build a village, you don't have enough resources to build one"),
+        createCondition(not (Mod.PlayerGameData.OrderList and valueInTable(extractBuildVillageTerrIDs(Mod.PlayerGameData), terrDetails.ID)), "You already have a existing build village order for this territory"),
+    }) then return; end
     
     showBuildVillageOrders(terrDetails);
 end
@@ -903,27 +882,14 @@ function addUpgradeVillageOrder(terrDetails)
         f = selectTerritoryWithAlerts;
     end
 
-    if terr.OwnerPlayerID ~= Game.Us.ID then
-        f(addUpgradeVillageOrder, "You must select a territory you own. Please select a territory again");
-        return;
-    end
-    if not terrHasVillage(terr.Structures) then
-        f(addUpgradeVillageOrder, "You cannot upgrade a village on a territory that doesn't have a village. Please select a territory again");
-        return;
-    end
-    if UpgradeVillageOrderList and terrInTable(UpgradeVillageOrderList, terrDetails) then
-        f(addUpgradeVillageOrder, "You already have an existing build village order for this territory");
-        return;
-    end
-    if not hasEnoughResources(getRecipeLevel(getRecipe(Catan.Recipes.UpgradeVillage), terr.Structures[Catan.Village]), Resources) then
-        f(addUpgradeVillageOrder, "You don't have enough resources for upgrading the village at " .. Game.Map.Territories[terrDetails.ID].Name .. ". Please select another territory");
-        return;
-    end
-    if Mod.PlayerGameData.OrderList and valueInTable(extractBuildOrdersTerrIDs(Mod.PlayerGameData), terrDetails.ID) then
-        f(addBuildVillageOrder, "You already have a existing build order for this territory, you can only have 1");
-        return;
-    end
-    
+    if not conditionsMet(f, addUpgradeVillageOrder, {
+        createCondition(terr.OwnerPlayerID == Game.Us.ID, "You must select a territory you own. Please select a territory again"),
+        createCondition(terrHasVillage(terr.Structures), "You cannot upgrade a village on a territory that doesn't have a village. Please select a territory again"),
+        createCondition(not (UpgradeVillageOrderList and terrInTable(UpgradeVillageOrderList, terrDetails)), "You already have an existing build village order for this territory"),
+        createCondition(hasEnoughResources(getRecipeLevel(getRecipe(Catan.Recipes.UpgradeVillage), terr.Structures[Catan.Village]), Resources), "You don't have enough resources for upgrading the village at " .. Game.Map.Territories[terrDetails.ID].Name .. ". Please select another territory"),
+        createCondition(not (Mod.PlayerGameData.OrderList and valueInTable(extractBuildOrdersTerrIDs(Mod.PlayerGameData), terrDetails.ID)), "You already have a existing build order for this territory, you can only have 1")
+    }) then return; end
+
     showUpgradeVillageOrders(terrDetails);
 end
 
@@ -938,28 +904,16 @@ function addBuildArmyCampOrder(terrDetails)
         f = selectTerritoryWithAlerts;
     end
 
-    if terr.OwnerPlayerID ~= Game.Us.ID then
-        f(addBuildArmyCampOrder, "You must select a territory you own. Please select a territory again");
-        return;
-    end
-    if terrHasArmyCamp(terr.Structures) then
-        f(addBuildArmyCampOrder, "You must select a territory without a army camp. Please select a territory again");
-        return;
-    end
+    if not conditionsMet(f, addBuildArmyCampOrder, {
+        createCondition(terr.OwnerPlayerID == Game.Us.ID, "You must select a territory you own. Please select a territory again"),
+        createCondition(not terrHasArmyCamp(terr.Structures), "You must select a territory without a army camp. Please select a territory again"),
+        createCondition(hasEnoughResources(getRecipe(Catan.Recipes.ArmyCamp), Resources), "You don't have enough resources to build an additional army camp"),
+        createCondition(not (BuildArmyCampOrderList and terrInTable(BuildArmyCampOrderList, terrDetails)), "You already have an order for this territory"),
+        createCondition(not (Mod.PlayerGameData.OrderList and valueInTable(extractBuildOrdersTerrIDs(Mod.PlayerGameData), terrDetails.ID)), "You already have a build order for this territory, you can only have 1")
+    }) then return; end
+
     if terrHasVillage(terr.Structures) then
         UI.Alert(terrDetails.Name .. " has a village, building a army camp will remove the village, so be sure about this!");
-    end
-    if not hasEnoughResources(getRecipe(Catan.Recipes.ArmyCamp), Resources) then
-        f(addBuildArmyCampOrder, "You don't have enough resources to build an additional army camp");
-        return;
-    end
-    if BuildArmyCampOrderList and terrInTable(BuildArmyCampOrderList, terrDetails) then
-        f(addBuildArmyCampOrder, "You already have an order for this territory");
-        return;
-    end
-    if Mod.PlayerGameData.OrderList and valueInTable(extractBuildOrdersTerrIDs(Mod.PlayerGameData), terrDetails.ID) then
-        f(addBuildArmyCampOrder, "You already have a build order for this territory, you can only have 1");
-        return;
     end
     
     showBuildArmyCampOrder(terrDetails);
@@ -976,25 +930,12 @@ function addPurchaseUnitsOrder(terrDetails)
         f = selectTerritoryWithAlerts;
     end
 
-    if terr.OwnerPlayerID ~= Game.Us.ID then
-        f(addPurchaseUnitsOrder, "You must select a territory you own");
-        return;
-    end
-
-    if not terrHasArmyCamp(terr.Structures) then
-        f(addPurchaseUnitsOrder, "You must select a territory with an army camp");
-        return;
-    end
-
-    if Mod.PlayerGameData.OrderList and valueInTable(extractPurchaseUnitOrdersTerrIDs(Mod.PlayerGameData), terrDetails.ID) then
-        f(addPurchaseUnitsOrder, "You already have an purchase units order for this territory, please modify the existing order");
-        return;
-    end
-
-    if not canPurchaseCatanUnits() then
-        f(addPurchaseUnitOrder, "You don't have enough resources to purchase more units");
-        return;
-    end
+    if not conditionsMet(f, addPurchaseUnitOrder, {
+        createCondition(terr.OwnerPlayerID == Game.Us.ID, "You must select a territory you own"),
+        createCondition(terrHasArmyCamp(terr.Structures), "You must select a territory with an army camp"),
+        createCondition(not (Mod.PlayerGameData.OrderList and valueInTable(extractPurchaseUnitOrdersTerrIDs(Mod.PlayerGameData), terrDetails.ID)), "You already have an purchase units order for this territory, please modify the existing order"),
+        createCondition(canPurchaseCatanUnits(), "You don't have enough resources to purchase more units")
+    }) then return; end
 
     if PurchaseUnitsOrders ~= nil and valueInTable(getTerritoryIDs(PurchaseUnitsOrders), terrDetails.ID) then
         local order;
@@ -1038,20 +979,11 @@ function addSplitUnitOrder(terrDetails)
         f = selectTerritoryWithAlerts;
     end
 
-    if not territoryIsFullyVisible(terr) then
-        f(addSplitUnitOrder, "You must select a territory that is actually fully visible for you");
-        return;
-    end
-
-    if terr.OwnerPlayerID ~= Game.Us.ID then
-        f(addSplitUnitOrder, "You must select a territory that you own");
-        return;
-    end
-
-    if #terr.NumArmies.SpecialUnits <= 0 then
-        f(addSplitUnitOrder, "You must select a territory that has some units");
-        return;
-    end
+    if not conditionsMet(f, addSplitUnitOrder, {
+        createCondition(territoryIsFullyVisible(terr), "You must select a territory that is actually fully visible for you"),
+        createCondition(terr.OwnerPlayerID == Game.Us.ID, "You must select a territory that is actually fully visible for you"),
+        createCondition(#terr.NumArmies.SpecialUnits > 0, "You must select a territory that has some units")
+    }) then return; end
 
     local terrUnitTypes = {};
     if SplitUnitOrders then
@@ -1089,9 +1021,6 @@ function addSplitUnitOrder(terrDetails)
             end
         end
         pickFromList(list, function(choice)
-            for i, v in pairs(choice) do
-                print(i, v);
-            end
             showPercentage(function(per)
                 showSplitUnitOrders({Details = terrDetails, Percentage = per, UnitType = getUnitType(choice)});
             end, showMain);
@@ -1117,14 +1046,14 @@ function exchangeResourcesWindow()
     DestroyWindow();
     SetWindow("ExchangeResourcesWindow")
 
-    updateHomeButtons(void, showMain, TODO);
+    updateHomeButtons(void, showMain, showHelpExchangeOrder);
 
     local bankExchangeRates = getExchangeRateOfPlayer(Mod.PlayerGameData.Modifiers);
 
     CreateLabel(root).SetText("Your default exchange rates are:").SetColor(colors.TextColor);
     for res, rate in ipairs(bankExchangeRates) do
         local line = CreateHorz(root);
-        CreateLabel(line).SetText(getResourceName(res)).SetColor(colors.TextColor);
+        CreateLabel(line).SetText(getResourceName(res)).SetColor(getResourceColor(res)).SetPreferredWidth(100);
         CreateButton(line).SetText(rate .. " to 1").SetColor(getResourceColor(res)).SetOnClick(function() exchangeWithBank(res, rate); end).SetInteractable(Resources[res] >= rate);
     end
 
@@ -1139,7 +1068,7 @@ function exchangeWithBank(res, rate)
 
     
     ExchangeWithBank = ExchangeWithBank or {
-        Count = 0,
+        Count = 1,
         ExchangeResourceFrom = res,
         ExchangeResourceInto = res,
         Rate = rate,
@@ -1161,7 +1090,7 @@ function exchangeWithBank(res, rate)
     updateHomeButtons(reset, function()
         reset();
         exchangeResourcesWindow();
-    end, TODO);
+    end, showHelpExchangeWithBank);
     
     CreateEmpty(root).SetPreferredHeight(5);
     
@@ -1190,7 +1119,7 @@ function selectResourceWindow(exc)
     DestroyWindow();
     SetWindow("selectResourceWindow");
 
-    updateHomeButtons(void, exchangeWithBank, TODO);
+    updateHomeButtons(void, exchangeWithBank, showHelpSelectResource);
 
     CreateLabel(root).SetText("Select one of the following resources").SetColor(colors.TextColor);
     for _, res in ipairs(Catan.Resources) do
@@ -1217,11 +1146,9 @@ function selectTerritory(callback, message)
     DestroyWindow();
     SetWindow("selectTerritory");
     
-    updateHomeButtons(void, showMain, TODO);
+    updateHomeButtons(void, showMain, showHelpSelectTerritory);
 
-    message = message or "Click a territory to select it"
-
-    CreateLabel(root).SetText(message).SetColor(colors.TextColor);
+    CreateLabel(root).SetText(message or "Click a territory to select it").SetColor(colors.TextColor);
     CreateLabel(root).SetText("You can move this window out of the way if necessary").SetColor(colors.TextColor);
 
     UI.InterceptNextTerritoryClick(function(t) 
@@ -1255,7 +1182,16 @@ end
 
 
 function showAllTechTrees()
-    showTechTree(Mod.PlayerGameData.ResearchTrees[Catan.TechTrees.UnitTechTree], Catan.TechTrees.UnitTechTree);
+    DestroyWindow()
+    SetWindow("ShowUnitTechTree");
+
+    updateHomeButtons(void, showMain, TODO);
+
+    for id, tree in ipairs(Mod.PlayerGameData.ResearchTrees) do
+        CreateButton(root).SetText(tree.Name .. " (" .. tree.NumResearched .. "/" .. tree.TotalResearchNodes .. ")").SetColor(colors.Lime).SetOnClick(function()
+            showTechTree(tree, id);
+        end)
+    end
 end
 
 function showTechTree(tree, techTreeID)
@@ -1264,7 +1200,7 @@ function showTechTree(tree, techTreeID)
 
     updateHomeButtons(void, function()
         showAllTechTrees();
-    end, TODO);
+    end, showHelpTechTree);
 
     CreateButton(root).SetText("Show full research tree").SetColor(colors.Blue).SetOnClick(function()
         Game.CreateDialog(function(a, b, c, d, e)
@@ -1289,8 +1225,8 @@ function showTechTree(tree, techTreeID)
         end
     end
 
-    researches = table.sort(researches, compareTwoResearchCosts);
-    loopResearches = table.sort(loopResearches, compareTwoResearchCosts);
+    table.sort(researches, compareTwoResearchCosts);
+    table.sort(loopResearches, compareTwoResearchCosts);
 
     CreateLabel(root).SetText("Researches").SetColor(colors.TextColor);
     for _, pair in ipairs(researches) do
@@ -1317,10 +1253,21 @@ function showAllAvailableResearches(node, list, path)
     else
         if node.Unlocked then
             for i, child in ipairs(node.Nodes) do
-                local newPath = {Tree = path.Tree, Nodes = copyTable(path.Nodes), TechTreeID = path.TechTreeID, IsInLoop = path.IsInLoop};
+                local newPath = {
+                    Tree = path.Tree, 
+                    Nodes = copyTable(path.Nodes), 
+                    TechTreeID = path.TechTreeID, 
+                    IsInLoop = path.IsInLoop,
+                    FixedCostMultiplier = path.FixedCostMultiplier,
+                    FreeCostMultiplier = path.FreeCostMultiplier,
+                    LoopCounter = path.LoopCounter,
+                };
                 table.insert(newPath.Nodes, i);
                 if node.IsLoop then 
                     newPath.IsInLoop = true; 
+                    newPath.LoopCounter = node.LoopCounter or 1;
+                    newPath.FixedCostMultiplier = node.FixedCostMultiplier;
+                    newPath.FreeCostMultiplier = node.FreeCostMultiplier;    
                 end
                 showAllAvailableResearches(child, list, newPath);
             end
@@ -1384,9 +1331,22 @@ function showTechTreeNodes(treeNode, path, parent, close, lastColor)
                 end
             end);
         else
-            local newPath = {Tree = path.Tree, Nodes = copyTable(path.Nodes), TechTreeID = path.TechTreeID, IsInLoop = path.IsInLoop};
+            local newPath = {
+                Tree = path.Tree, 
+                Nodes = copyTable(path.Nodes), 
+                TechTreeID = path.TechTreeID, 
+                IsInLoop = path.IsInLoop,
+                FixedCostMultiplier = path.FixedCostMultiplier,
+                FreeCostMultiplier = path.FreeCostMultiplier,
+                LoopCounter = path.LoopCounter,
+            };
             table.insert(newPath.Nodes, i);
-            if node.IsLoop then newPath.IsInLoop = true; end
+            if node.IsLoop then 
+                newPath.IsInLoop = true;
+                newPath.LoopCounter = node.LoopCounter or 1;
+                newPath.FixedCostMultiplier = node.FixedCostMultiplier;
+                newPath.FreeCostMultiplier = node.FreeCostMultiplier;
+            end
             showTechTreeNodes(node, newPath, line, close, color);
         end
         CreateEmpty(line).SetPreferredWidth(5);
@@ -1418,7 +1378,7 @@ function showResearch(research, path)
     CreateEmpty(root).SetPreferredHeight(5);
     
     CreateLabel(root).SetText("Cost");
-    for res, n in ipairs(research.FixedCost) do
+    for res, n in ipairs(getResearchFixedCost(research, path)) do
         local line = CreateHorz(root).SetFlexibleWidth(1);
         CreateLabel(line).SetText(getResourceName(res)).SetColor(getResourceColor(res));
         CreateLabel(line).SetText(": ").SetColor(colors.TextColor);
@@ -1430,7 +1390,7 @@ function showResearch(research, path)
     local line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Free cost").SetColor(colors.TextColor);
     CreateLabel(line).SetText(": ").SetColor(colors.TextColor);
-    CreateLabel(line).SetText(research.FreeCost).SetColor(colors["Royal Blue"]);
+    CreateLabel(line).SetText(getResearchFreeCost(research, path)).SetColor(colors["Royal Blue"]);
 
     
     if research.Unlocked and not research.Researched then
@@ -1466,13 +1426,21 @@ function inputFreeResearchCost(research, path)
 
     CreateEmpty(root).SetPreferredHeight(5);
     
-    local costRemaining = research.FreeCost;
-    local remainingLabel = CreateLabel(root).SetText(research.FreeCost .. " resources remaining").SetColor(colors.TextColor);
+    local costRemaining = getResearchFreeCost(research, path);
+    local remainingLabel = CreateLabel(root).SetText(costRemaining .. " resources remaining").SetColor(colors.TextColor);
+    local submitButton;
 
+    
     CreateEmpty(root).SetPreferredHeight(5);
-
+    
     for res, n in ipairs(freeCost) do
         local valueLabel;
+        local update = function()
+            valueLabel.SetText(freeCost[res]);
+            remainingLabel.SetText(costRemaining .. " resources remaining");
+            submitButton.SetInteractable(costRemaining == 0);
+        end
+        
         local line = CreateHorz(root);
         CreateButton(line).SetText("-10").SetColor(colors.Red).SetOnClick(function()
             if freeCost[res] == 0 then
@@ -1491,8 +1459,7 @@ function inputFreeResearchCost(research, path)
                     costRemaining = costRemaining + change;
                 end
             end
-            valueLabel.SetText(freeCost[res]);
-            remainingLabel.SetText(costRemaining .. " resources remaining");
+            update();
         end);
         CreateButton(line).SetText("-1").SetColor(colors["Orange Red"]).SetOnClick(function()
             if freeCost[res] == 0 then
@@ -1511,8 +1478,7 @@ function inputFreeResearchCost(research, path)
                     costRemaining = costRemaining + change;
                 end
             end
-            valueLabel.SetText(freeCost[res]);
-            remainingLabel.SetText(costRemaining .. " resources remaining");
+            update();
         end);
         CreateButton(line).SetText("+1").SetColor(colors.Lime).SetOnClick(function()
             if Resources[res] == 0 or costRemaining == 0 then
@@ -1531,8 +1497,7 @@ function inputFreeResearchCost(research, path)
                     costRemaining = costRemaining - change;
                 end
             end
-            valueLabel.SetText(freeCost[res]);
-            remainingLabel.SetText(costRemaining .. " resources remaining");
+            update();
         end);
         CreateButton(line).SetText("+10").SetColor(colors.Green).SetOnClick(function()
             if Resources[res] == 0 or costRemaining == 0 then
@@ -1551,8 +1516,7 @@ function inputFreeResearchCost(research, path)
                     costRemaining = costRemaining - change;
                 end
             end
-            valueLabel.SetText(freeCost[res]);
-            remainingLabel.SetText(costRemaining .. " resources remaining");
+            update();
         end);
 
         valueLabel = CreateLabel(line).SetText(n).SetColor(colors.Peach);
@@ -1560,8 +1524,8 @@ function inputFreeResearchCost(research, path)
     end
 
     local line = CreateHorz(root);
-    local submitButton = CreateButton(line).SetText("Research").SetColor(colors.Green).SetOnClick(function()
-        if countTotalResources(freeCost) == research.FreeCost and costRemaining == 0 then
+    submitButton = CreateButton(line).SetText("Research").SetColor(colors.Green).SetOnClick(function()
+        if countTotalResources(freeCost) == getResearchFreeCost(research, path) and costRemaining == 0 then
             Game.SendGameCustomMessage("Researching", {Command = "PurchaseResearch", Path = path, FreeCost = freeCost}, serverCallback);
             resetAllResourceLabels();
             waitWindow();
@@ -1841,6 +1805,534 @@ end
 
 
 --#endregion Resource window logic
+--#region Help dialogs
+
+
+function createHelpDialog(rootParent, setMaxSize, setScrollable, game, close, func)
+    local vert = UI.CreateVerticalLayoutGroup(rootParent).SetFlexibleWidth(1);
+    setMaxSize(400, 400);
+
+    func(vert);
+end
+
+function showHelpMain(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Main Menu").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+
+    UI.CreateLabel(vert).SetText("This is the main menu of the mod. Here you can navigate to anything the mod has to offer. In addition to this, this menu will at all times have the 4 buttons in the top of the menu. These are control buttons, and they behaviour will be explained here.").SetColor(colors.TextColor);
+
+    UI.CreateEmpty(vert).SetPreferredHeight(5);
+    UI.CreateButton(vert).SetText("H").SetColor(colors.Lime);
+    UI.CreateLabel(vert).SetText("This button is the home button. Pressing this button will take you to the main menu, cancelling anything you've been doing.").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(5);
+    UI.CreateButton(vert).SetText("<").SetColor(colors.Orange);
+    UI.CreateLabel(vert).SetText("This button is the return button. When navigating through the menus, at all times you can press this button to return to the previous page, cancelling anything you've been doing in the current menu").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(5);
+    UI.CreateButton(vert).SetText("i").SetColor(colors.Yellow);
+    UI.CreateLabel(vert).SetText("This is the information button. This will open the resource window or, if it is already open, refresh it.").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(5);
+    UI.CreateButton(vert).SetText("?").SetColor(colors["Light Blue"]);
+    UI.CreateLabel(vert).SetText("This is the button you pressed to open this dialog. Whenever you don't know where you ended up or don't know how to use a menu, you can press this button to create this handy dialog. In this dialog, I will explain what the window is for and what all the functionality of each component is.").SetColor(colors.TextColor);
+end
+
+function showHelpSelectTerritory(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Territory Selection").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("This window is used to let you, as a user, pick a territory to perfom an action. Depending on the action, there are some conditions that have to be met. For example, when you want to build a village, you need to select a territory that you control, a territory that doesn't have a village already, etc.").SetColor(colors.TextColor);
+    UI.CreateEmpty(vert).SetPreferredWidth(3);
+    UI.CreateLabel(vert).SetText("When a condition isn't met, the text in the window will change, telling what condition wasn't met. When you select a territory that meets all the requirements, you will automatically be send to the next menu").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+
+    UI.CreateButton(vert).SetText("Return").SetColor(colors.Orange);
+    UI.CreateLabel(vert).SetText("This button will take you back to the main menu, and you don't have to pick a territory anymore.").SetColor(colors.TextColor);
+end
+
+function showHelpOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Your orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("This menu shows you what orders you have and how many. Interacting with one of the buttons will take you to a complete list of all orders you have of that type, this is also the place where you can remove them.").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    UI.CreateButton(vert).SetText("Return").SetColor(colors.Orange);
+    UI.CreateLabel(vert).SetText("This button will take you back to the main menu").SetColor(colors.TextColor);
+end
+
+function showHelpTypeOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the orders you have of a specific type. You can also remove orders if you don't want them, any resources you used will be returned.").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local box;
+    local text;
+    local deleteButton;
+    local xButton;
+    box = UI.CreateCheckBox(line).SetText(" ").SetIsChecked(false).SetOnValueChanged(function()
+        if box.GetIsChecked() then
+            text.SetText("Toggle to view mode")
+            deleteButton.SetInteractable(true);
+            xButton.SetInteractable(true);
+        else
+            text.SetText("Toggle to deletion mode")
+            deleteButton.SetInteractable(false);
+            xButton.SetInteractable(false);
+        end
+    end);
+    text = UI.CreateLabel(line).SetText("Toggle to deletion mode").SetColor(colors.TextColor);
+    UI.CreateLabel(vert).SetText("This is a dummy checkbox, but it shows what the real checkbox does. You can toggle yourself to view mode, which doesn't let you select or delete any orders, and deletion mode, which allows you to select orders that you want to delete and actually delete them").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local terr = getFirstEntryOfTable(Game.Map.Territories);
+    UI.CreateButton(line).SetText(getStringForButton(terr.Name, 20)).SetColor(colors.Blue).SetOnClick(function() 
+        Game.CreateLocatorCircle(terr.MiddlePointX, terr.MiddlePointY);
+        Game.HighlightTerritories({terr.ID});
+    end);
+    xButton = UI.CreateButton(line).SetText("X").SetColor(colors.Yellow).SetInteractable(box.GetIsChecked()).SetOnClick(function()
+        if xButton.GetColor() == colors.Yellow then
+            xButton.SetColor(colors["Orange Red"]);
+        else
+            xButton.SetColor(colors.Yellow);
+        end
+    end);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. The blue button tells you which territory is selected for the order. You can click on it to locate the territory if you don't know where that territory is on the map. The 'X' button besides it can only be clicked if you put the menu in deletion mode (you can test it out with the checkbox above). When you click the 'X' button, it will change color. Yellow means that the order has not been selected, red means that the order has been selected and will be deleted when you click the delete button").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    deleteButton = UI.CreateButton(vert).SetText("Delete").SetColor(colors.Red).SetInteractable(box.GetIsChecked());
+    UI.CreateLabel(vert).SetText("This is the delete button. When the menu is in deletion mode, this button can be interacted with to delete all selected orders. When the menu is in view mode, you cannot interact with this button as a precaution").SetColor(colors.TextColor);
+end
+
+function showHelpUnitPurchaseOrdersLists(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Unit Purchase Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the orders you have of a specific type. You can also remove orders if you don't want them, any resources you used will be returned.").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local box;
+    local text;
+    local deleteButton;
+    local xButton;
+    box = UI.CreateCheckBox(line).SetText(" ").SetIsChecked(false).SetOnValueChanged(function()
+        if box.GetIsChecked() then
+            text.SetText("Toggle to view mode")
+            deleteButton.SetInteractable(true);
+            xButton.SetInteractable(true);
+        else
+            text.SetText("Toggle to deletion mode")
+            deleteButton.SetInteractable(false);
+            xButton.SetInteractable(false);
+        end
+    end);
+    text = UI.CreateLabel(line).SetText("Toggle to deletion mode").SetColor(colors.TextColor);
+    UI.CreateLabel(vert).SetText("This is a dummy checkbox, but it shows what the real checkbox does. You can toggle yourself to view mode, which doesn't let you select or delete any orders, and deletion mode, which allows you to select orders that you want to delete and actually delete them").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local terr = getFirstEntryOfTable(Game.Map.Territories);
+    UI.CreateButton(line).SetText(getStringForButton(terr.Name, 20)).SetColor(colors.Blue).SetOnClick(function() 
+        Game.CreateLocatorCircle(terr.MiddlePointX, terr.MiddlePointY);
+        Game.HighlightTerritories({terr.ID});
+    end);
+    UI.CreateButton(line).SetText("Edit").SetColor(colors.Yellow);
+    xButton = UI.CreateButton(line).SetText("X").SetColor(colors.Yellow).SetInteractable(box.GetIsChecked()).SetOnClick(function()
+        if xButton.GetColor() == colors.Yellow then
+            xButton.SetColor(colors["Orange Red"]);
+        else
+            xButton.SetColor(colors.Yellow);
+        end
+    end);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. The blue button tells you which territory is selected for the order. You can click on it to locate the territory if you don't know where that territory is on the map. The 'X' button besides it can only be clicked if you put the menu in deletion mode (you can test it out with the checkbox above). When you click the 'X' button, it will change color. Yellow means that the order has not been selected, red means that the order has been selected and will be deleted when you click the delete button").SetColor(colors.TextColor);
+    UI.CreateEmpty(vert).SetPreferredHeight(3);
+    UI.CreateLabel(vert).SetText("This menu also has a 'Edit' button. Here you can edit the contents of the order, in this case the units that will be purchased with this order").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    deleteButton = UI.CreateButton(vert).SetText("Delete").SetColor(colors.Red).SetInteractable(box.GetIsChecked());
+    UI.CreateLabel(vert).SetText("This is the delete button. When the menu is in deletion mode, this button can be interacted with to delete all selected orders. When the menu is in view mode, you cannot interact with this button as a precaution").SetColor(colors.TextColor);
+end
+
+function showHelpResourceExchangeOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Exchange Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the orders you have of a specific type. You can also remove orders if you don't want them, any resources you used will be returned.").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local box;
+    local text;
+    local deleteButton;
+    local xButton;
+    box = UI.CreateCheckBox(line).SetText(" ").SetIsChecked(false).SetOnValueChanged(function()
+        if box.GetIsChecked() then
+            text.SetText("Toggle to view mode")
+            deleteButton.SetInteractable(true);
+            xButton.SetInteractable(true);
+        else
+            text.SetText("Toggle to deletion mode")
+            deleteButton.SetInteractable(false);
+            xButton.SetInteractable(false);
+        end
+    end);
+    text = UI.CreateLabel(line).SetText("Toggle to deletion mode").SetColor(colors.TextColor);
+    UI.CreateLabel(vert).SetText("This is a dummy checkbox, but it shows what the real checkbox does. You can toggle yourself to view mode, which doesn't let you select or delete any orders, and deletion mode, which allows you to select orders that you want to delete and actually delete them").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    UI.CreateLabel(line).SetText(4).SetColor(colors.TextColor);
+    UI.CreateLabel(line).SetText(getResourceName(1)).SetColor(getResourceColor(1));
+    UI.CreateLabel(line).SetText("-->").SetColor(colors.TextColor);
+    UI.CreateLabel(line).SetText(1).SetColor(colors.TextColor);
+    UI.CreateLabel(line).SetText(getResourceName(2)).SetColor(getResourceColor(2));
+    xButton = UI.CreateButton(line).SetText("X").SetColor(colors.Yellow).SetInteractable(box.GetIsChecked()).SetOnClick(function()
+        if xButton.GetColor() == colors.Yellow then
+            xButton.SetColor(colors["Orange Red"]);
+        else
+            xButton.SetColor(colors.Yellow);
+        end
+    end);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. It will show you how many resources you are trading from 1 type to another type. The 'X' button besides it can only be clicked if you put the menu in deletion mode (you can test it out with the checkbox above). When you click the 'X' button, it will change color. Yellow means that the order has not been selected, red means that the order has been selected and will be deleted when you click the delete button").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    deleteButton = UI.CreateButton(vert).SetText("Delete").SetColor(colors.Red).SetInteractable(box.GetIsChecked());
+    UI.CreateLabel(vert).SetText("This is the delete button. When the menu is in deletion mode, this button can be interacted with to delete all selected orders. When the menu is in view mode, you cannot interact with this button as a precaution").SetColor(colors.TextColor);
+end
+
+function showHelpBuildVillageOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Build Village Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the build village orders you currently are planning. Once you click on the green 'Build' button in the bottom those orders will be added to the rest of the orders. If you want to build more villages, you can click other territories too to create an order for it. They will be added in the list to the list of planned orders you already have").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+        
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local terr
+    if BuildVillageOrderList and #BuildVillageOrderList > 0 then
+        terr = getFirstEntryOfTable(BuildVillageOrderList);
+    else
+        terr = getFirstEntryOfTable(Game.Map.Territories);
+    end
+    UI.CreateButton(line).SetText(getStringForButton(terr.Name, 20)).SetColor(colors.Blue).SetOnClick(function() 
+        Game.CreateLocatorCircle(terr.MiddlePointX, terr.MiddlePointY);
+        Game.HighlightTerritories({terr.ID});
+    end);
+    xButton = UI.CreateButton(line).SetText("X").SetColor(colors["Orange Red"]);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. The blue button indicates on which territory you're building a village. You can click this button to locate the territory again. The 'X' button will remove the planned order, and add the cost of this order back to your resources").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    UI.CreateButton(line).SetText("Build").SetColor(colors.Green);
+    UI.CreateButton(line).SetText("Cancel").SetColor(colors.Red);
+    UI.CreateLabel(vert).SetText("To submit your orders, you can interact with the 'Build' button. Interacting with the 'Cancel' button will remove all planned orders and bring you to the main menu").SetColor(colors.TextColor);
+end
+
+function showHelpUpgradeVillageOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Upgrade Village Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the upgrade village orders you currently are planning. Once you click on the green 'Upgrade' button in the bottom those orders will be added to the rest of the orders. If you want to upgrade more villages, you can click other territories too to create an order for it. They will be added in the list to the list of planned orders you already have").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+        
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local terr;
+    if UpgradeVillageOrderList and #UpgradeVillageOrderList > 0 then
+        terr = getFirstEntryOfTable(UpgradeVillageOrderList);
+    else
+        terr = getFirstEntryOfTable(Game.Map.Territories);
+    end
+    UI.CreateButton(line).SetText(getStringForButton(terr.Name, 20)).SetColor(colors.Blue).SetOnClick(function() 
+        Game.CreateLocatorCircle(terr.MiddlePointX, terr.MiddlePointY);
+        Game.HighlightTerritories({terr.ID});
+    end);
+    xButton = UI.CreateButton(line).SetText("X").SetColor(colors["Orange Red"]);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. The blue button indicates on which territory you're upgrading a village. You can click this button to locate the territory again. The 'X' button will remove the planned order, and add the cost of this order back to your resources").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    UI.CreateButton(line).SetText("Upgrade").SetColor(colors.Green);
+    UI.CreateButton(line).SetText("Cancel").SetColor(colors.Red);
+    UI.CreateLabel(vert).SetText("To submit your orders, you can interact with the 'Upgrade' button. Interacting with the 'Cancel' button will remove all planned orders and bring you to the main menu").SetColor(colors.TextColor);
+end
+
+function showHelpBuildArmyCampOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Build Army Camp Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the build army camp orders you currently are planning. Once you click on the green 'Build' button in the bottom those orders will be added to the rest of the orders. If you want to build more army camps, you can click other territories too to create an order for it. They will be added in the list to the list of planned orders you already have").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local terr;
+    if BuildArmyCampOrderList and #BuildArmyCampOrderList > 0 then
+        terr = getFirstEntryOfTable(BuildArmyCampOrderList);
+    else
+        terr = getFirstEntryOfTable(Game.Map.Territories);
+    end
+    UI.CreateButton(line).SetText(getStringForButton(terr.Name, 20)).SetColor(colors.Blue).SetOnClick(function() 
+        Game.CreateLocatorCircle(terr.MiddlePointX, terr.MiddlePointY);
+        Game.HighlightTerritories({terr.ID});
+    end);
+    xButton = UI.CreateButton(line).SetText("X").SetColor(colors["Orange Red"]);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. The blue button indicates on which territory you're building an army camp. You can click this button to locate the territory again. The 'X' button will remove the planned order, and add the cost of this order back to your resources").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    UI.CreateButton(line).SetText("Build").SetColor(colors.Green);
+    UI.CreateButton(line).SetText("Cancel").SetColor(colors.Red);
+    UI.CreateLabel(vert).SetText("To submit your orders, you can interact with the 'Build' button. Interacting with the 'Cancel' button will remove all planned orders and bring you to the main menu").SetColor(colors.TextColor);
+end
+
+function showHelpPurchaseUnits(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Purchase Units Order").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("This window allows you to choose which units you want to purchase. If you haven't researched units yet then they are locked and cannot be added to the order.").SetColor(colors.TextColor);
+        
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    orderCopy = {};
+    for name, unit in pairs(getArmyCampUnits()) do
+        orderCopy[unit] = 0;
+        if hasUnlockedUnit(Mod.PlayerGameData.Modifiers, unit) then
+            local recipe = getUnitRecipe(Mod.PlayerGameData.Modifiers, unit);
+            local valueLabel;
+            local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+            UI.CreateButton(line).SetText("-").SetColor(colors.Red).SetOnClick(function()
+                if orderCopy[unit] > 0 then
+                    orderCopy[unit] = orderCopy[unit] - 1;
+                else
+                    orderCopy[unit] = math.min(getUnitPurchaseLimit(Mod.PlayerGameData.Modifiers, unit), getMaxRecipeUse(recipe, Resources));
+                end
+                valueLabel.SetText(orderCopy[unit]);
+            end);
+            UI.CreateButton(line).SetText("+").SetColor(colors.Green).SetOnClick(function()
+                if orderCopy[unit] < getUnitPurchaseLimit(Mod.PlayerGameData.Modifiers, unit) and hasEnoughResources(recipe, Resources) then
+                    orderCopy[unit] = orderCopy[unit] + 1;
+                else
+                    orderCopy[unit] = 0;
+                end
+                valueLabel.SetText(orderCopy[unit]);
+            end);
+            valueLabel = UI.CreateLabel(line).SetText(orderCopy[unit]).SetColor(colors.Peach);
+            UI.CreateLabel(line).SetText(name).SetColor(colors.TextColor);
+        else
+            local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+            UI.CreateButton(line).SetText("-").SetColor(colors.Red).SetInteractable(false);
+            UI.CreateButton(line).SetText("+").SetColor(colors.Green).SetInteractable(false);
+            UI.CreateLabel(line).SetText("Locked").SetColor(colors.TextColor);
+        end
+    end
+    
+    UI.CreateLabel(vert).SetText("This is what you what you see in the menu. With the '-' button you can remove 1 of that unit type from your order or, when the number of units is 0, add the maximum you are allowed to the order. With the '+' button, you can add 1 of that unit type to the order or, if you reached the maximum number, set the number of armies to 0").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(0.45);
+    UI.CreateButton(line).SetText("Add order").SetColor(colors.Green);
+    UI.CreateEmpty(line).SetFlexibleWidth(0.1);
+    UI.CreateButton(line).SetText("Cancel").SetColor(colors["Orange Red"]);
+    UI.CreateEmpty(line).SetFlexibleWidth(0.45);
+
+    UI.CreateLabel(vert).SetText("With the green 'Add order' button you will finalize the order. Pressing the red 'Cancel' button will stop cancel any modifications you made to the order, or remove the order if it is a new order.").SetColor(colors.TextColor);
+end
+
+function showHelpPurchaseUnitsOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Purchase Units Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the purchase units orders you currently are planning. Once you click on the green 'Send' button in the bottom those orders will be added to the rest of the orders. If you want to purchase more units, you can click other territories with an army camp to create an order for it. They will be added in the list to the list of planned orders you already have").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local order;
+    if PurchaseUnitsOrders and #PurchaseUnitsOrders > 0 then
+        order = getFirstEntryOfTable(PurchaseUnitsOrders);
+    else
+        order = {TerritoryID = getFirstEntryOfTable(Game.Map.Territories).ID, Units = {[Catan.UnitType.Infantry] = 2}};
+    end
+    local terr = Game.Map.Territories[order.TerritoryID];
+    UI.CreateButton(line).SetText(getStringForButton(terr.Name, 10) .. ": " .. getTotalUnitCount(order.Units) .. " units").SetColor(colors.Blue).SetOnClick(function() 
+        Game.CreateLocatorCircle(terr.MiddlePointX, terr.MiddlePointY);
+        Game.HighlightTerritories({terr.ID});
+    end);
+    UI.CreateButton(line).SetText("Edit").SetColor(colors.Yellow);
+    UI.CreateButton(line).SetText("X").SetColor(colors["Orange Red"]);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. The blue button indicates on which territory you're purchasing units and how many units in total. You can click this button to locate the territory again. If you want to edit the units that will be purchased or just take a look at them, you can click the yellow 'Edit' button. If you make any modifications and save them, this order will also change. Cancelling will also cancel any modification you make. The 'X' button will remove the planned order, and add the cost of this order back to your resources").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    UI.CreateButton(line).SetText("Send").SetColor(colors.Green);
+    UI.CreateButton(line).SetText("Cancel").SetColor(colors.Red);
+    UI.CreateLabel(vert).SetText("To submit your orders, you can interact with the 'Send' button. Interacting with the 'Cancel' button will remove all planned orders and bring you to the main menu").SetColor(colors.TextColor);
+end
+
+function showHelpSplitUnitOrders(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Split Unit Orders").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can see all the split unit orders you currently are planning. Once you click on the green 'Send' button in the bottom those orders will be added to the rest of the orders. If you want to split more units, you can click other territories with an army camp to create an order for it. They will be added in the list to the list of planned orders you already have").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    local order;
+    if SplitUnitOrders and #SplitUnitOrders > 0 then
+        order = getFirstEntryOfTable(SplitUnitOrders);
+    else
+        order = {TerritoryID = getFirstEntryOfTable(Game.Map.Territories).ID, SplitPercentage = 0.2, UnitType = Catan.UnitType.Infantry};
+    end
+    local terr = Game.Map.Territories[order.TerritoryID];
+    UI.CreateButton(line).SetText(getStringForButton(round(order.SplitPercentage * 100, 2) .. "%, " .. getUnitNameByType(order.UnitType) .. ", " .. terr.Name, 25)).SetColor(colors.Blue).SetOnClick(function() 
+        Game.CreateLocatorCircle(terr.MiddlePointX, terr.MiddlePointY);
+        Game.HighlightTerritories({terr.ID});
+    end);
+    UI.CreateButton(line).SetText("X").SetColor(colors["Orange Red"]);
+    UI.CreateLabel(vert).SetText("This is an example of how a 'line' looks like. The blue button indicates on which territory you're splitting a unit, the percentage that will be split off from the stack, and what unit. You can click this button to locate the territory again. The 'X' button will remove the planned order, and add the cost of this order back to your resources").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    UI.CreateButton(line).SetText("Send").SetColor(colors.Green);
+    UI.CreateButton(line).SetText("Cancel").SetColor(colors.Red);
+    UI.CreateLabel(vert).SetText("To submit your orders, you can interact with the 'Send' button. Interacting with the 'Cancel' button will remove all planned orders and bring you to the main menu").SetColor(colors.TextColor);
+end
+
+function showHelpExchangeOrder(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Exchange Resources Menu").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu you can exchange resources with the 'bank'. The bank will exchange a certain amount of a resource, for another resource of choice. Depending on the research tree, you might be able to improve the rates of which you exchange resources with the bank").SetColor(colors.TextColor);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+
+    local res = Catan.Resources[1];
+    line = UI.CreateHorizontalLayoutGroup(vert);
+    UI.CreateLabel(line).SetText(getResourceName(res)).SetColor(getResourceColor(res)).SetPreferredWidth(100);
+    UI.CreateButton(line).SetText(getExchangeRateOfPlayer(Mod.PlayerGameData.Modifiers)[res] .. " to 1").SetColor(getResourceColor(res));
+
+    UI.CreateLabel(vert).SetText("This is for example how a 'line' looks like. It tells you which resource has which exchange rates (shown in the button). When interacted with the button, you'll be taken to the next menu, where you have to select what resources and how many of that resource you want. The button will only be interactable if you have enough resources for at least 1 exchange").SetColor(colors.TextColor);
+end
+
+function showHelpExchangeWithBank(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Exchange Resource").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("Here you can select which resources you want to receive. In the previous window you select which resource you will be exchanging, with the button you can select this resource. The number input can be used to modify the number of exchanges you want to make. Note that the cost will also go up if you choose to get more resources.").SetColor(colors.TextColor);
+    UI.CreateEmpty(vert).SetPreferredHeight(3);
+    UI.CreateLabel(vert).SetText("You chose to exchange " .. getResourceName(ExchangeWithBank.ExchangeResourceFrom) .. " with a exchange rate of " .. ExchangeWithBank.Rate .. " to 1. If you wish to receive 2 resources of choice, the cost will also be doubled, so you'll have to give " .. ExchangeWithBank.Rate * 2 .. " " .. getResourceName(ExchangeWithBank.ExchangeResourceFrom)).SetColor(colors.TextColor);
+end
+
+function showHelpSelectResource(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Select Resource").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);
+    
+    UI.CreateLabel(vert).SetText("In this menu, you are asked to select a resource. You can pick any resource by clicking the corresponding button in the list. If a resource in not in the list, you either are not allowed to select that resource or cannot afford it.").SetColor(colors.TextColor);
+end
+
+function showHelpTechTree(vert)
+    local line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    UI.CreateLabel(line).SetText("Available Researches").SetColor(colors.Orange);
+    UI.CreateEmpty(line).SetFlexibleWidth(1);
+    
+    UI.CreateEmpty(vert).SetPreferredHeight(10);  
+    
+    UI.CreateLabel(vert).SetText("This menu shows you all the available resources of a tech tree you can research. Researches are ordered by their cost, the more a research cost, the lower the research is in the list.").SetColor(colors.TextColor);
+    UI.CreateEmpty(vert).SetPreferredHeight(3);  
+    UI.CreateLabel(vert).SetText("Researched are also ordered whether they are located in a loop or not. It is important to notice that researches in a loop will not necessarily unlock new and better researches.").SetColor(colors.TextColor);
+    UI.CreateEmpty(vert).SetPreferredHeight(3);
+    UI.CreateLabel(vert).SetText("The menu also can also open the whole research tree. This tree will show you which research is located where, and thus also what researches you have to research to unlock specific researches you might desperately want.").SetColor(colors.TextColor);
+end
+
+
+--#endregion Help dialogs
 --#region Utility functions
 
 
@@ -1896,6 +2388,9 @@ end
 
 function reopenResourceWindow()
     Game.SendGameCustomMessage("Updating...", {Command = "UpdateClient"}, serverCallback);
+    if not Mod.PlayerGameData.Settings.AutoOpenResourceWindow and not resourceWindowIsOpen() then
+        Game.CreateDialog(CreateResourcesWindow);
+    end
 end
 
 function getTerritoryIDs(list)
@@ -2000,4 +2495,32 @@ end
 
 function compareTwoResearchCosts(v1, v2)
     return (countTotalResources(v1.Research.FixedCost) + v1.Research.FreeCost) < (countTotalResources(v2.Research.FixedCost) + v2.Research.FreeCost);
+end
+
+function conditionsMet(callback, func, conditions)
+    for _, cond in ipairs(conditions) do
+        if not cond.IsMet then
+            callback(func, cond.Message);
+            return false;
+        end
+    end
+    return true;
+end
+
+function createCondition(b, m)
+    return {
+        IsMet = b,
+        Message = m
+    }
+end
+
+function updateGlobalVariables(game)
+    Game = game;
+    territories = game.LatestStanding.Territories;
+end
+
+function getFirstEntryOfTable(t)
+    for _, v in pairs(t) do
+        return v;
+    end
 end
