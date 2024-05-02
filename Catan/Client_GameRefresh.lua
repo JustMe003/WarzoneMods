@@ -14,7 +14,7 @@ function Client_GameRefresh(game);
 
         if LastRecordedTurn ~= nil and game.Game.TurnNumber < LastRecordedTurn then
             LastRecordedTurn = game.Game.TurnNumber;
-            if not resourceWindowIsOpen() and Mod.PlayerGameData.Settings.AutoOpenResourceWindow then
+            if not resourceWindowIsOpen() and Mod.PlayerGameData.Settings and Mod.PlayerGameData.Settings.AutoOpenResourceWindow then
                 -- Create window automatically if closed
                 game.CreateDialog(CreateResourcesWindow);
             elseif resourceWindowIsOpen() then
@@ -27,7 +27,7 @@ function Client_GameRefresh(game);
             end
         elseif game.Game.TurnNumber > 0 then
             LastRecordedTurn = game.Game.TurnNumber;
-            if not resourceWindowIsOpen() and Mod.PlayerGameData.Settings.AutoOpenResourceWindow then
+            if not resourceWindowIsOpen() and Mod.PlayerGameData.Settings and Mod.PlayerGameData.Settings.AutoOpenResourceWindow then
                 game.CreateDialog(CreateResourcesWindow);
             elseif resourceWindowIsOpen() then
                 updateLabels();
@@ -305,7 +305,7 @@ function createPlayerSettingsDialog(rootParent, setMaxSize, setScrollable, game,
     
     line = UI.CreateHorizontalLayoutGroup(vert);
     local unusedUnitsWarn = UI.CreateCheckBox(line).SetIsChecked(Mod.PlayerGameData.Settings.UnusedUnitsWarning).SetText(" ");
-    UI.CreateLabel(line).SetText("Warn me when I commit my orders, but did not move some units").SetColor(TEXTCOLOR);
+    UI.CreateLabel(line).SetText("Warn me when I commit my orders, but did not move some units\nComing soon...").SetColor(TEXTCOLOR);
 
     UI.CreateEmpty(vert).SetPreferredHeight(10);
 

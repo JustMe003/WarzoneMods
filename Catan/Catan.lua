@@ -1994,8 +1994,8 @@ function setResourcesTable(players, data)
     for playerID, _ in pairs(players) do
         data[playerID] = {};
         local t = {};
-        -- local recipe = multiplyRecipe(getRecipe(Catan.Recipes.Village), 2);
-        local recipe = {1000, 1000, 1000, 1000, 1000};
+        local recipe = multiplyRecipe(getRecipe(Catan.Recipes.Village), 2);
+        -- local recipe = {1000, 1000, 1000, 1000, 1000};
         for _, resource in ipairs(Catan.Resources) do
             t[resource] = recipe[resource];
         end
@@ -2181,7 +2181,7 @@ function createInfantryUnit(modifiers, playerID, count)
     count = count or 1
     local builder = WL.CustomSpecialUnitBuilder.Create(playerID);
     builder.Name = math.ceil(count) .. " Infantry";
-    builder.TextOverHeadOpt = math.ceil(count);
+    builder.TextOverHeadOpt = round(math.ceil(count));
     builder.IncludeABeforeName = false;
     builder.ImageFilename = "infantry.png";
     builder.AttackPower = round(getUnitAttackPowerModifier(modifiers, Catan.UnitType.Infantry) * count);
