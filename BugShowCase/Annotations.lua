@@ -1,3 +1,9 @@
+---@class ProxyObject # Proxy object class
+---@field proxyType string # The proxy type
+---@field readonly true # Set to true if the object is readonly
+---@field readableKeys string[] # The readable keys on this object
+---@field writableKeys string[] # The writable keys on this object
+
 ---@class Game # The root component containing all the data of the game
 ---@field Map MapDetails # The root component of the map details
 ---@field Settings GameSettings # Table containing all the game settings
@@ -10,7 +16,7 @@
 ---@field GetStanding fun(turn: integer, callback: fun(standing: GameStanding | nil)) # Pass the turn number and a callback function to retrieve the a GameStanding
 ---@field GetTurn fun(turn: integer, callback: fun(gameTurn: GameTurn | nil)) # Used to retrieve a GameTurn of a specific turn, pass the turn number and a callback function that takes a GameTurn as argument
 ---@field Orders GameOrder[] # The order list of the player. Can add, remove and modify any game order
----@field CreateDialog fun(rootParent: RootParent, setMaxSize: fun(width: number, height: number), setScrollable: fun(horizontallyScrollable: boolean, verticallyScrollable: boolean), game: GameClientHook, close: fun()) # Used to create a dialog, arguments are the same arguments that are passed to the Client_PresentMenuUI hook
+---@field CreateDialog fun(callback: fun(rootParent: RootParent, setMaxSize: fun(width: number, height: number), setScrollable: fun(horizontallyScrollable: boolean, verticallyScrollable: boolean), game: GameClientHook, close: fun())) # Used to create a dialog, arguments are the same arguments that are passed to the Client_PresentMenuUI hook
 ---@field SendGameCustomMessage fun(waitText: string, payload: table, callback: fun(t: table)) # Used to send updates to the server. Note that it is limited to 5 calls every 5 seconds
 ---@field HighlightTerritories fun(array: TerritoryID[]) # Used to highlight territories on the map, pass the territoryIDs in an array
 ---@field CreateLocatorCircle fun(XCoordinate: number, YCoordinate: number) # Pass the X and Y coordinate to create a locater circle on that location
@@ -44,7 +50,7 @@
 ---@field TakingOverForAI boolean # True if the player takes over from the AI that has taken its place
 ---@field TurningIntoAI boolean # True if the player turns into an AI
 
----@class GamePlayer # Table containing the data of a player in the game
+---@class GamePlayer: ProxyObject # Table containing the data of a player in the game
 ---@field AIPlayerID PlayerID | nil # The PlayerID of the AI player
 ---@field AutopilotUsedForNLCFirstTurn boolean # True if the player used AutoPilot for the first turn in a No Luck Cyclic game
 ---@field BegunFirstTurn DateTime | nil # The DateTime of the time that the player begun their first turn
@@ -63,6 +69,8 @@
 ---@field IsAI boolean # True if the player is an AI player added to the game by the game creator
 ---@field IsAIOrHumanTurnedIntoAI boolean # True if the player is an AI player, is true if HumanTurnedIntoAI or IsAI is true
 ---@field LastGameSpeed TimeSpan # The TimeSpan of the speed of the last game
+---@field MutePublicChate boolean # True if the player has muted public chat, false otherwise
+---@field MuteTeamChate boolean # True if the player has muted team chat, false otherwise
 ---@field OrdersRevision integer # Not documented
 ---@field PlayerID PlayerID | nil # The PlayerID of this player
 ---@field PlayersAcceptedMySurrender table<PlayerID, DateTime> # Table containing the PlayerIDs and DateTimes of the players who accepted this player surrender
@@ -88,7 +96,7 @@
 ---@field FreeArmies integer # The number of armies that can be deployed anywhere
 ---@field Total integer # The total amount of income
 
----@class GameWL # Public data about the game
+---@class GameWL: ProxyObject # Public data about the game
 ---@field CanBeExportedToYouTube boolean # Set to true if the game can be exported to YouTube
 ---@field ID GameID # Identifies the game
 ---@field IsUnevenTeamGame boolean # True if the game uses uneven teams
@@ -111,27 +119,30 @@
 ---@field ActiveCards ActiveCard[] # The active cards in this standing
 ---@field Cards table<PlayerID, PlayerCards> # Table containing all the cards of each player
 ---@field Territories table<TerritoryID, TerritoryStanding> # Table containing all the TerritoryStandings, identified by the TerritoryID
+---@field Resources table<PlayerID, table<EnumResourceType, integer>> # Table containing the resources of each player
+---@field IncomeMods IncomeMod[] # Array containing all the income modifications made last turn
 ---@field NumResources fun(playerID: PlayerID, type: EnumResourceType): integer # Returns the amount of this resource type a player has
 
----@class TerritoryStanding # Territory standing
+---@class TerritoryStanding: ProxyObject # Territory standing
 ---@field FogLevel EnumStandingFogLevel # How visible the territory is. Note that on the server side this will always be fully visible
 ---@field ID TerritoryID # Identifier of the territory
 ---@field IsNeutral boolean # Set to true if the owner is `WL.PlayerID.Neutral`
 ---@field NumArmies Armies # The Armies that are on this territory
 ---@field OwnerPlayerID PlayerID # The PlayerID that owns this territory
----@field Structures table<EnumStructureType, integer> # Table containing which structures and with what amount are on this territory
+---@field Structures table<EnumStructureType, integer> | nil # Table containing which structures and with what amount are on this territory
 
----@class Armies # The data about the armies
+---@class Armies: ProxyObject # The data about the armies
 ---@field ArmiesOrZero integer # The number of armies on this territory, is 0 if the territory is fogged
 ---@field AttackPower integer # The total attacking power of the entire Armies object
 ---@field DefensePower integer # The total defending power of the entire Armies object
 ---@field Fogged boolean # True when the client cannot see the Armies object
 ---@field IsEmpty boolean # True if the Armies object has 0 armies and has 0 special units
+---@field NumArmies integer # The number of normal armies in this object
 ---@field SpecialUnits SpecialUnit[] # Array containing all the special units in this Armies object
 ---@field Add fun(armies: Armies): Armies # Combines the 2 Armies object and returns the result. A new Armies object is created and returned
 ---@field Subtract fun(armies: Armies): Armies # Combines the 2 Armies object and returns the result. A new Armies object is created and returned
 
----@class SpecialUnit # Special unit
+---@class SpecialUnit: ProxyObject # Special unit
 ---@field ID GUID # Identifier of the special unit
 ---@field OwnerID PlayerID # The owner of the special unit
 
@@ -157,7 +168,7 @@
 ---@field Power integer # The power of this unit
 ---@field CombatOrder `4004` # The CombatOrder of the unit
 
----@class CustomSpecialUnitClass # Custom special unit fields
+---@class CustomSpecialUnitClass: ProxyObject # Custom special unit fields
 ---@field AttackPower integer # The number it adds to the total attack power of the Armies object it is part of
 ---@field AttackPowerPercentage number # Attacks that include this unit have their power multiplied by this number. `1.0` means nothing happens, `2.0` means that the power is doubled (+100%) and `0.5` means the power if halved (-50%)
 ---@field CanBeAirliftedToSelf boolean # If true this unit can be airlifted from and to a territory that is owned by the player who also owns this unit
@@ -186,7 +197,7 @@
 ---@field TurnNumber integer # The number of the turn
 ---@field TurnTime DateTime # The DateTime of when the turn happened
 
----@class GameOrder # Base class of all orders
+---@class GameOrder: ProxyObject # Base class of all orders
 ---@field OccursInPhase EnumTurnPhase | nil # The phase in which the order will be played. Note that orders added in the `Server_AdvanceTurn_*` hook are played immediately, ignoring this field
 ---@field PlayerID PlayerID # The ID of the player to whom this order belongs to
 ---@field ResultObj GameOrderResult # The result object of the order
@@ -370,7 +381,7 @@
 ---@field AddStructuresOpt table<EnumStructureType, integer> # Adds or removes the amount of structures on this territory
 ---@field RemoveSpecialUnitsOpt HashSet<GUID> # The units that will be removed from this territory
 
----@class IncomeMod # An income modification
+---@class IncomeMod: ProxyObject # An income modification
 ---@field Message string # The string that will be displayed in the income breakdown menu
 ---@field Mod integer # The amount of income added or removed
 ---@field PlayerID PlayerID # The ID of the player of which this income modification is
@@ -382,18 +393,18 @@
 ---@field Right number # The coordinate of the right side
 ---@field Top number # The coordinate of the top side
 
----@class ActiveCard # Active card
+---@class ActiveCard: ProxyObject # Active card
 ---@field Card GameOrderPlayCard # The order that made the card active
 ---@field ExpiresAfterTurn integer # The turn number after the card will expire
 ---@field ExpiresAfterTurnForDisplay integer # The turn number after the card will expire that will be displayed
 
----@class PlayerCards # Cards data owned by a player
+---@class PlayerCards: ProxyObject # Cards data owned by a player
 ---@field ID PlayerID # The PlayerID
 ---@field Pieces table<CardID, integer> # The number of card pieces (full cards not counted) the player owns
 ---@field PlayerID PlayerID # The PlayerID
 ---@field WholeCards table<CardInstanceID, CardInstance> # Table with all the whole cards that the player owns
 
----@class CardInstance # Instance of an actual card that is playable with an GameOrderPlayCard
+---@class CardInstance: ProxyObject # Instance of an actual card that is playable with an GameOrderPlayCard
 ---@field CardID CardID # The CardID of the instance
 ---@field ID CardInstanceID # The CardInstanceID of the instance
 
@@ -402,7 +413,7 @@
 ---@class ReinforcementCardInstance: CardInstance # Used for creating a card instance for a reinforcement card
 ---@field Armies integer # The amount of armies this card gives
 
----@class GameColor # The GameColor
+---@class GameColor: ProxyObject # The GameColor
 ---@field A integer # Alpha (opacity, RGBA) value of the color
 ---@field B integer # Blue (RGBA) value of the color
 ---@field G integer # Green (RGBA) value of the color
@@ -419,7 +430,7 @@
 ---@field Slot Slot | nil # The Slot that the player who takes this open seat will occupy
 ---@field Team TeamID # The TeamID of the team that the player who takes this open seat will be part of
 
----@class MapDetails # The root component containing all the map details of the map the game is being played on
+---@class MapDetails: ProxyObject # The root component containing all the map details of the map the game is being played on
 ---@field Bonuses table<BonusID, BonusDetails> # Table containing all the BonusDetails of the map, indexed by BonusID
 ---@field CreatedOn DateTime # The DateTime of when the map was created
 ---@field DefaultDistributionMode DistributionID # The default distribution mode set by the map creator
@@ -429,6 +440,8 @@
 ---@field ID MapID # The identifier used to identify this map
 ---@field LastModified DateTime # The DateTime of when the map was last modified
 ---@field Territories table<TerritoryID, TerritoryDetails> # Table containing all the TerritoryDetails of the map, indexed by TerritoryID
+---@field IsBigMapFor3d boolean # Not documented
+---@field OverrideIsBigMapFor3d boolean | nil # Not documented
 
 ---@class GameSettings # Table containing all the game settings of this game
 ---@field AIsSurrenderWhenOneHumanRemains boolean # If true, AIs surrender when there's only 1 human left
@@ -512,7 +525,7 @@
 ---@field VoteBootTime TimeSpan # Not documented
 ---@field WastelandSize integer # The amount of armies on a wasteland territory at the start of the game
 
----@class BonusDetails # Table containing the details of a bonus
+---@class BonusDetails: ProxyObject # Table containing the details of a bonus
 ---@field Amount integer # The default amount of armies the bonus will give when fully controlled by one player
 ---@field Color integer[] # The color codes in which the bonus is shows on the map
 ---@field ID BonusID # The identifier used to identify this bonus
@@ -524,18 +537,20 @@
 ---@field ID DistributionID # The identifier used to identify this distribution
 ---@field Name string # The name of the distribution
 
----@class MapFamily # A collection that represents all versions of a single map
+---@class MapFamily: ProxyObject # A collection that represents all versions of a single map
 ---@field Category MapCategory # The category under which this map can be found
 ---@field CreatedBy PlayerID # The PlayerID of the player who created the MapFamily
 ---@field CreatedOn DateTime # The DateTime of when the MapFamily was created
 ---@field DateMadePublic DateTime | nil # The DateTime of when the MapFamily was made public or nil of the MapFamily is not public
+---@field DateLastCleaned DateTime | nil # Not documented
 ---@field Description string # The description of the MapFamily
 ---@field ID MapFamilyID # The identifier used to identify this MapFamily
 ---@field LastModified DateTime # The DateTime of when the map was last modified
 ---@field Name string # The name of the map
+---@field Tags string[] | nil # The tags of the map
 ---@field UnlockLevel integer # The level of which a player must be to unluck this map
 
----@class TerritoryDetails # Table containing the details of a territory
+---@class TerritoryDetails: ProxyObject # Table containing the details of a territory
 ---@field ConnectedTo table<TerritoryID, TerritoryConnection> # Table containing all the territories and connection types that are connected to this territory
 ---@field ID TerritoryID # The identifier used to identify this territory
 ---@field MiddlePointX number # The X coordinate of where on on the map this territory is
@@ -543,7 +558,7 @@
 ---@field Name string # The name of the territory
 ---@field PartOfBonuses BonusID[] # Array containing all the bonuses this territory is part of
 
----@class TerritoryConnection # Table containing the connection data
+---@class TerritoryConnection: ProxyObject # Table containing the connection data
 ---@field ID TerritoryID # The TerritoryID which is connected with this connection
 ---@field Wrap EnumTerritoryConnectionWrap # The enum type of connection
 
@@ -1031,8 +1046,8 @@
 ---@field GetOnValueChanged fun(): fun() # Get the function that will be invoked when the client or mod changes the state of the checkbox
 
 ---@class TextInputField: UIObject, TextUIObject, InteractableUIObject # A container used for getting string inputs
----@field SetPlaceHolderText fun(text: string): TextInputField # Set the text that will be displayed when the text field is empty
----@field GetPlaceHolderText fun(): string # Get the text that will be displayed when the text field is empty
+---@field SetPlaceholderText fun(text: string): TextInputField # Set the text that will be displayed when the text field is empty
+---@field GetPlaceholderText fun(): string # Get the text that will be displayed when the text field is empty
 ---@field SetCharacterLimit fun(limit: integer): TextInputField # Set the limit of characters the client can input
 ---@field GetCharacterLimit fun(): integer # Get the character limit that the client can input
 
