@@ -1,0 +1,2 @@
+This mod allows the game creator to add or remove gold of specific slots when the game starts. Each slot can be configured independently of other slots, and it doesn't matter whether the slot is actually used or in the custom scenario.
+For this mod to have any effect, players must be assigned a slot in a custom scenario and the game must have the Commerce setting enabled.
