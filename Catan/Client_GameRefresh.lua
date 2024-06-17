@@ -206,6 +206,7 @@ function TripleTerrClickInterceptor(game, terrDetails)
         if TerrClickCount > 2 then
             print(UI);
             print(UI.IsDestroyed);
+            print(UI.CreateLabel);
             if UI == nil or UI.IsDestroyed == nil then return; end
             TerrClickCount = 0;
             if UI.IsDestroyed(RootTerritoryInfoDialog) then
