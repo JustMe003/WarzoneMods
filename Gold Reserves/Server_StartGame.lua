@@ -13,7 +13,7 @@ function Server_StartGame(game, standing)
             for i, v in pairs(res[player.ID]) do
                 t[i] = v;
             end
-            t[WL.ResourceType.Gold] = (t[WL.ResourceType.Gold] or 0) + Mod.Settings.Config[player.Slot];
+            t[WL.ResourceType.Gold] = math.max((t[WL.ResourceType.Gold] or 0) + Mod.Settings.Config[player.Slot], 0);
             res[player.ID] = t;
         end
     end
