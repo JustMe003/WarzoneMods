@@ -27,7 +27,7 @@ function showMainSettings()
     for _, artillery in pairs(Mod.Settings.Artillery) do
         line = CreateHorz(root).SetFlexibleWidth(1);
         CreateEmpty(line).SetFlexibleWidth(0.5);
-        CreateButton(line).SetText(artillery.Name).SetColor(artillery.Color).SetOnClick(function() showArtillerySettings(artillery, false, showMain); end);
+        CreateButton(line).SetText(artillery.Name).SetColor(artillery.Color).SetOnClick(function() showArtillerySettings(artillery, false, showMainSettings); end);
         CreateEmpty(line).SetFlexibleWidth(0.5);
     end
     CreateEmpty(root).SetPreferredHeight(5);
@@ -50,7 +50,7 @@ function showArtillerySettings(artillery, showAll, returnFunction)
         DestroyWindow();
         SetWindow("artilleryMain" .. artillery.ID);
 
-        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(returnFunction);
+        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(returnFunction or (function() end));
     end
     showAll = true;
 
