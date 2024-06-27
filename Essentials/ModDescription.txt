@@ -1,0 +1,5 @@
+This mod adds some essential stuff such as:
+- Special unit inspector
+- Distribute relevant links to all players
+- Access to Mod Manuals
+- And more!
