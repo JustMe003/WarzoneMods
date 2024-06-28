@@ -9,6 +9,10 @@ require("UI");
 ---@param game GameClientHook
 ---@param close fun() # Zero parameter function that closes the dialog
 function Client_PresentCommercePurchaseUI(rootParent, game, close)
+    if game.Us == nil then 
+        UI.Alert("You cannot use the Artillery Strike 2 mod if you're not in the game");
+        return;
+    end
     Init(rootParent);
     local vert = CreateVert(rootParent);
     PurchaseMenuClose = close;
@@ -34,8 +38,13 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
             CreateLabel(line).SetText("This artillery cannot be bought");
         end
         CreateButton(line).SetText("?").SetColor("#23A0FF").SetOnClick(function()
+            for win, _ in pairs(windows_JAD) do
+                if win ~= rootParent.id then
+                    windows_JAD[win] = nil;
+                end
+            end
             game.CreateDialog(function(rootPar, size, scroll, game, closeSettings)
-                root  = UI.CreateVerticalLayoutGroup(rootPar).SetFlexibleWidth(1);
+                root = UI.CreateVerticalLayoutGroup(rootPar).SetFlexibleWidth(1);
                 size(400, 400);
                 showArtillerySettings(art, true, function() closeSettings(); end);
             end)

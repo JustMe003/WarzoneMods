@@ -80,6 +80,10 @@ function AddObjectToWindowAndReturnObject(obj)
 	return obj;
 end
 
+function WindowExists(win)
+	return windows_JAD[win] ~= nil;
+end
+
 function DestroyWindow(win, bool)
 	win = win or currentWindow_JAD;
 	bool = bool or false;

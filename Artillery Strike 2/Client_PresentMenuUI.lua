@@ -2,6 +2,7 @@ require("Annotations");
 require("UI");
 require("Util");
 require("DataConverter");
+require("Client_PresentSettingsUI");
 
 ---Client_PresentMenuUI hook
 ---@param rootParent RootParent
@@ -10,6 +11,11 @@ require("DataConverter");
 ---@param game GameClientHook
 ---@param close fun() # Zero parameter function that closes the dialog
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, art)
+    if game.Us == nil then
+        close();
+        UI.Alert("You cannot use this mod if you're a spectator");
+        return;
+    end
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
     colors = GetColors();
@@ -230,7 +236,15 @@ function chooseArtillery()
         else
             CreateLabel(line).SetText("This artillery cannot be bought").SetColor(colors.TextColor);
         end
-        UI.CreateButton(line).SetText("?").SetColor("#23A0FF").SetOnClick(function() end);
+        UI.CreateButton(line).SetText("?").SetColor("#23A0FF").SetOnClick(function()
+            Game.CreateDialog(function(rootPar, size, scroll, game, closeSettings)
+                local oldRoot = root;
+                root = UI.CreateVerticalLayoutGroup(rootPar).SetFlexibleWidth(1);
+                size(400, 400);
+                showArtillerySettings(art, true, function() closeSettings(); end);
+                root = oldRoot;
+            end)
+        end);
     end
 end
 

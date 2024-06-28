@@ -93,7 +93,9 @@ end
 function showGeneralSettings(artillery, root)
     local win = "generalSettings" .. artillery.ID;
     local parent = GetCurrentWindow();
-    DestroyWindow(win, false);
+    if WindowExists(win) then
+        DestroyWindow(win, false);
+    end
     AddSubWindow(parent, win);
     SetWindow(win);
     
@@ -125,8 +127,10 @@ end
 function showHealthAndDamage(artillery, root)
     local win = "healthAndDamage" .. artillery.ID;
     local parent = GetCurrentWindow();
+    if WindowExists(win) then
+        DestroyWindow(win, false);
+    end
     AddSubWindow(parent, win);
-    DestroyWindow(win, false);
     SetWindow(win);
     
     local line = CreateHorz(root).SetFlexibleWidth(1);
@@ -174,8 +178,10 @@ end
 function showArtilleryStrikeSettings(artillery, root)
     local win = "ArtilleryStrike" .. artillery.ID;
     local parent = GetCurrentWindow();
+    if WindowExists(win) then
+        DestroyWindow(win, false);
+    end
     AddSubWindow(parent, win);
-    DestroyWindow(win, false);
     SetWindow(win);
 
     local line = CreateHorz(root).SetFlexibleWidth(1);
@@ -223,8 +229,10 @@ end
 function showPermissions(artillery, root)
     local win = "permissions" .. artillery.ID;
     local parent = GetCurrentWindow();
+    if WindowExists(win) then
+        DestroyWindow(win, false);
+    end
     AddSubWindow(parent, win);
-    DestroyWindow(win, false);
     SetWindow(win);
     
     local line = CreateHorz(root).SetFlexibleWidth(1);
