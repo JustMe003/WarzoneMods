@@ -2,13 +2,6 @@ require("Annotations");
 require("Util");
 require("DataConverter");
 
----Server_AdvanceTurn_Start hook
----@param game GameServerHook 
----@param addNewOrder fun(order: GameOrder) # Adds a game order, will be processed before any of the rest of the orders 
-function Server_AdvanceTurn_Start(game, addNewOrder)
-	
-end
-
 ---Server_AdvanceTurn_Order
 ---@param game GameServerHook
 ---@param order GameOrder
@@ -187,13 +180,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
     end
 end
 
----Server_AdvanceTurn_End hook
----@param game GameServerHook 
----@param addNewOrder fun(order: GameOrder) # Adds a game order, will be processed before any of the rest of the orders 
-function Server_AdvanceTurn_End(game, addNewOrder)
-	
-end
-
 function createArtillery(art, p, reloadTurn)
     local builder = WL.CustomSpecialUnitBuilder.Create(p);
     builder.ImageFilename = "Artillery_" .. art.ColorName .. ".png";
@@ -257,7 +243,7 @@ function replaceArtillery(mod, sp, v)
 end
 
 function setActionSpot(x, y)
-    WL.RectangleVM.Create(x, y, x, y);
+    return WL.RectangleVM.Create(x, y, x, y);
 end
 
 function hasDynamicHealth(id)
