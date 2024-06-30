@@ -380,19 +380,17 @@ function getAllControlledArtilleries()
                     local unitID = unitData.AS2.TypeID;
                     if valueInTable(artilleryInUse, sp.ID) then
                         table.insert(t, {Unit = sp, Terr = terr.ID, Message = "This artillery unit is already included in an artillery strike", Available = false})
-                        break;
-                    end
-                    if unitData.AS2.ReloadTurn >= Game.Game.TurnNumber then
+                    elseif unitData.AS2.ReloadTurn >= Game.Game.TurnNumber then
                         table.insert(t, {Unit = sp, Terr = terr.ID, Message = "This artillery unit is still reloading! You can use and move this unit again after turn " .. unitData.AS2.ReloadTurn, Available = false})
-                        break;
+                    else
+                        local distance = getDistanceBetweenTerrs(Game.Map.Territories, PickedTerr, Game.Map.Territories[terr.ID], Mod.Settings.Artillery[unitID].MaximumRange);
+                        if Mod.Settings.Artillery[unitID].MaximumRange < distance then
+                            table.insert(t, {Unit = sp, Terr = terr.ID, Message = "This artillery unit is to far away for the current target!", Available = false});
+                        else
+                            local art = Mod.Settings.Artillery[nameToArtilleryID(sp.Name)];
+                            table.insert(t, {Unit = sp, Terr = terr.ID, Message = "Cost: " .. art.UseCost .. "\nMinimum damage: " .. art.MinimumDamage .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nMaximum damage: " .. art.MaximumDamage .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nDistance: " .. distance .. "\nMaximum range: " .. art.MaximumRange .. "\nMiss chance: " .. art.MissPercentage .. "%", Available = true});
+                        end
                     end
-                    local distance = getDistanceBetweenTerrs(Game.Map.Territories, PickedTerr, Game.Map.Territories[terr.ID], Mod.Settings.Artillery[unitID].MaximumRange);
-                    if Mod.Settings.Artillery[unitID].MaximumRange < distance then
-                        table.insert(t, {Unit = sp, Terr = terr.ID, Message = "This artillery unit is to far away for the current target!", Available = false});
-                        break;
-                    end
-                    local art = Mod.Settings.Artillery[nameToArtilleryID(sp.Name)];
-                    table.insert(t, {Unit = sp, Terr = terr.ID, Message = "Cost: " .. art.UseCost .. "\nMinimum damage: " .. art.MinimumDamage .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nMaximum damage: " .. art.MaximumDamage .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nDistance: " .. distance .. "\nMaximum range: " .. art.MaximumRange .. "\nMiss chance: " .. art.MissPercentage .. "%", Available = true});
                 end
             end
         end
