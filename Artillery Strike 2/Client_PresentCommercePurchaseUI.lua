@@ -26,7 +26,7 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
     CreateLabel(vert).SetText("The following artillery units are in this game:").SetColor("#DDDDDD");
 
     for _, art in ipairs(Mod.Settings.Artillery) do
-        local numArt = countArtilleryOfType(game.LatestStanding, art.Name, game.Us.ID, true);
+        local numArt = countArtilleryOfType(game.LatestStanding.Territories, art.Name, game.Us.ID, true);
         local line = CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
         CreateButton(line).SetText(art.Name).SetColor(art.Color).SetOnClick(function() 
             buyArtillery(art);

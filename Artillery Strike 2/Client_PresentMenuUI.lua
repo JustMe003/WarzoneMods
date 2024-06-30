@@ -22,6 +22,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     Game = game;
     Close = close;
     setMaxSize(400, 500);
+    CancelClickIntercept = true;
     if art ~= nil then
         buyArtilleryWindow(art);
     else
@@ -278,15 +279,17 @@ function showPickTerritory(message, func, reqFunc)
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.45);
     SubmitButton = CreateButton(line).SetText("Submit").SetColor(colors.Green).SetOnClick(function()
+        CancelClickIntercept = true;
         func();
     end).SetInteractable(PickedTerr ~= nil and (reqFunc == nil or reqFunc()));
     CreateEmpty(line).SetFlexibleWidth(0.45);
 
+    CancelClickIntercept = false;
     UI.InterceptNextTerritoryClick(interceptedTerritoryClick);
 end
 
 function interceptedTerritoryClick(terrDetails)
-    if terrDetails == nil then return; end
+    if terrDetails == nil or CancelClickIntercept or UI.IsDestroyed(root) then return WL.CancelClickIntercept; end
     PickedTerr = terrDetails;
     updateTerrPickedLabel();
     UI.InterceptNextTerritoryClick(interceptedTerritoryClick);
@@ -312,7 +315,7 @@ function createStrikeOrder(arts, terrID, cost);
         UI.Alert("You have picked to many artillery pieces! Please pick less");
         return;
     end
-    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Artillery strike on " .. Game.Map.Territories[terrID].Name .. ", involving " .. #t .. " artillery unit" .. addSIfMultiple(#t), payload, {[WL.ResourceType.Gold] = cost}, WL.TurnPhase.Deploys + 1));
+    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Artillery strike on " .. Game.Map.Territories[terrID].Name .. ", involving " .. #t .. " artillery unit" .. addSIfMultiple(#t), payload, {[WL.ResourceType.Gold] = cost}, WL.TurnPhase.Deploys + 2));
     Close();
 end
 

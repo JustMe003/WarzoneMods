@@ -42,14 +42,14 @@ end
 function countArtilleryOfType(standing, name, p, countOrders)
     countOrders = countOrders or false;
     local c = 0;
-    for i, terr in pairs(standing) do
+    for _, terr in pairs(standing) do
         if terr.OwnerPlayerID == p and #terr.NumArmies.SpecialUnits > 0 then
             for _, sp in ipairs(terr.NumArmies.SpecialUnits) do
                 if isArtillery(sp) and sp.Name == name then
                     c = c + 1;
                 end
             end
-    end 
+        end
     end
     if countOrders then
         local unitID = -1;
