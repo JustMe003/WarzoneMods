@@ -5,6 +5,10 @@ require("Util")
 ---Client_PresentConfigureUI hook
 ---@param rootParent RootParent
 function Client_PresentConfigureUI(rootParent)
+    if not WL.IsVersionOrHigher or not WL.IsVersionOrHigher("5.26.1") then 
+        UI.Alert("You must use a newer version of the game to be able to use this mod!");
+        return;
+    end
 	Init(rootParent);
     root = GetRoot();
     colors = GetColors();

@@ -4,6 +4,9 @@ require("Annotations");
 ---@param game GameServerHook
 ---@param standing GameStanding
 function Server_StartGame(game, standing)
+    if not WL.IsVersionOrHigher or not WL.IsVersionOrHigher("5.26.1") then 
+        return;
+    end
     local res = standing.Resources;
     if res == nil then res = {}; end
     for _, player in pairs(game.Game.PlayingPlayers) do
