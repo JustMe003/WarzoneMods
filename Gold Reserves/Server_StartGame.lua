@@ -7,13 +7,12 @@ function Server_StartGame(game, standing)
     local res = standing.Resources;
     if res == nil then res = {}; end
     for _, player in pairs(game.Game.PlayingPlayers) do
-        print(player.ID, res[player.ID]);
+        if res[player.ID] == nil then res[player.ID] = {}; end
+        local t = {};
         for i, v in pairs(res[player.ID]) do
-            print(i, v);
+            t[i] = v;
         end
         if player.Slot ~= nil and Mod.Settings.Config[player.Slot] ~= nil then
-            if res[player.ID] == nil then res[player.ID] = {}; end
-            local t = {};
             for i, v in pairs(res[player.ID]) do
                 t[i] = v;
             end
