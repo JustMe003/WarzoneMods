@@ -22,7 +22,7 @@ function Server_StartGame(game, standing)
     end
     standing.Resources = res;
     for p, _ in pairs(game.Game.Players) do
-        -- print(p .. " player has " .. standing.Resources[p][WL.ResourceType.Gold] .. " gold");
+        print(p .. " player has " .. standing.Resources[p][WL.ResourceType.Gold] .. " gold");
     end
 end
 
