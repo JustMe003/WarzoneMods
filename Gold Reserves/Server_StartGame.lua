@@ -17,8 +17,8 @@ function Server_StartGame(game, standing)
                 t[i] = v;
             end
             t[WL.ResourceType.Gold] = math.max((t[WL.ResourceType.Gold] or 0) + Mod.Settings.Config[player.Slot], 0);
-            res[player.ID] = t;
         end
+        res[player.ID] = t;
     end
     standing.Resources = res;
     for p, _ in pairs(game.Game.Players) do
