@@ -8,7 +8,7 @@ function Server_StartGame(game, standing)
     if res == nil then res = {}; end
     for _, player in pairs(game.Game.PlayingPlayers) do
         if player.Slot ~= nil and Mod.Settings.Config[player.Slot] ~= nil then
-            print(res[player.ID]);
+            print(player.ID, res[player.ID]);
             if res[player.ID] == nil then res[player.ID] = {}; end
             local t = {};
             for i, v in pairs(res[player.ID]) do
