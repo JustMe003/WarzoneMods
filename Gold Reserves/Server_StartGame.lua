@@ -5,6 +5,7 @@ require("Annotations");
 ---@param standing GameStanding
 function Server_StartGame(game, standing)
     local res = standing.Resources;
+    print(res);
     if res == nil then res = {}; end
     for _, player in pairs(game.Game.PlayingPlayers) do
         if player.Slot ~= nil and Mod.Settings.Config[player.Slot] ~= nil then
