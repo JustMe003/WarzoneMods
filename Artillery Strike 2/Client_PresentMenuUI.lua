@@ -41,6 +41,15 @@ function showMain()
     CreateEmpty(line).SetFlexibleWidth(0.5);
 
     CreateEmpty(root).SetPreferredHeight(50);
+    
+    if Game.Settings.SinglePlayer then
+        line = CreateHorz(root).SetFlexibleWidth(1);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
+        CreateButton(line).SetText("Modify Artillery starting positions").SetColor(Game.Us.Color.HtmlColor).SetOnClick(showModifyArtilleryStartingPositions)
+        CreateEmpty(line).SetFlexibleWidth(0.5);
+
+        CreateEmpty(root).SetPreferredHeight(20);
+    end
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.45);
@@ -48,6 +57,73 @@ function showMain()
     CreateEmpty(line).SetFlexibleWidth(0.1);
     CreateButton(line).SetText("Artillery Strike").SetColor(colors.Red).SetOnClick(artilleryStrike);
     CreateEmpty(line).SetFlexibleWidth(0.45);
+end
+
+function showModifyArtilleryStartingPositions()
+    DestroyWindow();
+    SetWindow("Modify Artillery Positions");
+
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+
+    CreateEmpty(root).SetPreferredHeight(5);
+
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(0.45);
+    CreateButton(line).SetText("Add artillery").SetColor(colors.Green).SetOnClick(showPickArtilleryForPlacing);
+    CreateButton(line).SetText("Get postion data").SetColor(colors.Yellow).SetOnClick(showArtilleryPositionData);
+    CreateEmpty(line).SetFlexibleWidth(0.45);
+
+    CreateLabel(root).SetText("Note that the following artillery units will be assigned to the player that controls the territory at the start of the game.\nNewly placed units will also only be placed when you copy-paste the new data string into the mod configuration, and restart the game").SetColor(colors.TextColor);
+
+    CreateEmpty(root).SetPreferredHeight(5);
+    CreateLabel(root).SetText("The following units are configured")
+    for terrID, arr in pairs(Mod.PublicGameData.ArtilleryPlacements or {}) do
+        CreateButton(root).SetText(Game.Map.Territories[terrID].Name).SetColor(getTerrOwnerColor(Game.LatestStanding.Territories[terrID])).SetOnClick(function() highlightTerritory(Game.Map.Territories[terrID]) end);
+        CreateEmpty(root).SetPreferredHeight(3);
+        for _, artID in pairs(arr) do
+            local art = Mod.Settings.Artillery[artID];
+            local line = CreateHorz(root).SetFlexibleWidth(1);
+            CreateLabel(line).SetText(art.Name).SetColor(art.Color);
+            CreateEmpty(line).SetFlexibleWidth(1);
+            CreateButton(line).SetText("X").SetColor(colors.Red).SetOnClick(function()
+                Game.SendGameCustomMessage("Updating positions...", {Action = "Remove", TerrID = terrID, ArtilleryID = artID}, function(t) showMain() end)
+            end)
+            CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
+                Game.CreateDialog(function(rootPar, size, scroll, game, closeSettings)
+                    local oldRoot = root;
+                    root = UI.CreateVerticalLayoutGroup(rootPar).SetFlexibleWidth(1);
+                    size(400, 400);
+                    showArtillerySettings(art, true, function() closeSettings(); end);
+                    root = oldRoot;
+                end)
+            end);
+        end
+        CreateEmpty(root).SetPreferredHeight(10);
+    end
+end
+
+function showPickArtilleryForPlacing()
+    DestroyWindow()
+    SetWindow("showPickArtilleryForPlacing");
+
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showModifyArtilleryStartingPositions);
+
+    CreateLabel(root).SetText("Pick an artillery that you want to place").SetColor(colors.TextColor);
+
+    for _, art in ipairs(Mod.Settings.Artillery) do
+        CreateButton(root).SetText(art.Name).SetColor(art.Color).SetOnClick(function()
+            DestroyWindow();
+            SetWindow("SelectedArtilleryForPlacing");
+
+            local line = CreateHorz(root).SetFlexibleWidth(1);
+            CreateLabel(line).SetText("Selected: ").SetColor(colors.TextColor);
+            CreateLabel(line).SetText(art.Name).SetColor(art.Color);
+
+            showPickTerritory("Select a territory to place the artillery on", function()
+                Game.SendGameCustomMessage("Updating placements...", {Action = "Add", TerrID = PickedTerr.ID, ArtilleryID = art.ID}, function(t) showPickArtilleryForPlacing(); end)
+            end)
+        end)
+    end
 end
 
 function artilleryStrike()
@@ -125,8 +201,9 @@ function targetTerritory()
             line = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
             UI.CreateCheckBox(line).SetIsChecked(false).SetText(" ");
             UI.CreateButton(line).SetText((Mod.Settings.Artillery[1] or {Name = "Artillery Unit"}).Name).SetColor((Mod.Settings.Artillery[1] or {Color = colors.Green}).Color);
+            UI.CreateEmpty(line).SetFlexibleWidth(0.5);
             UI.CreateLabel(line).SetText("10% - 25%").SetColor(colors.Orange);
-            UI.CreateEmpty(line).SetFlexibleWidth(1);
+            UI.CreateEmpty(line).SetFlexibleWidth(0.5);
             UI.CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
                 UI.Alert("Normally this box will display information about the artillery unit, why it can't participate for example or how much damage it does, etc");
             end);
@@ -197,8 +274,9 @@ function targetTerritory()
             updateStrikeLabels(labels, strikeDetails);
         end).SetInteractable(data.Available);
         CreateButton(line).SetText(data.Unit.Name).SetColor(art.Color).SetOnClick(function() highlightTerritory(Game.Map.Territories[data.Terr]); end);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
         CreateLabel(line).SetText(round(art.MinimumDamage, 2) .. addPercentageIfTrue(art.DealsPercentageDamage) .. " - " .. round(art.MaximumDamage, 2) .. addPercentageIfTrue(art.DealsPercentageDamage)).SetColor(colors.Orange);
-        CreateEmpty(line).SetFlexibleWidth(1);
+        CreateEmpty(line).SetFlexibleWidth(0.5);
         CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert(data.Message); end);
     end
 end
@@ -320,7 +398,7 @@ function createStrikeOrder(arts, terrID, cost);
 end
 
 function purchaseArtillery(art, terrID)
-    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Purchase " .. art.Name, PREFIX_AS2 .. SEPARATOR_AS2 .. BUY_ARTILLERY .. SEPARATOR_AS2 .. art.ID .. SEPARATOR_AS2 .. terrID, {[WL.ResourceType.Gold] = art.Cost}, WL.TurnPhase.Deploys));
+    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Purchase " .. art.Name, PREFIX_AS2 .. SEPARATOR_AS2 .. BUY_ARTILLERY .. SEPARATOR_AS2 .. art.ID .. SEPARATOR_AS2 .. terrID, {[WL.ResourceType.Gold] = art.Cost}, WL.TurnPhase.Deploys + 1));
     Close();
 end
 
@@ -359,6 +437,35 @@ function updateTerrPickedLabel()
     end
 end
 
+function showArtilleryPositionData()
+    DestroyWindow();
+    SetWindow("showArtilleryPositionData");
+
+    local s = "";
+    for terr, arr in pairs(Mod.PublicGameData.ArtilleryPlacements) do 
+        if #arr > 0 then
+            if #s > 0 then 
+                s = s .. ","; 
+            else
+                s = "[" .. Game.Map.ID .. "]{";
+            end
+            s = s .. terr .. ":{";
+            for i = 1, #arr - 1 do
+                s = s .. arr[i] .. ",";
+            end
+            s = s .. arr[#arr] .. "}"
+        end
+    end
+    if #s == 0 then
+        s = "[" .. Game.Map.ID .. "]{";
+    end
+    s = s .. "}"
+
+    CreateTextInputField(root).SetText(s).SetPlaceholderText("Copy from here the Dragons placement data").SetFlexibleWidth(1);
+    CreateLabel(root).SetText("Paste this data in the Mod configuration")
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showModifyArtilleryStartingPositions);
+end
+
 function terrIsControlledByPlayer()
     local terrStanding = Game.LatestStanding.Territories[PickedTerr.ID];
     return terrStanding.OwnerPlayerID == Game.Us.ID;
@@ -388,7 +495,7 @@ function getAllControlledArtilleries()
                             table.insert(t, {Unit = sp, Terr = terr.ID, Message = "This artillery unit is to far away for the current target!", Available = false});
                         else
                             local art = Mod.Settings.Artillery[nameToArtilleryID(sp.Name)];
-                            table.insert(t, {Unit = sp, Terr = terr.ID, Message = "Cost: " .. art.UseCost .. "\nMinimum damage: " .. art.MinimumDamage .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nMaximum damage: " .. art.MaximumDamage .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nDistance: " .. distance .. "\nMaximum range: " .. art.MaximumRange .. "\nMiss chance: " .. art.MissPercentage .. "%", Available = true});
+                            table.insert(t, {Unit = sp, Terr = terr.ID, Message = "Cost: " .. art.UseCost .. "\nMinimum damage: " .. round(art.MinimumDamage, 2) .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nMaximum damage: " .. round(art.MaximumDamage, 2) .. addPercentageIfTrue(art.DealsPercentageDamage) .. "\nDistance: " .. distance .. "\nMaximum range: " .. art.MaximumRange .. "\nMiss chance: " .. round(art.MissPercentage, 2) .. "%", Available = true});
                         end
                     end
                 end
@@ -412,11 +519,9 @@ function getArtilleryInUse(orders)
     local t = {};
     for _, order in ipairs(orders) do
         if order.proxyType == "GameOrderCustom" and string.sub(order.Payload, 1, #(PREFIX_AS2 .. SEPARATOR_AS2 .. ARTILLERY_STRIKE)) == PREFIX_AS2 .. SEPARATOR_AS2 .. ARTILLERY_STRIKE then
-            print(order.Payload);
             local splits = split(order.Payload, SEPARATOR_AS2);
             for i = 4, #splits, 2 do
                 table.insert(t, split(splits[i], GROUP_SEPARATOR_AS2)[2]);
-                print(t[#t]);
             end
         end
     end

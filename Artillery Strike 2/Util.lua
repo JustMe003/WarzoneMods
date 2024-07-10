@@ -1,3 +1,4 @@
+require("DataConverter");
 
 PREFIX_AS2 = "AS2";
 SEPARATOR_AS2 = "_";
@@ -124,4 +125,53 @@ function createInfoButton(par, txt)
     CreateButton(par).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
         UI.Alert(txt);
     end)
+end
+
+function getTableLength(t)
+    local c = 0;
+    for _, _ in pairs(t) do c = c + 1; end
+    return c;
+end
+
+function createArtillery(art, p, reloadTurn)
+    local builder = WL.CustomSpecialUnitBuilder.Create(p);
+    builder.ImageFilename = "Artillery_" .. art.ColorName .. ".png";
+    builder.Name = art.Name;
+    builder.IsVisibleToAllPlayers = art.IsVisibleToAllPlayers;
+    builder.CanBeAirliftedToSelf = art.CanBeAirliftedToSelf;
+    builder.CanBeGiftedWithGiftCard = art.CanBeGiftedWithGiftCard;
+    builder.CanBeTransferredToTeammate = art.CanBeTransferredToTeammate;
+    builder.CanBeAirliftedToTeammate = builder.CanBeAirliftedToSelf and builder.CanBeTransferredToTeammate;
+    builder.IncludeABeforeName = art.IncludeABeforeName;
+    builder.AttackPower = art.AttackPower;
+    builder.AttackPowerPercentage = math.max(0, art.AttackPowerPercentage / 100) + 1;
+    builder.DefensePowerPercentage = math.max(0, art.DefensePowerPercentage / 100) + 1;
+    builder.CombatOrder = art.CombatOrder + 6971;
+    if art.UseHealth then
+        builder.Health = art.Health;
+        if art.DynamicDefencePower then
+            builder.DefensePower = art.Health;
+        else
+            builder.DefensePower = art.DefensePower;
+        end
+    else
+        builder.DamageAbsorbedWhenAttacked = art.DamageAbsorbedWhenAttacked;
+        builder.DamageToKill = art.DamageToKill;
+        builder.DefensePower = art.DefensePower;
+    end
+    builder.ModData = DataConverter.DataToString(getModDataTable(reloadTurn or 0, art.ID), Mod);
+
+    return builder.Build();
+end
+
+function getModDataTable(reloadTurn, artID)
+    return {
+        AS2 = {
+            ReloadTurn = reloadTurn, 
+            TypeID = artID
+        }, 
+        Essentials = {
+            UnitDescription = "This unit can target a territory and deal damage to distant territories. Check the full settings page to see my full details"
+        }
+    };
 end

@@ -116,7 +116,7 @@ function showGeneralSettings(artillery, root)
 
         showSetting(vert, "Price of this artillery", "A '" .. artillery.Name .. "' will cost you " .. artillery.Cost .. " gold to purchase", artillery.Cost, colors.Teal);
 
-        showSetting(vert, "The maximum number of artillery a player may have", "When a player has " .. artillery.MaxNumOfArtillery .. " of these artillery, it can not purchase any more of this type", artillery.MaxNumOfArtillery, colors.Teal);
+        showSetting(vert, "The maximum number of artillery a player may have", "When a player has " .. artillery.MaxNumOfArtillery .. " of these artillery, they can not purchase any more of this type", artillery.MaxNumOfArtillery, colors.Teal);
     else
         showSetting(vert, "This artillery can be bought", "No player can buy this artillery during the game. The only way to acquire this artillery (species) is to start with one or when one is given to you by another player", "No", colors["Orange Red"]);
     end
@@ -145,16 +145,16 @@ function showHealthAndDamage(artillery, root)
     CreateEmpty(vert).SetPreferredHeight(5);
     
     if artillery.UseHealth then
-        showSetting(vert, "This artillery uses dynamic health", "This artillery type will automatically reduce its health when it's part of combat where it receives damage, and automatically die if the health goes below 1\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending", "Yes", colors.Green);
+        showSetting(vert, "This artillery uses dynamic health", "This artillery type will automatically reduce its health when it's part of combat where it receives damage, and automatically die if the health goes below 1\n\nNote that health and defense power are different things! Health determines when the unit dies, defense power determines how much damage it will deal when defending", "Yes", colors.Green);
         
-        showSetting(vert, "The initial health of this artillery", "This artillery type has started with " .. artillery.Health .. " health but it's health will reduce when it takes damage in combat, so it might have less health\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending", artillery.Health, colors.Teal)
+        showSetting(vert, "The initial health of this artillery", "This artillery type has started with " .. artillery.Health .. " health but it's health will reduce when it takes damage in combat, so it might have less health\n\nNote that health and defense power are different things! Health determines when the unit dies, defense power determines how much damage it will deal when defending", artillery.Health, colors.Teal)
         
         if artillery.DynamicDefencePower then
-            showSetting(vert, "The defence power always equals the health", "This mod will update the defence power of this artillery type every time it takes damage in combat. This makes sure that the number of attacking armies this artillery type kills is equal to it's health (for most of the times)", "Yes", colors.Green);
+            showSetting(vert, "The defense power always equals the health", "This mod will update the defense power of this artillery type every time it takes damage in combat. This makes sure that the number of attacking armies this artillery type kills is equal to it's health (for most of the times)", "Yes", colors.Green);
         else
-            showSetting(vert, "The defence power always equals the health", "This mod will NOT update the defence power of this artillery type every time it takes damage in combat\n\nNote that health and defence power are different things! Health determines when the unit dies, defence power determines how much damage it will deal when defending", "No", colors["Orange Red"]);
+            showSetting(vert, "The defense power always equals the health", "This mod will NOT update the defense power of this artillery type every time it takes damage in combat\n\nNote that health and defense power are different things! Health determines when the unit dies, defense power determines how much damage it will deal when defending", "No", colors["Orange Red"]);
 
-            showSetting(vert, "The fixed defence power of the artillery", "This artillery type has a fixed defense power of " .. artillery.DefensePower .. ". This is the amount of damage it will deal when defending a territory", artillery.DefensePower, colors.Teal);
+            showSetting(vert, "The fixed defense power of the artillery", "This artillery type has a fixed defense power of " .. artillery.DefensePower .. ". This is the amount of damage it will deal when defending a territory", artillery.DefensePower, colors.Teal);
         end
     else
         showSetting(vert, "This artillery uses dynamic health", "This artillery type will NOT automatically reduce its health when it's part of combat where it receives damage", "No", colors["Orange Red"]);
@@ -163,14 +163,14 @@ function showHealthAndDamage(artillery, root)
         
         showSetting(vert, "Damage absorbed when this artillery takes damage", "When this artillery is attacked and this artillery is killed, it will reduce the remaining damage points (that would normally deal damage to the left over special units / artillery) by " .. artillery.DamageAbsorbedWhenAttacked, artillery.DamageAbsorbedWhenAttacked, colors.Teal);
         
-        showSetting(vert, "The fixed defence power of the artillery", "This artillery type has a fixed defense power of " .. artillery.DefensePower .. ". This is the amount of damage it will deal when defending a territory", artillery.DefensePower, colors.Teal);
+        showSetting(vert, "The fixed defense power of the artillery", "This artillery type has a fixed defense power of " .. artillery.DefensePower .. ". This is the amount of damage it will deal when defending a territory", artillery.DefensePower, colors.Teal);
     end
     
-    showSetting(vert, "The attack power of the artillery", "This artillery will deal " .. artillery.AttackPower .. " when it attacks", artillery.AttackPower, colors.Teal)
+    showSetting(vert, "The attack power of the artillery", "This artillery will deal " .. artillery.AttackPower .. " damage when it attacks", artillery.AttackPower, colors.Teal)
     
     showSetting(vert, "The attack modifier of the artillery", "When part of an attack, this artillery will add " .. round(artillery.AttackPowerPercentage, 2) .. "% damage. That is, when your attack (including this artillery) is 100 attack power, this artillery will buff it to " .. round(((artillery.AttackPowerPercentage / 100) + 1) * 100, 0), round(artillery.AttackPowerPercentage, 2) .. "%", colors.Cyan);
     
-    showSetting(vert, "The defence modifier of the artillery", "When defending, this artillery will add " .. round(artillery.DefensePowerPercentage, 2) .. "% damage. That is, when your defence (including this artillery) is equal to 100 defence power, this artillery will buff it to " .. round(((artillery.DefensePowerPercentage / 100) + 1) * 100, 0), round(artillery.DefensePowerPercentage, 2) .. "%", colors.Cyan);
+    showSetting(vert, "The defense modifier of the artillery", "When defending, this artillery will add " .. round(artillery.DefensePowerPercentage, 2) .. "% damage. That is, when your defense (including this artillery) is equal to 100 defense power, this artillery will buff it to " .. round(((artillery.DefensePowerPercentage / 100) + 1) * 100, 0), round(artillery.DefensePowerPercentage, 2) .. "%", colors.Cyan);
     
     SetWindow(parent);
 end
