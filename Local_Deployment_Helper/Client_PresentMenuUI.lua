@@ -50,12 +50,32 @@ end
 function showMenu()
 	DestroyWindow();
 	SetWindow("showMenu");
-	CreateButton(vert).SetText("Go to deploy/transfer helper").SetColor(colors.Green).SetOnClick(showHelperMenu);
+	local line = CreateHorz(vert).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Go to deploy/transfer helper").SetColor(colors.Green).SetOnClick(showHelperMenu);
+	CreateEmpty(line).SetFlexibleWidth(1);
+	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
+		UI.Alert("Here you can let the mod automatically add deploy / transfer orders");
+	end)
 	if Game.Game.TurnNumber == 1 then
-		CreateButton(vert).SetText("Deploy in all bonuses of size 1").SetColor(colors.Purple).SetOnClick(addDeploysTurnOne);
+		line = CreateHorz(vert).SetFlexibleWidth(1);
+		CreateButton(line).SetText("Deploy in all bonuses of size 1").SetColor(colors.Purple).SetOnClick(addDeploysTurnOne);
+		CreateEmpty(line).SetFlexibleWidth(1);
+		CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
+			UI.Alert("This automatically deploys in all bonuses that consist out of only 1 territory");
+		end)
 	end
-	CreateButton(vert).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(setAction);
-	CreateButton(vert).SetText("Set default settings").SetColor(colors.Lime).SetOnClick(function() showHelperMenu(true) end)
+	line = CreateHorz(vert).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(setAction);
+	CreateEmpty(line).SetFlexibleWidth(1);
+	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
+		UI.Alert("Set what the mod will do when you open the game after a turn has advanced");
+	end)
+	line = CreateHorz(vert).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Set default settings").SetColor(colors.Lime).SetOnClick(function() showHelperMenu(true) end)
+	CreateEmpty(line).SetFlexibleWidth(1);
+	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
+		UI.Alert("Set the default options when adding your past deploy/transfer order");
+	end)
 	CreateButton(vert).SetText("Clear Orders").SetColor(colors.Blue).SetOnClick(clearOrdersFunction);
 	CreateButton(vert).SetText("Credits").SetColor(colors.Orange).SetOnClick(showCredits);
 end
