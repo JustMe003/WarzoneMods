@@ -1,8 +1,6 @@
 require("UI")
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, gameRefreshAction)
-	print(game.Game.TurnNumber - 2)
-
 	Init(rootParent);
 	colors = GetColors();
 	Game = game; --global variables
@@ -383,7 +381,7 @@ function AddOrdersHelper(inputs)
 	Close();
 	standing = Game.LatestStanding;
 
-	if Game.Game.TurnNumber - 2 > 0 then
+	if Game.Game.TurnNumber - 2 >= 0 then
 		Game.GetTurn(Game.Game.TurnNumber - 2, function(data) LastTurn = data.Orders; AddOrdersConfirmes(inputs); end)
 		
 	end
