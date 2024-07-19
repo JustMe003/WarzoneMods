@@ -1,7 +1,7 @@
 require("UI")
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, gameRefreshAction)
-	print(Game.Game.TurnNumber - 2)
+	print(game.Game.TurnNumber - 2)
 
 	Init(rootParent);
 	colors = GetColors();
