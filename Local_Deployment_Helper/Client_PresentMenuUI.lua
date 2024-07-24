@@ -43,6 +43,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 			AddOrdersHelper(getInputs());
 		elseif gameRefreshAction == "ShowWindow" then
 			showHelperMenu();
+		elseif gameRefreshAction == "SetDefaultOptions" then
+			showHelperMenu(true);
 		end
 	end
 end
@@ -166,6 +168,9 @@ function showHelperMenu(setToDefaultMode)
 	end
 	DestroyWindow();
 	SetWindow("showHelperMenu");
+	if setToDefaultMode then
+		CreateLabel(vert).SetText("Choose the default options you want. If you have set the mod to automatically re-add the orders back, the default options will always be used.\n\nYou can always change the options at any time in the mod menu")
+	end
 	local inputs = getInputs();
 	local line = CreateHorz(vert).SetFlexibleWidth(1);
 	addDeployments = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.AddDeployments);
