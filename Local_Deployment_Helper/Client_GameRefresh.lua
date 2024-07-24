@@ -1,6 +1,7 @@
 require("Client_PresentMenuUI");
 require("UI");
 function Client_GameRefresh(game)
+    local hasAddedOrders = false;
     if game.Us == nil or game.Us.IsAIOrHumanTurnedIntoAI then
         return;
     end
@@ -14,13 +15,17 @@ function Client_GameRefresh(game)
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetDefaultOptions"); end);
                 elseif Mod.PlayerGameData.NewTurnAction == "AutoDeploy" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "AutoDeploy"); end);
+                    hasAddedOrders = true;
                 elseif Mod.PlayerGameData.NewTurnAction == "ShowWindow" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "ShowWindow"); end);
+                    hasAddedOrders = true;
                 end
             end
         end
     end
-    lastTurn = game.Game.TurnNumber;
+    if hasAddedOrders then
+        lastTurn = game.Game.TurnNumber;
+    end
 end
 
 function tableIsEmpty(t)
