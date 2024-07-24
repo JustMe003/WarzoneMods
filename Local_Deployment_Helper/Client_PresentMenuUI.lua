@@ -284,13 +284,13 @@ function AddOrdersConfirmes(inputs)
 	local appendDeploys = 0;
 	local appendTransfers = 0;
 	for i, order in pairs(orderTable) do
-		print(i, order.OccursInPhase);
+		-- print(i, order.OccursInPhase);
 		if order.OccursInPhase ~= nil then
 			if appendDeploys == 0 and order.OccursInPhase > WL.TurnPhase.Deploys then
-				print(order.proxyType, "appendDeploys: " .. i);
+				-- print(order.proxyType, "appendDeploys: " .. i);
 				appendDeploys = i;
 			elseif appendTransfers == 0 and order.OccursInPhase > WL.TurnPhase.Attacks then
-				print(order.proxyType, "appendTransfers: " .. i);
+				-- print(order.proxyType, "appendTransfers: " .. i);
 				appendTransfers = i;
 			end
 		end
@@ -302,7 +302,7 @@ function AddOrdersConfirmes(inputs)
 		appendTransfers = #orderTable + 1;
 	end
 	appendTransfers = appendTransfers - appendDeploys;
-	print(appendDeploys, appendTransfers + appendDeploys, #orderTable);
+	-- print(appendDeploys, appendTransfers + appendDeploys, #orderTable);
 	local newOrder;
 	local lastDeploymentMade = {};
 
@@ -344,7 +344,7 @@ function AddOrdersConfirmes(inputs)
 					newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To, 3, order.ByPercent, order.NumArmies, false);
 				end
 				if orderExists(newOrder, orderTable) == 0 then
-					print(appendDeploys, appendTransfers, #orderTable);
+					-- print(appendDeploys, appendTransfers, #orderTable);
 					table.insert(orderTable, appendDeploys + appendTransfers, newOrder);
 					appendTransfers = appendTransfers + 1;
 				end
