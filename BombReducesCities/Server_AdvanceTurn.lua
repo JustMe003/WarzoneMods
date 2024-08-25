@@ -9,7 +9,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 				[WL.StructureType.City] = -Mod.Settings.NumCities
 			};
 			print("test: " .. mod.AddStructuresOpt[WL.StructureType.City]);
-			local order = WL.GameOrderEvent.Create(order.PlayerID, "Bomb damages cities", {}, {}, {mod});
+			local order = WL.GameOrderEvent.Create(order.PlayerID, "Bomb damages cities", {}, {mod});
 			local mapTerr = game.Map.Territories[order.TargetTerritoryID];
 			print(mapTerr.MiddlePointX, mapTerr.MiddlePointY)
 			order.SetActionSpot = WL.RectangleVM.Create(mapTerr.MiddlePointX, mapTerr.MiddlePointY, mapTerr.MiddlePointX, mapTerr.MiddlePointY);
