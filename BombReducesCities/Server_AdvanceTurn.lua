@@ -6,7 +6,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 			print(2)
 			local mod = WL.TerritoryModification.Create(order.TargetTerritoryID);
 			mod.AddStructuresOpt = {
-				[] = -Mod.Settings.NumCities
+				[WL.StructureType.City] = -Mod.Settings.NumCities
 			};
 			print("test: " .. mod.AddStructuresOpt[WL.StructureType.City]);
 			local order = WL.GameOrderEvent.Create(order.PlayerID, "Bomb damages cities", {}, {}, {mod});
