@@ -1,4 +1,4 @@
-function Server_AdvanceTurn_Order(order, orderResult, game, skipThisOrder, addNewOrder)
+function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderPlayCardBomb" then
 		print(1)
 		local structures = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].Structures;
