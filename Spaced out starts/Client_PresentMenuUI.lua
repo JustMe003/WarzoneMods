@@ -1,5 +1,5 @@
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-    if not game.Settings.AutomaticTerritoryDistribution then
+    if not game.Settings.AutomaticTerritoryDistribution or game.Settings.CustomScenario then
         close();
         UI.Alert("This mod will not show anything if the game does not use automatic territory distribution");
     end
