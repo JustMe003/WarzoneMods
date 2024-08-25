@@ -1,0 +1,3 @@
+This mod tries to space out all starting territories of all players. All starts, when to close to another start, will be attempted to be moved away.
+This mod might not always succeed in spacing out each starting territory, this generally means that you've configurated your game to be to dense. Try to lower the minimum distance between starts or lower the amount of starts
+The mod assumes the game uses full distribution, and only works in automatic distributed games
