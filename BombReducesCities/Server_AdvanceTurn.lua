@@ -11,8 +11,11 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 			print("test: " .. mod.AddStructuresOpt[WL.StructureType.City]);
 			local order = WL.GameOrderEvent.Create(order.PlayerID, "Bomb damages cities", {}, {}, {mod});
 			local mapTerr = game.Map.Territories[order.TargetTerritoryID];
+			print(mapTerr.MiddlePointX, mapTerr.MiddlePointY)
 			order.SetActionSpot = WL.RectangleVM.Create(mapTerr.MiddlePointX, mapTerr.MiddlePointY, mapTerr.MiddlePointX, mapTerr.MiddlePointY);
+			print("Action spot set!")
 			addNewOrder(order, true);
+			print("Added order!")
 		end
 		print("end");
 	end
