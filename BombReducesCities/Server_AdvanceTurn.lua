@@ -13,6 +13,6 @@ function Server_AdvanceTurn_Order(order, orderResult, game, skipThisOrder, addNe
 			order.SetActionSpot = WL.RectangleVM.Create(mapTerr.MiddlePointX, mapTerr.MiddlePointY, mapTerr.MiddlePointX, mapTerr.MiddlePointY);
 			addNewOrder(order, true);
 		end
+		print("end");
 	end
-	print(10)
 end
