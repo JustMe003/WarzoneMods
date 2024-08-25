@@ -6,7 +6,7 @@ function Client_PresentConfigureUI(rootParent)
 		.SetColor("#DDDDDD");
 	
 	NumCitiesInput = UI.CreateNumberInputField(vert)
-		.SetSliderMinimumValue(1)
-		.SetSliderMaximumValue(10)
+		.SetSliderMinValue(1)
+		.SetSliderMaxValue(10)
 		.SetValue(Mod.Settings.NumCities or 3);
 end
