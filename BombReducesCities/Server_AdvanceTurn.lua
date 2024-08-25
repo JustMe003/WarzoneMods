@@ -4,11 +4,11 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 		local structures = game.ServerGame.LatestTurnStanding.Territories[order.TargetTerritoryID].Structures;
 		if structures and structures[WL.StructureType.City] and structures[WL.StructureType.City] > 0 then
 			print(2)
-			return;
 			local mod = WL.TerritoryModification.Create(order.TargetTerritoryID);
 			mod.AddStructuresOpt = {
-				[WL.StructureType.City] = -Mod.Settings.NumCities
+				[] = -Mod.Settings.NumCities
 			};
+			print("test: " .. mod.AddStructuresOpt[WL.StructureType.City]);
 			local order = WL.GameOrderEvent.Create(order.PlayerID, "Bomb damages cities", {}, {}, {mod});
 			local mapTerr = game.Map.Territories[order.TargetTerritoryID];
 			order.SetActionSpot = WL.RectangleVM.Create(mapTerr.MiddlePointX, mapTerr.MiddlePointY, mapTerr.MiddlePointX, mapTerr.MiddlePointY);
