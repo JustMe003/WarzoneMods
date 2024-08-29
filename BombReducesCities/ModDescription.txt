@@ -1,1 +1,1 @@
-This mod will remove a configurable amount of cities from a territory when it is hit with a bomb
+This mod will remove a configurable amount of cities from a territory when it is hit with a bomb card
