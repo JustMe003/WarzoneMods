@@ -11,7 +11,7 @@ function Server_StartGame(game, standing)
     local try = 0;
     local spaceBetweenStarts = Mod.Settings.SpaceBetweenStarts or 4;
 
-    if game.Settings.AutomaticTerritoryDistribution then
+    if game.Settings.AutomaticTerritoryDistribution and not game.Settings.CustomScenario then
         while try == 0 or (try < 100 and countConflicts() > 0 and (finish - start) + (finish - startIteration) < LIMIT) do
             startIteration = WL.TickCount();
             conflicts = {};
