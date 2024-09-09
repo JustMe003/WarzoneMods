@@ -9,6 +9,13 @@ function Server_StartGame(game, standing)
     data.IsTeamGame = getIsTeamGame(game);
     Mod.PublicGameData = data;
 
+    local whole = 0;
+    local pieces = Mod.Settings.StartingPieces;
+    while pieces >= Mod.Settings.NumPieces do
+        whole = whole + 1;
+        pieces = pieces - Mod.Settings.NumPieces;
+    end    
+    
     local t1 = {};
     local t2 = {};
     for _, player in pairs(game.Game.PlayingPlayers) do
@@ -16,8 +23,8 @@ function Server_StartGame(game, standing)
         local teamID = getPlayerOrTeamID(player);
         if not t1[teamID] then
             t1[teamID] = {
-                Pieces = Mod.Settings.StartingPieces;
-                WholeCards = 0;
+                Pieces = pieces;
+                WholeCards = whole;
             }
         end 
     end

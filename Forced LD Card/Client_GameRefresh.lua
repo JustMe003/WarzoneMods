@@ -17,7 +17,7 @@ function Client_GameRefresh(game)
         end
     end
     if c < Mod.PublicGameData.CardsPlayedThisTurn[game.Us.ID] then
-        game.SendGameCustomMessage("Updating server...", {Action = "UpdateCardCount", Count = Mod.PublicGameData.CardsPlayedThisTurn[Game.Us.ID] - c}, function(t) end);
+        game.SendGameCustomMessage("Updating server...", {Action = "UpdateCardCount", Count = Mod.PublicGameData.CardsPlayedThisTurn[game.Us.ID] - c}, function(t) end);
     end
 
     if RefreshMainWindow and not UI.IsDestroyed(GlobalRoot) then
