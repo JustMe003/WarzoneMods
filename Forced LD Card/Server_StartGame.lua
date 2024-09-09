@@ -9,18 +9,20 @@ function Server_StartGame(game, standing)
     data.IsTeamGame = getIsTeamGame(game);
     Mod.PublicGameData = data;
 
-    local t = {};
+    local t1 = {};
+    local t2 = {};
     for _, player in pairs(game.Game.PlayingPlayers) do
+        t2[player.ID] = 0;
         local teamID = getPlayerOrTeamID(player);
-        if not t[teamID] then
-            t[teamID] = {
+        if not t1[teamID] then
+            t1[teamID] = {
                 Pieces = Mod.Settings.StartingPieces;
                 WholeCards = 0;
-                CardsUsedThisTurn = 0;
             }
         end 
     end
-    data.CardData = t;
+    data.CardData = t1;
+    data.CardsPlayedThisTurn = t2;
 
     Mod.PublicGameData = data;
 end

@@ -23,24 +23,41 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 end
 
 function showMain()
+    RefreshMainWindow = false;
+
     DestroyWindow();
     cardData = Mod.PublicGameData.CardData[getPlayerOrTeamID(Game.Us)];
 
     local root = CreateWindow(CreateVert(GlobalRoot).SetFlexibleWidth(1));
     
-    CreateButton(root).SetText("Play card").SetColor(colors.Green).SetOnClick(playForcedLDCard).SetInteractable(cardData.WholeCards - cardData.CardsUsedThisTurn >= 1);
-    
+    local line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateButton(line).SetText("Play card").SetColor(colors.Green).SetOnClick(playForcedLDCard).SetInteractable(cardData.WholeCards - getAllPlayedCardsCount(Game, getPlayerOrTeamID(Game.Us)) >= 1);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("Reload").SetColor(colors.Orange).SetOnClick(function() 
+        local c = 0;
+        for _, order in pairs(Game.Orders) do
+            ---@diagnostic disable-next-line: undefined-field
+            if order.proxyType == "GameOrderCustom" and string.sub(order.Payload, 1, #"ForcedLD_") == "ForcedLD_" then
+                c = c + 1;
+            end
+        end
+        if c < Mod.PublicGameData.CardsPlayedThisTurn[Game.Us.ID] then
+            Game.SendGameCustomMessage("Updating server...", {Action = "UpdateCardCount", Count = Mod.PublicGameData.CardsPlayedThisTurn[Game.Us.ID] - c}, function(t) end);
+        end
+        RefreshMainWindow = true;
+     end)
+
     if Mod.PublicGameData.IsTeamGame then
         CreateLabel(root).SetText("Your team cards").SetColor(colors.TextColor);
     else
         CreateLabel(root).SetText("Your cards").SetColor(colors.TextColor);
     end
     
-    local line = CreateHorz(root).SetFlexibleWidth(1);
+    line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Whole cards: ").SetColor(colors.TextColor);
     CreateLabel(line).SetText(cardData.WholeCards).SetColor(colors.Aqua);
-    if cardData.CardsUsedThisTurn > 0 then
-        CreateLabel(root).SetText("(" .. cardData.CardsUsedThisTurn .. " cards played by you and your team)").SetColor(colors.TextColor);
+    if getAllPlayedCardsCount(Game, getPlayerOrTeamID(Game.Us)) > 0 then
+        CreateLabel(root).SetText("(" .. Mod.PublicGameData.CardsPlayedThisTurn[Game.Us.PlayerID] .. " cards played by you" .. aOrB(getAllPlayedCardsCount(Game, getPlayerOrTeamID(Game.Us)) - Mod.PublicGameData.CardsPlayedThisTurn[Game.Us.PlayerID] > 0, " and " .. getAllPlayedCardsCount(Game, getPlayerOrTeamID(Game.Us)) - Mod.PublicGameData.CardsPlayedThisTurn[Game.Us.PlayerID] .. " by your team)", ")")).SetColor(colors.TextColor);
     end
     CreateEmpty(line).SetFlexibleWidth(1);
 
@@ -123,7 +140,7 @@ function sendUpdateToServer(target)
         return;
     end
 
-    if cardData.CardsUsedThisTurn >= cardData.WholeCards then
+    if getAllPlayedCardsCount(Game, getPlayerOrTeamID(Game.Us)) >= cardData.WholeCards then
         UI.Alert("Your team has already played all the cards available");
         return;
     end
@@ -146,6 +163,16 @@ function sendUpdateToServer(target)
     Close();
 end
 
+function getAllPlayedCardsCount(game, teamID)
+    local c = 0;
+    for _, p in pairs(game.Game.PlayingPlayers) do
+        if getPlayerOrTeamID(p) == teamID then
+            c = c + Mod.PublicGameData.CardsPlayedThisTurn[p.ID];
+        end
+    end
+    return c;
+end
+
 function getPlayerOrTeamID(player)
     if Mod.PublicGameData.IsTeamGame then return player.Team; end
     return player.ID;
@@ -158,4 +185,8 @@ function getStringForButton(s, limit)
     else
         return s;
     end
+end
+
+function aOrB(b, r1, r2)
+	if b then return r1; else return r2; end
 end

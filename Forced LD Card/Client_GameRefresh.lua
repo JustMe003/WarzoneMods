@@ -4,8 +4,8 @@ require("Client_PresentMenuUI");
 ---Client_GameRefresh hook
 ---@param game GameClientHook
 function Client_GameRefresh(game)
-    numForcedLDCardsPlayed = numForcedLDCardsPlayed or 0;
-	if game.Us ~= nil and game.Us.State == WL.GamePlayerState.Playing and cardData ~= nil then
+    if game.Us == nil then return; end
+	if game.Us.State == WL.GamePlayerState.Playing and cardData ~= nil then
         cardData = Mod.PublicGameData.CardData[getPlayerOrTeamID(game.Us)];
     end
 
@@ -16,10 +16,13 @@ function Client_GameRefresh(game)
             c = c + 1;
         end
     end
-    if c < numForcedLDCardsPlayed then
-        game.SendGameCustomMessage("Updating server...", {Action = "UpdateCardCount", Count = numForcedLDCardsPlayed - c}, function(t) end);
+    if c < Mod.PublicGameData.CardsPlayedThisTurn[game.Us.ID] then
+        game.SendGameCustomMessage("Updating server...", {Action = "UpdateCardCount", Count = Mod.PublicGameData.CardsPlayedThisTurn[Game.Us.ID] - c}, function(t) end);
     end
-    numForcedLDCardsPlayed = c;
+
+    if RefreshMainWindow and not UI.IsDestroyed(GlobalRoot) then
+        showMain();
+    end
 end
 
 function getPlayerOrTeamID(player)

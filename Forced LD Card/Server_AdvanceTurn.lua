@@ -122,8 +122,8 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 
     for _, player in pairs(game.Game.PlayingPlayers) do
+		data.CardsPlayedThisTurn[player.ID] = 0;
 		local cardData = data.CardData[getPlayerOrTeamID(player)];
-		cardData.CardsUsedThisTurn = 0;
         if capturedTerritory[player.ID] then
             addCardPieces(cardData, player, game, addNewOrder);
         end
