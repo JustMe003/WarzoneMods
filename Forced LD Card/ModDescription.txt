@@ -1,0 +1,9 @@
+Forced LD (modded) card:
+
+When this mod is in effect, play the Forced LD card on another player to force them to deploy locally (as per normal Local Deployment rules).
+
+Description: The mod enforces the Local Deployment setting on the first turn of the game, then allows all players to deploy normally (freely) starting on turn 2.
+
+You may not use this mod in a game with overlapping bonuses.
+
+Warning: this mod can run into synching issues in a team game. If one player plays a card, then removes the order, the mod may still consider it unavailable for another player on the same team. Communicate with your teammates to avoid issues.
