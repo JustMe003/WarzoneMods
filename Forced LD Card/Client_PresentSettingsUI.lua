@@ -38,4 +38,13 @@ function Client_PresentSettingsUI(rootParent)
             CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
         end
     end, "When true, this option allows AI players (or teams that consist of only AI) to play Forced LD cards. They will play the cards as soon as possible on a random target, but not at their teammates. \n\nDoes nothing if the option is not selected");
+    CreateInfoButtonLine(root, function(line)
+        CreateLabel(line).SetText("Can play Forced LD card on teammates").SetColor(colors.TextColor);
+        CreateEmpty(line).SetPreferredWidth(10);
+        if Mod.Settings.CanPlayOnTeammates then
+            CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+        else
+            CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+        end
+    end, "When true, players can play Forced LD cards on teammates. When false, this is not permitted by the mod");
 end

@@ -4,7 +4,7 @@ require("Client_PresentMenuUI");
 ---Client_GameRefresh hook
 ---@param game GameClientHook
 function Client_GameRefresh(game)
-    if game.Us == nil then return; end
+    if game.Us == nil or game.Game.TurnNumber < 1 then return; end
 	if game.Us.State == WL.GamePlayerState.Playing and cardData ~= nil then
         cardData = Mod.PublicGameData.CardData[getPlayerOrTeamID(game.Us)];
     end
@@ -25,6 +25,9 @@ function Client_GameRefresh(game)
     end
 end
 
+---Returns the playerID of teamID of the player
+---@param player GamePlayer # The player in question
+---@return PlayerID | TeamID | integer # The ID to use to index the data
 function getPlayerOrTeamID(player)
     if Mod.PublicGameData.IsTeamGame then return player.Team; end
     return player.ID;

@@ -34,11 +34,17 @@ function Server_StartGame(game, standing)
     Mod.PublicGameData = data;
 end
 
+---Returns the playerID of teamID of the player
+---@param player GamePlayer # The player in question
+---@return PlayerID | TeamID | integer # The ID to use to index the data
 function getPlayerOrTeamID(player)
     if Mod.PublicGameData.IsTeamGame then return player.Team; end
     return player.ID;
 end
 
+---Returns true if the game is a team game, returns false otherwise
+---@param game GameServerHook # The game object
+---@return boolean # True if the game is a team game, false otherwise
 function getIsTeamGame(game)
     for _, player in pairs(game.Game.PlayingPlayers) do
         return player.Team ~= -1;

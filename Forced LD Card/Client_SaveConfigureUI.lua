@@ -12,4 +12,5 @@ function Client_SaveConfigureUI(alert)
     Mod.Settings.Duration = duration.GetValue();
     if Mod.Settings.Duration < 1 then alert("The card duration must be bigger or equal to 1"); end
     Mod.Settings.AIAutoplayCards = AIAutoplayCards.GetIsChecked();
+    Mod.Settings.CanPlayOnTeammates = canPlayOnTeammates.GetIsChecked();
 end

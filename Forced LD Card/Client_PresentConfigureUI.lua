@@ -29,11 +29,24 @@ function Client_PresentConfigureUI(rootParent)
     CreateLabel(line).SetText("Number of turns the card will last").SetColor(textColor);
     duration = CreateNumberInputField(line).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(Mod.Settings.Duration or 3);
     
-    CreateEmpty(root).SetPreferredWidth(5);
+    CreateEmpty(root).SetPreferredWidth(15);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("Additional settings").SetColor(textColor);
+    CreateEmpty(line).SetFlexibleWidth(1);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateLabel(line).SetText("AI can play Forced LD cards").SetColor(textColor);
     AIAutoplayCards = CreateCheckBox(line).SetText(" ").SetIsChecked(Mod.Settings.AIAutoplayCards or false);
     CreateEmpty(line).SetFlexibleWidth(1);
+
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("Can play Forced LD card on teammates").SetColor(textColor);
+    canPlayOnTeammates = CreateCheckBox(line).SetText(" ").SetIsChecked(Mod.Settings.CanPlayOnTeammates or false);
+    CreateEmpty(line).SetFlexibleWidth(1);
+
+
 end

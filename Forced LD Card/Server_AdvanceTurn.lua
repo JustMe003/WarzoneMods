@@ -88,11 +88,13 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	
+	-- Save which players were targetted by a Forced LD card
 	local forcedLDPlayers = {};
 	for _, playedCard in pairs(data.ActiveCards) do
 		forcedLDPlayers[playedCard.Target] = true;
 	end
 
+	-- Update income of all players, if they were not targetted by a Forced LD card
 	local start = WL.TickCount();
 	for p, player in pairs(game.Game.PlayingPlayers) do
 		if not forcedLDPlayers[p] then
@@ -114,6 +116,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     end
 	print("Income orders: " .. WL.TickCount() - start);
 
+	-- Forced LD card wearing off
 	for i, playedCard in pairs(data.ActiveCards) do
 		if playedCard.LastTillTurn <= game.Game.TurnNumber then
 			addNewOrder(WL.GameOrderEvent.Create(playedCard.PlayerID, "Forced LD card wore off on " .. game.Game.Players[playedCard.Target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[playedCard.PlayerID]), getPlayerOrAllTeamPlayers(game, game.Game.Players[playedCard.Target])), nil), {}));
@@ -121,6 +124,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 
+	-- Adding card pieces to the players who successfully captured a territory this turn
     for _, player in pairs(game.Game.PlayingPlayers) do
 		data.CardsPlayedThisTurn[player.ID] = 0;
 		local cardData = data.CardData[getPlayerOrTeamID(player)];
@@ -140,6 +144,11 @@ function getBonusValue(bonus, bonusOverrides)
     return bonus.Amount;
 end
 
+---Adds cardpieces to the given cardData
+---@param cardData table # The card data containing the details of the cards
+---@param player GamePlayer # The player who achieved the pieces
+---@param game GameServerHook # The game object
+---@param addNewOrder fun(order: GameOrder) # The function to add an extra order
 function addCardPieces(cardData, player, game, addNewOrder)
     cardData.Pieces = cardData.Pieces + Mod.Settings.PiecesPerTurn;
     while cardData.Pieces >= Mod.Settings.NumPieces do
@@ -149,11 +158,18 @@ function addCardPieces(cardData, player, game, addNewOrder)
 	addNewOrder(WL.GameOrderEvent.Create(player.ID, "Received Forced LD card pieces", getPlayerOrAllTeamPlayers(game, player), {}));
 end
 
+---Returns the playerID of teamID of the player
+---@param player GamePlayer # The player in question
+---@return PlayerID | TeamID | integer # The ID to use to index the data
 function getPlayerOrTeamID(player)
     if Mod.PublicGameData.IsTeamGame then return player.Team; end
     return player.ID;
 end
 
+---Gets all the players of a team, or just the player in question, used for setting the visibility of an order
+---@param game GameServerHook # The game object
+---@param player GamePlayer # The source player
+---@return PlayerID[] # The list of playerIDs
 function getPlayerOrAllTeamPlayers(game, player)
 	if Mod.PublicGameData.IsTeamGame then
 		return getTeamPlayers(game, player.Team);
@@ -162,6 +178,10 @@ function getPlayerOrAllTeamPlayers(game, player)
 	end
 end
 
+---Returns all the players who have the same teamID as the passed argument
+---@param game GameServerHook # The game object
+---@param teamID TeamID # The teamID
+---@return PlayerID[] # The list of all the playerIDs who are in the team
 function getTeamPlayers(game, teamID)
 	local t = {};
 	for i, p in pairs(game.Game.PlayingPlayers) do
@@ -172,6 +192,10 @@ function getTeamPlayers(game, teamID)
 	return t;
 end
 
+---Returns true if the whole team is AI, returns false otherwise
+---@param game GameServerHook # The game object
+---@param playerIDs PlayerID[] # The list of playerIDs
+---@return boolean # True if the whole team is AI, false otherwise
 function teamIsAI(game, playerIDs)
 	for _, pID in pairs(playerIDs) do
 		local p = game.Game.Players[pID];
@@ -180,10 +204,19 @@ function teamIsAI(game, playerIDs)
 	return true;
 end
 
+---Helper function to return either `r1` or `r2`
+---@param b boolean # Boolean to determine to return `r1` or `r2`
+---@param r1 any # If `b` is true, return this
+---@param r2 any # If `b` is false, return this
+---@return any # Either `r1` or `r2`, depending on `b` is true
 function aOrB(b, r1, r2)
 	if b then return r1; else return r2; end
 end
 
+---Merges the 2 lists together
+---@param t1 any[] # List 1
+---@param t2 any[] # List 2
+---@return any[] # The merged lists
 function mergeLists(t1, t2)
 	if not t1 or not t2 then return t1 or t2 or {}; end
 	if #t1 < #t2 then

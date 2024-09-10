@@ -10,6 +10,7 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
     local teamID = getPlayerOrTeamID(game.Game.PlayingPlayers[playerID]);
     local cardData = data.CardData[teamID];
     if payload.Action == "PlayCard" then
+        ---@diagnostic disable-next-line: param-type-mismatch
         if cardData.WholeCards - getAllPlayedCardsCount(game, teamID) <= 0 then
             return;
         end
@@ -21,11 +22,18 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
 
 end
 
+---Returns the playerID of teamID of the player
+---@param player GamePlayer # The player in question
+---@return PlayerID | TeamID | integer # The ID to use to index the data
 function getPlayerOrTeamID(player)
     if Mod.PublicGameData.IsTeamGame then return player.Team; end
     return player.ID;
 end
 
+---Counts all the Forced LD cards played by the team
+---@param game GameServerHook # The game object
+---@param teamID TeamID # The teamID of the team we want to count the cards from
+---@return integer # The number of cards played
 function getAllPlayedCardsCount(game, teamID)
     local c = 0;
     for _, p in pairs(game.Game.PlayingPlayers) do
