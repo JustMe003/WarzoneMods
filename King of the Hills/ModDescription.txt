@@ -1,0 +1,7 @@
+King of the Hills mod
+
+Adds a new win condition to the game.
+At the start of the game, a number of territories are assigned to be a Hill (indicated by a Mine structure from Idle).
+When a player/team captures all the hills and hold them for a configurable amount of turns, they win the game immediately.
+
+To see the status on the hills, you can check the mod menu at any time
