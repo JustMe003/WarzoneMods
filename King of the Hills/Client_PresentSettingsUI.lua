@@ -19,4 +19,10 @@ function Client_PresentSettingsUI(rootParent)
         CreateLabel(line).SetText(Mod.Settings.NumTurns).SetColor(colors.Aqua);
         CreateLabel(line).SetPreferredWidth(10);
     end, "The number of successive turns you need to control all the hills in order to win the game");
+    
+    CreateInfoButtonLine(root, function(line)
+        CreateLabel(line).SetText("Number of armies on each hill: ").SetColor(colors.TextColor);
+        CreateLabel(line).SetText(Mod.Settings.NumArmies or "N/A").SetColor(colors.Aqua);
+        CreateLabel(line).SetPreferredWidth(10);
+    end, "The number of armies that will be put on each hill at the start of the game");
 end

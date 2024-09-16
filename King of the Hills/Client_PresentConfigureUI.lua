@@ -15,4 +15,7 @@ function Client_PresentConfigureUI(rootParent)
 
     CreateLabel(root).SetText("The number of turns a hill must be occupied in succession to win the game").SetColor(textColor);
     numTurns = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(Mod.Settings.NumTurns or 1);
+
+    CreateLabel(root).SetText("The number of armies on a hill at the start of the game").SetColor(textColor);
+    numArmies = CreateNumberInputField(root).SetSliderMinValue(0).SetSliderMaxValue(20).SetValue(Mod.Settings.NumArmies or 10);
 end

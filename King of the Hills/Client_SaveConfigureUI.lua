@@ -5,4 +5,5 @@ require("Annotations");
 function Client_SaveConfigureUI(alert)
 	Mod.Settings.NumHills = numHills.GetValue();
     Mod.Settings.NumTurns = numTurns.GetValue();
+    Mod.Settings.NumArmies = numArmies.GetValue();
 end

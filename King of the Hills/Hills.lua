@@ -15,9 +15,12 @@ function setUpHills(standing)
 		local terrID = list[rand];
 		table.remove(list, rand);
 
-		local structures = standing.Territories[terrID].Structures or {};
+		local terr = standing.Territories[terrID];
+		terr.NumArmies = WL.Armies.Create(10, terr.NumArmies.SpecialUnits or {});
+		local structures = terr.Structures or {};
 		structures[WL.StructureType.Mine] = (structures[WL.StructureType.Mine] or 0) + 1;
-		standing.Territories[terrID].Structures = structures;
+		terr.Structures = structures;
+		standing.Territories[terrID] = terr;
 		table.insert(terrs, terrID);
         i = i + 1;
     end
@@ -65,7 +68,7 @@ function endGame(winner, game, addNewOrder)
 		end
 	end
 
-	addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Test", {}, mods));
+	addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getTeamOrPlayerName(game, Mod.PublicGameData.LastControllingPlayer) .. " captured all the hills, and held them for " .. Mod.Settings.NumTurns .. " turn" .. aOrB(Mod.Settings.NumTurns ~= 1, "s", "") .. "!", {}, mods));
 end
 
 ---returns the teamID if the team is a team game, otherwise returns the playerID
@@ -75,4 +78,31 @@ end
 function getTeamOrPlayerID(players, pID)
 	---@diagnostic disable-next-line: return-type-mismatch
 	if Mod.PublicGameData.IsTeamGame then return players[pID].Team; else return pID; end
+end
+
+function getTeamOrPlayerName(game, teamID)
+	if Mod.PublicGameData.IsTeamGame then
+		return getTeamName(teamID);
+	else
+		return game.Game.Players[teamID].DisplayName(nil, false);
+	end
+end
+
+function getTeamName(team)
+	local s = "";
+	team = team + 1;
+    while team > 0 do
+        local n = team % 26;
+        if n == 0 then
+            -- team % 26 == 26
+            n = 26;
+        end
+        team = (team - n) / 26;
+        s = string.char(n + 64) .. s;
+    end
+    return "Team " .. s;
+end
+
+function aOrB(b, r1, r2)
+	if b then return r1; else return r2; end
 end
