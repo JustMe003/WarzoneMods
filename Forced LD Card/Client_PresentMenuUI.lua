@@ -13,7 +13,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
         UI.Alert("You can't use the mod since you are not in the game");
         return;
     end
-    setMaxSize(300, 300);
+    setMaxSize(300, 400);
     Init();
     colors = GetColors();
     Game = game;
@@ -34,6 +34,10 @@ function showMain()
     local line = CreateHorz(root).SetFlexibleWidth(1);
     ---@diagnostic disable-next-line: param-type-mismatch
     CreateButton(line).SetText("Play card").SetColor(colors.Green).SetOnClick(playForcedLDCard).SetInteractable(cardData.WholeCards - getAllPlayedCardsCount(Game, getPlayerOrTeamID(Game.Us)) >= 1);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
+        UI.Alert("Playing a Forced LD card on another player will make them deploy their armies using the local deployment rules for " .. Mod.Settings.Duration .. " turns");
+    end)
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateButton(line).SetText("Reload").SetColor(colors.Orange).SetOnClick(function() 
         local c = 0;
@@ -158,6 +162,11 @@ function sendUpdateToServer(target)
     ---@diagnostic disable-next-line: param-type-mismatch
     if getAllPlayedCardsCount(Game, getPlayerOrTeamID(Game.Us)) >= cardData.WholeCards then
         UI.Alert("Your team has already played all the cards available");
+        return;
+    end
+
+    if Game.Us.HasCommittedOrders then
+        UI.Alert("Please uncommit your orders first");
         return;
     end
 
