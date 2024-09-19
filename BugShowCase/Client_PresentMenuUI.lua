@@ -17,6 +17,9 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     for i = 0, 100, 5 do
         addOrder(orders, WL.GameOrderCustom.Create(game.Us.ID, "Occurs in phase: " .. i, "", {}, i));
     end
+    for _, order in pairs(orders) do
+        print(order.OccursInPhase);
+    end
     Game.Orders = orders;
 
 end
