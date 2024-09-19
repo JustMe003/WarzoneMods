@@ -88,6 +88,14 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
 	end
 	
+	-- Forced LD card wearing off
+	for i, playedCard in pairs(data.ActiveCards) do
+		if playedCard.LastTillTurn <= game.Game.TurnNumber then
+			addNewOrder(WL.GameOrderEvent.Create(playedCard.PlayerID, "Forced LD card wore off on " .. game.Game.Players[playedCard.Target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[playedCard.PlayerID]), getPlayerOrAllTeamPlayers(game, game.Game.Players[playedCard.Target])), nil), {}));
+			data.ActiveCards[i] = nil;
+		end
+	end
+	
 	-- Save which players were targetted by a Forced LD card
 	local forcedLDPlayers = {};
 	for _, playedCard in pairs(data.ActiveCards) do
@@ -115,14 +123,6 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		end
     end
 	print("Income orders: " .. WL.TickCount() - start);
-
-	-- Forced LD card wearing off
-	for i, playedCard in pairs(data.ActiveCards) do
-		if playedCard.LastTillTurn <= game.Game.TurnNumber then
-			addNewOrder(WL.GameOrderEvent.Create(playedCard.PlayerID, "Forced LD card wore off on " .. game.Game.Players[playedCard.Target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[playedCard.PlayerID]), getPlayerOrAllTeamPlayers(game, game.Game.Players[playedCard.Target])), nil), {}));
-			data.ActiveCards[i] = nil;
-		end
-	end
 
 	-- Adding card pieces to the players who successfully captured a territory this turn
     for _, player in pairs(game.Game.PlayingPlayers) do

@@ -1,3 +1,5 @@
+---@meta _
+
 ---@class ProxyObject # Proxy object class
 ---@field proxyType string # The proxy type
 ---@field readonly true # Set to true if the object is readonly
