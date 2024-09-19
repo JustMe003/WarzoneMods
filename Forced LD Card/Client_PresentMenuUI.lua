@@ -18,6 +18,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
         UI.Alert("You can only use the mod starting from turn 1");
         return;
     end
+
     setMaxSize(300, 400);
     Init();
     colors = GetColors();
@@ -25,6 +26,19 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     GlobalRoot = CreateVert(rootParent).SetFlexibleWidth(1);
     Close = close;
     showMain();
+
+    local c = 0;
+    for _, order in pairs(game.Orders) do
+        ---@diagnostic disable-next-line: undefined-field
+        if order.proxyType == "GameOrderCustom" and string.sub(order.Payload, 1, #"ForcedLD_") == "ForcedLD_" then
+            c = c + 1;
+        end
+    end
+    if c < Mod.PublicGameData.CardsPlayedThisTurn[game.Us.ID] then
+        game.SendGameCustomMessage("Updating server...", {Action = "UpdateCardCount", Count = Mod.PublicGameData.CardsPlayedThisTurn[game.Us.ID] - c}, function(t) end);
+        RefreshMainWindow = true
+    end
+
 end
 
 ---Shows the main menu of the mod
