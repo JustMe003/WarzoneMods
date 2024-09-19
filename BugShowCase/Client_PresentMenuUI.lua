@@ -33,6 +33,6 @@ function addOrder(orders, order)
             break;
         end
     end
-    if index == 0 then index = #orders; end
+    if index == 0 then index = #orders + 1; end
     table.insert(orders, index, order);
 end
