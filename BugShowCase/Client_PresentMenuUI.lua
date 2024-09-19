@@ -13,13 +13,21 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     colors = GetColors();
     Game = game;
 
-    showMain();
+    local orders = Game.Orders;
+    for i = 0, 100, 5 do
+        addOrder(orders, WL.GameOrderCustom.Create(game.Us.ID, "Occurs in phase: " .. i, "", {}, i));
+    end
+    Game.Orders = orders;
+
 end
 
-function showMain()
-    DestroyWindow()
-    SetWindow("Main");
-
-    CreateLabel(root).SetText("turn " .. Game.Game.TurnNumber - 1).SetColor(colors.TextColor);
-    CreateTextInputField(root).SetText(Mod.PublicGameData.SerializedTurn).SetPreferredWidth(2000);
+function addOrder(orders, order)
+    local index = 0;
+    for i, o in pairs(orders) do
+        if o.OccursInPhase ~= nil and o.OccursInPhase > order.OccursInPhase then
+            index = i;
+        end
+    end
+    if index == 0 then index = #orders; end
+    table.insert(orders, index, order);
 end
