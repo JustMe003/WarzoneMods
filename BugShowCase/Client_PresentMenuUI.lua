@@ -14,10 +14,10 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     Game = game;
 
     local orders = Game.Orders;
-    for i = 17, 32, 5 do
+    for i = 17, 32, 1 do
         addOrder(orders, WL.GameOrderCustom.Create(game.Us.ID, "Occurs in phase: " .. i, "", {}, i));
     end
-    for i = 44, 56, 5 do
+    for i = 44, 56, 1 do
         addOrder(orders, WL.GameOrderCustom.Create(game.Us.ID, "Occurs in phase: " .. i, "", {}, i));
     end
     Game.Orders = orders;
