@@ -33,6 +33,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 				table.insert(data.ActiveCards, {PlayerID = order.PlayerID, Target = target, LastTillTurn = game.Game.TurnNumber + Mod.Settings.Duration});
 				skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
 				addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Played Forced LD card on " .. game.Game.PlayingPlayers[target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[target]), getPlayerOrAllTeamPlayers(game, game.Game.Players[order.PlayerID])), nil), {}));
+				cardData.WholeCards = cardData.WholeCards - 1;
 			else
 				addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Something went wrong: Could not extract PlayerID from game order custom", ""), true);
 			end
