@@ -1,5 +1,4 @@
 require("Annotations");
-require("Util");
 
 ---Server_Created hook
 ---@param game GameServerHook
