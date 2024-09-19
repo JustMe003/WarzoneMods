@@ -8,7 +8,6 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
     for p, _ in pairs(game.Game.PlayingPlayers) do
         capturedTerritory[p] = false;
     end
-	data = Mod.PublicGameData;
 end
 
 ---Server_AdvanceTurn_Order
@@ -25,6 +24,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         end
 	---@diagnostic disable-next-line: undefined-field
 	elseif order.proxyType == "GameOrderCustom" and string.sub(order.Payload, 1, #"ForcedLD_") ~= nil then
+		local data = Mod.PublicGameData;
 		local cardData = data.CardData[getPlayerOrTeamID(game.Game.PlayingPlayers[order.PlayerID])];
 		if cardData.WholeCards > 0 then
 			---@diagnostic disable-next-line: undefined-field
@@ -34,12 +34,14 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 				skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
 				addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Played Forced LD card on " .. game.Game.PlayingPlayers[target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[target]), getPlayerOrAllTeamPlayers(game, game.Game.Players[order.PlayerID])), nil), {}));
 				cardData.WholeCards = cardData.WholeCards - 1;
+				data.CardData[getPlayerOrTeamID(game.Game.PlayingPlayers[order.PlayerID])] = cardData;
 			else
 				addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Something went wrong: Could not extract PlayerID from game order custom", ""), true);
 			end
 		else
 			addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "You don't have enough cards left over to play a Forced LD card!", ""), true);
 		end
+		Mod.PublicGameData = data;
     end
 end
 
@@ -47,6 +49,7 @@ end
 ---@param game GameServerHook 
 ---@param addNewOrder fun(order: GameOrder) # Adds a game order, will be processed before any of the rest of the orders 
 function Server_AdvanceTurn_End(game, addNewOrder)
+	local data = Mod.PublicGameData;
 	-- Automate AI playing cards
 	if Mod.Settings.AIAutoplayCards then
 		for teamID, cardData in pairs(Mod.PublicGameData.CardData) do

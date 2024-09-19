@@ -13,6 +13,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
         UI.Alert("You can't use the mod since you are not in the game");
         return;
     end
+    if game.Game.TurnNumber < 1 then
+        close();
+        UI.Alert("You can only use the mod starting from turn 1");
+        return;
+    end
     setMaxSize(300, 400);
     Init();
     colors = GetColors();
