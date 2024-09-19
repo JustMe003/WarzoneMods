@@ -27,7 +27,7 @@ end
 function addOrder(orders, order)
     local index = 0;
     for i, o in pairs(orders) do
-        if o.OccursInPhase ~= nil and o.OccursInPhase > order.OccursInPhase then
+        if o.OccursInPhase ~= nil and o.OccursInPhase < order.OccursInPhase then
             index = i;
             break;
         end
