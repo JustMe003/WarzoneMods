@@ -17,18 +17,15 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     for i = 3, 100, 5 do
         addOrder(orders, WL.GameOrderCustom.Create(game.Us.ID, "Occurs in phase: " .. i, "", {}, i));
     end
-    for _, order in pairs(orders) do
-        print(order.OccursInPhase);
-    end
     Game.Orders = orders;
-
+    close();
 end
 
 function addOrder(orders, order)
     local index = 0;
     for i, o in pairs(orders) do
         if o.OccursInPhase ~= nil and o.OccursInPhase > order.OccursInPhase then
-            print(o.OccursInPhase, order.OccursInPhase);
+            -- print(o.OccursInPhase, order.OccursInPhase);
             index = i;
             break;
         end
