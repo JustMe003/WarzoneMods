@@ -36,9 +36,12 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 end
 
 function getIncomeThreshold(n)
-	if Mod.Settings.Formula == "ax + c" then
-		return Mod.Settings.A * n + Mod.Settings.C;
-	else
-		return Mod.Settings.A * n * n + Mod.Settings.B * n + Mod.Settings.C;
-	end
+	local choice_table =
+	{
+		["a.x + c"] = Mod.Settings.A * n + Mod.Settings.C,
+		["a.x² + b.x + c"] = Mod.Settings.A * n^2 + Mod.Settings.B * n + Mod.Settings.C,
+		["a.x² + d.x.√x + b.x + e.√x + c"] = Mod.Settings.A * n^2 + Mod.Settings.D * n^1.5 + Mod.Settings.B * n + Mod.Settings.E * n^0.5 + Mod.Settings.C,
+		["a.x² + d.x.√x + b.x + e.√x+ f.ln(x) + c"] = Mod.Settings.A * n^2 + Mod.Settings.D * n^1.5 + Mod.Settings.B * n + Mod.Settings.E * n^0.5 + Mod.Settings.F * math.log(n) + Mod.Settings.C,
+	}
+	return choice_table[Mod.Settings.Formula]
 end
