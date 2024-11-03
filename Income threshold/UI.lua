@@ -1,5 +1,6 @@
 ---------------------------------------------------
 -- Created by Just_A_Dutchman_ ---- Version: 1.0 --
+-- Modified by IM ----------------- Version: 2.0 --
 ---------------------------------------------------
 
 
@@ -919,9 +920,13 @@ end
 --	+ obj			[UI Object]			An UI object, specifically a number input field
 
 function getValue(name)
-	local obj = getObject(name);
-	if type(obj) ~= type(table) then print("object given to getSliderPreferredWidth was " .. type(obj) .. ", expected a table"); return; end
-	return obj.GetValue();
+	if name ~= nil then
+		local obj = getObject(name);
+		if type(obj) ~= type(table) then print("object given to getSliderPreferredWidth was " .. type(obj) .. ", expected a table"); return; end
+		return obj.GetValue();
+	else
+		return 0;
+	end
 end
 
 -- Returns the minimum slider value on number input fields --
