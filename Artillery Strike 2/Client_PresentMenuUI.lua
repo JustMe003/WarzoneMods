@@ -16,6 +16,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
         UI.Alert("You cannot use this mod if you're a spectator");
         return;
     end
+    if game.Us.State == WL.GamePlayerState.Playing then
+        close();
+        UI.Alert("You cannot use this mod if you're not playing anymore");
+        return;
+    end
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
     colors = GetColors();
