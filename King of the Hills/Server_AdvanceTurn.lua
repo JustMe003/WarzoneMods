@@ -11,19 +11,16 @@ function Server_AdvanceTurn_End(game, addNewOrder)
     if player ~= -1 then    -- A team has all the hills
         if player == data.LastControllingPlayer then    -- Same team as previous turn
             data.NumTurnsControlling = data.NumTurnsControlling + 1;
-            if data.NumTurnsControlling == Mod.Settings.NumTurns then
-                endGame(player, game, addNewOrder);
-            end
         else    -- New team in posession of all the hills
             data.LastControllingPlayer = player;
             data.NumTurnsControlling = 1;
-            if data.NumTurnsControlling == Mod.Settings.NumTurns then
-                endGame(player, game, addNewOrder);
-            end
         end
     else    -- No team is in posession of all the hills atm
         data.LastControllingPlayer = player;
         data.NumTurnsControlling = 0;
     end
     Mod.PublicGameData = data;
+    if Mod.PublicGameData.NumTurnsControlling == Mod.Settings.NumTurns then
+        endGame(player, game, addNewOrder);
+    end
 end
