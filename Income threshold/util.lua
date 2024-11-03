@@ -14,6 +14,11 @@ function getIncomeThreshold(n)
 	return choice_table[Mod.Settings.Formula]
 end
 
+function getPower(b, p)
+	if p == 0 then return 1; end
+	return b * getPower(b, p - 1);
+end
+
 function isIn(value, list)
     local set = {}
     for _, l in ipairs(list) do set[l] = true end

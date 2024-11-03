@@ -1,9 +1,8 @@
 ---------------------------------------------------
 -- Created by Just_A_Dutchman_ ---- Version: 1.0 --
--- Modified by IM ----------------- Version: 2.0 --
+---------------------------------------------------                                         
+-- Modified by IM ----------------- Version: 2.1 --
 ---------------------------------------------------
-
-
 
 --
 --		windows						(key = window name)		(value = table)
@@ -19,7 +18,6 @@
 --
 --		layoutGroups				(key = object name)		(value = UI Object)
 --
-
 
 -- Initialize UI.lua --
 -----------------------

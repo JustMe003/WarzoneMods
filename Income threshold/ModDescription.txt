@@ -3,10 +3,3 @@ Players that are below this income threshold at the end of the turn are eliminat
 If every player is below the income threshold, then the player(s) with the most income are left alive.
 
 Compatible with sanctions and army cap
-
-V2.0
-Improvements of this version over the original:
--two additional mathematical formulas have been added for more variety and control
--the previews now print the correct value and one extra example
--sliders now range increased and added negatives
--added explanation before the sliders and aligned left
