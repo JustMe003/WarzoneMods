@@ -6,7 +6,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 		Close();
 	end
 	Init(rootParent);
-	Timer.Init(WL);
+	-- Timer.Init(WL);
 	colors = GetColors();
 	Game = game; --global variables
 	Close = close;
@@ -295,24 +295,26 @@ function AddOrdersConfirmes(inputs)
 		return;
 	end
 
+	print("Num orders last turn: " .. #LastTurn);
+
 	local orders = Game.Orders;
 	local territories = Game.LatestStanding.Territories;
 	local orderListIndex, endOfList;
 	local deployMap = nil;
 	local pastOrderListIndex;
 	
-	Timer.Start("Total");
+	-- Timer.Start("Total");
 	if inputs.AddDeployments then
-		Timer.Start("Init");
+		-- Timer.Start("Init");
 		local territoryToBonusMap = Mod.PublicGameData.TerritoryToBonusMap;
 		orderListIndex, endOfList = getFirstOrderOfPhase(orders, WL.TurnPhase.Deploys);
 		local bonusMap = createBonusMap(Game.LatestStanding);
 		local previousBonusMap = createBonusMap(LastStanding);
 		deployMap = {};
-		Timer.Stop("Init");
+		-- Timer.Stop("Init");
 		
 		-- Update bonusMap with deploy orders already in the order list
-		Timer.Start("Current orders");
+		-- Timer.Start("Current orders");
 		if not endOfList then
 			local order = orders[orderListIndex];
 			while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
@@ -331,9 +333,9 @@ function AddOrdersConfirmes(inputs)
 				end
 			end
 		end
-		Timer.Stop("Current orders");
+		-- Timer.Stop("Current orders");
 		
-		Timer.Start("Past orders");
+		-- Timer.Start("Past orders");
 		pastOrderListIndex = getFirstOrderOfPhase(LastTurn, WL.TurnPhase.Deploys);
 		local order = LastTurn[pastOrderListIndex];
 		while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
@@ -353,9 +355,9 @@ function AddOrdersConfirmes(inputs)
 			pastOrderListIndex = pastOrderListIndex + 1;
 			order = LastTurn[pastOrderListIndex];
 		end
-		Timer.Stop("Past orders");
+		-- Timer.Stop("Past orders");
 		
-		Timer.Start("Deploy last armies")
+		-- Timer.Start("Deploy last armies")
 		if inputs.DeployAllArmies or inputs.AlwaysDeployInSingleTerrBonuses then
 			for bonusID, bonus in pairs(bonusMap) do
 				if bonus.NumArmies > 0 then
@@ -380,22 +382,22 @@ function AddOrdersConfirmes(inputs)
 				end
 			end
 		end
-		Timer.Stop("Deploy last armies");
+		-- Timer.Stop("Deploy last armies");
 	end
 	
 	
 	if inputs.AddTransfers then
-		Timer.Start("Init armies map");
+		-- Timer.Start("Init armies map");
 		if deployMap == nil then
 			deployMap = createDeployMap(orders);
 		end
 		local armiesMap = createArmiesMap(Game.LatestStanding.Territories, deployMap, inputs.MoveSpecialUnits);
-		Timer.Stop("Init armies map");
+		-- Timer.Stop("Init armies map");
 		local transferMap = {};
 		
 		orderListIndex, endOfList = getFirstOrderOfPhase(orders, WL.TurnPhase.Attacks, orderListIndex);
 		
-		Timer.Start("Current orders");
+		-- Timer.Start("Current orders");
 		if not endOfList then
 			local order = orders[orderListIndex];
 			while orderIsBeforePhase(order, WL.TurnPhase.Attacks + 1) do
@@ -414,11 +416,10 @@ function AddOrdersConfirmes(inputs)
 				order = orders[orderListIndex];
 			end
 		end
-		Timer.Stop("Current orders");
+		-- Timer.Stop("Current orders");
 		
-		Timer.Start("Past transfer");
+		-- Timer.Start("Past transfer");
 		pastOrderListIndex = getFirstOrderOfPhase(LastTurn, WL.TurnPhase.Attacks, pastOrderListIndex or 1);
-		print("Start transfers order index: " .. pastOrderListIndex);
 		local order = LastTurn[pastOrderListIndex];
 		while orderIsBeforePhase(order, WL.TurnPhase.Attacks + 1) do
 			if order.proxyType == "GameOrderAttackTransfer" and order.PlayerID == Game.Us.ID then
@@ -455,12 +456,11 @@ function AddOrdersConfirmes(inputs)
 			pastOrderListIndex = pastOrderListIndex + 1;
 			order = LastTurn[pastOrderListIndex];
 		end
-		print("end transfers order index: " .. pastOrderListIndex);
-		Timer.Stop("Past transfer");
+		-- Timer.Stop("Past transfer");
 		
 		
 		if inputs.MoveUnmovedArmies or inputs.MoveSpecialUnits then
-			Timer.Start("Add forgotten units")
+			-- Timer.Start("Add forgotten units")
 			for terrID, armies in pairs(armiesMap) do
 				if transferMap[terrID] ~= nil then
 					local newArmies = nil;
@@ -489,12 +489,12 @@ function AddOrdersConfirmes(inputs)
 					end
 				end
 			end
-			Timer.Stop("Add forgotten units")
+			-- Timer.Stop("Add forgotten units")
 		end
 		
 	end
 	Game.Orders = copyTable(orders);
-	Timer.Stop("Total");
+	-- Timer.Stop("Total");
 
 end;
 
