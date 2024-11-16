@@ -35,10 +35,6 @@ function showOptions()
 	end
 	window(win);
 	vert = newVerticalGroup("vert", "root");
-	local line = newHorizontalGroup(win .. "line_info1", vert);
-	newLabel(win .. "Info1", line, "Players that are below this income threshold at the end of the turn are eliminated.");
-	local line = newHorizontalGroup(win .. "line_info2", vert);
-	newLabel(win .. "Info2", line, "If every player is below the income threshold, then the player(s) with the most income are left alive.");
 	local line = newHorizontalGroup(win .. "line1", vert);
 	newLabel(win .. "FormulaSelecting", line, "Select your formula:", "Royal Blue");
 	newButton(win .. "Formula", line, formula, cycleFormula, "Lime");
@@ -105,11 +101,6 @@ function showCurve()
 		}
 		newLabel(win .. i, vert, "after " .. i .. " turns:   " .. math.ceil(choice_table[formula] + getValue(iC)));
 	end
-end
-
-function getPower(b, p)
-	if p == 0 then return 1; end
-	return b * getPower(b, p - 1);
 end
 
 function saveInputs()
