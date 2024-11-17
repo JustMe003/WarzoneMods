@@ -105,9 +105,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                         newAlienPlaces[terrID] = clone;
                         mod.AddSpecialUnits = {clone};
                     else
-                        local alien = createAlien(meteor.Data.AlienDefaultHealth + math.random(0, meteor.Data.AlienRandomHealth));
-                        mod.AddSpecialUnits = concatArrays(mod.AddSpecialUnits, {alien});
-                        newAlienPlaces[terrID] = alien;
+                        -- local alien = createAlien(meteor.Data.AlienDefaultHealth + math.random(0, meteor.Data.AlienRandomHealth));
+                        -- mod.AddSpecialUnits = concatArrays(mod.AddSpecialUnits, {alien});
+                        -- newAlienPlaces[terrID] = alien;
                     end
                 end
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Meteor landed on " .. game.Map.Territories[terrID].Name .. " (" .. meteor.Data.Name .. ")", {}, {mod});
