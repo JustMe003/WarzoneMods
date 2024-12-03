@@ -8,7 +8,7 @@ function Server_StartGame(game, standing)
     local data = Mod.PublicGameData;
     local s = standing;
     for terr, arr in pairs(data.ArtilleryPlacements) do
-        if type(terr) == "number" and game.Map.Territories[terr] ~= nil then
+        if type(terr) == "number" and game.Map.Territories[terr] ~= nil and standing.Territories[terr].OwnerPlayerID ~= WL.PlayerID.Neutral then
             if type(arr) == "table" then
                 local t = {};
                 for _, v in pairs(arr) do

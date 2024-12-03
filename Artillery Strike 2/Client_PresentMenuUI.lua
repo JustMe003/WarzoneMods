@@ -16,7 +16,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
         UI.Alert("You cannot use this mod if you're a spectator");
         return;
     end
-    if game.Us.State == WL.GamePlayerState.Playing then
+    if game.Us.State ~= WL.GamePlayerState.Playing then
         close();
         UI.Alert("You cannot use this mod if you're not playing anymore");
         return;
@@ -216,6 +216,9 @@ function targetTerritory()
             
             UI.CreateEmpty(vert).SetPreferredHeight(10);
 
+            UI.CreateLabel(vert).SetText("Be careful with the miss chance! The miss chance applies per artillery unit and does not increase / decrease with the number of artillery units that participate in the artillery strike, thus it is not listed in the summary list when selecting artillery. Check for each artillery unit what its miss chance is and take this into consideration before ordering the artillery strike.");
+            UI.CreateEmpty(vert).SetPreferredHeight(10);
+
             UI.CreateButton(vert).SetText("Got it!").SetColor(colors.Green).SetOnClick(function() close(); end);
         end)
     end)
@@ -365,6 +368,8 @@ function showPickTerritory(message, func, reqFunc)
         CancelClickIntercept = true;
         func();
     end).SetInteractable(PickedTerr ~= nil and (reqFunc == nil or reqFunc()));
+    CreateEmpty(line).SetFlexibleWidth(0.1);
+    CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
     CreateEmpty(line).SetFlexibleWidth(0.45);
 
     CancelClickIntercept = false;
@@ -398,12 +403,12 @@ function createStrikeOrder(arts, terrID, cost);
         UI.Alert("You have picked to many artillery pieces! Please pick less");
         return;
     end
-    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Artillery strike on " .. Game.Map.Territories[terrID].Name .. ", involving " .. #t .. " artillery unit" .. addSIfMultiple(#t), payload, {[WL.ResourceType.Gold] = cost}, WL.TurnPhase.Deploys + 2));
+    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Artillery strike on " .. Game.Map.Territories[terrID].Name .. ", involving " .. #t .. " artillery unit" .. addSIfMultiple(#t), payload, {[WL.ResourceType.Gold] = cost}, WL.TurnPhase.OrderPriorityCards));
     Close();
 end
 
 function purchaseArtillery(art, terrID)
-    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Purchase " .. art.Name, PREFIX_AS2 .. SEPARATOR_AS2 .. BUY_ARTILLERY .. SEPARATOR_AS2 .. art.ID .. SEPARATOR_AS2 .. terrID, {[WL.ResourceType.Gold] = art.Cost}, WL.TurnPhase.Deploys + 1));
+    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Purchase " .. art.Name, PREFIX_AS2 .. SEPARATOR_AS2 .. BUY_ARTILLERY .. SEPARATOR_AS2 .. art.ID .. SEPARATOR_AS2 .. terrID, {[WL.ResourceType.Gold] = art.Cost}, WL.TurnPhase.Deploys));
     Close();
 end
 

@@ -304,7 +304,7 @@ function artilleryStrikeSettings(artillery, root, inputs)
     createInfoButton(line, "If checked, the damage dealt is a percentage of the total number of armies on the target territory, just like the bomb cards removes 50% of armies from its target territory. If not checked, the damage done by this unit in an artillery strike is fixed");
     
     line = CreateHorz(vert).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("Miminum damage done").SetColor(colors.TextColor);
+    CreateLabel(line).SetText("Mininum damage done").SetColor(colors.TextColor);
     CreateEmpty(line).SetFlexibleWidth(1);
     createInfoButton(line, "The minimum damage that will be done by this unit in an artillery strike. The final damage is determined by rolling a random number between the minimum and maximum damage");
     artilleryInputs.MinimumDamage = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(artillery.MinimumDamage).SetWholeNumbers(not artillery.DealsPercentageDamage);
