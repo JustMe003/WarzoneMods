@@ -133,31 +133,32 @@ function getTableLength(t)
     return c;
 end
 
-function createArtillery(art, p, reloadTurn)
+function createArtillery(art, p, reloadTurn, oldArt)
+    oldArt = oldArt or {}
     local builder = WL.CustomSpecialUnitBuilder.Create(p);
     builder.ImageFilename = "Artillery_" .. art.ColorName .. ".png";
-    builder.Name = art.Name;
-    builder.IsVisibleToAllPlayers = art.IsVisibleToAllPlayers;
-    builder.CanBeAirliftedToSelf = art.CanBeAirliftedToSelf;
-    builder.CanBeGiftedWithGiftCard = art.CanBeGiftedWithGiftCard;
-    builder.CanBeTransferredToTeammate = art.CanBeTransferredToTeammate;
+    builder.Name = oldArt.Name or art.Name;
+    builder.IsVisibleToAllPlayers = oldArt.IsVisibleToAllPlayers or art.IsVisibleToAllPlayers;
+    builder.CanBeAirliftedToSelf = oldArt.CanBeAirliftedToSelf or art.CanBeAirliftedToSelf;
+    builder.CanBeGiftedWithGiftCard = oldArt.CanBeAirliftedToSelf or art.CanBeGiftedWithGiftCard;
+    builder.CanBeTransferredToTeammate = oldArt.CanBeTransferredToTeammate or art.CanBeTransferredToTeammate;
     builder.CanBeAirliftedToTeammate = builder.CanBeAirliftedToSelf and builder.CanBeTransferredToTeammate;
-    builder.IncludeABeforeName = art.IncludeABeforeName;
-    builder.AttackPower = art.AttackPower;
-    builder.AttackPowerPercentage = math.max(0, art.AttackPowerPercentage / 100) + 1;
-    builder.DefensePowerPercentage = math.max(0, art.DefensePowerPercentage / 100) + 1;
-    builder.CombatOrder = art.CombatOrder + 6971;
+    builder.IncludeABeforeName = oldArt.IncludeABeforeName or art.IncludeABeforeName;
+    builder.AttackPower = oldArt.AttackPower or art.AttackPower;
+    builder.AttackPowerPercentage = math.max(0, (oldArt.AttackPowerPercentage or art.AttackPowerPercentage) / 100) + 1;
+    builder.DefensePowerPercentage = math.max(0, (oldArt.DefensePowerPercentage or art.DefensePowerPercentage) / 100) + 1;
+    builder.CombatOrder = oldArt.CombatOrder or (art.CombatOrder + 6971);
     if art.UseHealth then
-        builder.Health = art.Health;
+        builder.Health = oldArt.Health or art.Health;
         if art.DynamicDefencePower then
-            builder.DefensePower = art.Health;
+            builder.DefensePower = oldArt.DefensePower or art.Health;
         else
-            builder.DefensePower = art.DefensePower;
+            builder.DefensePower = oldArt.DefensePower or art.DefensePower;
         end
     else
-        builder.DamageAbsorbedWhenAttacked = art.DamageAbsorbedWhenAttacked;
-        builder.DamageToKill = art.DamageToKill;
-        builder.DefensePower = art.DefensePower;
+        builder.DamageAbsorbedWhenAttacked = oldArt.DamageAbsorbedWhenAttacked or art.DamageAbsorbedWhenAttacked;
+        builder.DamageToKill = oldArt.DamageToKill or art.DamageToKill;
+        builder.DefensePower = oldArt.DefensePower or art.DefensePower;
     end
     builder.ModData = DataConverter.DataToString(getModDataTable(reloadTurn or 0, art.ID), Mod);
 

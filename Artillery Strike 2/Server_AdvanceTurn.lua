@@ -72,7 +72,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 if art.ReloadDuration > 0 then
                     local mod = WL.TerritoryModification.Create(terrID);
                     mod.RemoveSpecialUnitsOpt = {unit.ID};
-                    mod.AddSpecialUnits = {createArtillery(art, order.PlayerID, game.Game.TurnNumber + art.ReloadDuration)};
+                    mod.AddSpecialUnits = {createArtillery(art, order.PlayerID, game.Game.TurnNumber + art.ReloadDuration, unit)};
                     local event = WL.GameOrderEvent.Create(order.PlayerID, "Updated artillery unit", {}, {mod});
                     event.JumpToActionSpotOpt = setActionSpot(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
                     table.insert(updateUnitOrders, event);

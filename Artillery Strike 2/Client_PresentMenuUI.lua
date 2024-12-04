@@ -58,7 +58,7 @@ function showMain()
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(0.45);
-    CreateButton(line).SetText("Buy Artillery").SetColor(colors.Blue).SetOnClick(chooseArtillery);
+    CreateButton(line).SetText("Buy Artillery").SetColor(colors.Blue).SetOnClick(chooseArtillery).SetInteractable(Game.Settings.CommerceGame);
     CreateEmpty(line).SetFlexibleWidth(0.1);
     CreateButton(line).SetText("Artillery Strike").SetColor(colors.Red).SetOnClick(artilleryStrike);
     CreateEmpty(line).SetFlexibleWidth(0.45);
@@ -403,7 +403,7 @@ function createStrikeOrder(arts, terrID, cost);
         UI.Alert("You have picked to many artillery pieces! Please pick less");
         return;
     end
-    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Artillery strike on " .. Game.Map.Territories[terrID].Name .. ", involving " .. #t .. " artillery unit" .. addSIfMultiple(#t), payload, {[WL.ResourceType.Gold] = cost}, WL.TurnPhase.OrderPriorityCards));
+    addOrderToList(WL.GameOrderCustom.Create(Game.Us.ID, "Artillery strike on " .. Game.Map.Territories[terrID].Name .. ", involving " .. #t .. " artillery unit" .. addSIfMultiple(#t), payload, {[WL.ResourceType.Gold] = cost}, WL.TurnPhase.Gift));
     Close();
 end
 
