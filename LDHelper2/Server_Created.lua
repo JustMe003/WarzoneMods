@@ -1,5 +1,4 @@
 function Server_Created(Game, Settings)
-	data = Mod.PublicGameData;
 	game = Game;
 	settings = Settings;
 	if Mod.Settings.OverridePercentage == true then 
@@ -11,36 +10,19 @@ function Server_Created(Game, Settings)
 			OverriddenBonuses[i] = v;
 		end
 		loopTerritories();
-		--		filterNegativeBonuses();
+--		filterNegativeBonuses();
 		settings.OverriddenBonuses = OverriddenBonuses;
-	else
-		createTerritoryToBonusMap(game.Map.Territories);
 	end
 	settings.LocalDeployments = true;
-
-	data.ModVersion = Mod.Settings.ModVersion;
-	Mod.PublicGameData = data;
-end
-
-function createTerritoryToBonusMap(territories)
-	local t = {};
-	for terrID, terr in pairs(territories) do
-		t[terrID] = getSmallestBonusID(terr);
-	end
-	data.TerritoryToBonusMap = t;
 end
 
 function loopTerritories()
-	local t = {};
 	if OverriddenBonuses == nil then OverriddenBonuses = {}; end
 	for terrID, terr in pairs(game.Map.Territories) do
-		local smallestBonusID = getSmallestBonusID(terr);
-		t[terrID] = smallestBonusID;
 		if getBonusCount(terr) > 1 then -- When every territory has only 1 or 0 bonuses not equal to 0 LD is possible
-			overrideBonuses(terr, smallestBonusID);
+			overrideBonuses(terr, getSmallestBonusID(terr));
 		end -- We don't have to do anything if the territory already has 1 or 0 bonuses
 	end
-	data.TerritoryToBonusMap = t;
 end
 
 function overrideBonuses(terr, exceptForBonusID)

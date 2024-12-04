@@ -1,17 +1,10 @@
-require("UI");
-require("Timer");
+require("UI")
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, gameRefreshAction)
-	if not UI.IsDestroyed(vert) and Close ~= nil then
-		Close();
-	end
 	Init(rootParent);
-	-- Timer.Init(WL);
 	colors = GetColors();
 	Game = game; --global variables
 	Close = close;
-
-
 	
 	LastTurn = {};   --we get the orders from History later
 	Distribution = {};	
@@ -20,7 +13,18 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	
 	vert = GetRoot();
 	vert.SetFlexibleWidth(1);
-	
+	permanentLabel1 = CreateHorz(vert).SetFlexibleWidth(1);
+	permanentLabel2 = CreateHorz(vert).SetFlexibleWidth(1);
+	CreateEmpty(permanentLabel1).SetFlexibleWidth(0.5);
+	CreateEmpty(permanentLabel2).SetFlexibleWidth(0.5);
+	CreateLabel(permanentLabel1).SetText("Mod author:\t").SetColor(colors.TextColor);
+	CreateLabel(permanentLabel1).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
+	CreateLabel(permanentLabel2).SetText("Special thanks to:\t").SetColor(colors.TextColor);
+	CreateLabel(permanentLabel2).SetText("TBest").SetColor(colors.Purple);
+	CreateEmpty(permanentLabel1).SetFlexibleWidth(0.5);
+	CreateEmpty(permanentLabel2).SetFlexibleWidth(0.5);
+	CreateEmpty(vert).SetPreferredHeight(5);
+	SetWindow("DummyWindow");
 	if (not game.Settings.LocalDeployments) then
 		return CreateLabel(vert).SetText("This mod only works in Local Deployment games. This isn't a Local Deployment game").SetColor(colors.TextColor);
 	elseif (game.Us == nil or game.Us.State ~= WL.GamePlayerState.Playing) then
@@ -41,8 +45,6 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 			showHelperMenu();
 		elseif gameRefreshAction == "SetDefaultOptions" then
 			showHelperMenu(true);
-		else
-			return CreateLabel(vert).SetText("Something went wrong: Refresh action not recognized").SetColor(colors["Orange Red"])
 		end
 	end
 end
@@ -109,10 +111,10 @@ function setAction()
 	CreateEmpty(line).SetFlexibleWidth(0.5);
 	CreateButton(line).SetText("Submit").SetColor(colors.Green).SetOnClick(function() 
 		if (autoDeployOption.GetIsChecked() and not showWindowOption.GetIsChecked() and not doNothingOption.GetIsChecked()) or (not autoDeployOption.GetIsChecked() and showWindowOption.GetIsChecked() and not doNothingOption.GetIsChecked()) or (not autoDeployOption.GetIsChecked() and not showWindowOption.GetIsChecked() and doNothingOption.GetIsChecked()) then
-			Close();
 			Game.SendGameCustomMessage("Submitting...", {Type = "PickOption", AutoDeploy = autoDeployOption.GetIsChecked(), ShowWindow = showWindowOption.GetIsChecked(), DoNothing = doNothingOption.GetIsChecked()}, function(t) end);
+			Close();
 		else
-			UI.Alert("You can only pick 1 option");
+			UI.Alert("You can only pick 1 option, not 0, 2 or 3");
 		end
 	end);
 	CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showMenu);
@@ -122,18 +124,6 @@ end
 function showCredits()
 	DestroyWindow();
 	SetWindow("showCredits");
-	permanentLabel1 = CreateHorz(vert).SetFlexibleWidth(1);
-	permanentLabel2 = CreateHorz(vert).SetFlexibleWidth(1);
-	CreateEmpty(permanentLabel1).SetFlexibleWidth(0.5);
-	CreateEmpty(permanentLabel2).SetFlexibleWidth(0.5);
-	CreateLabel(permanentLabel1).SetText("Mod author:\t").SetColor(colors.TextColor);
-	CreateLabel(permanentLabel1).SetText("Just_A_Dutchman_").SetColor(colors.Lime);
-	CreateLabel(permanentLabel2).SetText("Special thanks to:\t").SetColor(colors.TextColor);
-	CreateLabel(permanentLabel2).SetText("TBest").SetColor(colors.Purple);
-	CreateEmpty(permanentLabel1).SetFlexibleWidth(0.5);
-	CreateEmpty(permanentLabel2).SetFlexibleWidth(0.5);
-	CreateEmpty(vert).SetPreferredHeight(5);
-	
 	CreateLabel(vert).SetText("Testers:").SetColor(colors.TextColor);
 	local line = CreateHorz(vert).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(0.33);
@@ -250,29 +240,23 @@ function extraTransferOptions(vert, inputs)
 	CreateVert(rootLine).SetPreferredWidth(25);
 	local root = CreateVert(rootLine).SetFlexibleWidth(1);
 
+	local line = CreateHorz(root).SetFlexibleWidth(1);
+	addAttacks = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.AddAttacks);
+	CreateLabel(line).SetText("Add attacks").SetColor(colors.TextColor);
+	CreateEmpty(line).SetFlexibleWidth(1);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked your attacks from the previous turn will be added if you still control the attacking territory") end);
+	
 	line = CreateHorz(root).SetFlexibleWidth(1);
 	setToPercentage = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.SetToPercentage).SetInteractable(Game.Settings.AllowPercentageAttacks);
-	CreateLabel(line).SetText("Make all transfers percentage orders").SetColor(colors.TextColor);
+	CreateLabel(line).SetText("overwrite all attacks/transfers to percentage orders").SetColor(colors.TextColor);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked all your transfers will be overwritten to 100% transfers. This will allow every army to be transferred, no matter the amount of armies") end);
-	
-	local line = CreateHorz(root).SetFlexibleWidth(1);
-	moveUnmovedArmies = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.MoveUnmovedArmies);
-	CreateLabel(line).SetText("Add unmoved armies to first transfer").SetColor(colors.TextColor);
-	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked, the mod will check whether territories have armies that don't have an order to transfer yet. If there is at least 1 transfer order, the armies will be added to that transfer order") end);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked all your transfers will be overwritten to 100% attacks/transfers. This will allow every army to be transferred, no matter the amount of armies") end);
 	
 	line = CreateHorz(root).SetFlexibleWidth(1);
 	removeZeroTransfers = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.RemoveZeroTransfers);
-	CreateLabel(line).SetText("Remove all orders that transfer 0 armies").SetColor(colors.TextColor);
+	CreateLabel(line).SetText("Remove all orders that transfer / attack with 0 armies").SetColor(colors.TextColor);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("Let the mod remove all the transfer orders that will transfer 0 armies this turn. Useful to clean up your orderlist") end);
-
-	line = CreateHorz(root).SetFlexibleWidth(1);
-	moveSpecialUnits = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.MoveSpecialUnits);
-	CreateLabel(line).SetText("Move special units").SetColor(colors.TextColor);
-	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked, the mod will include special units to move along with the normal armies. Commanders are never moved by this mod") end);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("Let the mod remove all the transfer / attack orders that will transfer / attack with 0 armies this turn. Useful to clean up your orderlist") end);
 
 	SetWindow(currentWindow);
 end
@@ -294,317 +278,195 @@ function AddOrdersConfirmes(inputs)
 		UI.Alert("You need to uncommit first");
 		return;
 	end
-
-	print("Num orders last turn: " .. #LastTurn);
-
-	local orders = Game.Orders;
-	local territories = Game.LatestStanding.Territories;
-	local orderListIndex, endOfList;
-	local deployMap = nil;
-	local pastOrderListIndex;
 	
-	-- Timer.Start("Total");
-	if inputs.AddDeployments then
-		-- Timer.Start("Init");
-		local territoryToBonusMap = Mod.PublicGameData.TerritoryToBonusMap;
-		orderListIndex, endOfList = getFirstOrderOfPhase(orders, WL.TurnPhase.Deploys);
-		local bonusMap = createBonusMap(Game.LatestStanding);
-		local previousBonusMap = createBonusMap(LastStanding);
-		deployMap = {};
-		-- Timer.Stop("Init");
-		
-		-- Update bonusMap with deploy orders already in the order list
-		-- Timer.Start("Current orders");
-		if not endOfList then
-			local order = orders[orderListIndex];
-			while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
-				if order.proxyType == "GameOrderDeploy" then
-					local terrID = order.DeployOn;
-					deployMap[terrID] = order.NumArmies;
-					local bonusID = territoryToBonusMap[terrID];
-					if bonusID ~= nil and bonusMap[bonusID] ~= nil then
-						bonusMap[bonusID] = {
-							NumArmies = math.max(0, bonusMap[bonusID].NumArmies - order.NumArmies),
-							OrderIndex = orderListIndex;
-						}
-					end
-					orderListIndex = orderListIndex + 1;
-					order = orders[orderListIndex];
-				end
+	local maxDeployBonuses = removeDeployedBonuses(Game.Us.Income(0, Game.LatestStanding, false, false).BonusRestrictions);
+	local orderTable = Game.Orders;
+	local appendDeploys = 0;
+	local appendTransfers = 0;
+	for i, order in pairs(orderTable) do
+		-- print(i, order.OccursInPhase);
+		if order.OccursInPhase ~= nil then
+			if appendDeploys == 0 and order.OccursInPhase > WL.TurnPhase.Deploys then
+				-- print(order.proxyType, "appendDeploys: " .. i);
+				appendDeploys = i;
+			elseif appendTransfers == 0 and order.OccursInPhase > WL.TurnPhase.Attacks then
+				-- print(order.proxyType, "appendTransfers: " .. i);
+				appendTransfers = i;
 			end
 		end
-		-- Timer.Stop("Current orders");
-		
-		-- Timer.Start("Past orders");
-		pastOrderListIndex = getFirstOrderOfPhase(LastTurn, WL.TurnPhase.Deploys);
-		local order = LastTurn[pastOrderListIndex];
-		while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
-			if order.proxyType == "GameOrderDeploy" then
-				local terrID = order.DeployOn;
-				local bonusID = territoryToBonusMap[terrID];
-				if deployMap[terrID] == nil and territories[terrID].OwnerPlayerID == Game.Us.ID and previousBonusMap[bonusID] ~= nil and bonusMap[bonusID] ~= nil and bonusMap[bonusID].NumArmies > 0 then
-					table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, math.min(bonusMap[bonusID].NumArmies, order.NumArmies), terrID, false));
-					deployMap[terrID] = math.min(bonusMap[bonusID].NumArmies, order.NumArmies);
-					bonusMap[bonusID] = {
-						NumArmies = math.max(0, bonusMap[bonusID].NumArmies - order.NumArmies),
-						OrderIndex = orderListIndex;
-					}
-					orderListIndex = orderListIndex + 1;
-				end
-			end
-			pastOrderListIndex = pastOrderListIndex + 1;
-			order = LastTurn[pastOrderListIndex];
-		end
-		-- Timer.Stop("Past orders");
-		
-		-- Timer.Start("Deploy last armies")
-		if inputs.DeployAllArmies or inputs.AlwaysDeployInSingleTerrBonuses then
-			for bonusID, bonus in pairs(bonusMap) do
-				if bonus.NumArmies > 0 then
-					if bonus.OrderIndex ~= nil and inputs.DeployAllArmies then
-						local old = orders[bonus.OrderIndex];
-						table.remove(orders, bonus.OrderIndex);
-						table.insert(orders, bonus.OrderIndex, WL.GameOrderDeploy.Create(Game.Us.ID, old.NumArmies + bonus.NumArmies, old.DeployOn, false));
-						deployMap[old.DeployOn] = deployMap[old.DeployOn] + bonus.NumArmies;
-					elseif inputs.AlwaysDeployInSingleTerrBonuses and isSingleTerrBonus(Game.Map.Bonuses[bonusID]) then
-						if bonus.OrderIndex == nil then
-							local terrID = getFirstTerritoryOfBonus(Game.Map.Bonuses[bonusID]);
-							table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, bonusMap[bonusID].NumArmies, terrID, false));
-							deployMap[terrID] = bonusMap[bonusID].NumArmies;
-							orderListIndex = orderListIndex + 1;
+	end
+	if appendDeploys == 0 then
+		appendDeploys = #orderTable + 1;
+	end
+	if appendTransfers == 0 then
+		appendTransfers = #orderTable + 1;
+	end
+	appendTransfers = appendTransfers - appendDeploys;
+	-- print(appendDeploys, appendTransfers + appendDeploys, #orderTable);
+	local newOrder;
+	local lastDeploymentMade = {};
+
+	for _, order in pairs(LastTurn) do
+		if order.PlayerID == Game.Us.ID then
+			if order.proxyType == "GameOrderDeploy" and inputs.AddDeployments == true then
+					--check that we own the territory
+				if Game.Us.ID == standing.Territories[order.DeployOn].OwnerPlayerID then
+					--check that we have armies to deploy
+					local bonusID = getBonus(order.DeployOn);
+					--make sure we deploy more then 0
+					if bonusID ~= -1 and order.NumArmies > 0 and maxDeployBonuses[bonusID] ~= nil and maxDeployBonuses[bonusID] > 0 then
+						if maxDeployBonuses[bonusID] - order.NumArmies >=0 then --deploy full
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, order.NumArmies, order.DeployOn, false);
+							maxDeployBonuses[bonusID] = maxDeployBonuses[bonusID] - order.NumArmies;
+						else --deploy the max we can
+							newOrder = WL.GameOrderDeploy.Create(Game.Us.ID, maxDeployBonuses[bonusID], order.DeployOn, false);
+							maxDeployBonuses[bonusID] = 0;
+						end
+						local index = orderExists(newOrder, orderTable);
+						if index == 0 then
+							table.insert(orderTable, appendDeploys, newOrder);
+							appendDeploys = appendDeploys + 1;
 						else
-							local old = orders[bonus.OrderIndex];
-							table.remove(orders, bonus.OrderIndex);
-							table.insert(orders, bonus.OrderIndex, WL.GameOrderDeploy.Create(Game.Us.ID, old.NumArmies + bonus.NumArmies, old.DeployOn, false));
-							deployMap[old.DeployOn] = deployMap[old.DeployOn] + bonus.NumArmies;
+							table.insert(orderTable, appendDeploys, WL.GameOrderDeploy.Create(Game.Us.ID, newOrder.NumArmies + orderTable[index].NumArmies, order.DeployOn, false));
+							table.remove(orderTable, index);
 						end
 					end
 				end
 			end
-		end
-		-- Timer.Stop("Deploy last armies");
-	end
-	
-	
-	if inputs.AddTransfers then
-		-- Timer.Start("Init armies map");
-		if deployMap == nil then
-			deployMap = createDeployMap(orders);
-		end
-		local armiesMap = createArmiesMap(Game.LatestStanding.Territories, deployMap, inputs.MoveSpecialUnits);
-		-- Timer.Stop("Init armies map");
-		local transferMap = {};
-		
-		orderListIndex, endOfList = getFirstOrderOfPhase(orders, WL.TurnPhase.Attacks, orderListIndex);
-		
-		-- Timer.Start("Current orders");
-		if not endOfList then
-			local order = orders[orderListIndex];
-			while orderIsBeforePhase(order, WL.TurnPhase.Attacks + 1) do
-				if order.proxyType == "GameOrderAttackTransfer" then
-					transferMap[order.From] = transferMap[order.From] or {};
-					table.insert(transferMap[order.From], { To = order.To, OrderIndex = orderListIndex });
-					-- remove 0 army transfers
-					if inputs.RemoveZeroTransfers and armiesMap[order.From].IsEmpty then
-						table.remove(orders, orderListIndex);
-						orderListIndex = orderListIndex - 1;
+			if order.proxyType == "GameOrderAttackTransfer" and Game.Us.ID == standing.Territories[order.From].OwnerPlayerID and (inputs.AddAttacks or (inputs.AddTransfers and Game.Us.ID == standing.Territories[order.To].OwnerPlayerID)) and (not inputs.RemoveZeroTransfers or not standing.Territories[order.From].NumArmies.IsEmpty or orderExists(WL.GameOrderDeploy.Create(Game.Us.ID, 1, order.From, false), orderTable) ~= 0) then
+				if inputs.SetToPercentage and Game.Settings.AllowPercentageAttacks then
+					if order.ByPercent then
+						newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To, 3, true, WL.Armies.Create(order.NumArmies.NumArmies, {}), false);
 					else
-						armiesMap[order.From] = armiesMap[order.From].Subtract(order.NumArmies);
+						newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To, 3, true, WL.Armies.Create(100, {}), false);
 					end
+				else
+					newOrder = WL.GameOrderAttackTransfer.Create(Game.Us.ID, order.From, order.To, 3, order.ByPercent, order.NumArmies, false);
 				end
-				orderListIndex = orderListIndex + 1;
-				order = orders[orderListIndex];
-			end
-		end
-		-- Timer.Stop("Current orders");
-		
-		-- Timer.Start("Past transfer");
-		pastOrderListIndex = getFirstOrderOfPhase(LastTurn, WL.TurnPhase.Attacks, pastOrderListIndex or 1);
-		local order = LastTurn[pastOrderListIndex];
-		while orderIsBeforePhase(order, WL.TurnPhase.Attacks + 1) do
-			if order.proxyType == "GameOrderAttackTransfer" and order.PlayerID == Game.Us.ID then
-				local from = order.From;
-				local to = order.To;
-				if territories[from].OwnerPlayerID == Game.Us.ID and isTeamMate(Game.Game.Players[territories[to].OwnerPlayerID]) and not order.Result.IsAttack and (transferMap[from] == nil or not transferInList(transferMap[from], to)) then
-					if not inputs.RemoveZeroTransfers or not armiesMap[from].IsEmpty then
-						local armies;
-						if not order.ByPercent and not inputs.SetToPercentage then
-							local n = 0;
-							if order.NumArmies.NumArmies > armiesMap[from].NumArmies then
-								n = order.NumArmies.NumArmies - armiesMap[from].NumArmies;
-							end
-							armies = order.NumArmies.Subtract(WL.Armies.Create(n, order.NumArmies.SpecialUnits or {}));
-						elseif order.ByPercent then
-							armies = order.NumArmies.Subtract(WL.Armies.Create(0, order.NumArmies.SpecialUnits or {}));
-						else
-							armies = WL.Armies.Create(100);
-						end
-						local new = WL.GameOrderAttackTransfer.Create(Game.Us.ID, from, to, order.AttackTransfer, inputs.SetToPercentage or order.ByPercent, armies, order.AttackTeammates);
-						table.insert(orders, new);
-						transferMap[from] = transferMap[from] or {};
-						table.insert(transferMap[from], { To = to, OrderIndex = orderListIndex });
-						orderListIndex = orderListIndex + 1;
-						if new.ByPercent then
-							armiesMap[from] = armiesMap[from].Subtract(WL.Armies.Create(round(armiesMap[from].NumArmies * (new.NumArmies.NumArmies / 100))));
-						else
-							armiesMap[from] = armiesMap[from].Subtract(armies);
-						end
-					end
+				if orderExists(newOrder, orderTable) == 0 then
+					-- print(appendDeploys, appendTransfers, #orderTable);
+					table.insert(orderTable, appendDeploys + appendTransfers, newOrder);
+					appendTransfers = appendTransfers + 1;
 				end
 			end
-			
-			pastOrderListIndex = pastOrderListIndex + 1;
-			order = LastTurn[pastOrderListIndex];
 		end
-		-- Timer.Stop("Past transfer");
-		
-		
-		if inputs.MoveUnmovedArmies or inputs.MoveSpecialUnits then
-			-- Timer.Start("Add forgotten units")
-			for terrID, armies in pairs(armiesMap) do
-				if transferMap[terrID] ~= nil then
-					local newArmies = nil;
-					local old;
-					local index;
-					for i, _ in ipairs(transferMap[terrID]) do
-						old = orders[transferMap[terrID][i].OrderIndex];
-						if not old.ByPercent or old.NumArmies.NumArmies >= 100 then
-							index = i;
-							break;
-						end
-					end
-					if inputs.MoveUnmovedArmies and inputs.MoveSpecialUnits and not armies.IsEmpty then
-						newArmies = old.NumArmies.Add(armies);
-					elseif inputs.MoveUnmovedArmies and armies.NumArmies > 0 then
-						newArmies = old.NumArmies.Add(WL.Armies.Create(armies.NumArmies));
-					elseif inputs.MoveSpecialUnits and #armies.SpecialUnits > 0 then
-						newArmies = old.NumArmies.Add(WL.Armies.Create(0, armies.SpecialUnits));
-					end
-					if newArmies ~= nil then
-						if old.ByPercent and inputs.MoveUnmovedArmies then
-							newArmies = WL.Armies.Create(100, newArmies.SpecialUnits);
-						end
-						table.remove(orders, transferMap[terrID][index].OrderIndex);
-						table.insert(orders, transferMap[terrID][index].OrderIndex, WL.GameOrderAttackTransfer.Create(Game.Us.ID, terrID, transferMap[terrID][index].To, old.AttackTransfer, old.ByPercent, newArmies, old.AttackTeammates));
-					end
-				end
-			end
-			-- Timer.Stop("Add forgotten units")
-		end
-		
 	end
-	Game.Orders = copyTable(orders);
-	-- Timer.Stop("Total");
 
+	if inputs.AddDeployments then
+		for i, v in pairs(removeDeployedBonuses(copyTable(maxDeployBonuses), orderTable)) do
+			if v ~= 0 then
+				if inputs.AlwaysDeployInSingleTerrBonuses and #Game.Map.Bonuses[i].Territories == 1  then
+					local order = WL.GameOrderDeploy.Create(Game.Us.ID, v, Game.Map.Bonuses[i].Territories[1], false);
+					local index = orderExists(order, orderTable);
+					if index == 0 then
+						table.insert(orderTable, appendDeploys, order);
+						appendDeploys = appendDeploys + 1;
+					else
+						table.insert(orderTable, appendDeploys, WL.GameOrderDeploy.Create(Game.Us.ID, v + orderTable[index].NumArmies, Game.Map.Bonuses[i].Territories[1], false));
+						table.remove(orderTable, index);
+					end
+				elseif inputs.DeployAllArmies then
+					local index = getDeploymentInBonus(orderTable, i);
+					if index ~= 0 then
+						table.insert(orderTable, appendDeploys, WL.GameOrderDeploy.Create(Game.Us.ID, v + orderTable[index].NumArmies, orderTable[index].DeployOn, false));
+						table.remove(orderTable, index);
+					end
+				end
+			end
+		end
+	end
+
+	--update client orders list
+	Game.Orders = orderTable;
+--	Close();
 end;
 
-function getFirstOrderOfPhase(orders, phase, index)
-	index = index or 1;
-	while orderIsBeforePhase(orders[index], phase) do
-		index = index + 1;
-	end
-	return index, #orders < index;
-end
-
-function orderIsBeforePhase(order, phase)
-	return order ~= nil and (order.OccursInPhase == nil or order.OccursInPhase < phase); 
-end
-
-function createBonusMap(standing)
-	local t = {}
-	for i, v in pairs(Game.Us.Income(0, standing, false, false).BonusRestrictions) do
-		t[i] = { NumArmies = v };
-	end
-	return t;
-end
-
-function createArmiesMap(territories, extraArmies, includeSpecialUnits)
-	local t = {};
-	for terrID, terr in pairs(territories) do
-		if terr.OwnerPlayerID == Game.Us.ID then
-			t[terrID] = terr.NumArmies.Add(WL.Armies.Create(extraArmies[terrID] or 0)).Subtract(WL.Armies.Create(0, filterCommanders(filterCommanders(terr.NumArmies.SpecialUnits))));
-			if not includeSpecialUnits then
-				t[terrID] = t[terrID].Subtract(WL.Armies.Create(0, t[terrID].SpecialUnits));
-			end
-		end
-	end
-	return t;
-end
-
-function filterCommanders(sps)
-	local t = {};
-	for _, sp in pairs(sps) do
-		if sp.proxyType == "Commander" then
-			table.insert(t, sp);
-		end 
-	end
-	return t;
-end
-
-function createDeployMap(orders)
-	local t = {};
-	local index = getFirstOrderOfPhase(orders, WL.TurnPhase.Deploys);
-	local order = orders[index];
-	while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
-		if order.proxyType == "GameOrderDeploy" then
-			t[order.DeployOn] = order.NumArmies;
-		end
-		index = index + 1;
-		order = orders[index];
-	end
-	return t;
-end
-
-function isSingleTerrBonus(bonus)
-	local c = 0;
-	for _, _ in pairs(bonus.Territories) do
-		c = c + 1;
-		if c > 1 then return false; end
-	end
-	return true;
-end
-
-function getFirstTerritoryOfBonus(bonus)
-	for _, terr in pairs(bonus.Territories) do
-		return terr;
-	end
-end
-
-function transferInList(t, v)
-	for _, v2 in pairs(t) do
-		if v2.To == v then
-			return true;
-		end
-	end
-	return false;
-end
-
-function round(n, ndec)
-	ndec = ndec or 0;
-	dec = 10 ^ ndec;
-	return math.floor(n * dec + 0.5) / dec;
-end
-
-function copyTable(t)
-	local r = {};
-	for i, v in pairs(t) do
-		r[i] = v;
-	end
-	return r;
-end
-
-function isTeamMate(p)
-	return p.ID == Game.Us.ID or (p.Team ~= -1 and p.Team == Game.Us.Team);
-end
 
 function AddOrdersHelper(inputs)
 	Close();
 	standing = Game.LatestStanding;
 
 	if Game.Game.TurnNumber - 2 >= 0 then
-		Game.GetTurn(Game.Game.TurnNumber - 2, function(data) LastTurn = data.Orders; end);
-		Game.GetStanding(Game.Game.TurnNumber - 2, 0, function(data) LastStanding = data; AddOrdersConfirmes(inputs); end);		
+		Game.GetTurn(Game.Game.TurnNumber - 2, function(data) LastTurn = data.Orders; AddOrdersConfirmes(inputs); end)
+		
 	end
+end;
+
+function ownsBonus(bonusID)
+	for _, terrID in pairs(Game.Map.Bonuses[bonusID].Territories) do
+		if Game.LatestStanding.Territories[terrID].OwnerPlayerID ~= Game.Us.ID then 
+			return false; 
+		end
+	end
+	return true;
+end
+
+function bonusValue(bonusID)
+	if Game.Settings.OverriddenBonuses ~= nil then
+		if Game.Settings.OverriddenBonuses[bonusID] ~= nil then
+			return Game.Settings.OverriddenBonuses[bonusID];
+		end
+	end
+	return Game.Map.Bonuses[bonusID].Amount;
+end
+
+function orderExists(newOrder, orders)
+	if orders == nil then orders = Game.Orders; end
+	for i, order in pairs(orders) do
+		if order.proxyType == newOrder.proxyType then
+			if order.proxyType == "GameOrderAttackTransfer" then
+				if order.To == newOrder.To and order.From == newOrder.From then
+					return i;
+				end
+			elseif order.proxyType == "GameOrderDeploy" then
+				if order.DeployOn == newOrder.DeployOn then
+					return i;
+				end
+			end
+		end
+	end
+	return 0;
+end
+
+function getDeploymentInBonus(orders, bonusID)
+	for i, order in pairs(orders) do
+		if order.proxyType == "GameOrderDeploy" and valueInTable(Game.Map.Bonuses[bonusID].Territories, order.DeployOn) then
+			return i;
+		end
+	end
+	return 0;
+end
+function valueInTable(t, v)
+	for i, v2 in pairs(t) do
+		if v2 == v then 
+			return true; 
+		end
+	end
+	return false;
+end
+
+function removeDeployedBonuses(t, orders)
+	if orders == nil then
+		orders = Game.Orders;
+	end
+	for _, order in pairs(orders) do
+		if order.proxyType == "GameOrderDeploy" then
+			local bonus = getBonus(order.DeployOn);
+			if bonus ~= -1 and t[bonus] ~= nil then
+				t[bonus] = t[bonus] - order.NumArmies;
+			end
+		end
+	end
+	return t;
+end
+
+function getBonus(terrID)
+	for i, bonus in ipairs(Game.Map.Territories[terrID].PartOfBonuses) do
+		if bonusValue(bonus) ~= 0 then
+			return bonus;
+		end
+	end
+	return -1;
 end
 
 function getUsedInputs(inputs)
@@ -613,24 +475,55 @@ function getUsedInputs(inputs)
 		t.DeployAllArmies = deployAllArmies.GetIsChecked();
 		t.AlwaysDeployInSingleTerrBonuses = deploySingleTerr.GetIsChecked();
 	else
-		t.AlwaysDeployInSingleTerrBonuses = inputs.AlwaysDeployInSingleTerrBonuses or false;
-		t.DeployAllArmies = inputs.DeployAllArmies or false;
+		if inputs.AlwaysDeployInSingleTerrBonuses ~= nil then
+			t.AlwaysDeployInSingleTerrBonuses = inputs.AlwaysDeployInSingleTerrBonuses;
+		else
+			t.AlwaysDeployInSingleTerrBonuses = false;
+		end
+		if inputs.DeployAllArmies ~= nil then
+			t.DeployAllArmies = inputs.DeployAllArmies;
+		else
+			t.DeployAllArmies = false;
+		end
 	end
 	if t.AddTransfers then
-		t.MoveUnmovedArmies = moveUnmovedArmies.GetIsChecked();
+		t.AddAttacks = addAttacks.GetIsChecked();
 		t.SetToPercentage = setToPercentage.GetIsChecked();
 		t.RemoveZeroTransfers = removeZeroTransfers.GetIsChecked();
-		t.MoveSpecialUnits = moveSpecialUnits.GetIsChecked();
 	else
-		t.SetToPercentage = inputs.SetToPercentage or false;
-		t.RemoveZeroTransfers = inputs.RemoveZeroTransfers or false;
+		if inputs.AddAttacks ~= nil then
+			t.AddAttacks = inputs.AddAttacks;
+		else
+			t.AddAttacks = false;
+		end
+		if inputs.SetToPercentage ~= nil then
+			t.SetToPercentage = inputs.SetToPercentage
+		else
+			t.SetToPercentage = false;
+		end
+		if inputs.RemoveZeroTransfers ~= nil then
+			t.RemoveZeroTransfers = inputs.RemoveZeroTransfers
+		else
+			t.RemoveZeroTransfers = false;
+		end
 	end
 	return t;
 end
 
+function copyTable(orig)
+	local copy = {};
+	for i, v in pairs(orig) do
+		if type(v) == type({}) then
+			copy[i] = copyTable(v);
+		else
+			copy[i] = v;
+		end
+	end
+	return copy;
+end
 function getInputs()
 	if Mod.PlayerGameData.SavedInputs == nil then
-		return {AddDeployments = false, AlwaysDeployInSingleTerrBonuses = false, DeployAllArmies = false; AddTransfers = false, SetToPercentage = false, RemoveZeroTransfers = false, MoveUnmovedArmies = false, MoveSpecialUnits = false };
+		return {AddDeployments = false, AlwaysDeployInSingleTerrBonuses = false, DeployAllArmies = false; AddTransfers = false, SetToPercentage = false, AddAttacks = false, RemoveZeroTransfers = false};
 	else
 		return Mod.PlayerGameData.SavedInputs;
 	end
