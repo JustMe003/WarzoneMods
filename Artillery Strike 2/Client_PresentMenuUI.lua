@@ -11,6 +11,7 @@ require("Client_PresentSettingsUI");
 ---@param game GameClientHook
 ---@param close fun() # Zero parameter function that closes the dialog
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, art)
+    print(game.Settings.CommerceGame);
     if game.Us == nil then
         close();
         UI.Alert("You cannot use this mod if you're a spectator");
