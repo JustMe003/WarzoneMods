@@ -5,6 +5,7 @@ function Client_GameRefresh(game)
     if game.Us == nil or game.Us.IsAIOrHumanTurnedIntoAI then
         return;
     end
+
 	if (lastTurn == nil or lastTurn < game.Game.TurnNumber) and game.Game.TurnNumber > 1 then
         if Mod.PlayerGameData.NewTurnAction == nil then
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetAction"); end);
