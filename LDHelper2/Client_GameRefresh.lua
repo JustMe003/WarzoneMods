@@ -5,7 +5,7 @@ require("UI");
 -- Resulting that when getting the last turn orders, the list is empty
 
 function Client_GameRefresh(game)
-    local hasAddedOrders = false;
+    local addedOrders = false;
     if game.Us == nil or game.Us.IsAIOrHumanTurnedIntoAI or game.Us.State ~= WL.GamePlayerState.Playing then
         return;
     end
@@ -26,15 +26,15 @@ function Client_GameRefresh(game)
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetDefaultOptions"); end);
                 elseif Mod.PlayerGameData.NewTurnAction == "AutoDeploy" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "AutoDeploy"); end);
-                    hasAddedOrders = true;
+                    addedOrders = true;
                 elseif Mod.PlayerGameData.NewTurnAction == "ShowWindow" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "ShowWindow"); end);
-                    hasAddedOrders = true;
+                    addedOrders = true;
                 end
             end
         end
     end
-    if hasAddedOrders then
+    if addedOrders then
         lastTurn = game.Game.TurnNumber;
     end
 end

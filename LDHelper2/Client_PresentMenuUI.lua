@@ -77,6 +77,13 @@ function showMenu()
 		UI.Alert("Set the default options when adding your past deploy/transfer order");
 	end)
 	CreateButton(vert).SetText("Credits").SetColor(colors.Orange).SetOnClick(showCredits);
+
+	CreateButton(vert).SetText("Changelog").SetColor(colors.Blue).SetOnClick(showChangeLog);
+
+	line = CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+	CreateEmpty(line).SetFlexibleWidth(1);
+	CreateLabel(line).SetText("Version: ").SetColor("#777777");
+	CreateLabel(line).SetText(Mod.PublicGameData.ModVersion or "2.0");
 end
 
 function setAction()
@@ -147,8 +154,50 @@ function showCredits()
 	CreateLabel(line).SetText("Zazzlegut").SetColor(colors.Green);
 	CreateEmpty(line).SetFlexibleWidth(0.33);
 	CreateEmpty(vert).SetPreferredHeight(5);
+	line = CreateHorz(vert).SetFlexibleWidth(1);
+	CreateEmpty(line).SetFlexibleWidth(0.33);
+	CreateLabel(line).SetText("Murk").SetColor(colors["Dark Magenta"]);
+	CreateEmpty(line).SetFlexibleWidth(0.33);
+	CreateLabel(line).SetText("Rex Imperator").SetColor(colors["Electric Purple"]);
+	CreateEmpty(line).SetFlexibleWidth(0.33);
+	CreateEmpty(vert).SetPreferredHeight(5);
+	line = CreateHorz(vert).SetFlexibleWidth(1);
+	CreateEmpty(line).SetFlexibleWidth(0.5);
+	CreateLabel(line).SetText("Im").SetColor(colors.Ivory);
+	CreateEmpty(line).SetFlexibleWidth(0.5);
+	CreateEmpty(vert).SetPreferredHeight(5);
 	CreateLabel(vert).SetText("And of course thanks to all players who have helped me along the way, suggesting features or pointing out some bugs")
 	CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
+end
+
+function showChangeLog()
+	DestroyWindow();
+	SetWindow("ChangeLog");
+	
+	CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
+	CreateEmpty(vert).SetPreferredHeight(10);
+	
+	CreateLabel(vert).SetText("Welcome to the new version of the Local Deployment Helper. Although there is not much new to see at first glance, this mod has gotten a complete rework behind the scenes. This version contains some bug fixes left in the previous implementation, and generally improved the speed at which the mod needs to run. In addition, some features were removed and some added, such as compatibility for special units. You can read more about them in the full changelog below").SetColor(colors.TextColor);
+	CreateEmpty(vert).SetPreferredHeight(5);
+	
+	CreateLabel(vert).SetText("Changelog of version 3.0:").SetColor(colors.TextColor);
+	local line = CreateHorizontalLayoutGroup(vert);
+	CreateVert(line).SetPreferredWidth(10);
+	local vert2 = CreateVert(line);
+	
+	CreateLabel(vert2).SetText("- Fixed the default action dialog popping up multiple times").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Removed [Clear Orders] button since there is already a built-in feature for this").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Moved creator and thanks message to credits page, instead of every page").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- \"Do Nothing\" is now the default action. This prevents the action dialog window from popping up in later turns").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Whenever you just captured a bonus last turn, the mod will not add back the deployments in that bonus").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Removed the \"Add attacks\" option in transfers").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Added \"Add unmoved armies to first transfer\" option for games without the option \"Attack by percentage\"").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- The \"remove all 0 armies orders\" now only works on orders that are added from the previous turn").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Added the option to move special units. Note that Commanders will never be moved by this mod").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Renamed the 0 armies transfer removal option").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Added [Cancel] button to the Deploy/Transfer Helper page").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Updated credits page").SetColor(colors.TextColor);
+	CreateLabel(vert2).SetText("- Added version to the main page").SetColor(colors.TextColor);
 end
 
 function addDeploysTurnOne()
@@ -207,7 +256,11 @@ function showHelperMenu(setToDefaultMode)
 		CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showMenu);
 		CreateEmpty(line).SetFlexibleWidth(0.5);
 	else
-		addOrdersButton = CreateButton(vert).SetText("Add orders").SetColor(colors.Green).SetOnClick(function() local data = getUsedInputs(inputs); AddOrdersHelper(data); end);
+		local line = CreateHorz(vert).SetFlexibleWidth(1);
+		CreateEmpty(line).SetFlexibleWidth(0.5);
+		addOrdersButton = CreateButton(line).SetText("Add orders").SetColor(colors.Green).SetOnClick(function() local data = getUsedInputs(inputs); AddOrdersHelper(data); end);
+		addOrdersButton = CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showMenu);
+		CreateEmpty(line).SetFlexibleWidth(0.5);
 	end
 end
 
