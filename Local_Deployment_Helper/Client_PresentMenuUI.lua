@@ -528,19 +528,21 @@ function AddOrdersConfirmes(inputs)
 							break;
 						end
 					end
-					if inputs.MoveUnmovedArmies and inputs.MoveSpecialUnits and not armies.IsEmpty then
-						newArmies = old.NumArmies.Add(armies);
-					elseif inputs.MoveUnmovedArmies and armies.NumArmies > 0 then
-						newArmies = old.NumArmies.Add(WL.Armies.Create(armies.NumArmies));
-					elseif inputs.MoveSpecialUnits and #armies.SpecialUnits > 0 then
-						newArmies = old.NumArmies.Add(WL.Armies.Create(0, armies.SpecialUnits));
-					end
-					if newArmies ~= nil then
-						if old.ByPercent and inputs.MoveUnmovedArmies then
-							newArmies = WL.Armies.Create(100, newArmies.SpecialUnits);
+					if index ~= nil then
+						if inputs.MoveUnmovedArmies and inputs.MoveSpecialUnits and not armies.IsEmpty then
+							newArmies = old.NumArmies.Add(armies);
+						elseif inputs.MoveUnmovedArmies and armies.NumArmies > 0 then
+							newArmies = old.NumArmies.Add(WL.Armies.Create(armies.NumArmies));
+						elseif inputs.MoveSpecialUnits and #armies.SpecialUnits > 0 then
+							newArmies = old.NumArmies.Add(WL.Armies.Create(0, armies.SpecialUnits));
 						end
-						table.remove(orders, transferMap[terrID][index].OrderIndex);
-						table.insert(orders, transferMap[terrID][index].OrderIndex, WL.GameOrderAttackTransfer.Create(Game.Us.ID, terrID, transferMap[terrID][index].To, old.AttackTransfer, old.ByPercent, newArmies, old.AttackTeammates));
+						if newArmies ~= nil then
+							if old.ByPercent and inputs.MoveUnmovedArmies then
+								newArmies = WL.Armies.Create(100, newArmies.SpecialUnits);
+							end
+							table.remove(orders, transferMap[terrID][index].OrderIndex);
+							table.insert(orders, transferMap[terrID][index].OrderIndex, WL.GameOrderAttackTransfer.Create(Game.Us.ID, terrID, transferMap[terrID][index].To, old.AttackTransfer, old.ByPercent, newArmies, old.AttackTeammates));
+						end
 					end
 				end
 			end
