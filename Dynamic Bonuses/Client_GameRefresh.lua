@@ -1,8 +1,5 @@
 require("Client_PresentMenuUI")
 function Client_GameRefresh(Game)
-    for i, v in pairs(UI) do
-        print(i, v);
-    end
 	if not refreshCalled then
         refreshCalled = true;
         game = Game;
@@ -47,7 +44,7 @@ function handleBonusLinkClick(bonusDetails)
         end
         if numOfBonusClicks == 3 then
             numOfBonusClicks = 0;
-            if not UI.IsDestroyed(vert) then
+            if (UI.IsDestroyed == nil or not UI.IsDestroyed(vert)) then
                 Close();
             end
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 2); end);
