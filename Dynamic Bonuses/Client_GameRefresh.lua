@@ -1,6 +1,8 @@
 require("Client_PresentMenuUI")
 function Client_GameRefresh(Game)
-    print(UI);
+    for i, v in pairs(UI) do
+        print(i, v);
+    end
 	if not refreshCalled then
         refreshCalled = true;
         game = Game;
