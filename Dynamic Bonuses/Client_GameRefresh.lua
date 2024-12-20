@@ -1,5 +1,6 @@
 require("Client_PresentMenuUI")
 function Client_GameRefresh(Game)
+    print(UI);
 	if not refreshCalled then
         refreshCalled = true;
         game = Game;
