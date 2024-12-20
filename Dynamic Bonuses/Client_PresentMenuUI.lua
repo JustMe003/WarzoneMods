@@ -70,7 +70,7 @@ function validateBonus(bonusDetails)
 		for _, v in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
 			table.insert(array, Mod.PublicGameData.WellBeingMultiplier[v])
 		end
-		createLabel(vert, "This bonus generates " .. round(sum(array) * getBonusValue(bonusDetails.Amount)) .. " (" .. rounding(sum(array), 2) .. " * " .. getBonusValue(bonusDetails.Amount) .. ")", colors.TextColor);
+		createLabel(vert, "This bonus generates " .. round(sum(array) * getBonusValue(bonusDetails.ID)) .. " (" .. rounding(sum(array), 2) .. " * " .. getBonusValue(bonusDetails.ID) .. ")", colors.TextColor);
 		createLabel(vert, "\n", colors.TextColor);
 		for _, terrID in pairs(game.Map.Bonuses[bonusDetails.ID].Territories) do
 			createButton(vert, game.Map.Territories[terrID].Name .. ": " .. rounding(Mod.PublicGameData.WellBeingMultiplier[terrID], 2), getPlayerColor(game.LatestStanding.Territories[terrID].OwnerPlayerID), function() if WL.IsVersionOrHigher("5.21") then game.HighlightTerritories({terrID}); game.CreateLocatorCircle(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY); end validateTerritory(game.Map.Territories[terrID]); end);
