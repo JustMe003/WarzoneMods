@@ -44,7 +44,7 @@ function handleBonusLinkClick(bonusDetails)
         end
         if numOfBonusClicks == 3 then
             numOfBonusClicks = 0;
-            if (UI.IsDestroyed == nil or not UI.IsDestroyed(vert)) then
+            if (UI.IsDestroyed ~= nil and not UI.IsDestroyed(vert)) then
                 Close();
             end
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, 2); end);
