@@ -121,7 +121,7 @@ function purchaseDragon(dragon)
         end
     end
     if index == 0 then index = #orders + 1; end
-    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Purchase " .. returnA(dragon) .. "'" .. dragon.Name .. "' on " .. selectedTerr.Name, "Dragons_" .. dragon.ID .. "_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = dragon.Cost}, WL.TurnPhase.Deploys + 1));
+    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Purchase " .. returnA(dragon) .. "'" .. dragon.Name .. "' on " .. selectedTerr.Name, "Dragons_" .. dragon.ID .. "_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = dragon.Cost}, WL.TurnPhase.Deploys));
     Game.Orders = orders;
     Close();
 end
