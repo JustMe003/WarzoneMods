@@ -6,8 +6,11 @@ function Client_PresentSettingsUI(rootParent)
 
     UI.CreateEmpty(par)
         .SetPreferredWidth(10);
-
-    UI.CreateLabel(par)
+        
+        UI.CreateLabel(par)
         .SetText(Mod.Settings.NumCities)
         .SetColor("#0077FF");
+
+    UI.CreateEmpty(par)
+        .SetPreferredWidth(40);
 end
