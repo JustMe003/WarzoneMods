@@ -1,10 +1,13 @@
 function Client_PresentSettingsUI(rootParent)
-    local vert = UI.CreateVerticalLayoutGroup(rootParent);
-    UI.CreateLabel(vert)
+    local par = UI.CreateHorizontalLayoutGroup(rootParent);
+    UI.CreateLabel(par)
         .SetText("The number of cities that are removed when a territory is hit with a bomb")
         .SetColor("#DDDDDD");
 
-    UI.CreateLabel(vert)
+    UI.CreateEmpty(par)
+        .SetPreferredWidth(10);
+
+    UI.CreateLabel(par)
         .SetText(Mod.Settings.NumCities)
         .SetColor("#0077FF");
 end
