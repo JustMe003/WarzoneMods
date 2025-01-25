@@ -28,7 +28,7 @@ function Client_PresentSettingsUI(rootParent)
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Link units can be airlifted: \t").SetColor(colors.Tan);
-    setTrueFalseColor(CreateLabel(line).SetText(tostring(Mod.Settings.TeamsCountAsOnePlayer)), Mod.Settings.TeamsCountAsOnePlayer);
+    setTrueFalseColor(CreateLabel(line).SetText(tostring(Mod.Settings.CanBeAirliftedToSelf )), Mod.Settings.CanBeAirliftedToSelf );
     createQuestionMark(line, "When enabled, link units can be airlifted to the player themselves. In a team game, players can also airlift link units to teammembers if the teams act like 1 player (see setting below)");
     
     line = CreateHorz(root).SetFlexibleWidth(1);
