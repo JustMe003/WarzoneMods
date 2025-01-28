@@ -1,4 +1,3 @@
-require("Annotations");
 require("Client_PresentMenuUI");
 require("Client_PresentSettingsUI");
 require("Util");

@@ -285,7 +285,7 @@ function showAllSettings()
     DestroyWindow();
     SetWindow("showAll");
 
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainSettings);
     
     for _, artillery in pairs(Mod.Settings.Artillery) do
         showArtillerySettings(artillery, true);
@@ -294,7 +294,7 @@ function showAllSettings()
     
     showCombatOrder(true);
     
-    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+    CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainSettings);
 end
 
 function showCombatOrder(showAll)
@@ -302,7 +302,7 @@ function showCombatOrder(showAll)
     if not showAll then
         DestroyWindow();
         SetWindow("CombatOrder");
-        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+        CreateButton(root).SetText("Return").SetColor(colors.Orange).SetOnClick(showMainSettings);
     end
 
     CreateEmpty(root).SetPreferredHeight(5);

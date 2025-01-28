@@ -1,4 +1,3 @@
-require("Annotations");
 require("Util");
 require("DataConverter");
 
@@ -138,6 +137,13 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             end
         end
     elseif order.proxyType == "GameOrderAttackTransfer" then
+        if #orderResult.ActualArmies.SpecialUnits > 0 then
+            for _, sp in ipairs(orderResult.ActualArmies.SpecialUnits) do
+                if isArtillery(sp) and DataConverter.StringToData(sp.ModData).AS2.ReloadTurn >= game.Game.TurnNumber then
+                    skipThisOrder(WL.ModOrderControl.Skip);
+                end
+            end
+        end
         if not tableIsEmpty(orderResult.DamageToSpecialUnits) then
             local modTo = WL.TerritoryModification.Create(order.To);
             modTo.AddSpecialUnits = {};

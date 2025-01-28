@@ -1,4 +1,3 @@
-require("Annotations");
 require("Util");
 
 ---Server_StartGame

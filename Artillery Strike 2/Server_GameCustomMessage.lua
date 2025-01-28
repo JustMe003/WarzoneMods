@@ -1,5 +1,3 @@
-require("Annotations");
-
 ---Server_GameCustomMessage
 ---@param game GameServerHook
 ---@param playerID PlayerID

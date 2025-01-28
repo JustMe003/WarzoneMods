@@ -176,3 +176,40 @@ function getModDataTable(reloadTurn, artID)
         }
     };
 end
+
+function isInvalidAttackTransferOrder(game, order, reloadingArtilleries)
+    if order.proxyType == "GameOrderAttackTransfer" and #order.NumArmies.SpecialUnits > 0 then
+        for _, sp in pairs(order.NumArmies.SpecialUnits) do
+            if isArtillery(sp) then
+                reloadingArtilleries = reloadingArtilleries or getReloadingArtilleries(game.LatestStanding.Territories, game.Orders);
+                if DataConverter.StringToData(sp.ModData).AS2.ReloadTurn >= game.Game.TurnNumber then
+                    return "Artillery " .. sp.Name .. " cannot move until turn " .. DataConverter.StringToData(sp.ModData).AS2.ReloadTurn;
+                elseif valueInTable(reloadingArtilleries, sp.ID) then
+                    return "Artillery " .. sp.Name .. " cannot move in the same turn when it's shooting at a target";
+                end
+            end
+        end
+    end
+end
+
+function getReloadingArtilleries(territories, orders)
+    local list = {};
+    for _, order in pairs(orders) do
+        if order.proxyType == "GameOrderCustom" and string.sub(order.Payload, 1, #PREFIX_AS2) == PREFIX_AS2 then
+            local splits = split(order.Payload, SEPARATOR_AS2);
+            if splits[2] == ARTILLERY_STRIKE then
+                for i = 4, #splits do
+                    local pair = split(splits[i], "|");
+                    if territories[pair[1]] ~= nil then
+                        for _, sp in pairs(territories[pair[1]].NumArmies.SpecialUnits) do
+                            if sp.ID == pair[2] and isArtillery(sp) then
+                                table.insert(list, sp.ID);
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return list;
+end

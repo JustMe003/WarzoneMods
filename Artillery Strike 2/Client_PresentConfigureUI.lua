@@ -240,6 +240,7 @@ function healthAndDamage(artillery, root, inputs)
         
         line = CreateHorz(vert).SetFlexibleWidth(1);
         CreateLabel(line).SetText("The defense power of the Artillery").SetColor(colors.TextColor);
+        CreateEmpty(line).SetFlexibleWidth(1);
         createInfoButton(line, "The fixed defense power of this artillery unit");
         inputs.DefensePower = CreateNumberInputField(vert).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(artillery.DefensePower);
     end

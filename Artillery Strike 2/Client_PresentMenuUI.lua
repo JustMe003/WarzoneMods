@@ -1,4 +1,3 @@
-require("Annotations");
 require("UI");
 require("Util");
 require("DataConverter");

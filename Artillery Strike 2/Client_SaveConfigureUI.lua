@@ -1,4 +1,3 @@
-require("Annotations");
 require("DataConverter");
 
 ---Client_SaveConfigureUI hook
