@@ -11,18 +11,22 @@ function Client_PresentConfigureUI(rootParent)
 	CanPlayBomb = Mod.Settings.CanPlayBomb;
 	if(CanPlayBomb == nil)then CanPlayBomb = false; end
 
-	horzlist = {};
-	horzlist[0] = UI.CreateHorizontalLayoutGroup(rootParent);
-	UI.CreateLabel(horzlist[0]).SetText("AI's can play ...");
-	horzlist[2] = UI.CreateHorizontalLayoutGroup(rootParent);
-	CanPlayEMBCheckBox = UI.CreateCheckBox(horzlist[2]).SetText("Emergency Blockade cards").SetIsChecked(CanPlayEMB);
-	horzlist[3] = UI.CreateHorizontalLayoutGroup(rootParent);
-	CanPlayDiplomacyCheckBox = UI.CreateCheckBox(horzlist[3]).SetText("Diplomacy cards").SetIsChecked(CanPlayDiplomacy);
-	horzlist[4] = UI.CreateHorizontalLayoutGroup(rootParent);
-	CanPlaySanctionsCheckBox = UI.CreateCheckBox(horzlist[4]).SetText("Sanction cards").SetIsChecked(CanPlaySanctions);
-	horzlist[5] = UI.CreateHorizontalLayoutGroup(rootParent);
-	CanPlayBlockadeCheckBox = UI.CreateCheckBox(horzlist[5]).SetText("Blockade cards").SetIsChecked(CanPlayBlockade);
-	horzlist[6] = UI.CreateHorizontalLayoutGroup(rootParent);
-	CanPlayBombCheckBox = UI.CreateCheckBox(horzlist[6]).SetText("Bomb cards").SetIsChecked(CanPlayBomb);
-
+	local root = UI.CreateVerticalLayoutGroup(rootParent);
+	local line;
+	
+	line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+	UI.CreateEmpty(line).SetFlexibleWidth(0.5);
+	UI.CreateLabel(line).SetText("AI's can play ...");
+	UI.CreateEmpty(line).SetFlexibleWidth(0.5);
+	
+	line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+	CanPlayEMBCheckBox = UI.CreateCheckBox(line).SetText("Emergency Blockade cards").SetIsChecked(CanPlayEMB);
+	line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+	CanPlayDiplomacyCheckBox = UI.CreateCheckBox(line).SetText("Diplomacy cards").SetIsChecked(CanPlayDiplomacy);
+	line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+	CanPlaySanctionsCheckBox = UI.CreateCheckBox(line).SetText("Sanction cards").SetIsChecked(CanPlaySanctions);
+	line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+	CanPlayBlockadeCheckBox = UI.CreateCheckBox(line).SetText("Blockade cards").SetIsChecked(CanPlayBlockade);
+	line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+	CanPlayBombCheckBox = UI.CreateCheckBox(line).SetText("Bomb cards").SetIsChecked(CanPlayBomb);
 end
