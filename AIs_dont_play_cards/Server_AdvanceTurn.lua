@@ -33,6 +33,11 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 end
 
 function skipOrRemove(game, order, skipThisOrder, addNewOrder)
+	print(game);
+	print(game.LatestTurnStanding);
+	print(game.LatestTurnStanding.Cards);
+	print(game.LatestTurnStanding.Cards[order.PlayerID]);
+	print(game.LatestTurnStanding.Cards[order.PlayerID].WholeCards);
 	if countCards(game.LatestTurnStanding.Cards[order.PlayerID].WholeCards) >= game.Settings.MaxCardsHold then
 		skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
 		local event = WL.GameOrderEvent.Create(order.PlayerID, "Removing card because of maximum card hold limit");
