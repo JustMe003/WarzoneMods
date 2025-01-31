@@ -17,15 +17,15 @@ function Server_AdvanceTurn_Order(game, order, result, skipThisOrder, addNewOrde
 		if (game.ServerGame.Game.Players[order.PlayerID].IsAIOrHumanTurnedIntoAI == true) then
 			if (t[order.PlayerID][order.CardInstanceID] ~= nil) then
 				if (order.proxyType == "GameOrderPlayCardAbandon" and Mod.Settings.CanPlayEMB == false) then
-					skipThisOrder(WL.ModOrderControl.Skip);
+					skipOrRemove(game, order, skipThisOrder, addNewOrder);
 				elseif (order.proxyType == "GameOrderPlayCardDiplomacy" and Mod.Settings.CanPlayDiplomacy == false) then
-					skipThisOrder(WL.ModOrderControl.Skip);
+					skipOrRemove(game, order, skipThisOrder, addNewOrder);
 				elseif (order.proxyType == "GameOrderPlayCardSanctions" and Mod.Settings.CanPlaySanctions == false) then
-					skipThisOrder(WL.ModOrderControl.Skip);
+					skipOrRemove(game, order, skipThisOrder, addNewOrder);
 				elseif (order.proxyType == "GameOrderPlayCardBlockade" and Mod.Settings.CanPlayBlockade == false) then
-					skipThisOrder(WL.ModOrderControl.Skip);
+					skipOrRemove(game, order, skipThisOrder, addNewOrder);
 				elseif (order.proxyType == "GameOrderPlayCardBomb" and Mod.Settings.CanPlayBomb == false) then
-					skipThisOrder(WL.ModOrderControl.Skip);
+					skipOrRemove(game, order, skipThisOrder, addNewOrder);
 				end
 			end
 		end
