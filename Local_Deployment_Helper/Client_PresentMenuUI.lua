@@ -90,26 +90,26 @@ function setAction()
 	DestroyWindow();
 	SetWindow("setAction");
 
-	CreateLabel(vert).SetText("Below you can set what action this mod should take every new turn. If you don't want this mod do stuff automatically, choose the last option").SetColor(colors.TextColor);
+	CreateLabel(vert).SetText("Welcome to the Local Deployment Helper mod! You can use this mod to copy your deployment + transfer orders back from previous turn, deploy your armies, and more to ease the process of creating your orders. The mod can do this completely on its own, or can open a dialog like this for you to pick whatever option you want, or do nothing at all. For more information, check the [?] of the option you are interested in.").SetColor(colors.TextColor);
 	local currentAction = Mod.PlayerGameData.NewTurnAction or "DoNothing";
 
 	local line = CreateHorz(vert).SetFlexibleWidth(1);
 	autoDeployOption = CreateCheckBox(line).SetText(" ").SetIsChecked(currentAction == "AutoDeploy").SetOnValueChanged(function() if autoDeployOption.GetIsChecked() then showWindowOption.SetIsChecked(false); doNothingOption.SetIsChecked(false); end end);
 	CreateLabel(line).SetText("Automatically re-add orders").SetColor(colors.TextColor);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("This option will let the mod re-add all your deployment and transfer / attack orders from last turn. You do need to set what options the mod should use and which not"); end);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("This option will let the mod re-add all your deployment and transfer orders from last turn. When selected, you need to configure the mod what it will do. You can always change the behaviour of the mod in the mod menu"); end);
 	
 	line = CreateHorz(vert).SetFlexibleWidth(1);
 	showWindowOption = CreateCheckBox(line).SetText(" ").SetIsChecked(currentAction == "ShowWindow").SetOnValueChanged(function() if showWindowOption.GetIsChecked() then doNothingOption.SetIsChecked(false); autoDeployOption.SetIsChecked(false); end end);
 	CreateLabel(line).SetText("Automatically open LD Helper").SetColor(colors.TextColor);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("This option will open the Local Deployment Helper window everytime you enter the game again after a new turn has advanced. This allows you to determine what orders you want to (re-)add every time"); end);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("This option will open the Local Deployment Helper dialog everytime you enter the game again after a new turn has advanced. This allows you to determine what orders you want to (re-)add every time.You can always change the behaviour of the mod in the mod menu"); end);
 	
 	line = CreateHorz(vert).SetFlexibleWidth(1);
 	doNothingOption = CreateCheckBox(line).SetText(" ").SetIsChecked(currentAction == "DoNothing").SetOnValueChanged(function() if doNothingOption.GetIsChecked() then showWindowOption.SetIsChecked(false); autoDeployOption.SetIsChecked(false); end end);
 	CreateLabel(line).SetText("Do nothing automatically").SetColor(colors.TextColor);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("If you do not want to use this mod or want to choose yourself what you do with the mod, choose this option"); end);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("If you do not want to use this mod or want to choose yourself what you do with the mod, choose this option. You can always change the behaviour of the mod in the mod menu"); end);
 	
 	line = CreateHorz(vert).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(0.5);
