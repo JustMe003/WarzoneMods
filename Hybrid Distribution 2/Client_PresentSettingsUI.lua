@@ -7,7 +7,7 @@ function Client_PresentSettingsUI(rootParent)
 	
 	UI.CreateLabel(vert).SetText("The mod distributed territories that were " .. ifElse(Mod.Settings.takeDistributionTerr, "in the distribution", "neutral")).SetColor("#DDDDDD");
 	
-	UI.CreateLabel(line).SetText("Number of armies on auto distributed territories is the equal to those " .. ifElse(Mod.Settings.setArmiesToInDistribution, "manually distributed", "not in the distribution")).SetColor("#DDDDDD");
+	UI.CreateLabel(vert).SetText("Number of armies on auto distributed territories is the equal to those " .. ifElse(Mod.Settings.setArmiesToInDistribution, "manually distributed", "not in the distribution")).SetColor("#DDDDDD");
 end
 
 function ifElse(b, t, f)
