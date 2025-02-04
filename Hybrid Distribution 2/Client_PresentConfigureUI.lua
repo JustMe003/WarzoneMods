@@ -8,24 +8,45 @@ function Client_PresentConfigureUI(rootParent)
 	if (setArmiesToInDistribution == nil) then setArmiesToInDistribution = true; end
 
     
-	local vert = UI.CreateVerticalLayoutGroup(rootParent);
+	local vert = UI.CreateVerticalLayoutGroup(rootParent).SetFlexibleWidth(1);
 
     local row1 = UI.CreateHorizontalLayoutGroup(vert);
-	UI.CreateLabel(row1).SetText("Number of territories to auto distribute to each player");
+	UI.CreateLabel(row1).SetText("Number of territories to auto distribute to each player").SetColor("#DDDDDD");
     numTerritoriesInputField = UI.CreateNumberInputField(row1)
 		.SetSliderMinValue(1)
 		.SetSliderMaxValue(10)
 		.SetValue(numTerritories);
 	
-	local row2 = UI.CreateHorizontalLayoutGroup(vert);
+	local row2 = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
 	takeDistributionTerrInputField = UI.CreateCheckBox(row2)
-		.SetText("Check this checkbox if you want the auto distributed territories to be chosen from territories in the distribution")
+		.SetText(" ")
 		.SetIsChecked(takeDistributionTerr);
+	UI.CreateLabel(row2)
+		.SetText("Use territories in distribution")
+		.SetColor("#DDDDDD");
+	UI.CreateEmpty(row2)
+		.SetFlexibleWidth(1);
+	UI.CreateButton(row2)
+		.SetText("?")
+		.SetColor("#4169E1")
+		.SetOnClick(function()
+			UI.Alert("When checked, the mod will distribute territories that would be otherwise in the distribution. If not checked, it will only auto distribute neutral territories");
+		end);
 
-	local row3 = UI.CreateHorizontalLayoutGroup(vert);
+	local row3 = UI.CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
 	setArmiesToInDistributionInputField = UI.CreateCheckBox(row3)
-		.SetText("Set the armies of the auto distributed territories to it corresponding setting: 'Number of armies each neutral territory starts with (applies to territories that are in the distribution, but a player did not end up with)'")
+		.SetText(" ")
 		.SetIsChecked(setArmiesToInDistribution);
-	UI.CreateLabel(vert).SetText("Note that with the box above unchecked the number of armies will default to that of those territories not in the distribution");
-				
+	UI.CreateLabel(row3)
+		.SetText("Set armies to corresponding setting")
+		.SetColor("#DDDDDD");
+	UI.CreateEmpty(row3)
+		.SetFlexibleWidth(1);
+	UI.CreateButton(row3)
+		.SetText("?")
+		.SetColor("#4169E1")
+		.SetOnClick(function()
+			UI.Alert("If checked, the mod will set the armies of the territories it distributes equal to the territories that are not in the distribution. When not checked, the mod will set the armies it distributes equal to the number of armies you'll get manually distributed");
+		end);
+		
 end
