@@ -46,7 +46,7 @@ function Client_PresentConfigureUI(rootParent)
 		.SetText("?")
 		.SetColor("#4169E1")
 		.SetOnClick(function()
-			UI.Alert("If checked, the mod will set the armies of the territories it distributes equal to the territories that are not in the distribution. When not checked, the mod will set the armies it distributes equal to the number of armies you'll get manually distributed");
+			UI.Alert("If checked, the mod will set the armies it distributes equal to the number of armies you'll get manually distributed. When not checked, the mod will set the armies of the territories it distributes equal to the territories that are not in the distribution");
 		end);
 		
 end
