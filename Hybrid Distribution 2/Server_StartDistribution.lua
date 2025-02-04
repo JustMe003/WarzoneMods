@@ -3,19 +3,19 @@ require('Utilities');
 function Server_StartDistribution(game, standing)
     
 	if (not WL.IsVersionOrHigher or not WL.IsVersionOrHigher("5.17")) then
-		error("You must update your app to the latest version to use the Hybrid Distribution mod");
+		print("You must update your app to the latest version to use the Hybrid Distribution mod");
 		return;
 	end
 
     local terrs = {};
-	local doNotDistribute = 0;
+	local doNotDistribute;
 	if (Mod.Settings.takeDistributionTerr == nil or Mod.Settings.takeDistributionTerr == false) then
 		doNotDistribute = WL.PlayerID.AvailableForDistribution;
 	else
 		doNotDistribute = WL.PlayerID.Neutral;
 	end
     --Collect every territory that we could distribute to
-    for _,territory in pairs(standing.Territories) do
+    for _, territory in pairs(standing.Territories) do
         if (territory.OwnerPlayerID ~= doNotDistribute) then
             table.insert(terrs, territory);
         end
