@@ -1,7 +1,7 @@
 function Client_SaveConfigureUI(alert)
     local numTerritories = numTerritoriesInputField.GetValue();
 
-    if (numTerritories < 1) then alert("Number of territories to auto distribute must be positive"); end
+    if (numTerritories < 1) then alert("Number of territories to auto distribute must be positive and bigger than 0"); end
 
     Mod.Settings.NumTerritories = numTerritories;
 	Mod.Settings.takeDistributionTerr = takeDistributionTerrInputField.GetIsChecked();
