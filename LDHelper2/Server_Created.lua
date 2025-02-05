@@ -5,8 +5,8 @@ function Server_Created(Game, Settings)
 	if Mod.Settings.OverridePercentage == true then 
 		settings.AllowPercentageAttacks = true; 
 	end
+	OverriddenBonuses = settings.OverriddenBonuses;
 	if Mod.Settings.BonusOverrider == true then
-		OverriddenBonuses = settings.OverriddenBonuses;
 		for i, v in pairs(game.Settings.OverriddenBonuses) do
 			OverriddenBonuses[i] = v;
 		end
