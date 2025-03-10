@@ -1,0 +1,1 @@
+Adds a small dialog to the game that helps players locate their territories on the map
