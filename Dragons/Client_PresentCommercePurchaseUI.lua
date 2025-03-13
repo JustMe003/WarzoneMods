@@ -36,6 +36,7 @@ function createDialog(rootParent, setMaxSize, setScrollable, game, close)
     Init(rootParent);
     root = GetRoot().SetFlexibleWidth(1);
     Close = close;
+    SetMaxSize = setMaxSize;
 
     purchaseMain();
 end
@@ -43,6 +44,8 @@ end
 function purchaseMain()
     DestroyWindow();
     SetWindow("purchaseMain");
+
+    SetMaxSize(400, 400);
 
     local dragonsOwned = getOwnedDragons();
     for _, order in pairs(Game.Orders) do
@@ -61,21 +64,21 @@ function purchaseMain()
             CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetInteractable(false);
             CreateLabel(line).SetText("   " .. dragon.Cost .. " gold").SetColor(colors.Yellow).SetPreferredWidth(100);
             CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() showDragonSettings(dragon, false, purchaseMain); end);
+            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() SetMaxSize(400, 600); showDragonSettings(dragon, false, purchaseMain); end);
             CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("This dragon cannot be purchased") end);
         elseif dragon.MaxNumOfDragon <= dragonsOwned[dragon.ID] then
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetInteractable(false);
             CreateLabel(line).SetText("   " .. dragon.Cost .. " gold").SetColor(colors.Yellow).SetPreferredWidth(100);
             CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() showDragonSettings(dragon, false, purchaseMain); end);
+            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() SetMaxSize(400, 600); showDragonSettings(dragon, false, purchaseMain); end);
             CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function() UI.Alert("You already have the maximum number of this dragon. Note that also dragon purchase orders are counted") end);
         else
             local line = CreateHorz(root).SetFlexibleWidth(1);
             CreateButton(line).SetText(dragon.Name).SetColor(dragon.Color).SetOnClick(function() pickTerritory(dragon); end);
             CreateLabel(line).SetText("   " .. dragon.Cost .. " gold").SetColor(colors.Yellow).SetPreferredWidth(100);
             CreateEmpty(line).SetFlexibleWidth(1);
-            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() showDragonSettings(dragon, false, purchaseMain); end);
+            CreateButton(line).SetText("Stats").SetColor(colors.Lime).SetOnClick(function() SetMaxSize(400, 600); showDragonSettings(dragon, false, purchaseMain); end);
         end
     end
 

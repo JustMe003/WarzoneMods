@@ -327,26 +327,26 @@ function changeCombatOrder()
 end
 
 function saveDragon(dragon, inputs)
-    if inputs.Name ~= nil then dragons[dragon.ID].Name = inputs.Name.GetText(); end
-    if inputs.DragonBreathAttack ~= nil then dragons[dragon.ID].DragonBreathAttack = inputs.DragonBreathAttack.GetIsChecked(); end
-    if inputs.DragonBreathAttackDamage ~= nil then dragons[dragon.ID].DragonBreathAttackDamage = inputs.DragonBreathAttackDamage.GetValue(); end
-    if inputs.IsVisibleToAllPlayers ~= nil then dragons[dragon.ID].IsVisibleToAllPlayers = inputs.IsVisibleToAllPlayers.GetIsChecked(); end
-    if inputs.CanBeAirliftedToSelf ~= nil then dragons[dragon.ID].CanBeAirliftedToSelf = inputs.CanBeAirliftedToSelf.GetIsChecked(); end
-    if inputs.CanBeGiftedWithGiftCard ~= nil then dragons[dragon.ID].CanBeGiftedWithGiftCard = inputs.CanBeGiftedWithGiftCard.GetIsChecked(); end
-    if inputs.IncludeABeforeName ~= nil then dragons[dragon.ID].IncludeABeforeName = inputs.IncludeABeforeName.GetIsChecked(); end
-    if inputs.UseHealth ~= nil then dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked(); end
-    if inputs.Health ~= nil then dragons[dragon.ID].Health = inputs.Health.GetValue(); end
-    if inputs.DynamicDefencePower ~= nil then dragons[dragon.ID].DynamicDefencePower = inputs.DynamicDefencePower.GetIsChecked(); end
-    if inputs.DamageAbsorbedWhenAttacked ~= nil then dragons[dragon.ID].DamageAbsorbedWhenAttacked = inputs.DamageAbsorbedWhenAttacked.GetValue(); end
-    if inputs.DamageToKill ~= nil then dragons[dragon.ID].DamageToKill = inputs.DamageToKill.GetValue(); end
-    if inputs.DefensePower ~= nil then dragons[dragon.ID].DefensePower = inputs.DefensePower.GetValue(); end
-    if inputs.AttackPower ~= nil then dragons[dragon.ID].AttackPower = inputs.AttackPower.GetValue(); end
-    if inputs.AttackPowerPercentage ~= nil then dragons[dragon.ID].AttackPowerPercentage = inputs.AttackPowerPercentage.GetValue(); end
-    if inputs.DefensePowerPercentage ~= nil then dragons[dragon.ID].DefensePowerPercentage = inputs.DefensePowerPercentage.GetValue(); end
-    if inputs.CanBeBought ~= nil then dragons[dragon.ID].CanBeBought = inputs.CanBeBought.GetIsChecked(); end
-    if inputs.Cost ~= nil then dragons[dragon.ID].Cost = inputs.Cost.GetValue(); end
-    if inputs.MaxNumOfDragon ~= nil then dragons[dragon.ID].MaxNumOfDragon = inputs.MaxNumOfDragon.GetValue(); end
-    if inputs.CanBeTransferredToTeammate ~= nil then dragons[dragon.ID].CanBeTransferredToTeammate = inputs.CanBeTransferredToTeammate.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.Name) then dragons[dragon.ID].Name = inputs.Name.GetText(); end
+    if not UI.IsDestroyed(inputs.DragonBreathAttack) then dragons[dragon.ID].DragonBreathAttack = inputs.DragonBreathAttack.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.DragonBreathAttackDamage) then dragons[dragon.ID].DragonBreathAttackDamage = inputs.DragonBreathAttackDamage.GetValue(); end
+    if not UI.IsDestroyed(inputs.IsVisibleToAllPlayers) then dragons[dragon.ID].IsVisibleToAllPlayers = inputs.IsVisibleToAllPlayers.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.CanBeAirliftedToSelf) then dragons[dragon.ID].CanBeAirliftedToSelf = inputs.CanBeAirliftedToSelf.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.CanBeGiftedWithGiftCard) then dragons[dragon.ID].CanBeGiftedWithGiftCard = inputs.CanBeGiftedWithGiftCard.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.IncludeABeforeName) then dragons[dragon.ID].IncludeABeforeName = inputs.IncludeABeforeName.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.UseHealth) then dragons[dragon.ID].UseHealth = inputs.UseHealth.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.Health) then dragons[dragon.ID].Health = inputs.Health.GetValue(); end
+    if not UI.IsDestroyed(inputs.DynamicDefencePower) then dragons[dragon.ID].DynamicDefencePower = inputs.DynamicDefencePower.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.DamageAbsorbedWhenAttacked) then dragons[dragon.ID].DamageAbsorbedWhenAttacked = inputs.DamageAbsorbedWhenAttacked.GetValue(); end
+    if not UI.IsDestroyed(inputs.DamageToKill) then dragons[dragon.ID].DamageToKill = inputs.DamageToKill.GetValue(); end
+    if not UI.IsDestroyed(inputs.DefensePower) then dragons[dragon.ID].DefensePower = inputs.DefensePower.GetValue(); end
+    if not UI.IsDestroyed(inputs.AttackPower) then dragons[dragon.ID].AttackPower = inputs.AttackPower.GetValue(); end
+    if not UI.IsDestroyed(inputs.AttackPowerPercentage) then dragons[dragon.ID].AttackPowerPercentage = inputs.AttackPowerPercentage.GetValue(); end
+    if not UI.IsDestroyed(inputs.DefensePowerPercentage) then dragons[dragon.ID].DefensePowerPercentage = inputs.DefensePowerPercentage.GetValue(); end
+    if not UI.IsDestroyed(inputs.CanBeBought) then dragons[dragon.ID].CanBeBought = inputs.CanBeBought.GetIsChecked(); end
+    if not UI.IsDestroyed(inputs.Cost) then dragons[dragon.ID].Cost = inputs.Cost.GetValue(); end
+    if not UI.IsDestroyed(inputs.MaxNumOfDragon) then dragons[dragon.ID].MaxNumOfDragon = inputs.MaxNumOfDragon.GetValue(); end
+    if not UI.IsDestroyed(inputs.CanBeTransferredToTeammate) then dragons[dragon.ID].CanBeTransferredToTeammate = inputs.CanBeTransferredToTeammate.GetIsChecked(); end
 end
 
 function initDragon()
@@ -387,7 +387,7 @@ function initDragon()
 end
 
 function savePlacement()
-    placements = dragonPlacementsInputs.GetText();
+    if not UI.IsDestroyed(dragonPlacementsInputs) then placements = dragonPlacementsInputs.GetText(); end
 end
 
 function getColorName(s)

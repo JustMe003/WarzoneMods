@@ -4,15 +4,11 @@ function Server_StartGame(game, standing)
     for terr, arr in pairs(data.DragonPlacements) do
         if type(terr) == type(0) and game.Map.Territories[terr] ~= nil then
             if type(arr) == "table" then
-                if s.Territories[terr].OwnerPlayerID ~= WL.PlayerID.Neutral then
-                    local t = {};
-                    for _, v in pairs(arr) do
-                        table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
-                    end
-                    s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
-                else
-                    table.insert(data.Errors, "The current Warzone version does not support neutral custom units, therefore the dragons at \"" .. game.Map.Territories[terr].Name .. "\" were not added.");
+                local t = {};
+                for _, v in pairs(arr) do
+                    table.insert(t, getDragon(s.Territories[terr].OwnerPlayerID, v))
                 end
+                s.Territories[terr].NumArmies = s.Territories[terr].NumArmies.Add(WL.Armies.Create(0, t));
             else
                 table.insert(data.Errors, "The inputted data didn't have the right format. DO NOT CHANGE ANYTHING MANUALLY TO THE INPUT DATA. If you didn't, please let me know so I can fix it.");
             end
