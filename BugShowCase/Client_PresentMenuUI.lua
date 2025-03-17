@@ -1,11 +1,12 @@
+---Client_PresentMenuUI hook
+---@param rootParent RootParent
+---@param setMaxSize fun(width: integer, height: integer)
+---@param setScrollable fun(hor: boolean, vert: boolean)
+---@param game GameClientHook
+---@param close fun()
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-    -- print("Turn number: " .. game.Game.TurnNumber);
-    -- for i = 0, game.Game.TurnNumber - 1 do
-	-- 	for j = 0, game.Game.TurnNumber - 1 do
-	-- 		game.GetStanding(i, j, function(t) 
-	-- 			print("i: " .. i, "j: " .. j, t.Territories[1].NumArmies.NumArmies);
-	-- 		end);
-	-- 	end
-	-- 	print();
-	-- end 
+    print(2, game.LatestStanding.NumResources(game.Us.ID, 2));
+    print(5, game.LatestStanding.NumResources(game.Us.ID, 5));
+
+	close();
 end
