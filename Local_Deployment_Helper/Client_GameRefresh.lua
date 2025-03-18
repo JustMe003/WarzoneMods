@@ -15,6 +15,8 @@ function Client_GameRefresh(game)
         return;
     end
 
+    print(lastTurn, game.Game.TurnNumber);
+
     if (lastTurn == nil or lastTurn < game.Game.TurnNumber) and game.Game.TurnNumber > 1 then
         if Mod.PlayerGameData.NewTurnAction == nil and (UI.IsDestroyed == nil or UI.IsDestroyed(vert)) then
             game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetAction"); end);
