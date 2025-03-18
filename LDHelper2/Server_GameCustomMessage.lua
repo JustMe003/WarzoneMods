@@ -15,7 +15,6 @@ function saveInputs(playerID, payload)
     if playerData[playerID] == nil then playerData[playerID] = {}; end
     if playerData[playerID].SavedInputs == nil then playerData[playerID].SavedInputs = {}; end
     for key, value in pairs(payload.Data) do
-        print(key, value);
         playerData[playerID].SavedInputs[key] = value;
     end
 end
