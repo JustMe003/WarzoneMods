@@ -230,6 +230,9 @@ function showHelperMenu(setToDefaultMode)
 		CreateLabel(vert).SetText("Choose the default options you want. If you have set the mod to automatically re-add the orders back, the default options will always be used.\n\nYou can always change the options at any time in the mod menu")
 	end
 	local inputs = getInputs();
+	for i, v in pairs(inputs) do
+		print("client", i, v);
+	end
 	local line = CreateHorz(vert).SetFlexibleWidth(1);
 	addDeployments = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.AddDeployments);
 	CreateLabel(line).SetText("Add deployments").SetColor(colors.TextColor);
