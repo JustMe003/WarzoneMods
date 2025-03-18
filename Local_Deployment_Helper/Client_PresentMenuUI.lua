@@ -660,8 +660,13 @@ function AddOrdersHelper(inputs)
 	standing = Game.LatestStanding;
 
 	if Game.Game.TurnNumber - 2 >= 0 then
-		Game.GetTurn(Game.Game.TurnNumber - 2, function(data) LastTurn = data.Orders; end);
-		Game.GetStanding(Game.Game.TurnNumber - 2, 0, function(data) LastStanding = data; AddOrdersConfirmes(inputs); end);		
+		Game.GetTurn(Game.Game.TurnNumber - 2, function(turn) 
+			LastTurn = turn.Orders; 
+			Game.GetStanding(Game.Game.TurnNumber - 2, 0, function(standing) 
+				LastStanding = standing; 
+				AddOrdersConfirmes(inputs); 
+			end);		
+		end);
 	end
 end
 
