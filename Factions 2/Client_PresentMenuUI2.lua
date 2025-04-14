@@ -114,7 +114,7 @@ function showPlayerPage(root)
 	end
 
 	if #relations.Peace > 0 then
-		CreateLabel(root).SetText("You are in peace with the following players").SetColor(colors.TextColor);
+		CreateLabel(root).SetText("You are at peace with the following players").SetColor(colors.TextColor);
 		for _, p in pairs(relations.Peace) do
 			CreateButton(root).SetText(p.DisplayName(nil, false)).SetColor(p.Color.HtmlColor).SetOnClick(function()
 				showPlayerDetails(p.ID);
