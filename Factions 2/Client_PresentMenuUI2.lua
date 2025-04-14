@@ -586,6 +586,7 @@ function showFactionChat(faction)
 			Text = messageInput.GetText();
 			Faction = faction
 		};
+		print(game.Game.ServerTime);
 		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
 	end);
 	CreateButton(line).SetText("Refresh").SetColor(colors.Green).SetOnClick(showFactionChat);
