@@ -92,6 +92,11 @@ function Server_StartGameMain(game, standing)
 				playerData[i].NumberOfNotifications = 0;
 				playerData[i].PendingOffers = {};
 				playerData[i].Offers = {};
+				playerData[i].PersonalSettings = {
+					WindowWidth = 500,
+					WindowHeight = 600,
+					DisableWarningAlerts = false
+				};
 			end
 		end
 	end

@@ -630,11 +630,6 @@ end
 
 function showPlayerSettings()
 	local settings = Mod.PlayerGameData.PersonalSettings;
-	if settings == nil then
-		settings = {};
-		settings.WindowWidth = 500;
-		settings.WindowHeight = 600;
-	end
 
 	DestroyWindow();
 	local root = CreateWindow(CreateVert(GlobalRoot));
