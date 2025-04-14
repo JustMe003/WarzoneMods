@@ -176,7 +176,7 @@ function sendMessage(game, playerID, payload, setReturn)
 		local t = {};
 		t.Text = payload.Text;
 		t.Player = playerID;
-		t.TimeStamp = game.Game.ServerTime
+		t.TimeStamp = payload.TimeStamp;
 		table.insert(data.Factions[faction].FactionChat, t);
 		local playerData = Mod.PlayerGameData;
 		for _, i in pairs(data.Factions[faction].FactionMembers) do

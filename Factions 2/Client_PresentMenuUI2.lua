@@ -584,10 +584,10 @@ function showFactionChat(faction)
 		AddToHistory(void);
 		local payload = {
 			Type = "sendMessage",
-			Text = messageInput.GetText();
-			Faction = faction
+			Text = messageInput.GetText(),
+			Faction = faction,
+			TimeStamp = game.Game.ServerTime
 		};
-		print(game.Game.ServerTime);
 		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
 	end);
 	CreateButton(line).SetText("Refresh").SetColor(colors.Green).SetOnClick(showFactionChat);
