@@ -135,15 +135,17 @@ function isFactionLeader(p)
 	return false;
 end
 
-function showVersionDetails()
+function showVersionDetails(showVersionChangeText)
 	DestroyWindow();
 	local root = CreateWindow(CreateVert(GlobalRoot).SetFlexibleWidth(1));
 
-		CreateButton(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Go back").SetColor(colors.Orange).SetOnClick(showMain);
-
-	CreateEmpty(root).SetPreferredHeight(5);
+	CreateButton(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Go back").SetColor(colors.Orange).SetOnClick(showMain);
 	
-	CreateLabel(root).SetText("To change the version of the mod, you have to remove the mod from the game unfortunately. This will mean that you will lose all configurations you have already made").SetColor(colors["Orange Red"]);
+	if showVersionChangeText then
+		CreateEmpty(root).SetPreferredHeight(5);
+		
+		CreateLabel(root).SetText("To change the version of the mod, you have to remove the mod from the game unfortunately. This will mean that you will lose all configurations you have already made").SetColor(colors.OrangeRed);
+	end
 	
 	CreateEmpty(root).SetPreferredHeight(5);
 

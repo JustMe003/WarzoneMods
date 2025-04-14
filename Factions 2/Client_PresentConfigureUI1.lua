@@ -38,7 +38,7 @@ function showMain()
 	end);
 	CreateButton(line).SetText("Version").SetColor(colors.OrangeRed).SetOnClick(function()
 		saveSettings();
-		showVersionDetails();
+		showVersionDetails(true);
 	end);
 
 	showSettings(root);
