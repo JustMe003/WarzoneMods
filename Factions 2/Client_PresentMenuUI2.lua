@@ -71,6 +71,7 @@ function showFactions()
 	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
 	CreateButton(line).SetText("Go back").SetColor(colors.Orange).SetOnClick(GetPreviousWindow);
 	CreateButton(line).SetText("Home").SetColor(colors.Green).SetOnClick(GetFirstWindow);
+	CreateButton(line).SetText("Create Faction").SetColor(colors.Aqua).SetOnClick(createFaction)
 	
 	CreateEmpty(root).SetPreferredHeight(10);
 
@@ -616,11 +617,6 @@ function shortenPlayerName(name)
 end
 
 function createFaction()
-	if Mod.PublicGameData.IsInFaction[game.Us.ID] then
-		UI.Alert("You're already in a faction! You can only be in 1 faction at the time");
-		return;
-	end
-
 	DestroyWindow();
 	local root = CreateWindow(CreateVert(GlobalRoot));
 
