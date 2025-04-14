@@ -630,6 +630,7 @@ end
 
 function showPlayerSettings()
 	local settings = Mod.PlayerGameData.PersonalSettings;
+	game.SendGameCustomMessage("Updating Settings...", {Type="updateSettings", WindowHeight= settings.WindowHeight or 600, WindowWidth= settings.WindowWidth or 500}, gameCustomMessageReturn);
 
 	DestroyWindow();
 	local root = CreateWindow(CreateVert(GlobalRoot));
