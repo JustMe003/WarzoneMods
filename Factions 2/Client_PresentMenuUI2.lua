@@ -215,7 +215,7 @@ function showPlayerDetails(playerID)
 			end);
 		end);
 	else
-		relLabel.SetText("Friendly").SetColor(colors.Green);
+		relLabel.SetText("Faction member").SetColor(colors.Green);
 	end
 
 	CreateEmpty(root).SetPreferredHeight(5);
