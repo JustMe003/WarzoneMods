@@ -547,6 +547,7 @@ end
 function showFactionChatOptions()
 	if #Mod.PublicGameData.PlayerInFaction[game.Us.ID] == 1 then
 		showFactionChat(Mod.PublicGameData.PlayerInFaction[game.Us.ID][1]);
+		return;
 	end
 
 	DestroyWindow();
