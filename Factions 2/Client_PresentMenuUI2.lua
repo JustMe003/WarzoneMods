@@ -413,6 +413,9 @@ function showFactionDetails(factionName)
 		CreateEmpty(root).SetPreferredHeight(5);
 
 		CreateLabel(root).SetText("Relations of this Faction").SetColor(colors.TextColor);
+		if playerIsInFaction and game.Us.ID ~= faction.FactionLeader then
+			CreateLabel(root).SetText("Only the Faction leader can change the relation between this and another Faction").SetColor(colors.TextColor);
+		end
 		for name, otherFaction in pairs(Mod.PublicGameData.Factions) do
 			if name ~= factionName then
 				line = CreateHorz(root).SetFlexibleWidth(1);
