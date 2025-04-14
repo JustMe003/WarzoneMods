@@ -120,7 +120,7 @@ function showAlert(game)
 		s = s .. "\n";
 	end
 	print(playerData.Notifications.Messages);
-	if playerData.Notifications.Messages ~= nil and playerData.Notifications.Messages > 0 then
+	if Mod.PublicGameData.PlayerInFaction[game.Us.ID] and playerData.Notifications.Messages ~= nil and playerData.Notifications.Messages > 0 then
 		s = s .. "You have " .. #playerData.Notifications.Messages .. " unread messages in the faction chat";
 	end
 	if #s > 0 then

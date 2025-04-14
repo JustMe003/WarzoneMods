@@ -1,7 +1,7 @@
 
 function setPlayerNotifications()
 	local t = {};
-	t.Messages = {};
+	t.Messages = 0;
 	t.LeftPlayers = {};
 	t.JoinedPlayers = {};
 	t.FactionWarDeclarations = {};

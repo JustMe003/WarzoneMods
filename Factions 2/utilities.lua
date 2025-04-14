@@ -12,28 +12,6 @@ FactionRelations = {
 MOD_VERSION_1 = 1.6;
 MOD_VERSION_2 = 2.4;
 
-function setPlayerNotifications()
-	local t = {};
-	t.Messages = {};
-	t.LeftPlayers = {};
-	t.JoinedPlayers = {};
-	t.FactionWarDeclarations = {};
-	t.FactionsPeaceOffers = {};
-	t.FactionsPeaceConfirmed = {};
-	t.FactionsPeaceDeclined = {};
-	t.FactionsKicks = {};
-	t.FactionsPendingJoins = {};
-	t.WarDeclarations = {};
-	t.PeaceOffers = {};
-	t.PeaceDeclines = {};
-	t.PeaceConfirmed = {};
-	t.NewFactionLeader = {};
-	t.GotKicked = {};
-	t.JoinRequestApproved = {};
-	t.JoinRequestRejected = {};
-	return t;
-end
-
 function resetPlayerNotifications(t)
 	t.LeftPlayers = {};
 	t.JoinedPlayers = {};
