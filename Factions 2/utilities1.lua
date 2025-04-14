@@ -47,16 +47,6 @@ function count(t, func)
 	return c;
 end
 
-function getSlotName(i)
-	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	local s = "Slot ";
-	if i > 25 then
-		s = s .. c[math.floor(i / 26)];
-		i = i - math.floor(i / 26);
-	end
-	return s .. c[i % 26 + 1];
-end
-
 function concatArrays(t1, t2)
 	for _, v in pairs(t2) do
 		table.insert(t1, v);
@@ -114,4 +104,25 @@ function createEvent(m, p, h);
 		t.VisibleTo = h;
 	end
 	return t;
+end
+
+function showVersionDetails()
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot).SetFlexibleWidth(1));
+
+	CreateButton(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Go back").SetColor(colors.Orange).SetOnClick(showMain);
+
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	CreateLabel(root).SetText("To change the version of the mod, you have to remove the mod from the game unfortunately. This will mean that you will lose all configurations you have already made").SetColor(colors["Orange Red"]);
+
+	CreateEmpty(root).SetPreferredHeight(5);
+	
+	CreateLabel(root).SetText("Version: 1.5").SetColor(colors.TextColor);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	CreateLabel(root).SetText("In this version, the most notable difference is that players can only join 1 Faction. When they are already part of a Faction, they first need to leave that Faction in order to join another one").SetColor(colors.TextColor);
+	CreateLabel(root).SetText("For the rest, this version lacks some options that the newer version does have, like autoplaying spy cards on allies and every player relation starting at hostile, unless configured otherwise").SetColor(colors.TextColor);
+
 end

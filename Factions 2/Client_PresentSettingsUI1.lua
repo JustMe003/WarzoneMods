@@ -1,142 +1,207 @@
-require("UI");
-function Client_PresentSettingsUIMain(rootParent)
-	init(rootParent);
+function Client_PresentSettingsUIMain()
 	showMain();
 end
 
 function showMain()
-	local win = "main";
-	if windowExists(win) then
-		resetWindow(win);
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot).SetCenter(true));
+
+	local header = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	if not tableIsEmpty(Mod.Settings.Configuration.Relations) then
+		CreateButton(header).SetText("Slot Configuration").SetColor(colors.Orange).SetOnClick(showMainConfig);
 	end
-	destroyWindow(getCurrentWindow());
-	counter = 0;
-	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "button", vert, "To slot configuration", showMainConfig, "Orange");
-	local line = getLine(vert);
-	newLabel(win .. line, line, "Visible history: " .. tostring(Mod.Settings.GlobalSettings.VisibleHistory));
-	newButton(win .. line .. "button", line, "?", function() UI.Alert("If this settings is on (true), then all the events that happen between the turns will be visible for anyone. If this setting is off, then only the events that have impact on you or a factionmember will be visible. Events can be Faction creations, joins, declaration of war, etc"); end, "Blue");
-	line = getLine(vert);
-	newLabel(win .. line, line, "AIs can declare on players: " .. tostring(Mod.Settings.GlobalSettings.AICanDeclareOnPlayer));
-	newButton(win .. line .. "button", line, "?", function() UI.Alert("If this setting is enabled any AI will declare war on a random player they border if they are not in any war. This way they will always have 1 player to attack if they are surrounded by players. Note that this settings is compatible with 'AIs can declare on AIs', if both settings are enabled the AI will either declare on another AI or player"); end, "Blue");
-	line = getLine(vert);
-	newLabel(win .. line, line, "AIs can declare on AIs: " .. tostring(Mod.Settings.GlobalSettings.AICanDeclareOnAI));
-	newButton(win .. line .. "button", line, "?", function() UI.Alert("If this setting is enabled any AI will declare war on a random AI they border if they are not in any war. This way they will always have 1 AI to attack if they are surrounded by AIs. Note that this settings is compatible with 'AIs can declare on players', if both settings are enabled the AI will either declare on another player or AI"); end, "Blue");
-	line = getLine(vert);
-	newLabel(win .. line, line, "Approve Faction joins: " .. tostring(Mod.Settings.GlobalSettings.ApproveFactionJoins));
-	newButton(win .. line .. "button", line, "?", function() UI.Alert("If enabled, Faction joins become Faction join proposals which the Faction leader has to permit or decline"); end, "Blue");
-	line = getLine(vert);
-	newLabel(win .. line, line, "Lock pre-set Factions: " .. tostring(Mod.Settings.GlobalSettings.LockPreSetFactions));
-	newButton(win .. line .. "button", line, "?", function() UI.Alert("if enabled (and included) Factions made by the game creator in the mod configuration are locked. Players can leave them but not join them"); end, "Blue");
-	line = getLine(vert);
-	newLabel(win .. line, line, "Fair Factions: " .. tostring(Mod.Settings.GlobalSettings.FairFactions));
-	newButton(win .. line .. "button", line, "?", function() UI.Alert("If enabled, the mod will stop a player from joining a Faction if they disbalance the game to much. See 'Fair Faction modifiers' for more if enabled"); end, "Blue");
+	CreateButton(header).SetText("Rules").SetColor(colors.Yellow).SetOnClick(function()
+		showRules(showMain);
+	end);
+	CreateButton(header).SetText("Version").SetColor(colors.Red).SetOnClick(showVersionDetails);
+
+	CreateInfoButtonLine(root, function(line)
+		CreateLabel(line).SetText("Make all the events that happened public: ").SetColor(colors.TextColor);
+		createBoolLabel(line, Mod.Settings.GlobalSettings.VisibleHistory);
+	end, "When on, every event (making peace, declaring war, joining a Faction) that occurs will be made visible for everyone. When off, only the events that the player, or a Faction member, participated in will be made visible");
+	
+	CreateInfoButtonLine(root, function(line)
+		CreateLabel(line).SetText("Fair Factions: ").SetColor(colors.TextColor);
+		createBoolLabel(line, Mod.Settings.GlobalSettings.FairFactions);
+	end, "When on, the mod will stop players from joining a Faction if this unbalances the game too much. When off, there is no restriction for players to join a Faction");
+
 	if Mod.Settings.GlobalSettings.FairFactions then
-		line = getLine(vert);
-		newLabel(win .. line, line, "Fair Factions modifier: " .. Mod.Settings.GlobalSettings.FairFactionsModifier);
-		newButton(win .. line .. "button", line, "?", function() UI.Alert("This number indicates how much total income a Faction might have compared to the total income of every player in the game. This can prevent the biggest players from joining a Faction and steamroll the rest of the game"); end, "Blue");
+		CreateInfoButtonLine(root, function(line)
+			CreateEmpty(line).SetPreferredWidth(20);
+			CreateLabel(line).SetText("Fair Factions modifier: ").SetColor(colors.TextColor);
+			CreateLabel(line).SetText(math.floor((Mod.Settings.GlobalSettings.FairFactionsModifier * 10000 + 0.5) / 100) .. "%").SetColor(colors.Aqua);
+		end, "To determine when a Faction is too strong, the mod calculates how much income the Faction members have combined and compares this to the total income of all players. When a player tries to join a Faction, the mod will check what the combined income of the Faction members + the player trying to join would be, and if this number is equal or higher than the percentage of the total income of all players, the player is not allowed to join the Faction");
 	end
+
+	CreateInfoButtonLine(root, function(line)
+		CreateLabel(line).SetText("AIs can declare war on AIs: ").SetColor(colors.TextColor);
+		createBoolLabel(line, Mod.Settings.GlobalSettings.AICanDeclareOnAI);
+	end, "When on, AIs can declare war on other AIs. When off they do not declare war on other AIs");
+
+	CreateInfoButtonLine(root, function(line)
+		CreateLabel(line).SetText("AIs can declare war on players: ").SetColor(colors.TextColor);
+		createBoolLabel(line, Mod.Settings.GlobalSettings.AICanDeclareOnPlayer);
+	end, "When on, AIs can declare war on human players. When off, AIs cannot declare war on human players");
+
+	CreateInfoButtonLine(root, function(line)
+		CreateLabel(line).SetText("Faction join requests must be approved: ").SetColor(colors.TextColor);
+		createBoolLabel(line, Mod.Settings.GlobalSettings.ApproveFactionJoins);
+	end, "When on, players send a join request to a Faction. The Faction leader must then approve the join request. Only then the player is actually part of that Faction. When off, a player can immediately join a Faction");
+
+	CreateInfoButtonLine(root, function(line)
+		CreateLabel(line).SetText("Lock pre-set Factions: ").SetColor(colors.TextColor);
+		createBoolLabel(line, Mod.Settings.GlobalSettings.LockPreSetFactions);
+	end, "When on, any Faction that is created here in the mod configuration is locked. Players can always leave a locked Faction, but no one is able to join a locked Faction. When off, Factions created in the mod configuration are not locked and anyone can join them");
 end
 
 function showMainConfig()
-	local win = "showMainConfig";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot).SetCenter(true).SetFlexibleWidth(1));
+
+	AddToHistory(showMainConfig);
+
+	CreateButton(root).SetText("Go back").SetColor(colors.Orange).SetOnClick(showMain);
+
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	CreateLabel(root).SetText("NOTE: This dialog shows you the start configuration. If you want to see the current Factions/relations, you should use the mod menu").SetColor(colors.TextColor);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	if not tableIsEmpty(Mod.Settings.Configuration.Factions) then
+		CreateLabel(root).SetText("Pre-set Factions").SetColor(colors.TextColor);
+		for i, faction in pairs(Mod.Settings.Configuration.Factions) do
+			CreateButton(root).SetText(i).SetColor(getColorFromList(faction.FactionLeader)).SetOnClick(function()
+				showFactionConfig(i);
+			end)
+		end
 	end
-	window(win);
-	local vert = newVerticalGroup("Vert", "root");
-	newLabel(win .. "warning", vert, "Note that this was the configuration for the start of the game, for the actual information check the mod menu", "Orange Red")
-	newButton(win .. "Return", vert, "Return", showMain, "Orange");
-	newLabel(win .. "EmptyAfterAddFaction", vert, " ");
-	newLabel(win .. "factions", vert, "Factions:");
-	for i, _ in pairs(Mod.Settings.Configuration.Factions) do
-		newButton(win .. i, vert, i, function() showFactionConfig(i); end);
-	end
-	newLabel(win .. "EmptyAfterFactions", vert, " ");
-	newLabel(win .. "Slots", vert, "Slots:")
-	for i, _ in pairs(Mod.Settings.Configuration.Relations) do
-		newButton(win .. i, vert, getSlotName(i), function() showSlotConfig(i); end);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	if not tableIsEmpty(Mod.Settings.Configuration.Relations) then
+		CreateLabel(root).SetText("Slots (non-listed slots all start with a peaceful relation with all players)").SetColor(colors.TextColor);
+		line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+		local c = 0;
+		for _, i in pairs(getSortedKeyList(Mod.Settings.Configuration.Relations)) do
+			if c > 0 then
+				CreateEmpty(line).SetPreferredWidth(10);
+			end
+			CreateButton(line).SetText(getSlotName(i)).SetColor(getColorFromList(i)).SetOnClick(function()
+				showSlotConfig(i);
+			end);
+			c = c + 1;
+			if c == 3 then
+				line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+				c = 0;
+			end
+		end
 	end
 end
 
 function showSlotConfig(slot)
-	local win = "showSlotConfig";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
-	end
-	window(win);
-	local vert = newVerticalGroup("Vert", "root");
-	newButton(win .. "return", vert, "Return", showMainConfig, "Orange");
-	newLabel(win .. "SlotName", vert, getSlotName(slot) .. " (Relation configuration)\n");
+	if slot == nil then return; end
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+
+	AddToHistory(showSlotConfig, slot);
+
+	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)
+	CreateButton(line).SetText("Go back").SetColor(colors.Orange).SetOnClick(GetPreviousWindow);
+	CreateButton(line).SetText("Home").SetColor(colors.Green).SetOnClick(GetFirstWindow);
+
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText(getSlotName(slot) .. " relation configuration").SetColor(colors.TextColor);
 	if Mod.Settings.Configuration.SlotInFaction[slot] ~= nil then
-		local line = newHorizontalGroup(win .. "line", vert);
-		newLabel(win .. "factionLabel", line, "Faction: ");
-		newButton(win .. "factionButton", line, Mod.Settings.Configuration.SlotInFaction[slot], function() showFactionConfig(Mod.Settings.Configuration.SlotInFaction[slot]); end);
+		line = CreateHorz(root).SetFlexibleWidth(1);
+		CreateLabel(line).SetText("This slot starts in Faction: ").SetColor(colors.TextColor);
+		CreateButton(line).SetText(Mod.Settings.Configuration.SlotInFaction[slot]).SetColor(getColorFromList(Mod.Settings.Configuration.Factions[Mod.Settings.Configuration.SlotInFaction[slot]].FactionLeader)).SetOnClick(function()
+			showFactionConfig(Mod.Settings.Configuration.SlotInFaction[slot]);
+		end);
+	else
+		CreateLabel(root).SetText("This slot does not start in a Faction").SetColor(colors.TextColor);
 	end
-	for i, v in pairs(Mod.Settings.Configuration.Relations[slot]) do
-		local line = newHorizontalGroup(win .. i .. "line", vert);
-		newButton(win .. i .. "slotName", line, getSlotName(i), function() showSlotConfig(i); end);
-		if v == "AtWar" then
-			newLabel(win .. i .. "Button", line, "War", "Red");
-		elseif v == "InPeace" then
-			newLabel(win .. i .. "Button", line, "Peace", "Green");
-		else
-			newLabel(win .. i .. "Button", line, "In same faction", "Yellow");
+
+	for _, i in pairs(getSortedKeyList(Mod.Settings.Configuration.Relations[slot])) do
+		if i ~= slot then
+			local v = Mod.Settings.Configuration.Relations[slot][i];
+			line = CreateHorz(root).SetFlexibleWidth(1);
+			CreateButton(line).SetText(getSlotName(i)).SetColor(getColorFromList(i)).SetOnClick(function()
+				showSlotConfig(i);
+			end);
+			
+			if v == "AtWar" then
+				CreateLabel(line).SetText("War").SetColor(colors.Red);
+			elseif v == "InPeace" then
+				CreateLabel(line).SetText("Peace").SetColor(colors.Yellow);
+			else
+				CreateLabel(line).SetText("In Faction").SetColor(colors.Green);
+			end
 		end
 	end
 end
 
 function showFactionConfig(faction)
-	local win = "showFactionConfig";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
-	end
-	window(win);
-	local vert = newVerticalGroup("Vert", "root");
-	local line = newHorizontalGroup(win .. "line3", vert);
-	newButton(win .. "return", line, "Return", showMainConfig, "Orange");
-	newLabel(win .. "FactionName", vert, faction .. " (configuration)\n");
-	local line = newHorizontalGroup(win .. "line", vert);
-	newLabel(win .. "FactionLeaderString", line, "Faction leader: ");
-	newLabel(win .. "SetFactionLeader", line, getFactionLeader(faction), "Yellow");
-	newLabel(win .. "EmptyAfterFactionLeader", vert, "\nFaction members:");
-	for i, v in pairs(Mod.Settings.Configuration.Factions[faction].FactionMembers) do
-		newLabel(win .. i .. "Slot", vert, getSlotName(v));
-	end
-	local line = newHorizontalGroup(win .. "line2", vert);
-	newLabel(win .. "EmptyAfterSlotsConfig", vert, " ");
-	newButton(win .. "ShowFactionRelation", vert, "Relation configuration", function() showFactionRelationConfig(faction); end, "Aqua");
-end
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
 
-function showFactionRelationConfig(faction)
-	local win = "showFactionConfig";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
-	end
-	window(win);
-	local vert = newVerticalGroup("Vert", "root");
-	newButton(win .. "return", vert, "Return", function() showFactionConfig(faction); end, "Orange");
-	newLabel(win .. "FactionName", vert, faction .. " (relation configuration)\n");
-	for i, bool in pairs(Mod.Settings.Configuration.Factions[faction].AtWar) do
-		if i ~= faction then
-			local line = newHorizontalGroup(win .. i .. "line", vert);
-			if bool then
-				newLabel(win .. i .. "Button", line, "War", "Red");
-			else
-				newLabel(win .. i .. "Button", line, "Peace", "Green");
-			end
-			newLabel(win .. i .. "text", line, i);
+	AddToHistory(showFactionConfig, faction);
+
+	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Go back").SetColor(colors.Orange).SetOnClick(GetPreviousWindow);
+	CreateButton(line).SetText("Home").SetColor(colors.Green).SetOnClick(GetFirstWindow);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Name: " .. faction).SetColor(colors.TextColor);
+	
+	local factionTable = Mod.Settings.Configuration.Factions[faction];
+	line = CreateHorz(root).SetFlexibleWidth(1);
+	CreateLabel(line).SetText("Faction leader: ").SetColor(colors.TextColor);
+	CreateButton(line).SetText(getFactionLeader(faction)).SetColor(getColorFromList(factionTable.FactionLeader)).SetOnClick(function()
+		showSlotConfig(factionTable.FactionLeader);
+	end).SetInteractable(factionTable.FactionLeader ~= nil);
+
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Slots in Faction " .. faction).SetColor(colors.TextColor);
+	line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	local c = 0;
+	for _, slot in pairs(getSortedValueList(factionTable.FactionMembers)) do
+		if c > 0 then
+			CreateEmpty(line).SetPreferredWidth(10);
+		end
+		CreateButton(line).SetText(getSlotName(slot)).SetColor(getColorFromList(slot)).SetOnClick(function()
+			showSlotConfig(slot);
+		end);
+		c = c + 1;
+		if c == 3 then
+			line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+			c = 0;
 		end
 	end
+
+	CreateEmpty(root).SetPreferredHeight(10);
+
+	showFactionRelationConfig(root, faction);
 end
 
-function getLine(vert)
-	counter = counter + 1;
-	return newHorizontalGroup("line" .. counter, vert);
+function showFactionRelationConfig(root, faction)
+	CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText(faction .. " relation configuration").SetColor(colors.TextColor);
+	for i, bool in pairs(Mod.Settings.Configuration.Factions[faction].AtWar) do
+		if i ~= faction then
+			local line = CreateHorz(root).SetFlexibleWidth(1);
+			if bool then
+				CreateLabel(line).SetText("War").SetColor(colors.Red);
+			else
+				CreateLabel(line).SetText("Peace").SetColor(colors.Yellow);
+			end
+			CreateButton(line).SetText(i).SetColor(getColorFromList(Mod.Settings.Configuration.Factions[i].FactionLeader)).SetOnClick(function()
+				showFactionConfig(i);
+			end);
+		end
+	end
 end
 
 function getFactionLeader(faction)
@@ -147,12 +212,14 @@ function getFactionLeader(faction)
 	end
 end
 
-function getSlotName(i)
-	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	local s = "Slot ";
-	if i > 25 then
-		s = s .. c[math.floor(i / 26)];
-		i = i - (26 * math.floor(i / 26));
-	end
-	return s .. c[i % 26 + 1];
+function createBoolLabel(par, b)
+	CreateLabel(par).SetText(getBoolText(b)).SetColor(getBoolColor(b));
+end
+
+function getBoolText(b)
+	if b then return "Yes"; else return "No"; end
+end
+
+function getBoolColor(b)
+	if b then return colors.Green; else return colors.OrangeRed; end
 end

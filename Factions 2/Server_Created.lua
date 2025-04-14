@@ -14,5 +14,6 @@ function Server_Created(game, settings)
 	
 	local data = Mod.PublicGameData;
 	data.Factions = {};
+	data.VersionNumber = Mod.Settings.VersionNumber;
 	Mod.PublicGameData = data;
 end

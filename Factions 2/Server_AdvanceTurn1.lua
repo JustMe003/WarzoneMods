@@ -1,4 +1,5 @@
 require("utilities1");
+require("Server_GameCustomMessage");
 function Server_AdvanceTurn_StartMain(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	if data.VersionNumber ~= nil and data.VersionNumber >= 5 then
@@ -12,6 +13,8 @@ function Server_AdvanceTurn_StartMain(game, addNewOrder)
 		playSpyCards(game, addNewOrder);
 	end
 	playDiploCards(game, addNewOrder);
+
+	Server_GameCustomMessage(game, 1, {Type="peaceOffer", Opponent=1311724}, void);
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
@@ -57,12 +60,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 							table.insert(data.Events, createEvent("'" .. data.PlayerInFaction[i] .. "' was deleted since it had no more members", WL.PlayerID.Neutral));
 						else
 							data.Factions[data.PlayerInFaction[i]].FactionLeader = data.Factions[data.PlayerInFaction[i]].FactionMembers[1];
-							local group;
-							if not Mod.Settings.GlobalSettings.VisibleHistory then
-								if data.PlayerInFaction[t.PlayerID] ~= nil then
-									group = data.Factions[data.PlayerInFaction[t.PlayerID]].FactionMembers;
-								end
-							end
+							
 							table.insert(data.Events, createEvent("The new faction leader of '" .. data.PlayerInFaction[i] .. "' is now " .. game.ServerGame.Game.Players[data.Factions[data.PlayerInFaction[i]].FactionLeader].DisplayName(nil, false), data.Factions[data.PlayerInFaction[i]].FactionLeader));
 						end
 					end

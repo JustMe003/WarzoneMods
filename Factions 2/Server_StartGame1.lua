@@ -28,6 +28,7 @@ function Server_StartGameMain(game, standing)
 				playerData[p.ID].NumberOfNotifications = 0;
 				playerData[p.ID].PendingOffers = {};
 				playerData[p.ID].Offers = {};
+				playerData[p.ID].PersonalSettings = {};
 			end
 			relations[p.ID] = {};
 			for i, _ in pairs(relations) do

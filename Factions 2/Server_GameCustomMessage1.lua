@@ -22,8 +22,6 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	functions["declinePeaceOffer"] = declinePeaceOffer;
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	functions["RefreshWindow"] = RefreshWindow;
-	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
-
 	
 	print(playerID, payload.Type);
 	
@@ -143,6 +141,11 @@ function fiveMinuteAlert(game, playerID, payload, setReturn)
 	Mod.PlayerGameData = playerData;
 end
 
+---comment
+---@param game GameServerHook
+---@param playerID any
+---@param payload any
+---@param setReturn any
 function sendMessage(game, playerID, payload, setReturn)
 	local faction = data.PlayerInFaction[playerID];
 	local ret;
@@ -154,13 +157,14 @@ function sendMessage(game, playerID, payload, setReturn)
 		local t = {};
 		t.Text = payload.Text;
 		t.Player = playerID;
+		t.TimeStamp = game.Game.ServerTime;
 		table.insert(data.Factions[faction].FactionChat, t);
 		local playerData = Mod.PlayerGameData;
 		for _, i in pairs(data.Factions[faction].FactionMembers) do
 			if i ~= playerID and not game.Game.Players[i].IsAI then
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
-				if playerData[i].Notifications.Messages == nil then playerData[i].Notifications.Messages = {}; end
-				table.insert(playerData[i].Notifications.Messages, true);
+				if playerData[i].Notifications.Messages == nil or type(playerData[i].Notifications.Messages) == 'table' then playerData[i].Notifications.Messages = 0; end
+				playerData[i].Notifications.Messages = playerData[i].Notifications.Messages + 1;
 			end
 		end
 		Mod.PlayerGameData = playerData;
@@ -508,6 +512,7 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 				data.Relations[opponent][playerID] = "InPeace";
 				data.Relations[playerID][opponent] = "InPeace";
+				table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 				setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 			else
 				setReturn(setReturnPayload("You cannot accept peace while your faction is in war with your opponents faction", "Fail"));
@@ -519,12 +524,11 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			data.Relations[opponent][playerID] = "InPeace";
 			data.Relations[playerID][opponent] = "InPeace";
 			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
+			table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		end
 	else
 		setReturn(setReturnPayload("Something went wrong", "Fail"));
-		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
-		setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 	end
 	Mod.PlayerGameData = playerData;
 end
@@ -704,16 +708,9 @@ function RefreshWindow(game, playerID, payload, setReturn)
 end
 
 function getFactionIncome(game, faction)
-	print("Faction: " .. faction);
 	local count = 0;
 	for _, i in pairs(data.Factions[faction].FactionMembers) do
 		count = count + game.ServerGame.Game.PlayingPlayers[i].Income(0, game.ServerGame.LatestTurnStanding, true, true).Total;
 	end
 	return count;
-end
-
-function hasSeenUpdateWindow(game, playerID, payload, setReturn)
-	local playerData = Mod.PlayerGameData;
-	playerData[playerID].HasSeenUpdateWindow = true;
-	Mod.PlayerGameData = playerData;
 end

@@ -30,6 +30,7 @@ function Server_AdvanceTurn_StartMain(game, addNewOrder)
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
+	print(game.Game.State == WL.GameState.Finished);
 	if game.Game.TurnNumber > 1 then
 		playDiploCards(game, addNewOrder);
 	end

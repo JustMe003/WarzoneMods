@@ -176,21 +176,22 @@ function sendMessage(game, playerID, payload, setReturn)
 		local t = {};
 		t.Text = payload.Text;
 		t.Player = playerID;
+		t.TimeStamp = game.Game.ServerTime
 		table.insert(data.Factions[faction].FactionChat, t);
 		local playerData = Mod.PlayerGameData;
 		for _, i in pairs(data.Factions[faction].FactionMembers) do
 			if i ~= playerID and not game.Game.Players[i].IsAI then
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
 				if playerData[i].Notifications.Messages == nil then playerData[i].Notifications.Messages = {}; end
-				if playerData[i].Notifications.Messages[faction] == nil then playerData[i].Notifications.Messages[faction] = {}; end
-				table.insert(playerData[i].Notifications.Messages[faction], true);
+				if playerData[i].Notifications.Messages[faction] == nil or type(playerData[i].Notifications.Messages[faction]) == 'table' then playerData[i].Notifications.Messages[faction] = 0; end
+				playerData[i].Notifications.Messages[faction] = playerData[i].Notifications.Messages[faction] + 1;
 			end
 		end
 		Mod.PlayerGameData = playerData;
 		ret = setReturnPayload("Successfully send message!", "Success");
 		ret.Function = "showFactionChat";
 	else
-		ret = setReturnPayload("You are not in a faction!", "Fail");
+		ret = setReturnPayload("Faction was not specified!", "Fail");
 	end
 	setReturn(payload);
 end
@@ -352,63 +353,67 @@ function declareFactionWar(game, playerID, payload, setReturn)
 	if data.IsInFaction[playerID] and valueInTable(data.PlayerInFaction[playerID], payload.PlayerFaction) then
 		if data.Factions[payload.PlayerFaction].FactionLeader == playerID then
 			if data.Factions[payload.OpponentFaction] ~= nil then
-				data.Factions[payload.PlayerFaction].AtWar[payload.OpponentFaction] = true;
-				data.Factions[payload.OpponentFaction].AtWar[payload.PlayerFaction] = true;
-				local kickPlayers = {};
-				for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
-						if playerMember == opponentMember then
-							table.insert(kickPlayers, {Player=playerMember, Faction=payload.PlayerFaction});
+				if not valueInTable(data.Factions[payload.OpponentFaction].FactionMembers, playerID) then
+					data.Factions[payload.PlayerFaction].AtWar[payload.OpponentFaction] = true;
+					data.Factions[payload.OpponentFaction].AtWar[payload.PlayerFaction] = true;
+					local kickPlayers = {};
+					for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
+						for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
+							if playerMember == opponentMember then
+								table.insert(kickPlayers, {Player=playerMember, Faction=payload.PlayerFaction});
+							end
 						end
 					end
-				end
-				for _, p in pairs(kickPlayers) do
-					kickPlayer(game, data.Factions[p.Faction].FactionLeader, {Player=p.Player, Faction=p.Faction, Index=getKeyFromValue(data.Factions[p.Faction].FactionMembers, p.Player)}, setReturn);
-				end
-				kickPlayers = {};
-				for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-					for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
-						if #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
-							for i, f in pairs(data.PlayerInFaction[playerMember]) do
-								for j, f2 in pairs(data.PlayerInFaction[opponentMember]) do
-									if f == f2 and payload.PlayerInFaction ~= f and payload.OpponentFaction ~= f then
-										if data.Factions[f].FactionLeader ~= playerMember then
-											table.insert(kickPlayers, {Player=playerMember, Faction=f});
-										end
-										if data.Factions[f].FactionLeader ~= opponentMember then
-											table.insert(kickPlayers, {Player=opponentMember, Faction=f});
+					for _, p in pairs(kickPlayers) do
+						kickPlayer(game, data.Factions[p.Faction].FactionLeader, {Player=p.Player, Faction=p.Faction, Index=getKeyFromValue(data.Factions[p.Faction].FactionMembers, p.Player)}, setReturn);
+					end
+					kickPlayers = {};
+					for i, playerMember in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
+						for _, opponentMember in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
+							if #data.PlayerInFaction[playerMember] > 1 and #data.PlayerInFaction[opponentMember] > 1 then
+								for i, f in pairs(data.PlayerInFaction[playerMember]) do
+									for j, f2 in pairs(data.PlayerInFaction[opponentMember]) do
+										if f == f2 and payload.PlayerInFaction ~= f and payload.OpponentFaction ~= f then
+											if data.Factions[f].FactionLeader ~= playerMember then
+												table.insert(kickPlayers, {Player=playerMember, Faction=f});
+											end
+											if data.Factions[f].FactionLeader ~= opponentMember then
+												table.insert(kickPlayers, {Player=opponentMember, Faction=f});
+											end
 										end
 									end
 								end
 							end
 						end
 					end
-				end
-				for _, p in pairs(kickPlayers) do
-					kickPlayer(game, data.Factions[p.Faction].FactionLeader, {Player=p.Player, Faction=p.Faction, Index=getKeyFromValue(data.Factions[p.Faction].FactionMembers, p.Player)}, setReturn);
-				end
-				local playerData = Mod.PlayerGameData;
-				for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-					if not game.Game.Players[i].IsAI then
-						if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
-						table.insert(playerData[i].Notifications.FactionWarDeclarations, {OpponentFaction=payload.OpponentFaction, PlayerFaction=payload.PlayerFaction});
+					for _, p in pairs(kickPlayers) do
+						kickPlayer(game, data.Factions[p.Faction].FactionLeader, {Player=p.Player, Faction=p.Faction, Index=getKeyFromValue(data.Factions[p.Faction].FactionMembers, p.Player)}, setReturn);
 					end
-					for _, p in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
-						data.Relations[i][p] = "AtWar";
+					local playerData = Mod.PlayerGameData;
+					for _, i in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
+						if not game.Game.Players[i].IsAI then
+							if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+							table.insert(playerData[i].Notifications.FactionWarDeclarations, {OpponentFaction=payload.OpponentFaction, PlayerFaction=payload.PlayerFaction});
+						end
+						for _, p in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
+							data.Relations[i][p] = "AtWar";
+						end
 					end
+					for _, i in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
+						if not game.Game.Players[i].IsAI then
+							if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
+							table.insert(playerData[i].Notifications.FactionWarDeclarations, {OpponentFaction=payload.PlayerFaction, PlayerFaction=payload.OpponentFaction});
+						end
+						for _, p in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
+							data.Relations[i][p] = "AtWar";
+						end
+					end
+					Mod.PlayerGameData = playerData;
+					table.insert(data.Events, createEvent("'" .. payload.PlayerFaction .. "' declared war on '" .. payload.OpponentFaction .. "'", playerID, getPlayerHashMap(data, data.Factions[payload.PlayerFaction].FactionLeader, data.Factions[payload.OpponentFaction].FactionLeader)));
+					setReturn(setReturnPayload("Successfully declared war on '" .. payload.OpponentFaction .. "'", "Success"));
+				else
+					setReturn(setReturnPayload("You cannot declare war on a faction you are in!", "Fail"));
 				end
-				for _, i in pairs(data.Factions[payload.OpponentFaction].FactionMembers) do
-					if not game.Game.Players[i].IsAI then
-						if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
-						table.insert(playerData[i].Notifications.FactionWarDeclarations, {OpponentFaction=payload.PlayerFaction, PlayerFaction=payload.OpponentFaction});
-					end
-					for _, p in pairs(data.Factions[payload.PlayerFaction].FactionMembers) do
-						data.Relations[i][p] = "AtWar";
-					end
-				end
-				Mod.PlayerGameData = playerData;
-				table.insert(data.Events, createEvent("'" .. payload.PlayerFaction .. "' declared war on '" .. payload.OpponentFaction .. "'", playerID, getPlayerHashMap(data, data.Factions[payload.PlayerFaction].FactionLeader, data.Factions[payload.OpponentFaction].FactionLeader)));
-				setReturn(setReturnPayload("Successfully declared war on '" .. payload.OpponentFaction .. "'", "Success"));
 			else
 				setReturn(setReturnPayload("The '" .. payload.OpponentFaction .. "' opponent faction was not found", "Fail"));
 			end
