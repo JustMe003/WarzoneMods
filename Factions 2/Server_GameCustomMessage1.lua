@@ -24,8 +24,14 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	functions["RefreshWindow"] = RefreshWindow;
 	
 	print(playerID, payload.Type);
-	
+
 	local playerData = Mod.PlayerGameData;
+	for _, p in pairs(game.Game.Players) do
+		if not p.IsAI then
+			playerData[p.ID].Notifications.Messages = 0;
+		end
+	end
+	
 	playerData[playerID].NeedsRefresh = true;
 	if payload.Type == "openedChat" then playerData[playerID].NeedsRefresh = nil; end
 	Mod.PlayerGameData = playerData;
