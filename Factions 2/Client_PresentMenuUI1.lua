@@ -68,6 +68,7 @@ function showFactions()
 	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
 	CreateButton(line).SetText("Go back").SetColor(colors.Orange).SetOnClick(GetPreviousWindow);
 	CreateButton(line).SetText("Home").SetColor(colors.Green).SetOnClick(GetFirstWindow);
+	CreateButton(line).SetText("Create Faction").SetColor(colors.Aqua).SetOnClick(createFaction).SetInteractable(not Mod.PublicGameData.IsInFaction[game.Us.ID]);
 	
 	CreateEmpty(root).SetPreferredHeight(10);
 
@@ -588,10 +589,6 @@ end
 
 function showPlayerSettings()
 	local settings = Mod.PlayerGameData.PersonalSettings;
-
-	for i, v in pairs(settings) do
-		print(i, v);
-	end
 
 	DestroyWindow();
 	local root = CreateWindow(CreateVert(GlobalRoot));
