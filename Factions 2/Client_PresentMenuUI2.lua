@@ -337,7 +337,7 @@ function showFactionDetails(factionName)
 				Close();
 				AddToHistory(void);
 				game.SendGameCustomMessage("Joining faction...", {Type="joinFaction", PlayerID=game.Us.ID, Faction=factionName}, gameCustomMessageReturn); 
-			end, function() 
+			end, function()
 				showFactionDetails(factionName);
 			end);
 		end).SetInteractable((not faction.PreSetFaction or not Mod.Settings.GlobalSettings.LockPreSetFactions) and not (Mod.PlayerGameData.HasPendingRequest and Mod.PlayerGameData.HasPendingRequest[factionName]));
@@ -584,6 +584,10 @@ function showFactionChat(faction)
 	local messageInput = CreateTextInputField(root).SetText("").SetPlaceholderText("Type here your message").SetCharacterLimit(300).SetPreferredWidth(300).SetFlexibleWidth(1);
 	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
 	CreateButton(line).SetText("Send").SetColor(colors.Blue).SetOnClick(function()
+		if #messageInput.GetText() < 1 then
+			UI.Alert("You must enter something to send as a chat message");
+			return;
+		end
 		Close();
 		AddToHistory(void);
 		local payload = {
