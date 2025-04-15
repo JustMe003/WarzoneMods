@@ -441,7 +441,7 @@ function showFactionDetails(factionName)
 							end, function() 
 								showFactionDetails(factionName); 
 							end)
-						end);
+						end).SetInteractable(not (faction.Offers and faction.Offers[otherFaction]));
 					else
 						but.SetText("Declare war").SetColor(colors.Red).SetOnClick(function()
 							confirmChoice("Are you sure you want to declare war on " .. name .. "? All your faction members will be forced to declare war on all of the players in " .. name, function() 
@@ -598,7 +598,9 @@ function showFactionChat(faction)
 		};
 		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
 	end);
-	CreateButton(line).SetText("Refresh").SetColor(colors.Green).SetOnClick(showFactionChat);
+	CreateButton(line).SetText("Refresh").SetColor(colors.Green).SetOnClick(function()
+		showFactionChat(faction);
+	end);
 	CreateButton(line).SetText("Go back").SetColor(colors.Orange).SetOnClick(GetPreviousWindow);
 
 	CreateEmpty(root).SetPreferredHeight(5);
