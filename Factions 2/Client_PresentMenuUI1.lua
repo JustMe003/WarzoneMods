@@ -146,10 +146,7 @@ function showPendingOffers()
 	
 	CreateLabel(root).SetText("The following players have send you a peace offer").SetColor(colors.TextColor);
 	for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
-		CreateButton(root).SetText(game.Game.Players[v].DisplayName(nil, false)).SetColor(game.Game.Players[v].Color.HtmlColor).SetOnClick(function()
-			func = function() 
-				showPendingOffers() 
-			end; 
+		CreateButton(root).SetText(game.Game.Players[v].DisplayName(nil, false)).SetColor(game.Game.Players[v].Color.HtmlColor).SetOnClick(function() 
 			confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() 
 				Close();
 				AddToHistory(void);
