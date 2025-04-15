@@ -1,5 +1,6 @@
 
 function setPlayerNotifications()
+	print("set player notification");
 	local t = {};
 	t.Messages = 0;
 	t.LeftPlayers = {};
@@ -18,6 +19,7 @@ function setPlayerNotifications()
 end
 
 function resetPlayerNotifications(t)
+	print("reset player notification");
 	t.LeftPlayers = {};
 	t.JoinedPlayers = {};
 	t.FactionWarDeclarations = {};
