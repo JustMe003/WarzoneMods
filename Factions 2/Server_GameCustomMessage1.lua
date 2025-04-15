@@ -96,7 +96,6 @@ function leaveFaction(game, playerID, payload, setReturn)
 				if not game.Game.Players[v].IsAI then
 					if playerData[v].Notifications == nil then playerData[v].Notifications = setPlayerNotifications(); end
 					table.insert(playerData[v].Notifications.LeftPlayers, playerID);
-					playerData[v].Notifications.Messages = {};
 				end
 			end
 		end
@@ -470,7 +469,6 @@ end
 
 function openedChat(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
-	playerData[playerID].Notifications.Messages = {};
 	Mod.PlayerGameData = playerData;
 end
 
