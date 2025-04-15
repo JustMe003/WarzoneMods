@@ -12,24 +12,6 @@ FactionRelations = {
 MOD_VERSION_1 = 1.6;
 MOD_VERSION_2 = 2.4;
 
-function resetPlayerNotifications(t)
-	t.LeftPlayers = {};
-	t.JoinedPlayers = {};
-	t.FactionWarDeclarations = {};
-	t.FactionsPeaceConfirmed = {};
-	t.FactionsPeaceDeclined = {};
-	t.FactionsKicks = {};
-	t.FactionsPendingJoins = {};
-	t.WarDeclarations = {};
-	t.PeaceConfirmed = {};
-	t.PeaceDeclines = {};
-	t.NewFactionLeader = {};
-	t.GotKicked = {};
-	t.JoinRequestApproved = {};
-	t.JoinRequestRejected = {};
-	t.Messages = {};
-	return t;
-end
 
 function count(t, func)
 	local c = 0;
