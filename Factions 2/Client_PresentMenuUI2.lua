@@ -340,7 +340,7 @@ function showFactionDetails(factionName)
 			end, function() 
 				showFactionDetails(factionName);
 			end);
-		end).SetInteractable((not faction.PreSetFaction or not Mod.Settings.GlobalSettings.LockPreSetFactions));
+		end).SetInteractable((not faction.PreSetFaction or not Mod.Settings.GlobalSettings.LockPreSetFactions) and not (Mod.PlayerGameData.HasPendingRequest and Mod.PlayerGameData.HasPendingRequest[factionName]));
 	end
 	if faction.FactionLeader == game.Us.ID then
 		CreateButton(line).SetText("Requests").SetColor(colors.Aqua).SetOnClick(function()
