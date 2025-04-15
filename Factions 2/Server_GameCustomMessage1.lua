@@ -38,13 +38,6 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	Mod.PlayerGameData = playerData;
 	
 	functions[payload.Type](game, playerID, payload, setReturn);
-
-	for _, p in pairs(game.Game.Players) do
-		if not p.IsAI then
-			print(playerData[p.ID].Notifications.Messages);
-		end
-	end
-	error("Getting log");
 	
 	Mod.PublicGameData = data;
 end

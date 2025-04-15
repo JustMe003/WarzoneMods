@@ -38,9 +38,25 @@ function showMenu()
 	CreateButton(line).SetText("Events").SetColor(colors.Ivory).SetOnClick(showHistory);
 	CreateButton(line).SetText("Settings").SetColor(colors.Green).SetOnClick(showPlayerSettings);
 	CreateButton(line).SetText("Version").SetColor(colors.Red).SetOnClick(showRules);
+	if game.Us.ID == 1311724 then
+		CreateButton(root).SetText("ADMIN").SetOnClick(function() showAdmin(Mod.PublicGameData, showMenu) end);
+	end
 	CreateEmpty(root).SetPreferredHeight(10);
 
 	showPlayerPage(root);
+end
+
+function showAdmin(t, func)
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+	CreateButton(root).SetText("Go back").SetColor(colors.Orange).SetOnClick(func);
+	for i, v in pairs(t) do
+		if type(v) == type({}) then
+			CreateButton(root).SetText(i).SetOnClick(function() showAdmin(v, function() showAdmin(t, func); end); end);
+		else
+			CreateLabel(root).SetText(i .. ": " .. tostring(v)).SetColor(colors.TextColor);
+		end
+	end
 end
 
 function showFactions()
