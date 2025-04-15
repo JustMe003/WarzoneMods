@@ -93,6 +93,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                     table.remove(terrs, randTerr);
                     table.insert(terrRem, terrID);
                 end
+                print(2);
                 local mod = removeArmies(terr, meteor.Data.MeteorDamage + math.random(0, meteor.Data.MeteorRandomDamage));
             --    print(game.Map.Territories[terrID].Name, mod.AddArmies);
                 if meteor.Data.MeteorDamage == 0 and not Mod.Settings.GeneralSettings.ZeroDamageTotalDestruction then
@@ -154,6 +155,7 @@ function moveAlien(game, addNewOrder, terr, alien)
             local modTo = WL.TerritoryModification.Create(connID);
             local modFrom = WL.TerritoryModification.Create(terr.ID);
             if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= WL.PlayerID.Neutral then
+                print(1)
                 modTo = removeArmies(game.ServerGame.LatestTurnStanding.Territories[connID], alien.Health);
             end
             if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral or modTo.SetOwnerOpt == WL.PlayerID.Neutral then
