@@ -558,7 +558,7 @@ end
 
 function openedChat(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
-	playerData[playerID].Notifications.Messages[payload.Faction] = {};
+	playerData[playerID].Notifications.Messages[payload.Faction] = 0;
 	Mod.PlayerGameData = playerData;
 end
 
