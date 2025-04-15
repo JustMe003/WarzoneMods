@@ -28,18 +28,23 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	for _, p in pairs(game.Game.Players) do
 		if not p.IsAI then
-			print(p.IsAI);
 			playerData[p.ID].Notifications.Messages = 0;
 		end
 	end
 
-	error("Getting log");
 	
 	playerData[playerID].NeedsRefresh = true;
 	if payload.Type == "openedChat" then playerData[playerID].NeedsRefresh = nil; end
 	Mod.PlayerGameData = playerData;
 	
 	functions[payload.Type](game, playerID, payload, setReturn);
+
+	for _, p in pairs(game.Game.Players) do
+		if not p.IsAI then
+			print(playerData[p.ID].Notifications.Messages);
+		end
+	end
+	error("Getting log");
 	
 	Mod.PublicGameData = data;
 end
