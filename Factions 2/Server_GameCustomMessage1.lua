@@ -32,6 +32,8 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 			playerData[p.ID].Notifications.Messages = 0;
 		end
 	end
+
+	error("Getting log");
 	
 	playerData[playerID].NeedsRefresh = true;
 	if payload.Type == "openedChat" then playerData[playerID].NeedsRefresh = nil; end
