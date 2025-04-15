@@ -28,6 +28,7 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
 	for _, p in pairs(game.Game.Players) do
 		if not p.IsAI then
+			print(p.IsAI);
 			playerData[p.ID].Notifications.Messages = 0;
 		end
 	end
