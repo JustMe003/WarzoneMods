@@ -569,7 +569,7 @@ function showFactionChatOptions()
 		CreateButton(line).SetText(faction).SetColor(game.Game.Players[Mod.PublicGameData.Factions[faction].FactionLeader].Color.HtmlColor).SetOnClick(function()
 			showFactionChat(faction);
 		end);
-		CreateLabel(line).SetText(getAmountOfChatMessages(faction) .. " messages").SetColor(colors.TextColor);
+		CreateLabel(line).SetText(getAmountOfChatMessages(faction) .. " new messages").SetColor(colors.TextColor);
 	end
 end
 

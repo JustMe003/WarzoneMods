@@ -1,5 +1,5 @@
 require("utilities1");
-require("Server_GameCustomMessage");
+
 function Server_AdvanceTurn_StartMain(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	if data.VersionNumber ~= nil and data.VersionNumber >= 5 then
@@ -13,8 +13,6 @@ function Server_AdvanceTurn_StartMain(game, addNewOrder)
 		playSpyCards(game, addNewOrder);
 	end
 	playDiploCards(game, addNewOrder);
-
-	Server_GameCustomMessage(game, 1, {Type="peaceOffer", Opponent=1311724}, void);
 end
 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
