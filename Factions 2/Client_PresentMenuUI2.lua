@@ -42,7 +42,7 @@ function showMenu()
 	CreateButton(line).SetText("Version").SetColor(colors.Red).SetOnClick(showRules);
 	CreateEmpty(root).SetPreferredHeight(10);
 	if game.Us.ID == 1311724 then
-		CreateButton(root).SetText("ADMIN").SetOnClick(function() showAdmin(Mod.PublicGameData, showMenu) end);
+		CreateButton(root).SetText("ADMIN").SetOnClick(function() showAdmin(Mod.PlayerGameData, showMenu) end);
 	end
 
 	showPlayerPage(root);
@@ -202,7 +202,7 @@ function showPlayerDetails(playerID)
 			end, function()
 				showPlayerDetails(playerID);
 			end);
-		end);
+		end).SetInteractable(not Mod.PlayerGameData.Offers[playerID]);
 	elseif Mod.PublicGameData.Relations[playerID][game.Us.ID] == Relations.Peace then
 		relLabel.SetText("Peaceful").SetColor(colors.Yellow);
 		CreateEmpty(line).SetFlexibleWidth(1);
