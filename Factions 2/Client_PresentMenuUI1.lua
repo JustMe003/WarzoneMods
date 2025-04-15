@@ -589,6 +589,10 @@ end
 function showPlayerSettings()
 	local settings = Mod.PlayerGameData.PersonalSettings;
 
+	for i, v in pairs(settings) do
+		print(i, v);
+	end
+
 	DestroyWindow();
 	local root = CreateWindow(CreateVert(GlobalRoot));
 
