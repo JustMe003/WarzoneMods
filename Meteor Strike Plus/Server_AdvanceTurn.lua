@@ -154,7 +154,7 @@ function moveAlien(game, addNewOrder, terr, alien)
             local modTo = WL.TerritoryModification.Create(connID);
             local modFrom = WL.TerritoryModification.Create(terr.ID);
             if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= WL.PlayerID.Neutral then
-                for i, v in pairs(alien) do
+                for i, v in pairs(alien.readableKeys) do
                     print(i, v);
                 end
                 modTo = removeArmies(game.ServerGame.LatestTurnStanding.Territories[connID], alien.Health);
