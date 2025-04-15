@@ -154,9 +154,6 @@ function moveAlien(game, addNewOrder, terr, alien)
             local modTo = WL.TerritoryModification.Create(connID);
             local modFrom = WL.TerritoryModification.Create(terr.ID);
             if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID ~= WL.PlayerID.Neutral then
-                for i, v in pairs(alien.readableKeys) do
-                    print(v, alien[v]);
-                end
                 modTo = removeArmies(game.ServerGame.LatestTurnStanding.Territories[connID], alien.Health);
             end
             if game.ServerGame.LatestTurnStanding.Territories[connID].OwnerPlayerID == WL.PlayerID.Neutral or modTo.SetOwnerOpt == WL.PlayerID.Neutral then
@@ -192,7 +189,7 @@ function solveAlienConflicts(modTo, alien, terrID)
 end
 
 function unitIsAlien(sp)
-    return sp.proxyType == "CustomSpecialUnit" and sp.Name:find("Alien") ~= nil;
+    return sp.proxyType == "CustomSpecialUnit" and sp.Name:find("Alien") ~= nil and (sp.ImageFilename == "Alien.png" or sp.ImageFilename == "UFO.png");
 end
 
 function createAlien(health)
