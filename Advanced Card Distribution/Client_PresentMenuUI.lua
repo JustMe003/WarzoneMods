@@ -57,10 +57,10 @@ function showSlotSettings(p)
 		CreateEmpty(line).SetMinWidth(4);
 		CreateLabel(line).SetText(cardGame.InitialPieces).SetColor(colors.Green);
 		if Mod.Settings.CardPiecesFromStart[p.Slot][card] ~= nil then
-			if Mod.Settings.CardPiecesFromStart[p.Slot][card] > 0 then
-				CreateLabel(line).SetText("+").SetColor(colors.TextColor);
-			else
+			if Mod.Settings.CardPiecesFromStart[p.Slot][card] < 0 then
 				CreateLabel(line).SetText("-").SetColor(colors.TextColor);
+			else
+				CreateLabel(line).SetText("+").SetColor(colors.TextColor);
 			end
 			CreateLabel(line).SetText(math.abs(Mod.Settings.CardPiecesFromStart[p.Slot][card])).SetColor(colors.OrangeRed);
 		end
@@ -76,10 +76,10 @@ function showSlotSettings(p)
 		CreateEmpty(line).SetMinWidth(4);
 		CreateLabel(line).SetText(cardGame.MinimumPiecesPerTurn).SetColor(colors.Green);
 		if Mod.Settings.CardPiecesEachTurn[p.Slot][card] ~= nil then
-			if Mod.Settings.CardPiecesEachTurn[p.Slot][card] > 0 then
-				CreateLabel(line).SetText("+").SetColor(colors.TextColor);
-			else
+			if Mod.Settings.CardPiecesEachTurn[p.Slot][card] < 0 then
 				CreateLabel(line).SetText("-").SetColor(colors.TextColor);
+			else
+				CreateLabel(line).SetText("+").SetColor(colors.TextColor);
 			end
 			CreateLabel(line).SetText(math.abs(Mod.Settings.CardPiecesEachTurn[p.Slot][card])).SetColor(colors.OrangeRed);
 		end
