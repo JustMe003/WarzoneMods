@@ -1,128 +1,208 @@
-require("UI")
+require("UI");
+require("Util");
+
 function Client_PresentConfigureUI(rootParent)
-	init(rootParent);
-	
-	colorsList = {"Blue", "Light Blue", "Purple", "Dark Green", "Orange", "Red", "Dark Gray", "Green", "Hot Pink", "Brown", "Sea Green", "Orange Red", "Cyan", "Aqua", "Dark Magenta", "Deep Pink", "yellow", "Saddle Brown", "Ivory", "Copper Rose", "Electric Purple", "Tan", "Pink", "Lime", "Tan", "Tyrian Purple", "Smoky Black"};
-	
+	Init();
+
+	colors = GetColors();
+	GlobalRoot = CreateVert(rootParent).SetCenter(true).SetFlexibleWidth(1);
+		
 	CardPiecesEachTurn = Mod.Settings.CardPiecesEachTurn;
 	CardPiecesFromStart = Mod.Settings.CardPiecesFromStart;
+	CustomCards = Mod.Settings.CustomCards;
+	ShowAllCardDistributions = Mod.Settings.ShowAllCardDistributions;
 	if CardPiecesEachTurn == nil then CardPiecesEachTurn = {}; end
 	if CardPiecesFromStart == nil then CardPiecesFromStart = {}; end
+	if CustomCards == nil then CustomCards = {}; end
+	if ShowAllCardDistributions == nil then ShowAllCardDistributions = false; end
 	
 	showMain();
 end
 
 
 function showMain()
-	local win = "Main";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+
+	saveInputs();
+
+	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Alter cards for slot").SetColor(colors.Green).SetOnClick(chooseSlot);
+	CreateButton(line).SetText("custom cards").SetColor(colors.Blue).SetOnClick(showCustomCards);
+
+	CreateEmpty(root).SetPreferredHeight(5);
+	
+	if not tableIsEmpty(CardPiecesEachTurn) or not tableIsEmpty(CardPiecesFromStart) then
+		local list = {};
+		for slot, _ in pairs(CardPiecesEachTurn) do
+			table.insert(list, slot);
+		end
+		for slot, _ in pairs(CardPiecesFromStart) do
+			if not valueInTable(list, slot) then
+				table.insert(list, slot);
+			end
+		end
+		
+		table.sort(list);
+
+		for _, slot in ipairs(list) do
+			line = CreateHorz(root);
+			CreateButton(line).SetText(getSlotName(slot)).SetColor(getColorFromList(slot)).SetOnClick(function()
+				slotConfig(slot);
+			end);
+			CreateEmpty(line).SetPreferredWidth(10);
+			CreateLabel(line).SetText(getTableLength(CardPiecesFromStart[slot] or {}) + getTableLength(CardPiecesEachTurn[slot] or {}) .. " modifications").SetColor(colors.TextColor);
+		end
+	else
+		CreateLabel(root).SetText("There are currently no configured card distributions. To alter a card distribution for a slot, please click the button above").SetColor(colors.TextColor);
+	end
+end
+
+function chooseSlot(slot)
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+
+	saveInputs();
+	local input;
+
+	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+	CreateButton(line).SetText("Submit").SetColor(colors.Green).SetOnClick(function()
+		local name = input.GetText();
+		if validateSlotName(name) then
+			local n = getSlotIndex(name);
+			if slot ~= nil then
+				copySlot(slot, n);
+			end
+			slotConfig(n);
+		else
+			UI.Alert("You must enter only letters (a-z), you should omit the word 'slot'");
+		end
+	end);
+
+	input = CreateTextInputField(root).SetPlaceholderText("Enter slot name here").SetCharacterLimit(10).SetPreferredWidth(300);
+end
+
+function slotConfig(slot)
+	saveInputs();
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+
+	inputs = {
+		Slot = slot,
+		CardPiecesEachTurn = {},
+		CardPiecesFromStart = {}
+	};
+	CardPiecesFromStart[slot] = CardPiecesFromStart[slot] or {};
+	CardPiecesEachTurn[slot] = CardPiecesEachTurn[slot] or {};
+
+	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+	CreateButton(line).SetText("Copy config").SetColor(colors.Blue).SetOnClick(function()
+		chooseSlot(slot);
+	end);
+
+	CreateEmpty(root).SetPreferredHeight(10);
+	
+	line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	local checkBox = CreateCheckBox(line).SetText(" ").SetIsChecked(ShowAllCardDistributions);
+	CreateLabel(line).SetText("Show all card distributions").SetColor(colors.TextColor);
+	checkBox.SetOnValueChanged(function()
+		ShowAllCardDistributions = checkBox.GetIsChecked();
+		slotConfig(slot);
+	end);
+
+	CreateEmpty(root).SetPreferredHeight(10);
+	
+	CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText(getSlotName(slot) .. " config").SetColor(colors.TextColor);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	local fromStart = CardPiecesFromStart[slot] or {};
+	if not tableIsEmpty(fromStart) or ShowAllCardDistributions then
+		CreateLabel(root).SetText("This slot has the following card piece modifications at the start of the game").SetColor(colors.TextColor);
+		for _, cardID in pairs(getCardList()) do
+			if ShowAllCardDistributions or fromStart[cardID] then
+				CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText(getCardName(cardID)).SetColor(colors.TextColor);
+				line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+				inputs.CardPiecesFromStart[cardID] = CreateNumberInputField(line).SetSliderMinValue(-10).SetSliderMaxValue(10).SetValue(fromStart[cardID] or 0);
+				CreateEmpty(line).SetMinWidth(10);
+				CreateButton(line).SetText("X").SetColor(colors.Red).SetOnClick(function()
+					CardPiecesFromStart[slot][cardID] = nil;
+					inputs.CardPiecesFromStart[cardID] = nil;
+					slotConfig(slot);
+				end);
+			end
+		end
+	else
+		CreateLabel(root).SetText("This slot does not have any card distribution modifications at the start of the game").SetColor(colors.TextColor);
+	end
+
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	if not ShowAllCardDistributions then
+		CreateButton(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Add card distribution").SetColor(colors.Green).SetOnClick(function()
+			addCardConfig(slot, CardPiecesFromStart[slot]);
+		end);
+	end
+
+	CreateEmpty(root).SetPreferredHeight(10);
+
+	local eachTurn = CardPiecesEachTurn[slot] or {};
+	if not tableIsEmpty(eachTurn) or ShowAllCardDistributions then
+		CreateLabel(root).SetText("This slot has the following card piece modifications at the start of the game").SetColor(colors.TextColor);
+		for _, cardID in pairs(getCardList()) do
+			if ShowAllCardDistributions or eachTurn[cardID] then
+				CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText(getCardName(cardID)).SetColor(colors.TextColor);
+				line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+				inputs.CardPiecesEachTurn[cardID] = CreateNumberInputField(line).SetSliderMinValue(-10).SetSliderMaxValue(10).SetValue(eachTurn[cardID] or 0);
+				CreateEmpty(line).SetMinWidth(10);
+				CreateButton(line).SetText("X").SetColor(colors.Red).SetOnClick(function()
+					CardPiecesEachTurn[slot][cardID] = nil;
+					inputs.CardPiecesEachTurn[cardID] = nil;
+					slotConfig(slot);
+				end);
+			end
+		end
+	else
+		CreateLabel(root).SetText("This slot does not have any card distribution modifications at the start of the game").SetColor(colors.TextColor);
 	end
 	
-	window(win);
-	local vert = newVerticalGroup("vert", "root");
-	newLabel("NonIncludedCards", vert, "This mod does not give / take pieces if the card is not enabled!", "Orange Red");
-	newButton("AlterSlot", vert, "Alter a slot", chooseSlot, "Tyrian Purple");
-	newLabel("slotCardsAtStart", vert, "\n\nSlots that will receive extra / less cards during the game:");
-	local needsButton = {};
-	for i, v in pairs(CardPiecesFromStart) do
-		if v ~= nil and getTableLength(v) > 0 then
-			needsButton[i] = true;
-		end
-	end
-	for i, v in pairs(CardPiecesEachTurn) do
-		if v ~= nil and getTableLength(v) > 0 and needsButton[i] == nil then
-			needsButton[i] = true;
-		end
-	end
-	for i, _ in pairs(needsButton) do
-		print(i);
-		newButton(win .. "Slot" .. i, vert, "Slot " .. getSlotName(i), function() getConfig(i) end, colorsList[(i % #colorsList) + 1]);
+	if not ShowAllCardDistributions then
+		CreateButton(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Add card distribution").SetColor(colors.Green).SetOnClick(function()
+			addCardConfig(slot, CardPiecesEachTurn[slot]);
+		end);
 	end
 end
 
-function chooseSlot()
-	local win = "ChooseSlot";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
-	end
-	
-	window(win);
-	local vert = newVerticalGroup("vert", "root");
-	local input = newTextField("SlotInput", vert, "Input Slot Name", "", 3);
-	updateFlexibleWidth(vert, 1);
-	updateFlexibleWidth(input, 1);
-	updatePreferredWidth(input, 300);
-	local submit = newButton("SubmitButton", vert, "Select", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(input), "%s", ""))); if slot >= 0 then getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Blue");
+function saveInputs()
+	if inputs ~= nil then
+		local slot = inputs.Slot;
 
-end
-
-function getConfig(slot)
-	local win = "getConfig" .. slot;
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then 
-		resetWindow(win);
-	end
-	window(win);
-	local vert = newVerticalGroup("vert", "root");
-	newLabel(win .. "Slot", vert, "Slot " .. getSlotName(slot), "Lime")
-	newLabel("CardsStart" .. win, vert, "This slot has the following card piece modifications at the start of the game:", "Green");
-	local startVert = newVerticalGroup("StartVert", vert);
-	newButton(win .. "AddConfigStart", startVert, "Add card config", function() addCardConfig(startVert, "Start") end, "Green");
-	if CardPiecesFromStart[slot] == nil then CardPiecesFromStart[slot] = {}; end
-	for i, v in pairs(WL.CardID) do
-		if objectsID[win .. "StartCardLabel" .. v] ~= nil or getZeroOrValue("Start", slot, v) ~= 0 then
-			newLabel(win .. "StartCardLabel" .. v, startVert, readableString(i) .. " card:", "Orange");
-			newNumberField(win .. "StartCardInput" .. v, startVert, -10, 10, getZeroOrValue("Start", slot, v));
-			newLabel(win .. "StartCardNewline" .. v, startVert, "\n");
+		local fromStart = CardPiecesFromStart[slot] or {}; 
+		for cardID, input in pairs(inputs.CardPiecesFromStart) do
+			if canReadObject(input) then 
+				fromStart[cardID] = input.GetValue();
+				if fromStart[cardID] == 0 then fromStart[cardID] = nil; end
+			end
 		end
-	end
-	newLabel("CardsEachTurn" .. win, vert, "This slot has the following card piece modifications in every turn:", "Green");
-	local turnVert = newVerticalGroup("TurnVert", vert);
-	newButton(win .. "AddConfigTurn", turnVert, "Add card config", function() addCardConfig(turnVert, "Turn") end, "Green");
-	if CardPiecesEachTurn[slot] == nil then CardPiecesEachTurn[slot] = {}; end
-	for i, v in pairs(WL.CardID) do
-		if objectsID[win .. "TurnCardLabel" .. v] ~= nil or getZeroOrValue("Turn", slot, v) ~= 0 then
-			newLabel(win .. "TurnCardLabel" .. v, turnVert, readableString(i) .. " card:", "Orange");
-			newNumberField(win .. "TurnCardInput" .. v, turnVert, 0, 10, getZeroOrValue("Turn", slot, v));
-			newLabel(win .. "TurnCardNewline" .. v, turnVert, "\n");
+		CardPiecesFromStart[slot] = fromStart;
+		
+		local eachTurn = CardPiecesEachTurn[slot] or {};
+		for cardID, input in pairs(inputs.CardPiecesEachTurn) do
+			if canReadObject(input) then
+				eachTurn[cardID] = input.GetValue();
+				if eachTurn[cardID] == 0 then eachTurn[cardID] = nil; end
+			end
 		end
-	end
-	local line = newHorizontalGroup(win .. "line", vert);
-	newButton("return" .. win, line, "Return", function() saveInputs(win, slot); showMain(); end, "Lime");
-	newButton(win .. "CopyConfig", line, "Copy configuration", function() saveInputs(win, slot); pickSlotToCopy(slot); end, "Royal Blue");
-end
+		CardPiecesEachTurn[slot] = eachTurn;
 
-function saveInputs(win, slot)
-	for i, v in pairs(WL.CardID) do
-		if objectsID[win .. "StartCardInput" .. v] ~= nil and getZeroOrValue("Start", slot, v) then
-			CardPiecesFromStart[slot][v] = getValue(win .. "StartCardInput" .. v);
-		end
-		if objectsID[win .. "TurnCardLabel" .. v] ~= nil or getZeroOrValue("Turn", slot, v) ~= 0 then
-			CardPiecesEachTurn[slot][v] = getValue(win .. "TurnCardInput" .. v);
-		end
+		-- if tableIsEmpty(CardPiecesFromStart[slot]) and tableIsEmpty(CardPiecesEachTurn[slot]) then
+		-- 	CardPiecesEachTurn[slot] = nil;
+		-- 	CardPiecesFromStart[slot] = nil;
+		-- end
 	end
-end
-
-function pickSlotToCopy(copy)
-	local win = "coptyTo" .. copy;
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then 
-		resetWindow(win);
-	end
-	window(win);
-
-	local vert = newVerticalGroup("vert", "root");
-	newLabel(win .. "CopyToText", vert, "Pick the slot you want to copy the configuration to", "#DDDDDD");
-	local line = newHorizontalGroup(win .. "Horz", vert);
-	newLabel(win .. "SlotText", line, "Slot", "#DDDDDD");
-	slotNameinput = newTextField("SlotInput", vert, "Input Slot Name", "", 3);
-	updateFlexibleWidth(vert, 1);
-	updateFlexibleWidth(slotNameinput, 1);
-	updatePreferredWidth(slotNameinput, 300);
-	newButton(win .. "SubmitButton", vert, "Copy", function() local slot = getSlotNumberFromName(string.upper(string.gsub(getText(slotNameinput), "%s", ""))); if slot >= 0 then copySlot(copy, slot); getConfig(slot); else UI.Alert(getText(input) .. " is not a valid slot name") end; end, "Royal Blue");
+	inputs = nil;
 end
 
 function copySlot(copy, slot)
@@ -136,102 +216,129 @@ function copySlot(copy, slot)
 	end
 end
 
-function addCardConfig(vert, s)
-	local list = {};
+function addCardConfig(slot, t)
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+
+	saveInputs();
+
+	CreateButton(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(function()
+		slotConfig(slot);
+	end);
+
+	CreateEmpty(root).SetPreferredHeight(10);
+	
+	CreateLabel(root).SetText("Select a card").SetColor(colors.TextColor);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	for name, cardID in pairs(getCardList()) do
+		if t[cardID] == nil then
+			CreateButton(root).SetText(readableString(name)).SetColor(getColorFromList(cardID)).SetOnClick(function()
+				t[cardID] = 0;
+				slotConfig(slot);
+			end);
+		end
+	end
+end
+
+function showCustomCards()
+	saveInputs();
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot)).SetCenter(true);
+
+	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
+	CreateButton(line).SetText("Enter custom card").SetColor(colors.Blue).SetOnClick(showEnterCustomCard);
+
+	CreateEmpty(root).SetPreferredHeight(10);
+	
+	CreateLabel(root).SetText("This page shows all the custom card names you have entered through the mod. Note that this mod only allows you to alter the normal card distribution and does not add the custom cards themselves").SetColor(colors.TextColor);
+	CreateLabel(root).SetText("To alter the card distrubtion of a custom card, enter the name of the card by clicking the button in the top. The mod will use this name to link the card distributions up to the custom card").SetColor(colors.TextColor);
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	local vert = CreateVert(root);
+	for name, id in pairs(CustomCards) do
+		local horz = CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
+		CreateButton(horz).SetText(name).SetColor(getColorFromList(id)).SetOnClick(function()
+			showEnterCustomCard(name);
+		end);
+		CreateEmpty(horz).SetMinWidth(20).SetFlexibleWidth(1);
+		CreateButton(horz).SetText("X").SetColor(colors.Red).SetOnClick(function()
+			UI.Destroy(horz);
+			removeCustomCard(name);
+		end);
+	end
+end
+
+function showEnterCustomCard(cardName)
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+
+	local textInput = CreateTextInputField(root).SetCharacterLimit(100).SetText(cardName or "").SetPlaceholderText("Enter custom card name here").SetPreferredWidth(300);
+	local line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Return").SetColor(colors.Orange).SetOnClick(showCustomCards);
+	CreateButton(line).SetText("Enter custom card").SetColor(colors.Blue).SetOnClick(function()
+		local input = textInput.GetText();
+		if #input > 0 then
+			if not CustomCards[input] then
+				if cardName then
+					CustomCards[input] = CustomCards[cardName];
+					CustomCards[cardName] = nil;
+				else
+					CustomCards[input] = getNewCustomCardID();
+				end
+				showCustomCards();
+			else
+				UI.Alert("\"" .. input .. "\" is already a name, please enter a new name or cancel the action");
+			end
+		else
+			UI.Alert("You must enter a name of the custom card");
+		end
+	end);
+end
+
+function getNewCustomCardID()
+	local min = 0;
+	for _, id in pairs(CustomCards) do
+		min = math.min(min, id);
+	end
+	return min - 1;
+end
+
+function removeCustomCard(name)
+	local id = CustomCards[name];
+	for i, _ in pairs(CardPiecesFromStart) do
+		CardPiecesFromStart[i][id] = nil;
+	end
+	for i, _ in pairs(CardPiecesEachTurn) do
+		CardPiecesEachTurn[i][id] = nil;
+	end
+	CustomCards[name] = nil;
+end
+
+function getCardList()
+	local t = {};
 	for i, v in pairs(WL.CardID) do
---		if v ~= WL.CardID.Reinforcement then
-			local l = {};
-			l.text = readableString(i) .. " Card";
-			l.selected = function() if objectsID[getCurrentWindow() .. s .. "CardInput" .. v] == nil then 
-						newLabel(getCurrentWindow() .. s .. "CardLabel" .. v, vert, readableString(i) .. " card:", "Orange");
-						newNumberField(getCurrentWindow() .. s .. "CardInput" .. v, vert, -10, 10, getZeroOrValue("Turn", slot, v));
-						newLabel(getCurrentWindow() .. s .. "CardNewline" .. v, vert, "\n");
-					else
-						UI.Alert("There already is a input for this");
-					end
-				end;
-			table.insert(list, l);
---		end
+		t[i] = v;
 	end
-	UI.PromptFromList("Choose which card you want to alter", list);
+	for i, v in pairs(CustomCards) do
+		t[i] = v;
+	end
+	return t;
 end
 
-function getSlotName(i)
-	i = i + 1;
-	local alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	local s = "";
-	while (i ~= 0) do
-		local index = i % 26;
-		if index == 0 then 
-			index = 26;
-			s = alpha[index] .. s;
-			i = (i - 26) / 26;
-		else
-			s = alpha[index] .. s;
-			i = (i - (i % 26)) / 26;
+function getCardName(id)
+	for name, cardID in pairs(WL.CardID) do
+		if cardID == id then
+			return name;
 		end
 	end
-	return s;
-end
-
-function getSlotNumberFromName(s)
-	s = string.gsub(s, "%s+", "");
-	if #string.gsub(s, "%a+", "") ~= 0 then
-		return -1;
-	end
-	local slot = 0;
-	local mult = 1;
-	local index = 1;
-	local alpha = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	for j = #s, 1, -1 do
-		local c = string.sub(s, j, j);
-		for i = 1, 26 do
-			if c == alpha[i] then
-				slot = slot + i * mult;
-				break;
-			end
-		end
-		mult = mult * 26;
-	end
-	return slot - 1;
-end
-
-function getZeroOrValue(s, slot, card)
-	if objectsID[getCurrentWindow() .. s .. "CardInput" .. card] ~= nil then
-		return getValue(getCurrentWindow() .. s .. "CardInput" .. card);
-	end
-	if s == "Turn" then
-		if CardPiecesEachTurn[slot] ~= nil then
-			if CardPiecesEachTurn[slot][card] ~= nil then
-				return CardPiecesEachTurn[slot][card];
-			end
-		end
-	elseif s == "Start" then
-		if CardPiecesFromStart[slot] ~= nil then
-			if CardPiecesFromStart[slot][card] ~= nil then
-				return CardPiecesFromStart[slot][card];
-			end
+	for name, cardID in pairs(CustomCards) do
+		if cardID == id then
+			return name;
 		end
 	end
-	return 0;
-end
-
-function getTableLength(t)
-	local c = 0;
-	for i, _ in pairs(t) do
-		c = c + 1;
-	end
-	return c;
-end
-
-function readableString(s)
-	local ret = string.upper(string.sub(s, 1, 1));
-	for i = 2, #s do
-		if string.sub(s, i, i) == string.lower(string.sub(s, i, i)) then
-			ret = ret .. string.sub(s, i, i);
-		else
-			ret = ret .. " " .. string.lower(string.sub(s, i, i));
-		end
-	end
-	return ret;
+	return "No name found";
 end

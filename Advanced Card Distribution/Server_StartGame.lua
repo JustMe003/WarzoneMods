@@ -17,22 +17,28 @@ function Server_StartGame(game, standing)
 		local newPieces = playerCards.Pieces;
 		local newCards = playerCards.WholeCards;
 		for card, cardGame in pairs(game.Settings.Cards) do
-			local totalPieces = cardGame.InitialPieces;
-			if Mod.Settings.CardPiecesFromStart[p.Slot] ~= nil and Mod.Settings.CardPiecesFromStart[p.Slot][card] ~= nil then
-				totalPieces = totalPieces + Mod.Settings.CardPiecesFromStart[p.Slot][card];
-			end
-			if card ~= WL.CardID.Reinforcement then
-				for k = 1, math.floor(totalPieces / cardGame.NumPieces) do
-					local instance = WL.NoParameterCardInstance.Create(card);
-					newCards[instance.ID] = instance;
+			local modCardID = (Mod.PublicGameData.GameToMod or {})[card] or card;
+			if Mod.Settings.CardPiecesFromStart[p.Slot] ~= nil and Mod.Settings.CardPiecesFromStart[p.Slot][modCardID] ~= nil then
+				local totalPieces = cardGame.InitialPieces;
+				totalPieces = totalPieces + Mod.Settings.CardPiecesFromStart[p.Slot][modCardID];
+				if totalPieces <= 0 then
+					newPieces[card] = 0;
+				else
+					if card ~= WL.CardID.Reinforcement then
+						for k = 1, math.floor(totalPieces / cardGame.NumPieces) do
+							local instance = WL.NoParameterCardInstance.Create(card);
+							newCards[instance.ID] = instance;
+						end
+					else
+						for k = 1, math.floor(totalPieces / cardGame.NumPieces) do
+							local instance = WL.ReinforcementCardInstance.Create(armies);
+							newCards[instance.ID] = instance;
+						end
+					end
+					newPieces[card] = totalPieces % cardGame.NumPieces;
 				end
-				newPieces[card] = totalPieces % cardGame.NumPieces;
 			else
-				for k = 1, math.floor(totalPieces / cardGame.NumPieces) do
-					local instance = WL.ReinforcementCardInstance.Create(armies);
-					newCards[instance.ID] = instance;
-				end
-				newPieces[card] = totalPieces % cardGame.NumPieces;
+				newPieces[card] = cardGame.InitialPieces;
 			end
 		end
 		playerCards.WholeCards = newCards;

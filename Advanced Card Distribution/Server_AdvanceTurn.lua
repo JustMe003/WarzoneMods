@@ -1,10 +1,4 @@
-function Server_AdvanceTurn_Start(game, addNewOrder)
-	
-end
-
-function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
-	
-end
+require("Util");
 
 function Server_AdvanceTurn_End(game, addNewOrder)
 	if game.Settings.CustomScenario == nil and game.Settings.AutomaticTerritoryDistribution then return; end
@@ -13,6 +7,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		local pieces = {};
 		local cardsToBeRemoved = {};
 		for card, amount in pairs(Mod.Settings.CardPiecesEachTurn[p.Slot] or {}) do
+			card = (Mod.PublicGameData.ModToGame or {})[card] or card;
 			if game.Settings.Cards[card] ~= nil then
 				if amount > 0 then
 					pieces[card] = amount;
@@ -64,17 +59,16 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 	end
 end
 
-function getCardName(n)
-	for i, v in pairs(WL.CardID) do
-		if v == n then return i; end
+function getCardName(id)
+	for name, cardID in pairs(WL.CardID) do
+		if cardID == id then
+			return name;
+		end
 	end
-	return "?";
-end
-
-function getTableLength(t)
-	local c = 0;
-	for i, _ in pairs(t) do
-		c = c + 1;
+	for name, cardID in pairs(Mod.Settings.CustomCards or {}) do
+		if Mod.PublicGameData.GameToMod[id] == cardID then
+			return name;
+		end
 	end
-	return c;
+	return "No name found";
 end

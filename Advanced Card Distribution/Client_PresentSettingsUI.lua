@@ -1,119 +1,132 @@
 require("UI");
-function Client_PresentSettingsUI(rootParent)
-	init(rootParent);
+require("Util");
 
-	colorsList = {"Blue", "Light Blue", "Purple", "Dark Green", "Orange", "Red", "Dark Gray", "Green", "Hot Pink", "Brown", "Sea Green", "Orange Red", "Cyan", "Aqua", "Dark Magenta", "Deep Pink", "yellow", "Saddle Brown", "Ivory", "Copper Rose", "Electric Purple", "Tan", "Pink", "Lime", "Tan", "Tyrian Purple", "Smoky Black"};
-	local win = "Main";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
-	end
-	window(win);
+function Client_PresentSettingsUI(rootParent)
+	Init();
+	colors = GetColors();
+	GlobalRoot = CreateVert(rootParent).SetCenter(true).SetFlexibleWidth(1);
+
+
 	modifiedSlots = {};
-	for i = 0, 49 do
-		if getTableLength(Mod.Settings.CardPiecesFromStart[i]) > 0 or getTableLength(Mod.Settings.CardPiecesEachTurn[i]) > 0 then
-			table.insert(modifiedSlots, i);
+	for i, t in pairs(Mod.Settings.CardPiecesFromStart) do
+		if not tableIsEmpty(t) then
+			modifiedSlots[i] = {
+				CardPiecesFromStart = t
+			};
 		end
 	end
-	local vert = newVerticalGroup("vert", "root");
-	newButton(win .. "showMenu", vert, "Show slot settings (one by one)", initMenu, "Orange");
-	newButton(win .. "showFull", vert, "Show all slot settings", showFullSettings, "Royal Blue");
-end
-
-function showFullSettings()
-	destroyWindow(getCurrentWindow());
-	for _, i in pairs(modifiedSlots) do
-		showConfig(i, false);
+	for i, t in pairs(Mod.Settings.CardPiecesEachTurn) do
+		if not tableIsEmpty(t) then
+			modifiedSlots[i] = modifiedSlots[i] or {};
+			modifiedSlots[i].CardPiecesEachTurn = t;
+		end
 	end
-end
-
-function initMenu()
-	pageNumber = 1;
+	
+	local line = CreateHorz(GlobalRoot).SetCenter(true);
+	CreateButton(line).SetText("Show one").SetColor(colors.Orange).SetOnClick(showMenu);
+	CreateButton(line).SetText("Show all").SetColor(colors.RoyalBlue).SetOnClick(showFullSettings);
+	CreateButton(line).SetText("Custom cards").SetColor(colors.Yellow).SetOnClick(showCustomCards);
 	showMenu();
 end
 
+function showFullSettings()
+	DestroyWindow()
+	root = CreateWindow(CreateVert(GlobalRoot)).SetCenter(true).SetFlexibleWidth(1);
+	for i, t in pairs(modifiedSlots) do
+		showConfig(i, t, true);
+	end
+end
+
 function showMenu()
-	local win = "showMenu";
-	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
-	end
-	window(win);
-	local vert = newVerticalGroup("vert", "root");
-	for i = (pageNumber - 1) * 10 + 1, math.min(pageNumber * 10, #modifiedSlots) do
-		newButton(win .. i, vert, "Slot " .. getSlotName(modifiedSlots[i]), function() showConfig(modifiedSlots[i]); end, colorsList[i]);
-	end
-	if #modifiedSlots > 10 then
-		local line = newHorizontalGroup("line", vert);
-		newButton(win .. "Previous", line, "Previous", function() pageNumber = pageNumber - 1; if pageNumber < 0 then pageNumber = #modifiedSlots; end showMenu(); end, "Royal Blue");
-		newLabel(win .. "PageNumber", line, pageNumber .. " / " .. math.ceil(#modifiedSlots / 10), "Royal Blue");
-		newButton(win .. "Next", line, "Next", function() pageNumber = pageNumber + 1; if pageNumber > math.ceil(#modifiedSlots / 10) then pageNumber = 1; end showMenu(); end, "Royal Blue");
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot)).SetCenter(true).SetFlexibleWidth(1);
+
+	CreateLabel(root).SetText("Select a slot below").SetColor(colors.TextColor);
+	for slot, dist in pairs(modifiedSlots) do
+		local line = CreateHorz(root);
+		CreateButton(line).SetText(getSlotName(slot)).SetColor(getColorFromList(slot)).SetOnClick(function()
+			showConfig(slot, dist);
+		end);
+		CreateEmpty(line).SetPreferredWidth(10);
+		CreateLabel(line).SetText(getTableLength(dist.CardPiecesFromStart or {}) + getTableLength(dist.CardPiecesEachTurn or {}) .. " modifications").SetColor(colors.TextColor);
 	end
 end
 
-function showConfig(slot, showButton)
-	local win = "showConfig";
-	if showButton == nil then
-		destroyWindow(getCurrentWindow());
+function showConfig(slot, dist, showAll)
+	if not showAll then
+		DestroyWindow();
+		root = CreateWindow(CreateVert(GlobalRoot));
 	end
-	if windowExists(win) then
-		resetWindow(win);
+
+	CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText(getSlotName(slot) .. " card distribution").SetColor(colors.Tan);
+
+	CreateEmpty(root).SetPreferredHeight(5);
+	if dist.CardPiecesFromStart then
+		CreateLabel(root).SetText("This slot has the following altered card distribution at the start of the game").SetColor(colors.TextColor);
+		local fromStart = dist.CardPiecesFromStart;
+		local list = {};
+		for cardID, _ in pairs(dist.CardPiecesFromStart) do
+			table.insert(list, cardID);
+		end
+		table.sort(list);
+
+		local vert = CreateVert(root).SetCenter(true);
+		for _, cardID in ipairs(list) do
+			local line = CreateHorz(vert).SetFlexibleWidth(1).SetCenter(true);
+			CreateLabel(line).SetText(getCardName(cardID) .. ": ").SetColor(colors.TextColor).SetAlignment(WL.TextAlignmentOptions.Right).SetFlexibleWidth(1);
+			CreateLabel(line).SetText(fromStart[cardID]).SetColor(getPosNegColor(fromStart[cardID]));
+		end
+		CreateEmpty(root).SetPreferredHeight(5);
+	else
+		CreateLabel(root).SetText("This slot does not have any altered card distributions at the start of the game").SetColor(colors.TextColor);
 	end
-	window(win);
-	local vert = newVerticalGroup("vert", "root");
 	
-	local hasPiecesFromstart = false;
-	for i, v in pairs(WL.CardID) do
-		if Mod.Settings.CardPiecesFromStart[slot][v] ~= nil then
-			if not hasPiecesFromstart then
-				newLabel(win .. "hasPiecesFromstart", vert, "Slot " .. getSlotName(slot) .. " gets the following card modifications at the start of the game:\n", "Orange");
-				hasPiecesFromstart = true;
-			end
-			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesFromStart[slot][v], "Royal Blue");
+	if dist.CardPiecesEachTurn then
+		CreateLabel(root).SetText("This slot has the following altered card distribution for each turn in the game").SetColor(colors.TextColor);
+		local fromStart = dist.CardPiecesEachTurn;
+		local list = {};
+		for cardID, _ in pairs(dist.CardPiecesEachTurn) do
+			table.insert(list, cardID);
 		end
-	end
-	if hasPiecesFromstart then
-		newLabel(win .. "empty1", vert, " ");
-	end
+		table.sort(list);
 
-	local hasPiecesEachTurn = false;
-	for i, v in pairs(WL.CardID) do
-		if Mod.Settings.CardPiecesEachTurn[slot][v] ~= nil then
-			if not hasPiecesEachTurn then
-				newLabel(win .. "hasPiecesEachTurn", vert, "\nSlot " .. getSlotName(slot) .. " gets the following card modifications at the end of every turn:\n", "Orange");
-				hasPiecesEachTurn = true;
-			end
-			newLabel(win .. v, vert, i .. ": " .. Mod.Settings.CardPiecesEachTurn[slot][v], "Royal Blue");
+		local vert = CreateVert(root).SetCenter(true);
+		for _, cardID in ipairs(list) do
+			local line = CreateHorz(vert).SetFlexibleWidth(1).SetCenter(true);
+			CreateLabel(line).SetText(getCardName(cardID) .. ": ").SetColor(colors.TextColor).SetAlignment(WL.TextAlignmentOptions.Right).SetFlexibleWidth(1);
+			CreateLabel(line).SetText(fromStart[cardID]).SetColor(getPosNegColor(fromStart[cardID]));
 		end
-	end
-
-	if hasPiecesEachTurn then
-		newLabel(win .. "empty2", vert, " ");
-	end
-
-	if not hasPiecesFromstart and not hasPiecesEachTurn then
-		newLabel(win .. "Nothing", vert, "This slot does not have any card modification");
-	end
-	if showButton == nil then
-		newButton(win .. "chooseSlot", vert, "Pick a slot", showMenu, "Lime");
+		CreateEmpty(root).SetPreferredHeight(5);
+	else
+		CreateLabel(root).SetText("This slot does not have any altered card distributions for each turn in the game").SetColor(colors.TextColor);
 	end
 end
 
+function showCustomCards()
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot)).SetCenter(true);
 
-function getSlotName(i)
-	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	local s = "";
-	if i > 26 then
-		s = s .. c[math.floor(i / 26)];
-		i = i - math.floor(i / 26);
+	local cards = Mod.Settings.CustomCards or {};
+	if not tableIsEmpty(cards) then
+		CreateLabel(root).SetText("The following custom cards were entered into this mod. Please note that this does not necessarily mean that the cards are in the game, nor that this mod adds these cards to the game. When a card is listed below, the only meaning it has is that a slot can have an altered card distribution for this type of card").SetColor(colors.TextColor);
+		for name, id in pairs(cards) do
+			CreateButton(root).SetText(name).SetColor(getColorFromList(id));
+		end
+	else
+		CreateLabel(root).SetText("There are no custom cards entered into this mod. Please note that this does not mean that there are no custom cards, only that none of the distributions of the custom cards will be altered through this mod").SetColor(colors.TextColor);
 	end
-	return s .. c[i % 26 + 1];
 end
 
-function getTableLength(t)
-	local c = 0;
-	for _, _ in pairs(t) do
-		c = c + 1;
+function getCardName(id)
+	for name, cardID in pairs(WL.CardID) do
+		if cardID == id then
+			return name;
+		end
 	end
-	return c;
+	for name, cardID in pairs(Mod.Settings.CustomCards or {}) do
+		if cardID == id then
+			return name;
+		end
+	end
+	return "No name found";
 end
