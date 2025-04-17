@@ -13,7 +13,7 @@ function Client_CreateGame(settings, alert)
     end
 
     local missingList = {};
-    for name, _ in pairs(Mod.Settings.CustomCards) do
+    for name, _ in pairs(Mod.Settings.CustomCards or {}) do
         local b = false;
         for _, cardName in ipairs(cardList) do
             if compareCardName(name, cardName) then
