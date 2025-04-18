@@ -381,7 +381,7 @@ function showFactionDetails(factionName)
 	CreateEmpty(root).SetPreferredHeight(5);
 
 	CreateLabel(root).SetText("The following players are in this Faction: ").SetColor(colors.TextColor);
-	for i, v in pairs(faction.FactionMembers) do
+	for i, v in ipairs(faction.FactionMembers) do
 		line = CreateHorz(root).SetFlexibleWidth(1);
 		CreateLabel(line).SetText(i .. ". ").SetColor(colors.TextColor);
 		CreateButton(line).SetText(game.Game.Players[v].DisplayName(nil, true)).SetColor(game.Game.Players[v].Color.HtmlColor).SetOnClick(function()
