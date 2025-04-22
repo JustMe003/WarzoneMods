@@ -209,7 +209,8 @@ function showPlayerDetails(playerID)
 				line = CreateHorz(root).SetFlexibleWidth(1);
 				CreateLabel(line).SetText("You have a pending peace offer from this player").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
 				CreateButton(line).SetText("Resolve").SetColor(colors.Green).SetOnClick(function()
-					confirmChoice("Do you wish to accept the peace offer from " .. player.DisplayName(nil, true); .. "?", function() 
+					local i = getKeyFromValue(Mod.PlayerGameData.PendingOffers, playerID);
+					confirmChoice("Do you wish to accept the peace offer from " .. player.DisplayName(nil, true) .. "?", function() 
 						Close();
 						AddToHistory(void);
 						game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
@@ -878,7 +879,7 @@ function getSortedRelationLists(playerID)
 	end
 
 	local sortFunc = function(a, b)
-		return a.DisplayName(nil, true) < b.DisplayName(nil, true);
+		return a.DisplayName(nil, false) < b.DisplayName(nil, false);
 	end;
 
 	table.sort(t.War, sortFunc);
