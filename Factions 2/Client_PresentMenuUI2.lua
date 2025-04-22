@@ -434,8 +434,7 @@ function showFactionDetails(factionName)
 	end
 
 	if getTableLength(Mod.PublicGameData.Factions) > 1 then
-		print(Mod.Settings.VisibleHistory, valueInTable(faction.FactionMembers, game.Us.ID));
-		if Mod.Settings.VisibleHistory or valueInTable(faction.FactionMembers, game.Us.ID) then
+		if Mod.Settings.GlobalSettings.VisibleHistory or valueInTable(faction.FactionMembers, game.Us.ID) then
 			CreateEmpty(root).SetPreferredHeight(5);
 	
 			CreateLabel(root).SetText("Relations of this Faction").SetColor(colors.TextColor);
