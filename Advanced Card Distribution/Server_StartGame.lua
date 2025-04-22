@@ -40,6 +40,7 @@ function Server_StartGame(game, standing)
 			else
 				newPieces[card] = cardGame.InitialPieces;
 			end
+			print(newPieces[card], p.DisplayName(nil, false), p.Slot);
 		end
 		playerCards.WholeCards = newCards;
 		playerCards.Pieces = newPieces;
