@@ -25,12 +25,12 @@ function Server_StartGame(game, standing)
 					newPieces[card] = 0;
 				else
 					if card ~= WL.CardID.Reinforcement then
-						for k = 1, math.floor(totalPieces / cardGame.NumPieces) do
+						for k = 1, math.min(math.floor(totalPieces / cardGame.NumPieces), 100) do
 							local instance = WL.NoParameterCardInstance.Create(card);
 							newCards[instance.ID] = instance;
 						end
 					else
-						for k = 1, math.floor(totalPieces / cardGame.NumPieces) do
+						for k = 1, math.min(math.floor(totalPieces / cardGame.NumPieces), 100) do
 							local instance = WL.ReinforcementCardInstance.Create(armies);
 							newCards[instance.ID] = instance;
 						end
