@@ -19,6 +19,8 @@ function Server_StartGame(game, standing)
 		for card, cardGame in pairs(game.Settings.Cards) do
 			if cardGame.proxyType == "CardGameCustom" then
 				print(cardGame.Name);
+			else
+				print(cardGame.proxyType);	
 			end
 			local modCardID = (Mod.PublicGameData.GameToMod or {})[card] or card;
 			if Mod.Settings.CardPiecesFromStart[p.Slot] ~= nil and Mod.Settings.CardPiecesFromStart[p.Slot][modCardID] ~= nil then
@@ -40,8 +42,6 @@ function Server_StartGame(game, standing)
 					end
 					newPieces[card] = totalPieces % cardGame.NumPieces;
 				end
-			else
-				newPieces[card] = cardGame.InitialPieces;
 			end
 			print(newPieces[card], p.DisplayName(nil, false), card, cardGame.NumPieces);
 		end
