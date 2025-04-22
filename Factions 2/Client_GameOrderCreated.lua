@@ -11,7 +11,7 @@ function Client_GameOrderCreated(game, order, skipOrder)
     if order.proxyType == "GameOrderAttackTransfer" and order.AttackTransfer ~= WL.AttackTransferEnum.Transfer then
         ---@cast order GameOrderAttackTransfer
         local toOwner = game.LatestStanding.Territories[order.To].OwnerPlayerID;
-        if toOwner ~= WL.PlayerID.Neutral and toOwner ~= WL.PlayerID.Fogged and game.Game.Players[toOwner].State == WL.GamePlayerState.Playing then
+        if toOwner ~= WL.PlayerID.Neutral and toOwner ~= game.Us.ID and toOwner ~= WL.PlayerID.Fogged and game.Game.Players[toOwner].State == WL.GamePlayerState.Playing then
             if Mod.PublicGameData.Relations[game.Us.ID][toOwner] ~= Relations.War then
                 -- search for diplomacy card; if there is one between these players, warzone will show a pop up
                 for _, activeCard in pairs(game.LatestStanding.ActiveCards) do
