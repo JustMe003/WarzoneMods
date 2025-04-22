@@ -434,59 +434,64 @@ function showFactionDetails(factionName)
 	end
 
 	if getTableLength(Mod.PublicGameData.Factions) > 1 then
-		CreateEmpty(root).SetPreferredHeight(5);
-
-		CreateLabel(root).SetText("Relations of this Faction").SetColor(colors.TextColor);
-		if playerIsInFaction and game.Us.ID ~= faction.FactionLeader then
-			CreateLabel(root).SetText("Only the Faction leader can change the relation between this and another Faction").SetColor(colors.TextColor);
-		end
-		for name, otherFaction in pairs(Mod.PublicGameData.Factions) do
-			if name ~= factionName then
-				line = CreateHorz(root).SetFlexibleWidth(1);
-				CreateButton(line).SetText(name).SetColor(game.Game.Players[otherFaction.FactionLeader].Color.HtmlColor).SetOnClick(function()
-					showFactionDetails(name);
-				end);
-				local facRelLabel = CreateLabel(line);
-				if faction.AtWar[name] then
-					facRelLabel.SetText("Hostile").SetColor(colors.Red);
-					if faction.Offers[name] then
-						local peaceStatusLine = CreateHorz(root).SetFlexibleWidth(1);
-						CreateEmpty(peaceStatusLine).SetMinWidth(60);
-						if valueInTable(faction.PendingOffers, name) then
-							CreateLabel(peaceStatusLine).SetText("This Faction has a pending peace offer from " .. name).SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
-						else
-							CreateLabel(peaceStatusLine).SetText("This Faction has send " .. name .. " a peace offer").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
-						end
-					end
-				else
-					facRelLabel.SetText("Peaceful").SetColor(colors.Yellow);
-				end
-				if faction.FactionLeader == game.Us.ID then
-					CreateEmpty(line).SetFlexibleWidth(1).SetPreferredWidth(20);
-					local but = CreateButton(line);
+		if Mod.Settings.VisibleHistory or valueInTable(faction.FactionMembers, game.Us.ID) then
+			
+			CreateEmpty(root).SetPreferredHeight(5);
+	
+			CreateLabel(root).SetText("Relations of this Faction").SetColor(colors.TextColor);
+			if playerIsInFaction and game.Us.ID ~= faction.FactionLeader then
+				CreateLabel(root).SetText("Only the Faction leader can change the relation between this and another Faction").SetColor(colors.TextColor);
+			end
+			for name, otherFaction in pairs(Mod.PublicGameData.Factions) do
+				if name ~= factionName then
+					line = CreateHorz(root).SetFlexibleWidth(1);
+					CreateButton(line).SetText(name).SetColor(game.Game.Players[otherFaction.FactionLeader].Color.HtmlColor).SetOnClick(function()
+						showFactionDetails(name);
+					end);
+					local facRelLabel = CreateLabel(line);
 					if faction.AtWar[name] then
-						but.SetText("Offer peace").SetColor(colors.Yellow).SetOnClick(function()
-							confirmChoice("Are you sure you want to offer peace to " .. name .. "? All your faction members will be forced in peace with all of the players in " .. name, function() 
-								AddToHistory(void);
-								Close(); 
-								game.SendGameCustomMessage("Offering peace to " .. name .. "...", { Type="offerFactionPeace", OpponentFaction=name, PlayerFaction=factionName }, gameCustomMessageReturn); 	
-							end, function() 
-								showFactionDetails(factionName); 
-							end)
-						end).SetInteractable(not (faction.Offers and faction.Offers[name]));
+						facRelLabel.SetText("Hostile").SetColor(colors.Red);
+						if faction.Offers[name] then
+							local peaceStatusLine = CreateHorz(root).SetFlexibleWidth(1);
+							CreateEmpty(peaceStatusLine).SetMinWidth(60);
+							if valueInTable(faction.PendingOffers, name) then
+								CreateLabel(peaceStatusLine).SetText("This Faction has a pending peace offer from " .. name).SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+							else
+								CreateLabel(peaceStatusLine).SetText("This Faction has send " .. name .. " a peace offer").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+							end
+						end
 					else
-						but.SetText("Declare war").SetColor(colors.Red).SetOnClick(function()
-							confirmChoice("Are you sure you want to declare war on " .. name .. "? All your faction members will be forced to declare war on all of the players in " .. name, function() 
-								AddToHistory(void);
-								Close(); 
-								game.SendGameCustomMessage("Declaring war on " .. name .. "...", { Type="declareFactionWar", PlayerFaction=factionName, OpponentFaction=name }, gameCustomMessageReturn); 
-							end, function() 
-								showFactionDetails(factionName);
-							end)
-						end);
+						facRelLabel.SetText("Peaceful").SetColor(colors.Yellow);
+					end
+					if faction.FactionLeader == game.Us.ID then
+						CreateEmpty(line).SetFlexibleWidth(1).SetPreferredWidth(20);
+						local but = CreateButton(line);
+						if faction.AtWar[name] then
+							but.SetText("Offer peace").SetColor(colors.Yellow).SetOnClick(function()
+								confirmChoice("Are you sure you want to offer peace to " .. name .. "? All your faction members will be forced in peace with all of the players in " .. name, function() 
+									AddToHistory(void);
+									Close(); 
+									game.SendGameCustomMessage("Offering peace to " .. name .. "...", { Type="offerFactionPeace", OpponentFaction=name, PlayerFaction=factionName }, gameCustomMessageReturn); 	
+								end, function() 
+									showFactionDetails(factionName); 
+								end)
+							end).SetInteractable(not (faction.Offers and faction.Offers[name]));
+						else
+							but.SetText("Declare war").SetColor(colors.Red).SetOnClick(function()
+								confirmChoice("Are you sure you want to declare war on " .. name .. "? All your faction members will be forced to declare war on all of the players in " .. name, function() 
+									AddToHistory(void);
+									Close(); 
+									game.SendGameCustomMessage("Declaring war on " .. name .. "...", { Type="declareFactionWar", PlayerFaction=factionName, OpponentFaction=name }, gameCustomMessageReturn); 
+								end, function() 
+									showFactionDetails(factionName);
+								end)
+							end);
+						end
 					end
 				end
 			end
+		else
+			CreateLabel(root).SetText("The mod was configured that not all events are made public. To see the relations of this Faction you must be a member of this Faction").SetColor(colors.TextColor);
 		end
 	end
 end
