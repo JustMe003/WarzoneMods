@@ -102,6 +102,7 @@ function Server_StartGameMain(game, standing)
 	data.PlayerInFaction = playerInFaction;
 	data.Events = {};
 	data.VersionNumber = 5;
+	data.EventsHistory = {};
 	Mod.PlayerGameData = playerData;
 	Mod.PublicGameData = data;
 end

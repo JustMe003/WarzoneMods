@@ -674,16 +674,67 @@ function showHistory()
 			CreateLabel(root).SetText("Here you can see the events that took place between now and the previous turn. You can only see the events that have effect on you of on one of your faction members (if you're in a faction)").SetColor(colors.TextColor);
 		end
 		CreateLabel(root).SetText("The events have the same color of the player who triggered them").SetColor(colors.TextColor);
-		for i = 1, #Mod.PublicGameData.Events do
-			if Mod.Settings.GlobalSettings.VisibleHistory or Mod.PublicGameData.Events[i].VisibleTo == nil or valueInTable(Mod.PublicGameData.Events[i].VisibleTo, game.Us.ID) then
-				local line = CreateHorz(root);
-				CreateButton(line).SetText(" ").SetColor(getColorPlayerIsNotNeutral(Mod.PublicGameData.Events[i].PlayerID));
-				CreateLabel(line).SetText(Mod.PublicGameData.Events[i].Message).SetColor(colors.TextColor);
-			end
-		end
+		showEvents(root, Mod.PublicGameData.Events);
 	else
 		CreateLabel(root).SetText("Due to an update this feature is not available till the update is done and your game has advanced a turn").SetColor(colors.TextColor);
 	end
+
+	if Mod.PublicGameData.EventsHistory then
+		local eventsHistory = Mod.PublicGameData.EventsHistory;
+		CreateEmpty(root).SetPreferredHeight(10);
+		CreateLabel(root).SetText("Select a turn below to see all the events in that turn").SetColor(colors.TextColor);
+
+		local start = 999999;
+		for turn, _ in pairs(eventsHistory) do
+			start = math.min(start, turn);
+		end
+
+		for i = start, game.Game.TurnNumber - 1 do
+			local buttonLine = CreateHorz(root);
+			local line = CreateHorz(root);
+			CreateEmpty(line).SetMinWidth(20);
+			local localRoot;
+			local but = CreateButton(buttonLine).SetText("Show turn " .. i).SetColor(colors.Ivory);
+			but.SetOnClick(function()
+				if UI.IsDestroyed(localRoot) then
+					but.SetText("Close turn " .. i);
+					localRoot = CreateVert(line);
+					CreateLabel(localRoot).SetText("Events in turn " .. i).SetText(colors.TextColor);
+					CreateEmpty(localRoot).SetPreferredHeight(5);
+					showEvents(localRoot, eventsHistory[i]);
+				else
+					but.SetText("Show turn " .. i);
+					UI.Destroy(localRoot);
+				end
+			end);
+			CreateEmpty(buttonLine).SetPreferredWidth(5);
+			CreateLabel(buttonLine).SetText(countEvents(eventsHistory[i]) " events");
+		end
+	end
+end
+
+function showEvents(root, events)
+	for _, event in ipairs(events) do
+		if eventIsVisible(event) then
+			local line = CreateHorz(root);
+			CreateButton(line).SetText(" ").SetColor(getColorPlayerIsNotNeutral(event.PlayerID));
+			CreateLabel(line).SetText(event.Message).SetColor(colors.TextColor);
+		end
+	end
+end
+
+function countEvents(events)
+	local c = 0;
+	for _, event in ipairs(events) do
+		if eventIsVisible(event) then
+			c = c + 1;
+		end
+	end
+	return c;
+end
+
+function eventIsVisible(event)
+	return Mod.Settings.GlobalSettings.VisibleHistory or event.VisibleTo == nil or valueInTable(event.VisibleTo, game.Us.ID) or game.Game.State == WL.GameState.Finished;
 end
 
 function showAbout()

@@ -2,9 +2,15 @@ require("utilities2");
 function Server_AdvanceTurn_StartMain(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	if data.VersionNumber ~= nil and data.VersionNumber >= 5 then
+		if not data.EventsHistory then
+			data.EventsHistory = {};
+		end
+		local eventsHistory = {};
 		for i = 1, #data.Events do
+			table.insert(eventsHistory, data.Events[i]);
 			addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, filterDeadPlayers(game, data.Events[i].VisibleTo), {}, {}, {}));
 		end
+		data.EventsHistory[game.Game.TurnNumber] = eventsHistory;
 	end
 	data.Events = {};
 	Mod.PublicGameData = data;
