@@ -37,10 +37,10 @@ function Server_StartGame(game, standing)
 					end
 					newPieces[card] = totalPieces % cardGame.NumPieces;
 				end
+				print(newPieces[card], p.DisplayName(nil, false), card, cardGame.NumPieces, cardGame.InitialPieces, Mod.Settings.CardPiecesFromStart[p.Slot][modCardID]);
 			else
 				newPieces[card] = cardGame.InitialPieces;
 			end
-			print(newPieces[card], p.DisplayName(nil, false), card, cardGame.NumPieces);
 		end
 		playerCards.WholeCards = newCards;
 		playerCards.Pieces = newPieces;
