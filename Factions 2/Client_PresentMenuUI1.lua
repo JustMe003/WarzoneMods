@@ -654,7 +654,7 @@ function showHistory()
 				if UI.IsDestroyed(localRoot) then
 					but.SetText("Close turn " .. i);
 					localRoot = CreateVert(line);
-					CreateLabel(localRoot).SetText("Events in turn " .. i).SetText(colors.TextColor);
+					CreateLabel(localRoot).SetText("Events in turn " .. i).SetColor(colors.TextColor);
 					CreateEmpty(localRoot).SetPreferredHeight(5);
 					showEvents(localRoot, eventsHistory[i]);
 				else
