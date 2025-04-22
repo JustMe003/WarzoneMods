@@ -635,6 +635,8 @@ function showHistory()
 	if Mod.PublicGameData.EventsHistory then
 		local eventsHistory = Mod.PublicGameData.EventsHistory;
 		CreateEmpty(root).SetPreferredHeight(10);
+		CreateLabel(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Events history").SetColor(colors.RoyalBlue);
+		CreateEmpty(root).SetPreferredHeight(5);
 		CreateLabel(root).SetText("Select a turn below to see all the events in that turn").SetColor(colors.TextColor);
 
 		local start = 999999;
