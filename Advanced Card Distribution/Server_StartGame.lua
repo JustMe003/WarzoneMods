@@ -17,11 +17,6 @@ function Server_StartGame(game, standing)
 		local newPieces = playerCards.Pieces;
 		local newCards = playerCards.WholeCards;
 		for card, cardGame in pairs(game.Settings.Cards) do
-			if cardGame.proxyType == "CardGameCustom" then
-				print(cardGame.Name);
-			else
-				print(cardGame.proxyType);	
-			end
 			local modCardID = (Mod.PublicGameData.GameToMod or {})[card] or card;
 			if Mod.Settings.CardPiecesFromStart[p.Slot] ~= nil and Mod.Settings.CardPiecesFromStart[p.Slot][modCardID] ~= nil then
 				local totalPieces = cardGame.InitialPieces;
@@ -43,7 +38,6 @@ function Server_StartGame(game, standing)
 					newPieces[card] = totalPieces % cardGame.NumPieces;
 				end
 			end
-			print(newPieces[card], p.DisplayName(nil, false), card, cardGame.NumPieces);
 		end
 		playerCards.WholeCards = newCards;
 		playerCards.Pieces = newPieces;
