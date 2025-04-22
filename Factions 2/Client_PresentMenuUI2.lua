@@ -147,24 +147,25 @@ function showPendingOffers()
 	
 	CreateEmpty(root).SetPreferredHeight(10);
 	
-	CreateLabel(root).SetText("The following players have send you a peace offer").SetColor(colors.TextColor);
-	for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
-		CreateButton(root).SetText(game.Game.Players[v].DisplayName(nil, false)).SetColor(game.Game.Players[v].Color.HtmlColor).SetOnClick(function()
-			func = function() 
-				showPendingOffers() 
-			end; 
-			confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() 
-				Close();
-				AddToHistory(void);
-				game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
-				showPlayerPage();
-			end, function() 
-				Close(); 
-				AddToHistory(void);
-				game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); 
-				showPendingOffers();
+	if Mod.PlayerGameData.PendingOffers and #Mod.PlayerGameData.PendingOffers > 0 then
+		CreateLabel(root).SetText("The following players have send you a peace offer").SetColor(colors.TextColor);
+		for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
+			CreateButton(root).SetText(game.Game.Players[v].DisplayName(nil, false)).SetColor(game.Game.Players[v].Color.HtmlColor).SetOnClick(function()
+				confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() 
+					Close();
+					AddToHistory(void);
+					game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
+					showPlayerPage();
+				end, function() 
+					Close(); 
+					AddToHistory(void);
+					game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); 
+					showPendingOffers();
+				end);
 			end);
-		end);
+		end
+	else
+		CreateLabel(root).SetText("You have no pending peace offers at the moment").SetColor(colors.TextColor);
 	end
 end
 
