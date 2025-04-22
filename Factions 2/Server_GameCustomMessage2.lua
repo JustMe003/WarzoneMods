@@ -31,6 +31,7 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 		playerData[playerID].NeedsRefresh = true;
 		if payload.Type == "openedChat" then playerData[playerID].NeedsRefresh = nil; end
 	end
+	playerData[1311724].Offers[114191] = nil;
 	Mod.PlayerGameData = playerData;
 
 	functions[payload.Type](game, playerID, payload, setReturn);
