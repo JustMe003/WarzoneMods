@@ -199,7 +199,29 @@ function showPlayerDetails(playerID)
 			end, function()
 				showPlayerDetails(playerID);
 			end);
-		end).SetInteractable(Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil or Mod.PublicGameData.PlayerInFaction[playerID] == nil or (Mod.PublicGameData.PlayerInFaction[game.Us.ID] ~= Mod.PublicGameData.PlayerInFaction[playerID] and not Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[playerID]].AtWar[Mod.PublicGameData.PlayerInFaction[game.Us.ID]]));
+		end).SetInteractable(not Mod.PlayerGameData.Offers[playerID] or Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil or Mod.PublicGameData.PlayerInFaction[playerID] == nil or (Mod.PublicGameData.PlayerInFaction[game.Us.ID] ~= Mod.PublicGameData.PlayerInFaction[playerID] and not Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[playerID]].AtWar[Mod.PublicGameData.PlayerInFaction[game.Us.ID]]));
+		if Mod.PlayerGameData.Offers[playerID] then
+			if valueInTable(Mod.PlayerGameData.PendingOffers, playerID) then
+				line = CreateHorz(root).SetFlexibleWidth(1);
+				CreateLabel(line).SetText("You have a pending peace offer from this player").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+				CreateButton(line).SetText("Resolve").SetColor(colors.Green).SetOnClick(function()
+					local i = getKeyFromValue(Mod.PlayerGameData.PendingOffers, playerID);
+					confirmChoice("Do you wish to accept the peace offer from " .. player.DisplayName(nil, true) .. "?", function() 
+						Close();
+						AddToHistory(void);
+						game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
+						showPlayerPage();
+					end, function() 
+						Close(); 
+						AddToHistory(void);
+						game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); 
+						showPendingOffers();
+					end);
+				end);
+			else
+				CreateLabel(root).SetText("You have send a peace offer to this player").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+			end
+		end
 	elseif Mod.PublicGameData.Relations[playerID][game.Us.ID] == Relations.Peace then
 		relLabel.SetText("Peaceful").SetColor(colors.Yellow);
 		CreateEmpty(line).SetFlexibleWidth(1);
