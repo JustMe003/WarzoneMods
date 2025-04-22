@@ -544,7 +544,8 @@ function showFactionChat()
 		AddToHistory(void);
 		local payload = {
 			Type = "sendMessage",
-			Text = messageInput.GetText();
+			Text = messageInput.GetText(),
+			TimeStamp = game.Game.ServerTime
 		};
 		game.SendGameCustomMessage("Sending message...", payload, gameCustomMessageReturn);
 	end);
