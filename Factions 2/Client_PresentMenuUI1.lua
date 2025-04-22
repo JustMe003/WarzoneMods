@@ -644,7 +644,7 @@ function showHistory()
 			start = math.min(start, turn);
 		end
 
-		for i = start, game.Game.TurnNumber - 1 do
+		for i = game.Game.TurnNumber - 1, start, -1 do
 			local buttonLine = CreateHorz(root);
 			local line = CreateHorz(root);
 			CreateEmpty(line).SetMinWidth(20);
