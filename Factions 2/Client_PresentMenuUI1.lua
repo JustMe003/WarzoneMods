@@ -199,7 +199,7 @@ function showPlayerDetails(playerID)
 			end, function()
 				showPlayerDetails(playerID);
 			end);
-		end).SetInteractable(not Mod.PlayerGameData.Offers[playerID] or Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil or Mod.PublicGameData.PlayerInFaction[playerID] == nil or (Mod.PublicGameData.PlayerInFaction[game.Us.ID] ~= Mod.PublicGameData.PlayerInFaction[playerID] and not Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[playerID]].AtWar[Mod.PublicGameData.PlayerInFaction[game.Us.ID]]));
+		end).SetInteractable(not Mod.PlayerGameData.Offers[playerID] and (Mod.PublicGameData.PlayerInFaction[game.Us.ID] == nil or Mod.PublicGameData.PlayerInFaction[playerID] == nil or (Mod.PublicGameData.PlayerInFaction[game.Us.ID] ~= Mod.PublicGameData.PlayerInFaction[playerID] and not Mod.PublicGameData.Factions[Mod.PublicGameData.PlayerInFaction[playerID]].AtWar[Mod.PublicGameData.PlayerInFaction[game.Us.ID]])));
 		if Mod.PlayerGameData.Offers[playerID] then
 			if valueInTable(Mod.PlayerGameData.PendingOffers, playerID) then
 				line = CreateHorz(root).SetFlexibleWidth(1);
