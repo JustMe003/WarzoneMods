@@ -4,6 +4,9 @@ require("Util")
 ---@param settings GameSettings # Read-only GameSettings object
 ---@param alert fun(message: string) # When invoked, it will show a pop-up for the client with the message. It will also abort the game creation
 function Client_CreateGame(settings, alert)
+    if settings.CustomScenario == nil or not settings.AutomaticTerritoryDistribution then
+        alert("You must use the Advanced Card Distribution mod in a game using a custom scenario + automatic territory distribution. If you are not using a custom scenario or are using manual territory distribution, please remove the mod since it will use resources for nothing");
+    end
     local cardList = {};
     for _, card in pairs(settings.Cards) do
         if card.proxyType == "CardGameCustom" then
