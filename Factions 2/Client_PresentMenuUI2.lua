@@ -708,7 +708,7 @@ function showHistory()
 				end
 			end);
 			CreateEmpty(buttonLine).SetPreferredWidth(5);
-			CreateLabel(buttonLine).SetText(countEvents(eventsHistory[i]) " events");
+			CreateLabel(buttonLine).SetText(countEvents(eventsHistory[i]) .. " events");
 		end
 	end
 end
