@@ -449,6 +449,13 @@ function showFactionDetails(factionName)
 				local facRelLabel = CreateLabel(line);
 				if faction.AtWar[name] then
 					facRelLabel.SetText("Hostile").SetColor(colors.Red);
+					if faction.Offers[name] then
+						if valueInTable(faction.PendingOffers, name) then
+							CreateLabel(root).SetText("Your Faction has a pending peace offer from " .. name).SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+						else
+							CreateLabel(root).SetText("Your Faction has send " .. name .. " a peace offer").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+						end
+					end
 				else
 					facRelLabel.SetText("Peaceful").SetColor(colors.Yellow);
 				end
