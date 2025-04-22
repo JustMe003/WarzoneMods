@@ -451,11 +451,11 @@ function showFactionDetails(factionName)
 					facRelLabel.SetText("Hostile").SetColor(colors.Red);
 					if faction.Offers[name] then
 						local peaceStatusLine = CreateHorz(root).SetFlexibleWidth(1);
-						CreateEmpty(peaceStatusLine).SetFlexibleWidth(0.3);
+						CreateEmpty(peaceStatusLine).SetMinWidth(60);
 						if valueInTable(faction.PendingOffers, name) then
-							CreateLabel(peaceStatusLine).SetText("This Faction has a pending peace offer from " .. name).SetColor(colors.TextColor).SetFlexibleWidth(0.7).SetAlignment(WL.TextAlignmentOptions.Right);
+							CreateLabel(peaceStatusLine).SetText("This Faction has a pending peace offer from " .. name).SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
 						else
-							CreateLabel(peaceStatusLine).SetText("This Faction has send " .. name .. " a peace offer").SetColor(colors.TextColor).SetFlexibleWidth(0.7).SetAlignment(WL.TextAlignmentOptions.Right);
+							CreateLabel(peaceStatusLine).SetText("This Faction has send " .. name .. " a peace offer").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
 						end
 					end
 				else
