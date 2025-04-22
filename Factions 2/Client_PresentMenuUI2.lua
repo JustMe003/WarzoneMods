@@ -117,7 +117,7 @@ function showPlayerPage(root)
 	if #relations.Peace > 0 then
 		CreateLabel(root).SetText("You are at peace with the following players").SetColor(colors.TextColor);
 		for _, p in pairs(relations.Peace) do
-			CreateButton(root).SetText(p.DisplayName(nil, false)).SetColor(p.Color.HtmlColor).SetOnClick(function()
+			CreateButton(root).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function()
 				showPlayerDetails(p.ID);
 			end);
 		end
@@ -128,7 +128,7 @@ function showPlayerPage(root)
 	if #relations.Faction > 0 then
 		CreateLabel(root).SetText("You are in a Faction with the following players").SetColor(colors.TextColor);
 		for _, p in pairs(relations.Faction) do
-			CreateButton(root).SetText(p.DisplayName(nil, false)).SetColor(p.Color.HtmlColor).SetOnClick(function()
+			CreateButton(root).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function()
 				showPlayerDetails(p.ID);
 			end);
 		end
@@ -150,8 +150,8 @@ function showPendingOffers()
 	if Mod.PlayerGameData.PendingOffers and #Mod.PlayerGameData.PendingOffers > 0 then
 		CreateLabel(root).SetText("The following players have send you a peace offer").SetColor(colors.TextColor);
 		for i, v in pairs(Mod.PlayerGameData.PendingOffers) do
-			CreateButton(root).SetText(game.Game.Players[v].DisplayName(nil, false)).SetColor(game.Game.Players[v].Color.HtmlColor).SetOnClick(function()
-				confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, false) .. "?", function() 
+			CreateButton(root).SetText(game.Game.Players[v].DisplayName(nil, true)).SetColor(game.Game.Players[v].Color.HtmlColor).SetOnClick(function()
+				confirmChoice("Do you wish to accept the peace offer from " .. game.Game.Players[v].DisplayName(nil, true) .. "?", function() 
 					Close();
 					AddToHistory(void);
 					game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
@@ -184,7 +184,7 @@ function showPlayerDetails(playerID)
 	
 	line = CreateHorz(root).SetCenter(true).SetFlexibleWidth(1);
 	CreateLabel(line).SetText("Details of ").SetColor(colors.TextColor);
-	CreateButton(line).SetText(player.DisplayName(nil, false)).SetColor(player.Color.HtmlColor);
+	CreateButton(line).SetText(player.DisplayName(nil, true)).SetColor(player.Color.HtmlColor);
 	
 	CreateEmpty(root).SetPreferredHeight(10);
 
@@ -196,7 +196,7 @@ function showPlayerDetails(playerID)
 		relLabel.SetText("Hostile").SetColor(colors.OrangeRed);
 		CreateEmpty(line).SetFlexibleWidth(1);
 		relButton = CreateButton(line).SetText("Offer peace").SetColor(colors.Yellow).SetOnClick(function()
-			confirmChoice("Do you wish to send " .. game.Game.Players[playerID].DisplayName(nil, false) .. " a peace offer?", function()
+			confirmChoice("Do you wish to send " .. game.Game.Players[playerID].DisplayName(nil, true) .. " a peace offer?", function()
 				Close();
 				AddToHistory(void);
 				game.SendGameCustomMessage("Offering peace...", {Type="peaceOffer", Opponent=playerID}, gameCustomMessageReturn);
@@ -206,7 +206,21 @@ function showPlayerDetails(playerID)
 		end).SetInteractable(not Mod.PlayerGameData.Offers[playerID]);
 		if Mod.PlayerGameData.Offers[playerID] then
 			if valueInTable(Mod.PlayerGameData.PendingOffers, playerID) then
-				CreateLabel(root).SetText("You have a pending peace offer from this player").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+				line = CreateHorz(root).SetFlexibleWidth(1);
+				CreateLabel(line).SetText("You have a pending peace offer from this player").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
+				CreateButton(line).SetText("Resolve").SetColor(colors.Green).SetOnClick(function()
+					confirmChoice("Do you wish to accept the peace offer from " .. player.DisplayName(nil, true); .. "?", function() 
+						Close();
+						AddToHistory(void);
+						game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
+						showPlayerPage();
+					end, function() 
+						Close(); 
+						AddToHistory(void);
+						game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); 
+						showPendingOffers();
+					end);
+				end);
 			else
 				CreateLabel(root).SetText("You have send this player a peace offer").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
 			end
@@ -215,7 +229,7 @@ function showPlayerDetails(playerID)
 		relLabel.SetText("Peaceful").SetColor(colors.Yellow);
 		CreateEmpty(line).SetFlexibleWidth(1);
 		CreateButton(line).SetText("Declare war").SetColor(colors.Red).SetOnClick(function()
-			confirmChoice("Do you wish to go to war with " .. game.Game.Players[playerID].DisplayName(nil, false) .. "?", function()
+			confirmChoice("Do you wish to go to war with " .. game.Game.Players[playerID].DisplayName(nil, true) .. "?", function()
 				Close();
 				AddToHistory(void);
 				game.SendGameCustomMessage("Picking up the battle-axe", {Type="declareWar", Opponent=playerID}, gameCustomMessageReturn);
@@ -227,7 +241,7 @@ function showPlayerDetails(playerID)
 		relLabel.SetText("Faction member").SetColor(colors.Green);
 	end
 
-	CreateEmpty(root).SetPreferredHeight(5);
+	CreateEmpty(root).SetPreferredHeight(8);
 	local isFactionWar = false;
 	if Mod.PublicGameData.IsInFaction[playerID] then
 		CreateInfoButtonLine(root, function(l)
@@ -284,7 +298,7 @@ function viewPlayerRelations(playerID, root)
 		CreateLabel(root).SetText("This player is at war with the following players").SetColor(colors.TextColor);
 		for _, p in pairs(relations.War) do
 			local line = CreateHorz(root);
-			CreateButton(line).SetText(p.DisplayName(nil, false)).SetColor(p.Color.HtmlColor).SetOnClick(function()
+			CreateButton(line).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function()
 				showPlayerDetails(p.ID);
 			end).SetInteractable(p.ID ~= game.Us.ID);
 		end
@@ -295,7 +309,7 @@ function viewPlayerRelations(playerID, root)
 		CreateLabel(root).SetText("This player is in peace with the following players").SetColor(colors.TextColor);
 		for _, p in pairs(relations.Peace) do
 			local line = CreateHorz(root);
-			CreateButton(line).SetText(p.DisplayName(nil, false)).SetColor(p.Color.HtmlColor).SetOnClick(function()
+			CreateButton(line).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function()
 				showPlayerDetails(p.ID);
 			end).SetInteractable(p.ID ~= game.Us.ID);
 		end
@@ -306,7 +320,7 @@ function viewPlayerRelations(playerID, root)
 		CreateLabel(root).SetText("This player is in a Faction with the following players").SetColor(colors.TextColor);
 		for _, p in pairs(relations.Faction) do
 			local line = CreateHorz(root);
-			CreateButton(line).SetText(p.DisplayName(nil, false)).SetColor(p.Color.HtmlColor).SetOnClick(function()
+			CreateButton(line).SetText(p.DisplayName(nil, true)).SetColor(p.Color.HtmlColor).SetOnClick(function()
 				showPlayerDetails(p.ID);
 			end).SetInteractable(p.ID ~= game.Us.ID);
 		end
@@ -398,7 +412,7 @@ function showFactionDetails(factionName)
 		if Mod.PublicGameData.Factions[factionName].FactionLeader == game.Us.ID and v ~= game.Us.ID then
 			CreateEmpty(line).SetFlexibleWidth(1).SetPreferredWidth(20);
 			CreateButton(line).SetText("Kick").SetColor(colors.Red).SetOnClick(function()
-				confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, false) .. " from your faction?", function() 
+				confirmChoice("Do you really wish to kick " .. game.Game.Players[v].DisplayName(nil, true) .. " from your faction?", function() 
 					Close();
 					AddToHistory(void);
 					game.SendGameCustomMessage("Kicking player...", {Type="kickPlayer", Index=i, Player=v, Faction=factionName}, gameCustomMessageReturn);
@@ -407,7 +421,7 @@ function showFactionDetails(factionName)
 				end); 
 			end);
 			CreateButton(line).SetText("Promote").SetColor(colors.Orange).SetOnClick(function()
-				confirmChoice("Do you really wish to promote " .. game.Game.Players[v].DisplayName(nil, false) .. "? You will lose your role as faction leader", function() 
+				confirmChoice("Do you really wish to promote " .. game.Game.Players[v].DisplayName(nil, true) .. "? You will lose your role as faction leader", function() 
 					Close();
 					AddToHistory(void);
 					game.SendGameCustomMessage("Promoting player...", {Type="setFactionLeader", PlayerID=v, Faction=factionName}, gameCustomMessageReturn); 
@@ -864,7 +878,7 @@ function getSortedRelationLists(playerID)
 	end
 
 	local sortFunc = function(a, b)
-		return a.DisplayName(nil, true) < b.DisplayName(nil, false);
+		return a.DisplayName(nil, true) < b.DisplayName(nil, true);
 	end;
 
 	table.sort(t.War, sortFunc);
