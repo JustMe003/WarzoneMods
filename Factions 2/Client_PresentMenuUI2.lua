@@ -206,9 +206,9 @@ function showPlayerDetails(playerID)
 		end).SetInteractable(not Mod.PlayerGameData.Offers[playerID]);
 		if Mod.PlayerGameData.Offers[playerID] then
 			if valueInTable(Mod.PlayerGameData.PendingOffers, playerID) then
-				CreateLabel(root).SetText("You have a pending peace offer from this player").SetColor(colors.TextColor);
+				CreateLabel(root).SetText("You have a pending peace offer from this player").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
 			else
-				CreateLabel(root).SetText("You have send this player a peace offer").SetColor(colors.TextColor);
+				CreateLabel(root).SetText("You have send this player a peace offer").SetColor(colors.TextColor).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Right);
 			end
 		end
 	elseif Mod.PublicGameData.Relations[playerID][game.Us.ID] == Relations.Peace then
