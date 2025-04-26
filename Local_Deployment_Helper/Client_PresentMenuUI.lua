@@ -422,19 +422,24 @@ function AddOrdersConfirmes(inputs)
 					if bonus.OrderIndex ~= nil and inputs.DeployAllArmies then
 						local old = orders[bonus.OrderIndex];
 						table.remove(orders, bonus.OrderIndex);
-						table.insert(orders, bonus.OrderIndex, WL.GameOrderDeploy.Create(Game.Us.ID, old.NumArmies + bonus.NumArmies, old.DeployOn, false));
+						local num = old.NumArmies + bonus.NumArmies;
+						table.insert(orders, bonus.OrderIndex, WL.GameOrderDeploy.Create(Game.Us.ID, num, old.DeployOn, false));
 						deployMap[old.DeployOn] = deployMap[old.DeployOn] + bonus.NumArmies;
 					elseif inputs.AlwaysDeployInSingleTerrBonuses and isSingleTerrBonus(Game.Map.Bonuses[bonusID]) then
 						if bonus.OrderIndex == nil then
 							local terrID = getFirstTerritoryOfBonus(Game.Map.Bonuses[bonusID]);
-							table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, bonusMap[bonusID].NumArmies, terrID, false));
+							local num = bonusMap[bonusID].NumArmies;
+							table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, num, terrID, false));
 							deployMap[terrID] = bonusMap[bonusID].NumArmies;
 							orderListIndex = orderListIndex + 1;
+							annotations[old.DeployOn] = WL.TerritoryAnnotation.Create("+" .. num, 5);
 						else
 							local old = orders[bonus.OrderIndex];
+							local num = old.NumArmies + bonus.NumArmies;
 							table.remove(orders, bonus.OrderIndex);
-							table.insert(orders, bonus.OrderIndex, WL.GameOrderDeploy.Create(Game.Us.ID, old.NumArmies + bonus.NumArmies, old.DeployOn, false));
+							table.insert(orders, bonus.OrderIndex, WL.GameOrderDeploy.Create(Game.Us.ID, num, old.DeployOn, false));
 							deployMap[old.DeployOn] = deployMap[old.DeployOn] + bonus.NumArmies;
+							annotations[old.DeployOn] = WL.TerritoryAnnotation.Create("+" .. num, 5);
 						end
 					end
 				end
