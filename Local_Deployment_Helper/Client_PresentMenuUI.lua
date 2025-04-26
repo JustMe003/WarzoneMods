@@ -361,7 +361,6 @@ function AddOrdersConfirmes(inputs)
 	if not endOfList then
 		local order = orders[orderListIndex];
 		while orderIsBeforePhase(order, WL.TurnPhase.Purchase + 1) do
-			print(order.proxyType, orderListIndex);
 			if order.proxyType == "GameOrderCustom" and order.Payload == payload then
 				table.remove(orders, orderListIndex);
 			else
