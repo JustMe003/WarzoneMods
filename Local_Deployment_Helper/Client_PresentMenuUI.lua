@@ -208,7 +208,7 @@ end
 function addDeploysTurnOne()
 	local orders = Game.Orders;
 	if #orders > 0 then
-		UI.Alert("Remove all orders from your order list to use this");
+		UI.Alert("Remove all orders from your order list to deploy in every 1-territory bonus");
 		Close();
 		return;
 	end
@@ -312,7 +312,13 @@ function extraTransferOptions(vert, inputs)
 	setToPercentage = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.SetToPercentage).SetInteractable(Game.Settings.AllowPercentageAttacks);
 	CreateLabel(line).SetText("Make all transfers percentage orders").SetColor(colors.TextColor);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() UI.Alert("When checked all your transfers will be overwritten to 100% transfers. This will allow every army to be transferred, no matter the amount of armies") end);
+	CreateButton(line).SetText("?").SetColor(colors.Blue).SetOnClick(function() 
+		if Game.Settings.AllowPercentageAttacks then
+			UI.Alert("When checked all your transfers will be overwritten to 100% transfers. This will allow every army to be transferred, no matter the amount of armies");
+		else
+			UI.Alert("This option cannot be used in this game. To be able to use this option, the game creator must have enabled the \"Can attack by percentage\" setting"); 
+		end
+	end);
 	
 	local line = CreateHorz(root).SetFlexibleWidth(1);
 	moveUnmovedArmies = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.MoveUnmovedArmies);
