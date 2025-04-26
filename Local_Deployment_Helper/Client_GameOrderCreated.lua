@@ -2,7 +2,7 @@ local payload = "[LDH_V3]";
 
 function Client_GameOrderCreated(game, order, skipOrder)
     local orders = game.Orders;
-    local index = 0;
+    local index = 1;
     while index <= #orders do
         print(index, #orders);
         local o = orders[index];
