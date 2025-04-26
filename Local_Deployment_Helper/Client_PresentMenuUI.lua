@@ -399,7 +399,7 @@ function AddOrdersConfirmes(inputs)
 				if deployMap[terrID] == nil and territories[terrID].OwnerPlayerID == Game.Us.ID and previousBonusMap[bonusID] ~= nil and bonusMap[bonusID] ~= nil and bonusMap[bonusID].NumArmies > 0 then
 					local num = math.min(bonusMap[bonusID].NumArmies, order.NumArmies);
 					table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, num, terrID, false));
-					annotations[terrID] = WL.TerritoryAnnotation.Create("+" .. num, 10);
+					annotations[terrID] = WL.TerritoryAnnotation.Create("+" .. num, 5);
 					deployMap[terrID] = math.min(bonusMap[bonusID].NumArmies, order.NumArmies);
 					bonusMap[bonusID] = {
 						NumArmies = math.max(0, bonusMap[bonusID].NumArmies - order.NumArmies),
