@@ -391,7 +391,7 @@ function AddOrdersConfirmes(inputs)
 							OrderIndex = orderListIndex;
 						}
 					end
-					orderListIndex = orderListIndex + 1;
+					orderListIndex = orderListIndex - 1;
 					order = orders[orderListIndex];
 				end
 			end
