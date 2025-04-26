@@ -31,7 +31,11 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	if game.Us.IsAIOrHumanTurnedIntoAI then return; end
 
 	if gameRefreshAction == nil then
-		showMenu();
+		if game.Game.TurnNumber == 1 then
+			showTurnOneMenu();
+		else
+			showHelperMenu();
+		end
 	else
 		if gameRefreshAction == "SetAction" then
 			setAction();
@@ -47,23 +51,24 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	end
 end
 
+function showTurnOneMenu()
+	DestroyWindow();
+	SetWindow("showTurnOneMenu");
+
+	CreateLabel(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Welcome to the Local Deployment Helper mod!").SetColor(colors.Lime);
+
+	CreateEmpty(vert).SetPreferredHeight(10);
+
+	CreateLabel(vert).SetText("This mod will add back your orders from the previous turn. Since at this moment there is no previous turn, the mod cannot add your past orders just yet. However, you can use this mod to automatically deploy all the necessary armies in every bonus with only 1 territory.").SetColor(colors.TextColor);
+	CreateButton(CreateHorz(vert).SetFlexibleWidth(1).SetCenter(true)).SetText("Deploy").SetColor(colors.Green).SetOnClick(addDeploysTurnOne);
+end
+
 function showMenu()
 	DestroyWindow();
 	SetWindow("showMenu");
-	local line = CreateHorz(vert).SetFlexibleWidth(1);
-	CreateButton(line).SetText("Go to deploy/transfer helper").SetColor(colors.Green).SetOnClick(showHelperMenu);
-	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
-		UI.Alert("Here you can let the mod automatically add deploy / transfer orders");
-	end)
-	if Game.Game.TurnNumber == 1 then
-		line = CreateHorz(vert).SetFlexibleWidth(1);
-		CreateButton(line).SetText("Deploy in all bonuses of size 1").SetColor(colors.Purple).SetOnClick(addDeploysTurnOne);
-		CreateEmpty(line).SetFlexibleWidth(1);
-		CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
-			UI.Alert("This automatically deploys in all bonuses that consist out of only 1 territory");
-		end)
-	end
+
+	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showHelperMenu);
+	
 	line = CreateHorz(vert).SetFlexibleWidth(1);
 	CreateButton(line).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(setAction);
 	CreateEmpty(line).SetFlexibleWidth(1);
@@ -208,8 +213,9 @@ function addDeploysTurnOne()
 		return;
 	end
 
+	local bonuses = Game.Map.Bonuses;
 	for bonusID, worth in pairs(Game.Us.Income(0, Game.LatestStanding, false, false).BonusRestrictions) do
-		if #Game.Map.Bonuses[bonusID].Territories == 1 then
+		if #bonuses[bonusID].Territories == 1 then
 			table.insert(orders, WL.GameOrderDeploy.Create(Game.Us.ID, worth, Game.Map.Bonuses[bonusID].Territories[1], false));
 		end
 	end
@@ -220,16 +226,20 @@ end
 function showHelperMenu(setToDefaultMode)
 	setToDefaultMode = setToDefaultMode or false;
 	if Game.Game.TurnNumber < 2 and not setToDefaultMode then
-		UI.Alert("You cannot use the helper function in the distribution phase or in turn 1");
+		UI.Alert("You cannot use the mod in the distribution turn");
 		Close();
 		return;
 	end
+
 	DestroyWindow();
 	SetWindow("showHelperMenu");
+	
 	if setToDefaultMode then
 		CreateLabel(vert).SetText("Choose the default options you want. If you have set the mod to automatically re-add the orders back, the default options will always be used.\n\nYou can always change the options at any time in the mod menu")
 	end
+	
 	local inputs = getInputs();
+	
 	local line = CreateHorz(vert).SetFlexibleWidth(1);
 	addDeployments = CreateCheckBox(line).SetText(" ").SetIsChecked(inputs.AddDeployments);
 	CreateLabel(line).SetText("Add deployments").SetColor(colors.TextColor);
@@ -249,18 +259,13 @@ function showHelperMenu(setToDefaultMode)
 	if inputs.AddTransfers then extraTransferOptions(transferVert, inputs); end
 
 	CreateEmpty(vert).SetPreferredHeight(5);
+	line = CreateHorz(vert).SetFlexibleWidth(1).SetCenter(true);
 	if setToDefaultMode then
-		local line = CreateHorz(vert).SetFlexibleWidth(1);
-		CreateEmpty(line).SetFlexibleWidth(0.5);
 		CreateButton(line).SetText("Set Default").SetColor(colors.Green).SetOnClick(function() local data = getUsedInputs(inputs); Game.SendGameCustomMessage("Saving inputs...", {Type = "SaveInputs", Data = data}, function(t) end); Close(); end)
 		CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showMenu);
-		CreateEmpty(line).SetFlexibleWidth(0.5);
 	else
-		local line = CreateHorz(vert).SetFlexibleWidth(1);
-		CreateEmpty(line).SetFlexibleWidth(0.5);
 		addOrdersButton = CreateButton(line).SetText("Add orders").SetColor(colors.Green).SetOnClick(function() local data = getUsedInputs(inputs); AddOrdersHelper(data); end);
-		addOrdersButton = CreateButton(line).SetText("Cancel").SetColor(colors.Red).SetOnClick(showMenu);
-		CreateEmpty(line).SetFlexibleWidth(0.5);
+		addOrdersButton = CreateButton(line).SetText("Settings").SetColor(colors.Red).SetOnClick(showMenu);
 	end
 end
 
