@@ -1,6 +1,8 @@
 require("UI");
 require("Timer");
 
+local payload = "[LDH_V3]";
+
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, gameRefreshAction)
 	if not UI.IsDestroyed(vert) and Close ~= nil then
 		Close();
@@ -347,6 +349,8 @@ function AddOrdersConfirmes(inputs)
 		return;
 	end
 
+	local annotations = {};
+
 	local orders = Game.Orders;
 	local territories = Game.LatestStanding.Territories;
 	local orderListIndex, endOfList;
@@ -393,7 +397,9 @@ function AddOrdersConfirmes(inputs)
 				local terrID = order.DeployOn;
 				local bonusID = territoryToBonusMap[terrID];
 				if deployMap[terrID] == nil and territories[terrID].OwnerPlayerID == Game.Us.ID and previousBonusMap[bonusID] ~= nil and bonusMap[bonusID] ~= nil and bonusMap[bonusID].NumArmies > 0 then
-					table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, math.min(bonusMap[bonusID].NumArmies, order.NumArmies), terrID, false));
+					local num = math.min(bonusMap[bonusID].NumArmies, order.NumArmies);
+					table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, num, terrID, false));
+					annotations[terrID] = WL.TerritoryAnnotation.Create("+" .. num, 10);
 					deployMap[terrID] = math.min(bonusMap[bonusID].NumArmies, order.NumArmies);
 					bonusMap[bonusID] = {
 						NumArmies = math.max(0, bonusMap[bonusID].NumArmies - order.NumArmies),
@@ -562,6 +568,9 @@ function AddOrdersConfirmes(inputs)
 		end
 		
 	end
+	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload);
+	custom.TerritoryAnnotationsOpt = annotations;
+	table.insert(orders, 1, custom);
 	Game.Orders = copyTable(orders);
 	Timer.Stop("Total");
 
