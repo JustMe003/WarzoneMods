@@ -16,7 +16,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	LastTurn = {};   --we get the orders from History later
 	Distribution = {};	
 	
-	setMaxSize(500, 500);
+	setMaxSize(500, 530);
 	
 	vert = GetRoot();
 	vert.SetFlexibleWidth(1);
