@@ -593,7 +593,7 @@ function AddOrdersConfirmes(inputs)
     if customOrderIndex == 0 then customOrderIndex = #orders + 1; end
 	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.ReceiveCards);
 	custom.TerritoryAnnotationsOpt = annotations;
-	table.insert(orders, customOrderIndex, custom);
+	-- table.insert(orders, customOrderIndex, custom);
 	Game.Orders = copyTable(orders);
 	Timer.Stop("Total");
 
