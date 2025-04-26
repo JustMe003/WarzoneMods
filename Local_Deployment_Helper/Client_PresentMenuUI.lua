@@ -371,6 +371,9 @@ function AddOrdersConfirmes(inputs)
 		Timer.Start("Current orders");
 		if not endOfList then
 			local order = orders[orderListIndex];
+			while orderIsBeforePhase(order, WL.TurnPhase.Purchase + 1) do
+				
+			end
 			while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
 				if order.proxyType == "GameOrderDeploy" then
 					local terrID = order.DeployOn;
@@ -573,9 +576,17 @@ function AddOrdersConfirmes(inputs)
 		end
 		
 	end
-	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload);
+	local customOrderIndex = 0;
+    for i, order in pairs(orders) do
+        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Purchase then
+            customOrderIndex = i;
+            break;
+        end
+    end
+    if customOrderIndex == 0 then customOrderIndex = #orders + 1; end
+	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, WL.TurnPhase.Purchase);
 	custom.TerritoryAnnotationsOpt = annotations;
-	table.insert(orders, 1, custom);
+	table.insert(orders, customOrderIndex, custom);
 	Game.Orders = copyTable(orders);
 	Timer.Stop("Total");
 
