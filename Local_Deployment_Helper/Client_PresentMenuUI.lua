@@ -221,6 +221,7 @@ function addDeploysTurnOne()
 	end
 	
 	Game.Orders = orders;
+	Close();
 end
 
 function showHelperMenu(setToDefaultMode)
