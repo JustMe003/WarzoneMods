@@ -356,6 +356,19 @@ function AddOrdersConfirmes(inputs)
 	local orderListIndex, endOfList;
 	local deployMap = nil;
 	local pastOrderListIndex;
+
+	orderListIndex, endOfList = getFirstOrderOfPhase(orders, WL.TurnPhase.Purchase);
+	if not endOfList then
+		local order = orders[orderListIndex];
+		while orderIsBeforePhase(order, WL.TurnPhase.Purchase + 1) do
+			if order.proxyType == "GameOrderCustom" and order.Payload == payload then
+				table.remove(orders, orderListIndex);
+			else
+				orderListIndex = orderListIndex + 1;
+			end
+			order = orders[orderListIndex];
+		end
+	end
 	
 	Timer.Start("Total");
 	if inputs.AddDeployments then
@@ -371,9 +384,6 @@ function AddOrdersConfirmes(inputs)
 		Timer.Start("Current orders");
 		if not endOfList then
 			local order = orders[orderListIndex];
-			while orderIsBeforePhase(order, WL.TurnPhase.Purchase + 1) do
-				
-			end
 			while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
 				if order.proxyType == "GameOrderDeploy" then
 					local terrID = order.DeployOn;
