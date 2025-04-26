@@ -432,7 +432,7 @@ function AddOrdersConfirmes(inputs)
 							table.insert(orders, orderListIndex, WL.GameOrderDeploy.Create(Game.Us.ID, num, terrID, false));
 							deployMap[terrID] = bonusMap[bonusID].NumArmies;
 							orderListIndex = orderListIndex + 1;
-							annotations[old.DeployOn] = WL.TerritoryAnnotation.Create("+" .. num, 5);
+							annotations[terrID] = WL.TerritoryAnnotation.Create("+" .. num, 5);
 						else
 							local old = orders[bonus.OrderIndex];
 							local num = old.NumArmies + bonus.NumArmies;
