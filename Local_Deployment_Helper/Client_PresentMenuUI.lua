@@ -12,10 +12,6 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	colors = GetColors();
 	Game = game; --global variables
 	Close = close;
-
-	for i, v in pairs(WL.TurnPhase) do
-		print(i, v);
-	end
 	
 	LastTurn = {};   --we get the orders from History later
 	Distribution = {};	
@@ -359,18 +355,16 @@ function AddOrdersConfirmes(inputs)
 	local deployMap = nil;
 	local pastOrderListIndex;
 
-	orderListIndex, endOfList = getFirstOrderOfPhase(orders, WL.TurnPhase.Purchase);
-	if not endOfList then
-		local order = orders[orderListIndex];
-		while orderIsBeforePhase(order, WL.TurnPhase.Purchase + 1) do
-			if order.proxyType == "GameOrderCustom" and order.Payload == payload then
-				table.remove(orders, orderListIndex);
-			else
-				orderListIndex = orderListIndex + 1;
-			end
-			order = orders[orderListIndex];
-		end
-	end
+	local index = #orders;
+	while index > 0 do
+        local o = orders[index];
+        if o.OccursInPhase and o.OccursInPhase < WL.TurnPhase.ReceiveCards then break; end 
+        if o.proxyType == "GameOrderCustom" and o.Payload == payload then
+            table.remove(orders, index);
+        else
+            index = index + 1;
+        end
+    end
 	
 	Timer.Start("Total");
 	if inputs.AddDeployments then
@@ -589,14 +583,15 @@ function AddOrdersConfirmes(inputs)
 		
 	end
 	local customOrderIndex = 0;
-    for i, order in pairs(orders) do
-        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Purchase then
+    for i = #orders, 1, -1 do
+		local order = orders[i];
+        if order.OccursInPhase ~= nil and order.OccursInPhase < WL.TurnPhase.ReceiveCards then
             customOrderIndex = i;
             break;
         end
     end
     if customOrderIndex == 0 then customOrderIndex = #orders + 1; end
-	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.Purchase);
+	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.ReceiveCards);
 	custom.TerritoryAnnotationsOpt = annotations;
 	table.insert(orders, customOrderIndex, custom);
 	Game.Orders = copyTable(orders);
