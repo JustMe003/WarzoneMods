@@ -13,7 +13,9 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	Game = game; --global variables
 	Close = close;
 
-
+	for i, v in pairs(WL.TurnPhase) do
+		print(i, v);
+	end
 	
 	LastTurn = {};   --we get the orders from History later
 	Distribution = {};	
