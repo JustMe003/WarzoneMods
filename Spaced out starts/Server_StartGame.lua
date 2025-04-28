@@ -32,6 +32,9 @@ function Server_StartGame(game, standing)
             -- X - - X - - X - - X      (4 * 2 - 2 = 6)
             if getTableLength(available) < #claimed * spaceBetweenStarts - spaceBetweenStarts then
                 print("Not enough territories!");
+                local data = Mod.PublicGameData;
+                data.NumOfEndingConflicts = countConflicts();
+                Mod.PublicGameData = data;    
                 break;
             end
             
