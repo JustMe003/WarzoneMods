@@ -6,5 +6,5 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     end
     local vert = UI.CreateVerticalLayoutGroup(rootParent);
     print(Mod.PublicGameData.NumOfStartingConflicts, Mod.PublicGameData.NumOfEndingConflicts);
-    UI.CreateLabel(vert).SetText("At the start of the game, warzone has auto distributed the territories to the players. However, there were " .. Mod.PublicGameData.NumOfStartingConflicts or 0 .. " territories that were " .. Mod.Settings.SpaceBetweenStarts .. " or less territories apart from eachother. This mod has been able to reduce this number to " .. Mod.PublicGameData.NumOfEndingConflicts or 0 .. " territories").SetColor("#DDDDDD");
+    UI.CreateLabel(vert).SetText("At the start of the game, warzone has auto distributed the territories to the players. However, there were " .. (Mod.PublicGameData.NumOfStartingConflicts or 0) .. " territories that were " .. Mod.Settings.SpaceBetweenStarts .. " or less territories apart from eachother. This mod has been able to reduce this number to " .. (Mod.PublicGameData.NumOfEndingConflicts or 0) .. " territories").SetColor("#DDDDDD");
 end
