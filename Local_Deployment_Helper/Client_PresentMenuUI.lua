@@ -531,7 +531,7 @@ function AddOrdersConfirmes(inputs)
 						table.insert(transferMap[from], { To = to, OrderIndex = orderListIndex });
 						print(((inputs.SetToPercentage or order.ByPercent) and "%") or "");
 						if annotations[from] then
-							annotations[from] = WL.TerritoryAnnotation.Create(annotations[from] .. ", " .. armies.NumArmies)
+							annotations[from] = WL.TerritoryAnnotation.Create(annotations[from].Message .. ", " .. armies.NumArmies)
 						end
 						orderListIndex = orderListIndex + 1;
 						if new.ByPercent then
