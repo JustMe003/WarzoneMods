@@ -34,7 +34,7 @@ function Server_StartGame(game, standing)
                 print("Not enough territories!");
                 local data = Mod.PublicGameData;
                 data.NotEnoughTerritories = true;
-                Mod.PublicGameData = data;    
+                Mod.PublicGameData = data; 
                 break;
             end
             
