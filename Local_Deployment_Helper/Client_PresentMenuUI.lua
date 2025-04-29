@@ -362,9 +362,8 @@ function AddOrdersConfirmes(inputs)
         if o.OccursInPhase and o.OccursInPhase < WL.TurnPhase.ReceiveCards then break; end 
         if o.proxyType == "GameOrderCustom" and o.Payload == payload then
             table.remove(orders, index);
-        else
-            index = index - 1;
         end
+		index = index - 1;
     end
 	
 	Timer.Start("Total");
