@@ -614,6 +614,7 @@ function getFirstOrderOfPhase(orders, phase, index)
 	while orderIsBeforePhase(orders[index], phase) do
 		index = index + 1;
 	end
+	print(index);
 	return index, #orders < index;
 end
 
