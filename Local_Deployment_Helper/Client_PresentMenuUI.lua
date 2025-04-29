@@ -379,7 +379,6 @@ function AddOrdersConfirmes(inputs)
 		-- Update bonusMap with deploy orders already in the order list
 		Timer.Start("Current orders");
 		if not endOfList then
-			print(orderListIndex);
 			local order = orders[orderListIndex];
 			while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
 				if order.proxyType == "GameOrderDeploy" then
@@ -398,7 +397,6 @@ function AddOrdersConfirmes(inputs)
 			end
 		end
 		Timer.Stop("Current orders");
-		print(orderListIndex);
 		
 		Timer.Start("Past orders");
 		pastOrderListIndex = getFirstOrderOfPhase(LastTurn, WL.TurnPhase.Deploys);
@@ -418,8 +416,6 @@ function AddOrdersConfirmes(inputs)
 						OrderIndex = orderListIndex;
 					}
 					orderListIndex = orderListIndex + 1;
-
-					
 				end
 			end
 			pastOrderListIndex = pastOrderListIndex + 1;
@@ -582,7 +578,7 @@ function AddOrdersConfirmes(inputs)
 							end
 							table.remove(orders, transferMap[terrID][index].OrderIndex);
 							table.insert(orders, transferMap[terrID][index].OrderIndex, WL.GameOrderAttackTransfer.Create(Game.Us.ID, terrID, transferMap[terrID][index].To, old.AttackTransfer, old.ByPercent, newArmies, old.AttackTeammates));
-							
+							annotations[terrID] = WL.TerritoryAnnotation.Create(string.gsub(annotations[terrID].Message, "-%d+", newArmies.NumArmies, 1));
 						end
 					end
 				end
