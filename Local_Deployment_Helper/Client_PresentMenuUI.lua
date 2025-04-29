@@ -375,12 +375,11 @@ function AddOrdersConfirmes(inputs)
 		local previousBonusMap = createBonusMap(LastStanding);
 		deployMap = {};
 		Timer.Stop("Init");
-
-		print(orderListIndex);
 		
 		-- Update bonusMap with deploy orders already in the order list
 		Timer.Start("Current orders");
 		if not endOfList then
+			print(orderListIndex);
 			local order = orders[orderListIndex];
 			while orderIsBeforePhase(order, WL.TurnPhase.Deploys + 1) do
 				if order.proxyType == "GameOrderDeploy" then
@@ -393,7 +392,7 @@ function AddOrdersConfirmes(inputs)
 							OrderIndex = orderListIndex;
 						}
 					end
-					orderListIndex = orderListIndex - 1;
+					orderListIndex = orderListIndex + 1;
 					order = orders[orderListIndex];
 				end
 			end
@@ -614,7 +613,6 @@ function getFirstOrderOfPhase(orders, phase, index)
 	while orderIsBeforePhase(orders[index], phase) do
 		index = index + 1;
 	end
-	print(index);
 	return index, #orders < index;
 end
 
