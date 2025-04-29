@@ -362,7 +362,7 @@ function AddOrdersConfirmes(inputs)
         if o.proxyType == "GameOrderCustom" and o.Payload == payload then
             table.remove(orders, index);
         else
-            index = index + 1;
+            index = index - 1;
         end
     end
 	
