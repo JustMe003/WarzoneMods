@@ -358,6 +358,7 @@ function AddOrdersConfirmes(inputs)
 	local index = #orders;
 	while index > 0 do
         local o = orders[index];
+		print(o);
         if o.OccursInPhase and o.OccursInPhase < WL.TurnPhase.ReceiveCards then break; end 
         if o.proxyType == "GameOrderCustom" and o.Payload == payload then
             table.remove(orders, index);
