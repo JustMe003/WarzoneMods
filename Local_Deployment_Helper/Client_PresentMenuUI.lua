@@ -375,6 +375,8 @@ function AddOrdersConfirmes(inputs)
 		local previousBonusMap = createBonusMap(LastStanding);
 		deployMap = {};
 		Timer.Stop("Init");
+
+		print(orderListIndex);
 		
 		-- Update bonusMap with deploy orders already in the order list
 		Timer.Start("Current orders");
@@ -397,6 +399,7 @@ function AddOrdersConfirmes(inputs)
 			end
 		end
 		Timer.Stop("Current orders");
+		print(orderListIndex);
 		
 		Timer.Start("Past orders");
 		pastOrderListIndex = getFirstOrderOfPhase(LastTurn, WL.TurnPhase.Deploys);
