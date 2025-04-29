@@ -529,9 +529,10 @@ function AddOrdersConfirmes(inputs)
 						table.insert(orders, new);
 						transferMap[from] = transferMap[from] or {};
 						table.insert(transferMap[from], { To = to, OrderIndex = orderListIndex });
-						print(((inputs.SetToPercentage or order.ByPercent) and "%") or "");
 						if annotations[from] then
-							annotations[from] = WL.TerritoryAnnotation.Create(annotations[from].Message .. ", " .. armies.NumArmies)
+							annotations[from] = WL.TerritoryAnnotation.Create(annotations[from].Message .. ", -" .. armies.NumArmies .. (((inputs.SetToPercentage or order.ByPercent) and "%") or ""));
+						else
+							annotations[from] = WL.TerritoryAnnotation.Create("-" .. armies.NumArmies .. (((inputs.SetToPercentage or order.ByPercent) and "%") or ""));
 						end
 						orderListIndex = orderListIndex + 1;
 						if new.ByPercent then
