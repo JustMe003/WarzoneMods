@@ -579,6 +579,7 @@ function AddOrdersConfirmes(inputs)
 							end
 							table.remove(orders, transferMap[terrID][index].OrderIndex);
 							table.insert(orders, transferMap[terrID][index].OrderIndex, WL.GameOrderAttackTransfer.Create(Game.Us.ID, terrID, transferMap[terrID][index].To, old.AttackTransfer, old.ByPercent, newArmies, old.AttackTeammates));
+							
 						end
 					end
 				end
