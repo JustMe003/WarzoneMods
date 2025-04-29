@@ -578,9 +578,11 @@ function AddOrdersConfirmes(inputs)
 							end
 							table.remove(orders, transferMap[terrID][index].OrderIndex);
 							table.insert(orders, transferMap[terrID][index].OrderIndex, WL.GameOrderAttackTransfer.Create(Game.Us.ID, terrID, transferMap[terrID][index].To, old.AttackTransfer, old.ByPercent, newArmies, old.AttackTeammates));
-							print(annotations[terrID], newArmies);
-							annotations[terrID] = WL.TerritoryAnnotation.Create(string.gsub(annotations[terrID].Message, "-%d+", "-" .. newArmies.NumArmies, 1), 5);
-							print(annotations[terrID].Message);
+							if annotations[terrID] then
+								annotations[terrID] = WL.TerritoryAnnotation.Create(string.gsub(annotations[terrID].Message, "-%d+", "-" .. newArmies.NumArmies, 1), 5);
+							else
+								annotations[terrID] = WL.TerritoryAnnotation.Create("-" .. newArmies.NumArmies, 5);
+							end
 						end
 					end
 				end
