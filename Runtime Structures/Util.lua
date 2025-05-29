@@ -36,5 +36,5 @@ function getGroupText(group)
     else
         s = s .. "[no structure selected] "
     end
-    return s .. " will be added every " .. group.Interval .. " turns";;
+    return s .. " will be added every " .. group.Interval .. " turns";
 end
