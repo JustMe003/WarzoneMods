@@ -20,7 +20,7 @@ function showMain()
     local root = CreateWindow(CreateVert(GlobalRoot)).SetCenter(true);
 
     local line = CreateHorz(root).SetCenter(true);
-    CreateLabel(root).SetText("Note that structures can only be added to neutral territories").SetColor(textColor);
+    CreateLabel(root).SetText("Note that structures will only be added to a random neutral territory").SetColor(textColor);
     CreateButton(line).SetText("Create Group").SetColor(colors.Green).SetOnClick(createNewGroup);
 
     CreateEmpty(root).SetPreferredHeight(10);
