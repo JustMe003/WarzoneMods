@@ -1,11 +1,10 @@
-print(1);
 require("UI");
-print(2);
 require("Util");
-print(3);
+
 ---Client_PresentConfigureUI hook
 ---@param rootParent RootParent
 function Client_PresentConfigureUI(rootParent)
+    print(1)
     Init();
     GlobalRoot = CreateVert(rootParent).SetCenter(true);
     colors = GetColors();
@@ -14,7 +13,9 @@ function Client_PresentConfigureUI(rootParent)
 
     config = Mod.Settings.Config or {};
 
+    print(2)
     showMain();
+    print(3)
 end
 
 function showMain()
