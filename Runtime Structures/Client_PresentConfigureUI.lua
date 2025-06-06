@@ -4,7 +4,6 @@ require("Util");
 ---Client_PresentConfigureUI hook
 ---@param rootParent RootParent
 function Client_PresentConfigureUI(rootParent)
-    print(1)
     Init();
     GlobalRoot = CreateVert(rootParent).SetCenter(true);
     colors = GetColors();
@@ -13,9 +12,7 @@ function Client_PresentConfigureUI(rootParent)
 
     config = Mod.Settings.Config or {};
 
-    print(2)
     showMain();
-    print(3)
 end
 
 function showMain()
@@ -23,7 +20,7 @@ function showMain()
     local root = CreateWindow(CreateVert(GlobalRoot)).SetCenter(true);
 
     local line = CreateHorz(root).SetCenter(true);
-    CreateLabel(root).SetText("Note that structures will only be added to a random neutral territory").SetColor(textColor);
+    CreateLabel(root).SetText("Note that structures will only be added to a random neutral territory").SetColor(colors.TextColor);
     CreateButton(line).SetText("Create Group").SetColor(colors.Green).SetOnClick(createNewGroup);
 
     CreateEmpty(root).SetPreferredHeight(10);
