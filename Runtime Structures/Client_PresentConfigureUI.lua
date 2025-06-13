@@ -116,7 +116,7 @@ function selectStructure(group)
     local root = CreateWindow(CreateVert(GlobalRoot));
 
     for name, structID in pairs(WL.StructureType) do
-        if not valueInTable(group.Structures, structID) then
+        if not valueInTable(group.Structures, structID) and name ~= "ToString" then
             CreateButton(root).SetText(name).SetColor(colors.Blue).SetOnClick(function()
                 table.insert(group.Structures, structID);
                 showGroupSettings(group);
