@@ -2,7 +2,6 @@ function getStructuresMap()
     local t = {};
     for i, v in pairs(WL.StructureType) do
 	if i ~= "ToString" then
-	    print(i, v);
             t[v] = readableString(i);
 	end
     end
