@@ -1,2 +1,2 @@
-Prevents AI's from playing cards, configurable for all cards AI's play (except reinforcement). 
+Prevents AI's from playing cards, configurable for all cards AI's play (except reinforcement). Compatible with mods that automatically play cards.
 Note that the default settings do not allow AI's to play any card
