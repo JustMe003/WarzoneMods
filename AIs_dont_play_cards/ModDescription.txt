@@ -1,2 +1,2 @@
-Prevends AI's from playing cards, configurable for all (except reinforcement) cards AI's play. 
-Note that checking a checkbox allows an AI to play that card
+Prevents AI's from playing cards, configurable for all cards AI's play (except reinforcement). 
+Note that the default settings do not allow AI's to play any card
