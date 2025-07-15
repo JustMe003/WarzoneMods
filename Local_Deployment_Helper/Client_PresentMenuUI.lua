@@ -361,7 +361,7 @@ function AddOrdersConfirmes(inputs)
         if o.OccursInPhase and o.OccursInPhase < WL.TurnPhase.ReceiveCards then break; end 
         if o.proxyType == "GameOrderCustom" and o.Payload == payload then
             table.remove(orders, index);
-			-- annotations = o.TerritoryAnnotationsOpt;
+			annotations = o.TerritoryAnnotationsOpt;
         end
 		index = index - 1;
     end
@@ -601,7 +601,7 @@ function AddOrdersConfirmes(inputs)
     if customOrderIndex == 0 then customOrderIndex = #orders + 1; end
 	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.ReceiveCards);
 	custom.TerritoryAnnotationsOpt = annotations;
-	-- table.insert(orders, customOrderIndex + 1, custom);
+	table.insert(orders, customOrderIndex + 1, custom);
 	Game.Orders = copyTable(orders);
 	Timer.Stop("Total");
 
