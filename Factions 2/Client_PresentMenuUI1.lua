@@ -815,6 +815,7 @@ function getSortedRelationLists(playerID)
 	local sortFunc = function(a, b)
 		return a.DisplayName(nil, true) < b.DisplayName(nil, false);
 	end;
+	print(sortFunc);
 
 	table.sort(t.War, sortFunc);
 	table.sort(t.Peace, sortFunc);
