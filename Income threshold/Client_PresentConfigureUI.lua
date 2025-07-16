@@ -30,9 +30,6 @@ end
 function showOptions()
 	win = "showOptions";
 	destroyWindow(getCurrentWindow());
-	if windowExists(win) then
-		resetWindow(win);
-	end
 	window(win);
 	vert = newVerticalGroup("vert", "root");
 	local line = newHorizontalGroup(win .. "line1", vert);
