@@ -5,11 +5,6 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 		close();
 		return; 
 	end
-	if game.Game.TurnNumber == 1 then
-		UI.Alert("To avoid annoyance you should commit for the first turn. All orders will be skipped");
-		close();
-		return;
-	end
 	setMaxSize(420, 350);
 	Game = game;
 	init(rootParent);
