@@ -138,6 +138,9 @@ function showGeneralSettings()
 end
 
 function saveGeneralSettings(inputs)
+    for _, input in pairs(inputs) do
+        if not canReadObject(input) then return; end
+    end
     genSet.HitTerritoriesMultTimes = inputs.HitTerritoriesMultTimes.GetIsChecked();
     genSet.ZeroDamageTotalDestruction = inputs.ZeroDamageTotalDestruction.GetIsChecked();
     genSet.UseSuprise = inputs.UseSuprise.GetIsChecked();
@@ -364,6 +367,9 @@ function showRepeatInputs(data, inputs, vert, box)
 end
 
 function saveNormalInputs(data, inputs)
+    for _, input in pairs(inputs) do
+        if not canReadObject(input) then return; end
+    end
     data.ChanceofFalling = inputs.ChanceofFalling.GetValue();
     data.NotEveryTurn = inputs.NotEveryTurn.GetIsChecked();
     if data.NotEveryTurn then
@@ -373,6 +379,9 @@ function saveNormalInputs(data, inputs)
 end
 
 function saveSpecialInputs(data, inputs)
+    for _, input in pairs(inputs) do
+        if not canReadObject(input) then return; end
+    end
     data.RandomTurn = inputs.RandomTurn.GetIsChecked();
     if data.RandomTurn then
         saveRandomTurn(data, inputs);

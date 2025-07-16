@@ -101,3 +101,17 @@ function valueInTable_JAD(t, v)
 	end
 	return false;
 end
+
+---Helper function that returns true if you can write/read this object
+---@param obj UIObject
+---@return boolean # True if the object is not yet destroyed, false if the object is destroyed and therefore cannot be read
+---```
+--- function saveSettings(checkbox)
+---     if canReadObject(checkbox) then     -- Checking whether we can read the object
+---         Mod.Settings.SomeSetting = checkbox.GetIsChecked();
+---     end
+--- end
+---```
+function canReadObject(obj)
+    return not UI.IsDestroyed(obj);
+end
