@@ -27,6 +27,8 @@ end
 
 function selectTerritories()
 	local win = "select";
+	destroyWindow(getCurrentWindow());
+	window(win);
 	local vert = newVerticalGroup("vert", "root");
 	local line = newHorizontalGroup(win .. "line1", vert);
 	newButton("chooseStructure", line, "Choose structure", pickStructure, "Orange");
