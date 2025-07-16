@@ -94,6 +94,7 @@ function DestroyWindow(win, bool)
 			DestroyWindow(subWin, true);
 		end
 	end
+    print(win)
 end
 
 function valueInTable_JAD(t, v)
