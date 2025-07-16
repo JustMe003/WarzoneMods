@@ -81,12 +81,10 @@ function AddObjectToWindowAndReturnObject(obj)
 end
 
 function DestroyWindow(win, bool)
-    print(win)
 	win = win or currentWindow_JAD;
 	bool = bool or false;
 	if windows_JAD[win] ~= nil then
 		for _, obj in pairs(windows_JAD[win]) do
-            print(obj);
 			UI.Destroy(obj);
 		end
 	end
@@ -95,6 +93,7 @@ function DestroyWindow(win, bool)
 			DestroyWindow(subWin, true);
 		end
 	end
+    windows_JAD[win] = {};
 end
 
 function valueInTable_JAD(t, v)
