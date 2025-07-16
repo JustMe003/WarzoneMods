@@ -286,8 +286,10 @@ function GetPreviousWindow()
         end
         HistoryIndex_JAD = HistoryIndex_JAD - 1;
     end
-    History_JAD[HistoryIndex_JAD].Function(table.unpack(History_JAD[HistoryIndex_JAD].Arguments));
-    HistoryIndex_JAD = HistoryIndex_JAD - 1;
+    if History_JAD[HistoryIndex_JAD] ~= nil then
+        History_JAD[HistoryIndex_JAD].Function(table.unpack(History_JAD[HistoryIndex_JAD].Arguments));
+        HistoryIndex_JAD = HistoryIndex_JAD - 1;
+    end
 end
 
 ---Call the next entry in the history
