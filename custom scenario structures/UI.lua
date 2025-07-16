@@ -68,7 +68,7 @@ function window(win)
 		windows[win] = {};
 		currentWindow = win;
 	else
-		print("Window " .. win .. " already exists! Please restore or reset the window");
+		-- print("Window " .. win .. " already exists! Please restore or reset the window");
 	end
 end
 
