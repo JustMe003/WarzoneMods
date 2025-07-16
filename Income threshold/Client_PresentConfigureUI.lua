@@ -126,4 +126,5 @@ function saveInputs()
 		print("F");
 		inputF = getValue(iF);
 	end
+	print("finished");
 end
