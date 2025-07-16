@@ -27,28 +27,19 @@ end
 
 function selectTerritories()
 	local win = "select";
-	print(win);
-	if windowExists(win) then
-		destroyWindow(getCurrentWindow())
-		restoreWindow(win)
+	local vert = newVerticalGroup("vert", "root");
+	local line = newHorizontalGroup(win .. "line1", vert);
+	newButton("chooseStructure", line, "Choose structure", pickStructure, "Orange");
+	newButton("Remove all selected", line, "Remove all selected", function() terrList = {}; updateTerrLabel(); end, "Red");
+	selectModeSwitch = newButton("selectMode", vert, "Select mode: " .. selectMode, function() if selectMode == "bonus" then selectMode = "territory"; else selectMode = "bonus"; end updateText(selectModeSwitch, "Select mode: " .. selectMode); getClick(); end, "Green");
+	line = newHorizontalGroup(win .. "line2", vert);
+	rem = newCheckbox("reverse", line, " ", false);
+	newLabel("reverseLabel", line, "Remove structure instead of adding it", "Lime");
+	terrLabel = newLabel("terrLabel", vert, str);
+	if #terrList > 0 then
 		updateTerrLabel();
-	else
-		destroyWindow(getCurrentWindow());
-		window(win);
-		local vert = newVerticalGroup("vert", "root");
-		local line = newHorizontalGroup(win .. "line1", vert);
-		newButton("chooseStructure", line, "Choose structure", pickStructure, "Orange");
-		newButton("Remove all selected", line, "Remove all selected", function() terrList = {}; updateTerrLabel(); end, "Red");
-		selectModeSwitch = newButton("selectMode", vert, "Select mode: " .. selectMode, function() if selectMode == "bonus" then selectMode = "territory"; else selectMode = "bonus"; end updateText(selectModeSwitch, "Select mode: " .. selectMode); getClick(); end, "Green");
-		line = newHorizontalGroup(win .. "line2", vert);
-		rem = newCheckbox("reverse", line, " ", false);
-		newLabel("reverseLabel", line, "Remove structure instead of adding it", "Lime");
-		terrLabel = newLabel("terrLabel", vert, str);
-		if #terrList > 0 then
-			updateTerrLabel();
-		end
-		getClick();
 	end
+	getClick();
 end
 function getClick();
 	if selectMode == "bonus" then
