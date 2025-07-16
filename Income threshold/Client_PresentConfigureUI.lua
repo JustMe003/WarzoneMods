@@ -89,14 +89,17 @@ end
 function showCurve()
 	for k = 0, 8 do
 		local i = getPower(2, k);
-		local choice_table =
-		{
-			["a.x + c"] = getValue(iA) * i,
-			["a.x² + b.x + c"] = getValue(iA) * i^2 + getValue(iB) * i,
-			["a.x² + d.x.√x + b.x + e.√x + c"] = getValue(iA) * i^2 + getValue(iD) * i^1.5 + getValue(iB) * i + getValue(iE) * i^0.5,
-			["a.x² + d.x.√x + b.x + e.√x+ f.ln(x) + c"] = getValue(iA) * i^2 + getValue(iD) * i^1.5 + getValue(iB) * i + getValue(iE) * i^0.5 + getValue(iF) *  math.log(i),
-		}
-		newLabel(win .. i, vert, "after " .. i .. " turns:   " .. math.ceil(choice_table[formula] + getValue(iC)));
+		value = getValue(iC);
+		if formula == "a.x + c" then
+			value = value + getValue(iA) * i;
+		elseif formula == "a.x² + b.x + c" then
+			value = value + getValue(iA) * i^2 + getValue(iB) * i;
+		elseif formula == "a.x² + d.x.√x + b.x + e.√x + c" then
+			value = value + getValue(iA) * i^2 + getValue(iD) * i^1.5 + getValue(iB) * i + getValue(iE) * i^0.5;
+		else
+			value = value + getValue(iA) * i^2 + getValue(iD) * i^1.5 + getValue(iB) * i + getValue(iE) * i^0.5 + getValue(iF) *  math.log(i);
+		end
+		newLabel(win .. i, vert, "after " .. i .. " turns:   " .. math.ceil(value));
 	end
 end
 
