@@ -1,9 +1,9 @@
 require("UI");
 require("util");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, Game, close)
-	if Game.Us == nil then UI.Alert("Only players playing this game can use the mod menu"); close(); end
-	if Game.Game.TurnNumber ~= 1 then UI.Alert("You can only use this in the first turn (not the distribution turn)"); close(); end
-	if Mod.Settings.AutoDistributeUnits then UI.Alert("The link units got auto distributed at the start of the game, you are not allowed to place any yourself"); close(); end
+	if Game.Us == nil then UI.Alert("Only players playing this game can use the mod menu"); close(); return; end
+	if Game.Game.TurnNumber ~= 1 then UI.Alert("You can only use this in the first turn (not the distribution turn)"); close(); return; end
+	if Mod.Settings.AutoDistributeUnits then UI.Alert("The link units got auto distributed at the start of the game, you are not allowed to place any yourself"); close(); return; end
 	Init(rootParent);
 	colors = GetColors();
 	game = Game;
