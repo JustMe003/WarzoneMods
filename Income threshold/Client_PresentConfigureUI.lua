@@ -104,18 +104,26 @@ function showCurve()
 end
 
 function saveInputs()
+	print("A");
 	inputA = getValue(iA);
+	print("C");
 	inputC = getValue(iC);
 	if formula ~= "a.x + c" then
+		print("B");
 		inputB = getValue(iB);
 	end
 	if formula == "a.x² + d.x.√x + b.x + e.√x + c" then
+		print("D");
 		inputD = getValue(iD);
+		print("E");
 		inputE = getValue(iE);
 	end
 	if formula == "a.x² + d.x.√x + b.x + e.√x+ f.ln(x) + c" then
+		print("D");
 		inputD = getValue(iD);
+		print("E");
 		inputE = getValue(iE);
+		print("F");
 		inputF = getValue(iF);
 	end
 end
