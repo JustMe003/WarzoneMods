@@ -27,6 +27,7 @@ end
 
 function selectTerritories()
 	local win = "select";
+	print(win);
 	if windowExists(win) then
 		destroyWindow(getCurrentWindow())
 		restoreWindow(win)
@@ -163,3 +164,6 @@ function getDataString()
 	end
 end
 
+function canReadObject(obj)
+    return not UI.IsDestroyed(obj);
+end
