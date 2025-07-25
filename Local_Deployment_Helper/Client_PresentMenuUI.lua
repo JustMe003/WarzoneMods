@@ -2,6 +2,7 @@ require("UI");
 require("Timer");
 
 local payload = "[LDH_V3]";
+local SetMaxSize;
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, gameRefreshAction)
 	if not UI.IsDestroyed(vert) and Close ~= nil then
@@ -15,8 +16,12 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	
 	LastTurn = {};   --we get the orders from History later
 	Distribution = {};	
-	
-	setMaxSize(500, 530);
+	SetMaxSize = function(w, h)
+		w = w or 500;
+		h = h or 530;
+		setMaxSize(w, h)
+	end
+	SetMaxSize();
 	
 	vert = GetRoot();
 	vert.SetFlexibleWidth(1);
@@ -49,6 +54,28 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 			return CreateLabel(vert).SetText("Something went wrong: Refresh action not recognized").SetColor(colors["Orange Red"])
 		end
 	end
+end
+
+function showMain()
+	DestroyWindow();
+	SetWindow("showMain");
+
+	SetMaxSize(300, 250);
+
+	local line = CreateHorz(vert).SetCenter(true);
+	CreateButton(line).SetText("Add Orders").SetColor(colors.Green).SetOnClick(function()
+		AddOrdersHelper(getInputs());
+	end);
+	CreateEmpty(line).SetMinWidth(10);
+	CreateButton(line).SetText("Configure").SetColor(colors.Orange).SetOnClick(function()
+		SetMaxSize();
+		showMenu();
+	end);
+
+	CreateEmpty(vert).SetMinHeight(5);
+
+	line = CreateHorz(vert).SetFlexibleWidth(1);
+	CreateButton(line).SetText("Show ")
 end
 
 function showTurnOneMenu()
