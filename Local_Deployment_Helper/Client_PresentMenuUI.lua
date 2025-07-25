@@ -389,6 +389,7 @@ function removeAnnotations()
         end
 		index = index - 1;
     end
+	Game.Orders = orders;
 	return annotations;
 end
 
@@ -649,7 +650,7 @@ function AddOrdersConfirmes(inputs)
 		
 	end
 	Game.Orders = copyTable(orders);
-	addAnnotationOrder();
+	addAnnotationOrder(annotations);
 	if not tableIsEmpty(annotations) then lastAnnotations = annotations; end
 	Timer.Stop("Total");
 end
