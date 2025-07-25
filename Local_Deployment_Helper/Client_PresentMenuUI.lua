@@ -379,6 +379,7 @@ end
 function removeAnnotations()
 	local orders = Game.Orders;
 	local index = #orders;
+	local annotations;
 	while index > 0 do
         local o = orders[index];
         if o.OccursInPhase and o.OccursInPhase < WL.TurnPhase.ReceiveCards then break; end 
@@ -388,9 +389,11 @@ function removeAnnotations()
         end
 		index = index - 1;
     end
+	return annotations;
 end
 
-function addAnnotationOrder()
+function addAnnotationOrder(annotations)
+	annotations = annotations or lastAnnotations or {};
 	local orders = Game.Orders;
 	local customOrderIndex = 0;
     for i = #orders, 1, -1 do
@@ -413,8 +416,7 @@ function AddOrdersConfirmes(inputs)
 		return;
 	end
 
-	local annotations = {};
-	removeAnnotations();
+	local annotations = removeAnnotations() or {};
 
 	local orders = Game.Orders;
 	local territories = Game.LatestStanding.Territories;
