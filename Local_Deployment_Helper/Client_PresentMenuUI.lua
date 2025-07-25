@@ -3,6 +3,7 @@ require("Timer");
 
 local payload = "[LDH_V3]";
 local SetMaxSize;
+local lastAnnotations
 
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, gameRefreshAction)
 	if not UI.IsDestroyed(vert) and Close ~= nil then
@@ -75,7 +76,14 @@ function showMain()
 	CreateEmpty(vert).SetMinHeight(5);
 
 	line = CreateHorz(vert).SetFlexibleWidth(1);
-	CreateButton(line).SetText("Show ")
+	CreateButton(line).SetText("Show Added Orders").SetColor(colors.Brown).SetInteractable(lastAnnotations ~= nil).SetOnClick(function()
+		removeAnnotations();
+		addAnnotationOrder();
+	end);
+	CreateEmpty(line).SetFlexibleWidth(1);
+	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function ()
+		UI.Alert("When adding back orders, the mod will also create a 'shadow' order with annotations. These annotations represent what orders the mod has added: Deploments and transfers, how many armies are involved, etc. These are shown directly after adding back your orders, and disappear immediately when you create a new order. The button on the left will add these annotations back, until you again create a new order")
+	end);
 end
 
 function showTurnOneMenu()
@@ -368,20 +376,8 @@ function extraTransferOptions(vert, inputs)
 	SetWindow(currentWindow);
 end
 
-function AddOrdersConfirmes(inputs)	
-	if Game.Us.HasCommittedOrders == true then
-		UI.Alert("You need to uncommit first");
-		return;
-	end
-
-	local annotations = {};
-
+function removeAnnotations()
 	local orders = Game.Orders;
-	local territories = Game.LatestStanding.Territories;
-	local orderListIndex, endOfList;
-	local deployMap = nil;
-	local pastOrderListIndex;
-
 	local index = #orders;
 	while index > 0 do
         local o = orders[index];
@@ -392,6 +388,38 @@ function AddOrdersConfirmes(inputs)
         end
 		index = index - 1;
     end
+end
+
+function addAnnotationOrder()
+	local orders = Game.Orders;
+	local customOrderIndex = 0;
+    for i = #orders, 1, -1 do
+		local order = orders[i];
+        if order.OccursInPhase ~= nil and order.OccursInPhase < WL.TurnPhase.ReceiveCards then
+            customOrderIndex = i;
+            break;
+        end
+    end
+    if customOrderIndex == 0 then customOrderIndex = #orders + 1; end
+	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.ReceiveCards);
+	custom.TerritoryAnnotationsOpt = annotations;
+	table.insert(orders, customOrderIndex + 1, custom);
+end
+
+function AddOrdersConfirmes(inputs)	
+	if Game.Us.HasCommittedOrders == true then
+		UI.Alert("You need to uncommit first");
+		return;
+	end
+
+	local annotations = {};
+	removeAnnotations();
+
+	local orders = Game.Orders;
+	local territories = Game.LatestStanding.Territories;
+	local orderListIndex, endOfList;
+	local deployMap = nil;
+	local pastOrderListIndex;
 	
 	Timer.Start("Total");
 	if inputs.AddDeployments then
@@ -617,22 +645,11 @@ function AddOrdersConfirmes(inputs)
 		end
 		
 	end
-	local customOrderIndex = 0;
-    for i = #orders, 1, -1 do
-		local order = orders[i];
-        if order.OccursInPhase ~= nil and order.OccursInPhase < WL.TurnPhase.ReceiveCards then
-            customOrderIndex = i;
-            break;
-        end
-    end
-    if customOrderIndex == 0 then customOrderIndex = #orders + 1; end
-	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.ReceiveCards);
-	custom.TerritoryAnnotationsOpt = annotations;
-	table.insert(orders, customOrderIndex + 1, custom);
 	Game.Orders = copyTable(orders);
+	addAnnotationOrder();
+	if not tableIsEmpty(annotations) then lastAnnotations = annotations; end
 	Timer.Stop("Total");
-
-end;
+end
 
 function getFirstOrderOfPhase(orders, phase, index)
 	index = index or 1;
