@@ -102,7 +102,7 @@ function showMenu()
 	DestroyWindow();
 	SetWindow("showMenu");
 
-	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showHelperMenu);
+	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 	
 	line = CreateHorz(vert).SetFlexibleWidth(1);
 	CreateButton(line).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(setAction);
