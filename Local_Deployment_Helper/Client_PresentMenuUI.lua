@@ -40,7 +40,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 		if game.Game.TurnNumber == 1 then
 			showTurnOneMenu();
 		else
-			showHelperMenu();
+			showMain();
 		end
 	else
 		if gameRefreshAction == "SetAction" then
