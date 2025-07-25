@@ -61,7 +61,7 @@ function showMain()
 	DestroyWindow();
 	SetWindow("showMain");
 
-	SetMaxSize(300, 250);
+	SetMaxSize(300, 200);
 
 	local line = CreateHorz(vert).SetCenter(true);
 	CreateButton(line).SetText("Add Orders").SetColor(colors.Green).SetOnClick(function()
