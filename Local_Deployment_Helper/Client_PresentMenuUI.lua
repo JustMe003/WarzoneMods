@@ -404,6 +404,7 @@ function addAnnotationOrder()
 	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.ReceiveCards);
 	custom.TerritoryAnnotationsOpt = annotations;
 	table.insert(orders, customOrderIndex + 1, custom);
+	Game.Orders = orders;
 end
 
 function AddOrdersConfirmes(inputs)	
