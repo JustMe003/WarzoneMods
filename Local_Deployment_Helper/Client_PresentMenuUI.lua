@@ -794,3 +794,8 @@ function getInputs()
 		return Mod.PlayerGameData.SavedInputs;
 	end
 end
+
+function tableIsEmpty(t)
+	for _, _ in pairs(t) do return false; end
+	return true;
+end
