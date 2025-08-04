@@ -402,6 +402,7 @@ function addAnnotationOrder(annotations)
 		local order = orders[i];
         if order.OccursInPhase ~= nil and order.OccursInPhase < WL.TurnPhase.ReceiveCards then
             customOrderIndex = i;
+			print("reached!")
             break;
         end
     end
