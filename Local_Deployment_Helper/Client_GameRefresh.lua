@@ -30,6 +30,7 @@ function Client_GameRefresh(game)
                     -- game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "AutoDeploy"); end);
                     -- addedOrders = true;
                     AddOrdersHelper(getInputs());
+                    addedOrders = true;
                 elseif Mod.PlayerGameData.NewTurnAction == "ShowWindow" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "ShowWindow"); end);
                     addedOrders = true;
