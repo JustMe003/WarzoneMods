@@ -18,15 +18,18 @@ function Client_GameRefresh(game)
     if (lastTurn == nil or lastTurn < game.Game.TurnNumber) and game.Game.TurnNumber > 1 then
         if Mod.PlayerGameData.NewTurnAction == nil and (UI.IsDestroyed == nil or UI.IsDestroyed(vert)) then
             -- game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetAction"); end);
-            game.SendGameCustomMessage("Updating mod...", {Type = "PickOption", DoNothing = true}, function(t) end);
+            game.SendGameCustomMessage("Updating mod...", {Type = "PickOption", AutoDeploy = true}, function(t) end);
         else
             -- print("orderlist is empty: " .. tostring(tableIsEmpty(game.Orders)));
             if tableIsEmpty(game.Orders) then
-                if Mod.PlayerGameData.NewTurnAction == "AutoDeploy" and Mod.PlayerGameData.SavedInputs == nil then
-                    game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetDefaultOptions"); end);
-                elseif Mod.PlayerGameData.NewTurnAction == "AutoDeploy" then
-                    game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "AutoDeploy"); end);
-                    addedOrders = true;
+                -- if Mod.PlayerGameData.NewTurnAction == "AutoDeploy" and Mod.PlayerGameData.SavedInputs == nil then
+                --     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "SetDefaultOptions"); end);
+                
+                -- elseif Mod.PlayerGameData.NewTurnAction == "AutoDeploy" then
+                if Mod.PlayerGameData.NewTurnAction == "AutoDeploy" then
+                    -- game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "AutoDeploy"); end);
+                    -- addedOrders = true;
+                    AddOrdersHelper(getInputs());
                 elseif Mod.PlayerGameData.NewTurnAction == "ShowWindow" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "ShowWindow"); end);
                     addedOrders = true;
