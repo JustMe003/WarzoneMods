@@ -29,7 +29,8 @@ function Client_GameRefresh(game)
                 if Mod.PlayerGameData.NewTurnAction == "AutoDeploy" then
                     -- game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "AutoDeploy"); end);
                     -- addedOrders = true;
-                    AddOrdersHelper(getInputs(game));
+                    Game = game;
+                    AddOrdersHelper(getInputs());
                     addedOrders = true;
                 elseif Mod.PlayerGameData.NewTurnAction == "ShowWindow" then
                     game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, "ShowWindow"); end);
