@@ -408,6 +408,9 @@ function addAnnotationOrder(annotations)
     if customOrderIndex == 0 then customOrderIndex = #orders + 1; end
 	local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Additions by the LD Helper mod", payload, {}, WL.TurnPhase.ReceiveCards);
 	custom.TerritoryAnnotationsOpt = annotations;
+	print(orders);
+	print(#orders);
+	print(customOrderIndex, customOrderIndex + 1);
 	table.insert(orders, customOrderIndex + 1, custom);
 	Game.Orders = orders;
 end
