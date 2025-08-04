@@ -756,7 +756,7 @@ function isTeamMate(p)
 end
 
 function AddOrdersHelper(inputs)
-	Close();
+	if Close then Close() end;
 	standing = Game.LatestStanding;
 
 	if Game.Game.TurnNumber - 2 >= 0 then
