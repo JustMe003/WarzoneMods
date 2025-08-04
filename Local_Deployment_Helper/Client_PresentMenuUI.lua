@@ -791,9 +791,10 @@ function getUsedInputs(inputs)
 	return t;
 end
 
-function getInputs()
+function getInputs(game)
+	game = game or Game;
 	if Mod.PlayerGameData.SavedInputs == nil then
-		return {AddDeployments = true, AlwaysDeployInSingleTerrBonuses = not Game.Settings.CommerceGame, DeployAllArmies = not Game.Settings.CommerceGame; AddTransfers = true, SetToPercentage = false, RemoveZeroTransfers = true, MoveUnmovedArmies = true, MoveSpecialUnits = false };
+		return {AddDeployments = true, AlwaysDeployInSingleTerrBonuses = not game.Settings.CommerceGame, DeployAllArmies = not game.Settings.CommerceGame; AddTransfers = true, SetToPercentage = false, RemoveZeroTransfers = true, MoveUnmovedArmies = true, MoveSpecialUnits = false };
 	else
 		return Mod.PlayerGameData.SavedInputs;
 	end
