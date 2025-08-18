@@ -25,7 +25,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	end
 	SetMaxSize();
 	
-	vert = GetRoot().SetFlexibleWidth(1);
+	vert = GetRoot();
 	vert.SetFlexibleWidth(1);
 	
 	if (not game.Settings.LocalDeployments) then
@@ -64,7 +64,7 @@ function showMain()
 
 	SetMaxSize(300, 210);
 
-	local line = CreateHorz(vert).SetCenter(true);
+	local line = CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1);
 	CreateButton(line).SetText("Add Orders").SetColor(colors.Green).SetOnClick(function()
 		AddOrdersHelper(getInputs());
 	end);
@@ -76,7 +76,7 @@ function showMain()
 
 	CreateEmpty(vert).SetMinHeight(5);
 
-	line = CreateHorz(vert)
+	line = CreateHorz(vert).SetFlexibleWidth(1);
 	CreateButton(line).SetText("Show Added Orders").SetColor(colors.Brown).SetInteractable(lastAnnotations ~= nil).SetOnClick(function()
 		removeAnnotations();
 		addAnnotationOrder();
