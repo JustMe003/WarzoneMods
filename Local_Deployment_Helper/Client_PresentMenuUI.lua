@@ -212,14 +212,14 @@ function showCredits()
 	CreateEmpty(line).SetFlexibleWidth(0.5);
 	CreateEmpty(vert).SetPreferredHeight(5);
 	CreateLabel(vert).SetText("And of course thanks to all players who have helped me along the way, suggesting features or pointing out some bugs")
-	CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
+	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
 end
 
 function showChangeLog()
 	DestroyWindow();
 	SetWindow("ChangeLog");
 	
-	CreateButton(vert).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
+	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showMenu);
 	CreateEmpty(vert).SetPreferredHeight(10);
 	
 	CreateLabel(vert).SetText("Welcome to the new version of the Local Deployment Helper. Although there is not much new to see at first glance, this mod has gotten a complete rework behind the scenes. This version contains some bug fixes left in the previous implementation, and generally improved the speed at which the mod needs to run. In addition, some features were removed and some added, such as compatibility for special units. You can read more about them in the full changelog below").SetColor(colors.TextColor);
