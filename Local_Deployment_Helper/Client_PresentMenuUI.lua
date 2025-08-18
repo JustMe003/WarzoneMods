@@ -103,18 +103,18 @@ function showMenu()
 	DestroyWindow();
 	SetWindow("showMenu");
 
-	SetMaxSize(400, 400);
+	SetMaxSize(400, 340);
 
 	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 	
 	line = CreateHorz(vert).SetFlexibleWidth(1);
-	CreateButton(line).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(function() SetMaxSize(); setAction(); end);
+	CreateButton(line).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(setAction);
 	CreateEmpty(line).SetFlexibleWidth(1);
 	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
 		UI.Alert("Configure what the mod will do when you open the game after a turn has advanced");
 	end)
 	line = CreateHorz(vert).SetFlexibleWidth(1);
-	CreateButton(line).SetText("Set default settings").SetColor(colors.Lime).SetOnClick(function() SetMaxSize(); showHelperMenu(true); end)
+	CreateButton(line).SetText("Set default settings").SetColor(colors.Lime).SetOnClick(function() showHelperMenu(true); end)
 	CreateEmpty(line).SetFlexibleWidth(1);
 	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
 		UI.Alert("Configure the default options when adding your past deploy/transfer order");
@@ -132,6 +132,7 @@ end
 function setAction()
 	DestroyWindow();
 	SetWindow("setAction");
+	SetMaxSize(nil, 400);
 
 	CreateLabel(vert).SetText("Welcome to the Local Deployment Helper mod! You can use this mod to copy your deployment + transfer orders back from previous turn, deploy your armies, and more to ease the process of creating your orders. The mod can do this completely on its own, or can open a dialog like this for you to pick whatever option you want, or do nothing at all. For more information, check the [?] of the option you are interested in.").SetColor(colors.TextColor);
 	local currentAction = Mod.PlayerGameData.NewTurnAction or "DoNothing";
@@ -171,6 +172,7 @@ end
 function showCredits()
 	DestroyWindow();
 	SetWindow("showCredits");
+	SetMaxSize(400, 420)
 	permanentLabel1 = CreateHorz(vert).SetFlexibleWidth(1);
 	permanentLabel2 = CreateHorz(vert).SetFlexibleWidth(1);
 	CreateEmpty(permanentLabel1).SetFlexibleWidth(0.5);
@@ -272,6 +274,7 @@ function showHelperMenu(setToDefaultMode)
 
 	DestroyWindow();
 	SetWindow("showHelperMenu");
+	SetMaxSize();
 	
 	if setToDefaultMode then
 		CreateLabel(vert).SetText("Choose the default options you want. If you have set the mod to automatically re-add the orders back, the default options will always be used.\n\nYou can always change the options at any time in the mod menu")
