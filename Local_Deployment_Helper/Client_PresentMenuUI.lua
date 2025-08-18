@@ -418,7 +418,7 @@ function addAnnotationOrder(annotations)
 end
 
 function AddOrdersConfirmes(inputs)
-	print("Order list length: ", #Game.Orders);
+	print("Start Order list length: ", #Game.Orders);
 	if Game.Us.HasCommittedOrders == true then
 		UI.Alert("You need to uncommit first");
 		return;
@@ -660,7 +660,7 @@ function AddOrdersConfirmes(inputs)
 	addAnnotationOrder(annotations);
 	if not tableIsEmpty(annotations) then lastAnnotations = annotations; end
 	-- Timer.Stop("Total");
-	print("Orders list length:", #Game.Orders);
+	print("End Order list length:", #Game.Orders);
 end
 
 function getFirstOrderOfPhase(orders, phase, index)
