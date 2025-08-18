@@ -103,19 +103,21 @@ function showMenu()
 	DestroyWindow();
 	SetWindow("showMenu");
 
+	SetMaxSize(400, 300);
+
 	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 	
 	line = CreateHorz(vert).SetFlexibleWidth(1);
-	CreateButton(line).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(setAction);
+	CreateButton(line).SetText("Automatic order creation").SetColor(colors.Yellow).SetOnClick(function() SetMaxSize(); setAction(); end);
 	CreateEmpty(line).SetFlexibleWidth(1);
 	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
-		UI.Alert("Set what the mod will do when you open the game after a turn has advanced");
+		UI.Alert("Configure what the mod will do when you open the game after a turn has advanced");
 	end)
 	line = CreateHorz(vert).SetFlexibleWidth(1);
-	CreateButton(line).SetText("Set default settings").SetColor(colors.Lime).SetOnClick(function() showHelperMenu(true) end)
+	CreateButton(line).SetText("Set default settings").SetColor(colors.Lime).SetOnClick(function() SetMaxSize(); showHelperMenu(true); end)
 	CreateEmpty(line).SetFlexibleWidth(1);
 	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function()
-		UI.Alert("Set the default options when adding your past deploy/transfer order");
+		UI.Alert("Configure the default options when adding your past deploy/transfer order");
 	end)
 	CreateButton(vert).SetText("Credits").SetColor(colors.Orange).SetOnClick(showCredits);
 
@@ -123,7 +125,7 @@ function showMenu()
 
 	line = CreateHorizontalLayoutGroup(vert).SetFlexibleWidth(1);
 	CreateEmpty(line).SetFlexibleWidth(1);
-	CreateLabel(line).SetText("Version: ").SetColor("#777777");
+	CreateLabel(line).SetText("Version: ").SetColor("#888888");
 	CreateLabel(line).SetText(Mod.PublicGameData.ModVersion or "2.0");
 end
 
