@@ -417,7 +417,8 @@ function addAnnotationOrder(annotations)
 	Game.Orders = orders;
 end
 
-function AddOrdersConfirmes(inputs)	
+function AddOrdersConfirmes(inputs)
+	print("Order list length: ", #Game.Orders);
 	if Game.Us.HasCommittedOrders == true then
 		UI.Alert("You need to uncommit first");
 		return;
@@ -557,7 +558,7 @@ function AddOrdersConfirmes(inputs)
 		
 		-- Timer.Start("Past transfer");
 		pastOrderListIndex = getFirstOrderOfPhase(LastTurn, WL.TurnPhase.Attacks, pastOrderListIndex or 1);
-		print("Start transfers order index: " .. pastOrderListIndex);
+		-- print("Start transfers order index: " .. pastOrderListIndex);
 		local order = LastTurn[pastOrderListIndex];
 		while orderIsBeforePhase(order, WL.TurnPhase.Attacks + 1) do
 			if order.proxyType == "GameOrderAttackTransfer" and order.PlayerID == Game.Us.ID then
@@ -610,7 +611,7 @@ function AddOrdersConfirmes(inputs)
 			pastOrderListIndex = pastOrderListIndex + 1;
 			order = LastTurn[pastOrderListIndex];
 		end
-		print("end transfers order index: " .. pastOrderListIndex);
+		-- print("end transfers order index: " .. pastOrderListIndex);
 		-- Timer.Stop("Past transfer");
 		
 		
@@ -659,6 +660,7 @@ function AddOrdersConfirmes(inputs)
 	addAnnotationOrder(annotations);
 	if not tableIsEmpty(annotations) then lastAnnotations = annotations; end
 	-- Timer.Stop("Total");
+	print("Orders list length:", #Game.Orders);
 end
 
 function getFirstOrderOfPhase(orders, phase, index)
