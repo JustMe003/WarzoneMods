@@ -25,7 +25,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 	end
 	SetMaxSize();
 	
-	vert = GetRoot();
+	vert = GetRoot().SetFlexibleWidth(1);
 	vert.SetFlexibleWidth(1);
 	
 	if (not game.Settings.LocalDeployments) then
