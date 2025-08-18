@@ -76,12 +76,12 @@ function showMain()
 
 	CreateEmpty(vert).SetMinHeight(5);
 
-	line = CreateHorz(vert).SetFlexibleWidth(1);
+	line = CreateHorz(vert).SetFlexibleWidth(1).SetCenter(true);
 	CreateButton(line).SetText("Show Added Orders").SetColor(colors.Brown).SetInteractable(lastAnnotations ~= nil).SetOnClick(function()
 		removeAnnotations();
 		addAnnotationOrder();
 	end);
-	CreateEmpty(line).SetMinWidth(10);
+	CreateEmpty(line).SetMinWidth(3);
 	CreateButton(line).SetText("?").SetColor(colors["Royal Blue"]).SetOnClick(function ()
 		UI.Alert("When adding back orders, the mod will also create a 'shadow' order with annotations. These annotations represent what orders the mod has added: Deploments and transfers, how many armies are involved, etc. These are shown directly after adding back your orders, and disappear immediately when you create a new order. The button on the left will add these annotations back, until you again create a new order\nNote that these annotations might not be correct anymore! It will only display the details of the orders the mod added/altered, which does not include any of the modifications made to them afterwards!")
 	end);
