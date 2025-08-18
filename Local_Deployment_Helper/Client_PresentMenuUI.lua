@@ -103,7 +103,7 @@ function showMenu()
 	DestroyWindow();
 	SetWindow("showMenu");
 
-	SetMaxSize(400, 300);
+	SetMaxSize(400, 400);
 
 	CreateButton(CreateHorz(vert).SetCenter(true).SetFlexibleWidth(1)).SetText("Return").SetColor(colors.Orange).SetOnClick(showMain);
 	
