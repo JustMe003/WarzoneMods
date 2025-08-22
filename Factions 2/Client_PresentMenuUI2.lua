@@ -517,7 +517,7 @@ function factionSettings(factionName)
 				confirmChoice("Do you wish to accept the peace offer from the '" .. name .. "' faction?", function() 
 					AddToHistory(void);
 					Close(); 
-					game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); 
+					game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName, OfferFrom=name}, gameCustomMessageReturn); 
 					factionSettings(factionName); 
 				end, function() 
 					factionSettings(factionName); 
@@ -527,7 +527,7 @@ function factionSettings(factionName)
 				confirmChoice("Do you wish to decline the peace offer from the '" .. name .. "' faction?", function() 
 					AddToHistory(void);
 					Close();
-					game.SendGameCustomMessage("Declining peace offer...", {Type="declineFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); 
+					game.SendGameCustomMessage("Declining peace offer...", {Type="declineFactionPeaceOffer", Index=i, PlayerFaction=factionName, OfferFrom=name}, gameCustomMessageReturn); 
 				end, function() 
 					factionSettings(factionName); 
 				end); 
