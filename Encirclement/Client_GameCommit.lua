@@ -13,16 +13,16 @@ function dialog(Game, list)
     Game.CreateDialog(function(rootParent, setMaxSize, setScrollable, game, close)
         local root = UI.CreateVerticalLayoutGroup(rootParent);
 
-        local line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1);
+        local line = UI.CreateHorizontalLayoutGroup(root).SetFlexibleWidth(1).SetCenter(true);
         UI.CreateButton(line).SetText("refresh").SetColor("#00FF05").SetOnClick(function()
             close();
             dialog(game, getEncircledList(game));
-        end).SetCenter(true);
+        end);
         UI.CreateButton(line).SetText("Force commit").SetColor("#FF4700").SetOnClick(function()
             forceCommit = true;
             close();
             UI.Alert("Please press the commit button again to commit your orders");
-        end).SetCenter(true);
+        end);
         UI.CreateLabel(root).SetText("You have deployed on " .. #list .. " territor" .. aORb(#list > 1, "ies", "y") .. " that " .. aORb(#list > 1, "are", "is") .. " encircled").SetColor("#DDDDDD");
         UI.CreateLabel(root).SetText("This regards the following territories:").SetColor("#DDDDDD");
         for _, terrID in pairs(list) do
