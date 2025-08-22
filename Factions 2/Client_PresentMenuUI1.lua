@@ -353,7 +353,7 @@ function showFactionDetails(factionName)
 	if faction.FactionLeader == game.Us.ID then
 		CreateButton(line).SetText("Requests").SetColor(colors.Aqua).SetOnClick(function()
 			factionSettings(factionName);
-		end);
+		end).SetInteractable(#faction.PendingOffers > 0 or #faction.JoinRequests > 0);
 	end
 
 	CreateEmpty(root).SetPreferredHeight(10);
@@ -448,11 +448,13 @@ function showFactionDetails(factionName)
 							end)
 						end).SetInteractable(not faction.Offers[name]);
 						if not faction.Offers[name] then
-							if valueInTable(faction.PendingOffers or {}, name) then
-								print(1);
-							else
-								print(2);
-							end
+							CreateButton(line).SetText("?").SetColor(colors.RoyalBlue).SetOnClick(function()
+								if valueInTable(faction.PendingOffers or {}, name) then
+									UI.Alert("You already send this Faction a peace offer")
+								else
+									UI.Alert("This Faction has send your Faction a peace offer. You can accept or decline this by navigating to the requests tab");
+								end
+							end);
 						end
 					else
 						but.SetText("Declare war").SetColor(colors.Red).SetOnClick(function()
