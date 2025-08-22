@@ -1,4 +1,5 @@
 function Server_GameCustomMessage(game, playerID, payload, setReturn)
+    print(Mod.Settings.VersionNumber);
     if Mod.Settings.VersionNumber == nil or Mod.Settings.VersionNumber == 1 then
         require("Server_GameCustomMessage1");
     else
