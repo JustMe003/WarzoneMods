@@ -567,6 +567,7 @@ function acceptFactionPeaceOffer(game, playerID, payload, setReturn)
 	for i, v in pairs(payload) do
 		print(i, v);
 	end
+	error();
 	if payload.Index <= #data.Factions[faction].PendingOffers then
 		local opponentFaction = data.Factions[faction].PendingOffers[payload.Index];
 		if data.Factions[opponentFaction] ~= nil and opponentFaction == payload.OfferFrom then
