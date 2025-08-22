@@ -39,7 +39,7 @@ function getEncircledList(game)
     local list = {};
     local p = game.Us.ID;
     for _, order in pairs(game.Orders) do
-        if p.proxyType == "GameOrderDeploy" then
+        if order.proxyType == "GameOrderDeploy" then
             local terrID = order.DeployOn;
             local isEncircled = true;
             for connID, _ in pairs(game.Map.Territories[terrID].ConnectedTo) do
