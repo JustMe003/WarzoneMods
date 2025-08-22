@@ -450,7 +450,7 @@ function showFactionDetails(factionName)
 						if faction.Offers[name] then
 							CreateButton(line).SetText("?").SetColor(colors.RoyalBlue).SetOnClick(function()
 								if valueInTable(faction.PendingOffers or {}, name) then
-									UI.Alert("You already send this Faction a peace offer")
+									UI.Alert("You already send this Faction a peace offer");
 								else
 									UI.Alert("This Faction has send your Faction a peace offer. You can accept or decline this by navigating to the requests tab");
 								end
