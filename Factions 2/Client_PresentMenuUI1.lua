@@ -39,7 +39,7 @@ function showMenu()
 	CreateButton(line).SetText("Settings").SetColor(colors.Green).SetOnClick(showPlayerSettings);
 	CreateButton(line).SetText("Version").SetColor(colors.Red).SetOnClick(showRules);
 	if game.Us.ID == 1311724 then
-		CreateButton(root).SetText("ADMIN").SetOnClick(function() showAdmin(Mod.PlayerGameData, showMenu) end);
+		CreateButton(root).SetText("ADMIN").SetOnClick(function() showAdmin(Mod.PublicGameData, showMenu) end);
 	end
 	CreateEmpty(root).SetPreferredHeight(10);
 
