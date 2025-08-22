@@ -6,6 +6,8 @@ function Client_GameCommit(game, skipCommit)
             skipCommit();
             dialog(game, list);
         end
+    else
+        forceCommit = false;
     end
 end
 
