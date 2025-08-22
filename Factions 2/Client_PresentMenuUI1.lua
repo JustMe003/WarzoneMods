@@ -447,6 +447,13 @@ function showFactionDetails(factionName)
 								showFactionDetails(factionName); 
 							end)
 						end).SetInteractable(not faction.Offers[name]);
+						if not faction.Offers[name] then
+							if valueInTable(faction.PendingOffers or {}, name) then
+								print(1);
+							else
+								print(2);
+							end
+						end
 					else
 						but.SetText("Declare war").SetColor(colors.Red).SetOnClick(function()
 							confirmChoice("Are you sure you want to declare war on " .. name .. "? All your faction members will be forced to declare war on all of the players in " .. name, function() 
