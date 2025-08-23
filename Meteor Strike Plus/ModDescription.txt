@@ -2,6 +2,6 @@ Meteor Strike 2, add global events that damages random territories all over the 
 
 The game creator can create "meteor storms". There are 2 types of meteor storms, normal storms and doomsday storms. Normal storms are "active" for multiple turns, and doomsday storms are only active in 1 turn.
 
-Every storm can be configured from the damage it does, the amount of territories it damages, etc
+Every storm can be configured from the damage it does, the number of territories it damages, etc
 
 A meteor storm can be configured to create an Alien unit, a neutral controlled unit that moves on its own. Aliens might attack player controlled territories, dealing damage equal to their health. If the damage is sufficient enough, they will take the territory from the player. When 2 Aliens move to the same territory, they merge together, adding up the health.
