@@ -1,1 +1,1 @@
-This mod will only allow airlifts between territories that have at least a certain amount of cities. This amount can be configured by the game creator
+This mod will only allow airlifts between territories that have at least a certain number of cities. This amount can be configured by the game creator
