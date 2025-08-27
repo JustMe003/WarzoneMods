@@ -1,7 +1,7 @@
 function Client_GameOrderCreated(game, order, skipOrder)
     if order.proxyType == "GameOrderPlayCardAirlift" and Mod.Settings.RequiredCities > 0 then
-        if testForNumberOfCities(game, order, game.LatestStanding.Territories[order.FromTerritoryID].structures, skipOrder) then
-            testForNumberOfCities(game, order, game.LatestStanding.Territories[order.ToTerritoryID].structures, skipOrder)
+        if testForNumberOfCities(game, order, game.LatestStanding.Territories[order.FromTerritoryID].Structures, skipOrder) then
+            testForNumberOfCities(game, order, game.LatestStanding.Territories[order.ToTerritoryID].Structures, skipOrder)
         end
     end
 end
