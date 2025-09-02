@@ -12,7 +12,8 @@
 
 function removeArmies(terr, damage)
 	local mod = WL.TerritoryModification.Create(terr.ID);
-	if damage == 0 or killsAllArmies(terr.NumArmies, damage) then
+	local remainingHealth = getRemainingHealth(terr.NumArmies, damage)
+	if damage == 0 or remainingHealth <= 0 then
 		mod.AddArmies = -terr.NumArmies.NumArmies;
 		local t = {};
 		for _, sp in ipairs(terr.NumArmies.SpecialUnits) do
@@ -21,7 +22,7 @@ function removeArmies(terr, damage)
 		if #t ~= 0 then
 			mod.RemoveSpecialUnitsOpt = t;
 		end
-		mod.SetOwnerOpt = WL.PlayerID.Neutral;
+		if remainingHealth < 0 then mod.SetOwnerOpt = WL.PlayerID.Neutral; end
 	else
 		local spInOrder = {};
 		for _, sp in ipairs(terr.NumArmies.SpecialUnits) do
@@ -87,7 +88,7 @@ end
 --	Output
 --		Boolean			[Boolean]			True if the damage is enough to kill all the armies, false if some units survive
 
-function killsAllArmies(armies, damage)
+function getRemainingHealth(armies, damage)
 	damage = damage - armies.NumArmies;
 	for _, sp in ipairs(armies.SpecialUnits) do
 		if damage < 0 then return false; end
@@ -96,7 +97,7 @@ function killsAllArmies(armies, damage)
 			damage = damage - sp.DamageAbsorbedWhenAttacked;
 		end
 	end
-	return damage >= 0;
+	return damage;
 end
 
 --	Clone the passed special unit (only if it has [Health] instead of [DamageAbsorbedWhenAttacked])
