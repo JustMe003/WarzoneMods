@@ -91,7 +91,7 @@ end
 function getRemainingHealth(armies, damage)
 	damage = damage - armies.NumArmies;
 	for _, sp in ipairs(armies.SpecialUnits) do
-		if damage < 0 then return false; end
+		if damage < 0 then return damage; end
 		damage = damage - getHealth(sp);
 		if sp.proxyType == "CustomSpecialUnit" and not unitHasHealth(sp) and sp.DamageAbsorbedWhenAttacked ~= nil then
 			damage = damage - sp.DamageAbsorbedWhenAttacked;
