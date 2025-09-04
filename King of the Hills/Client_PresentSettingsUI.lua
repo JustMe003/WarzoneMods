@@ -1,4 +1,3 @@
-require("Annotations");
 require("UI");
 
 ---Client_PresentSettingsUI hook

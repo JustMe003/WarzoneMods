@@ -1,5 +1,3 @@
-require("Annotations");
-
 ---Sets up the hills and storage
 ---@param standing GameStanding
 function setUpHills(standing)

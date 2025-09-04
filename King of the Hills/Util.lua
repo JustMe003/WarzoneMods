@@ -1,4 +1,3 @@
-require("Annotations");
 
 ---Adds an order in the given order list. The order must have a OccursInPhase value and should only be called from Client hooks
 ---@param list GameOrder[] # The order list of the player. Make sure you give it a copy of Game.Orders

@@ -1,4 +1,3 @@
-require("Annotations");
 require("Hills")
 
 ---Server_StartDistribution hook
