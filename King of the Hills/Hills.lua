@@ -15,7 +15,11 @@ function setUpHills(standing)
 		table.remove(list, rand);
 
 		local terr = standing.Territories[terrID];
-		terr.NumArmies = WL.Armies.Create(10, terr.NumArmies.SpecialUnits or {});
+		local armies = Mod.Settings.NumArmies;
+		if terr.OwnerPlayerID ~= WL.PlayerID.Neutral and terr.OwnerPlayerID ~= WL.PlayerID.AvailableForDistribution then
+			armies = terr.NumArmies.NumArmies;
+		end
+		terr.NumArmies = WL.Armies.Create(armies, terr.NumArmies.SpecialUnits or {});
 		local structures = terr.Structures or {};
 		structures[hill] = (structures[hill] or 0) + 1;
 		terr.Structures = structures;
