@@ -3,6 +3,7 @@ require("Annotations");
 ---Sets up the hills and storage
 ---@param standing GameStanding
 function setUpHills(standing)
+	local hill = WL.StructureType.Custom("Hill");
     local list = {};
     for terrID, _ in pairs(standing.Territories) do
         table.insert(list, terrID);
@@ -18,7 +19,7 @@ function setUpHills(standing)
 		local terr = standing.Territories[terrID];
 		terr.NumArmies = WL.Armies.Create(10, terr.NumArmies.SpecialUnits or {});
 		local structures = terr.Structures or {};
-		structures[WL.StructureType.Mine] = (structures[WL.StructureType.Mine] or 0) + 1;
+		structures[hill] = (structures[hill] or 0) + 1;
 		terr.Structures = structures;
 		standing.Territories[terrID] = terr;
 		table.insert(terrs, terrID);
