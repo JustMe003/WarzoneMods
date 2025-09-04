@@ -1,4 +1,3 @@
-require("Annotations");
 require("Client_PresentMenuUI")
 
 ---Client_GameRefresh hook
