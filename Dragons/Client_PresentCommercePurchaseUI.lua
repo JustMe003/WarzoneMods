@@ -99,6 +99,7 @@ function selectTerr(dragon)
 end
 
 function terrClicked(terrDetails, dragon)
+    if UI.IsDestroyed(selected) or UI.IsDestroyed(label) or UI.IsDestroyed(purchase) then return; end
     selected.SetInteractable(true);
     if terrDetails == nil then
         label.SetText("");
