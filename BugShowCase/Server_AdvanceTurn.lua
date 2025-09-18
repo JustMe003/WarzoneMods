@@ -1,5 +1,3 @@
-local WL = WL;
----@cast WL WL
 
 ---Server_AdvanceTurn_End hook
 ---@param game GameServerHook 
