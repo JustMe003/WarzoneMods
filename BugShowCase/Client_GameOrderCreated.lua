@@ -3,5 +3,5 @@ function Client_GameOrderCreated(game, order, skipOrder)
     for i, v in pairs(UI) do
         print(i, v);
     end
-    UI.IsDestroyed(SomeVar);
+    UI.Alert("This is annoying isn't it?");
 end
