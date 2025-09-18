@@ -1,4 +1,4 @@
 function Client_GameOrderCreated(game, order, skipOrder)
-    local orders = game.Orders;
-    game.Orders = orders;
+    print("UI table: " .. tostring(UI));
+    UI.IsDestroyed(nil);
 end
