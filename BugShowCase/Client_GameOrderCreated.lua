@@ -1,4 +1,4 @@
 function Client_GameOrderCreated(game, order, skipOrder)
     print("UI table: " .. tostring(UI));
-    UI.IsDestroyed(nil);
+    UI.IsDestroyed(SomeVar);
 end
