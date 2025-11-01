@@ -670,6 +670,8 @@ function declinePeaceOffer(game, playerID, payload, setReturn)
 	if payload.Index <= #playerData[playerID].PendingOffers then
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
 		table.remove(playerData[playerID].PendingOffers, payload.Index);
+		playerData[playerID].Offers[opponent] = nil;
+		playerData[opponent].Offers[playerID] = nil;
 		table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 		table.insert(playerData[opponent].Notifications.PeaceDeclines, playerID);
 		setReturn(setReturnPayload("Successfully declined the offer", "Success"));
