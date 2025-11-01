@@ -645,6 +645,8 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 				data.Relations[opponent][playerID] = "InPeace";
 				data.Relations[playerID][opponent] = "InPeace";
+				playerData[playerID].Offers[opponent] = nil;
+				playerData[opponent].Offers[playerID] = nil;
 				if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
 				if data.FirstOrderDiplos[playerID] == nil then data.FirstOrderDiplos[playerID] = {}; end
 				table.insert(data.FirstOrderDiplos[playerID], opponent);
@@ -658,6 +660,8 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
 			data.Relations[opponent][playerID] = "InPeace";
 			data.Relations[playerID][opponent] = "InPeace";
+			playerData[playerID].Offers[opponent] = nil;
+			playerData[opponent].Offers[playerID] = nil;
 			if data.FirstOrderDiplos == nil then data.FirstOrderDiplos = {}; end
 			if data.FirstOrderDiplos[playerID] == nil then data.FirstOrderDiplos[playerID] = {}; end
 			table.insert(data.FirstOrderDiplos[playerID], opponent);
@@ -810,6 +814,8 @@ function declinePeaceOffer(game, playerID, payload, setReturn)
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
 		table.remove(playerData[playerID].PendingOffers, payload.Index);
 		table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+		playerData[playerID].Offers[opponent] = nil;
+		playerData[opponent].Offers[playerID] = nil;
 		table.insert(playerData[opponent].Notifications.PeaceDeclines, playerID);
 		setReturn(setReturnPayload("Successfully declined the offer", "Success"));
 		table.insert(data.Events, createEvent(game.Game.Players[playerID].DisplayName(nil, false) .. " declined the peace offer from " .. game.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
