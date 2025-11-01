@@ -28,7 +28,6 @@ end
 function Server_AdvanceTurn_End(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	local playerData = Mod.PlayerGameData;
-	playerData[1311724].Offers[1360850] = nil;
 	local count = 0;
 	for i, p in pairs(game.Game.Players) do
 		if p.State ~= WL.GamePlayerState.EndedByVote and p.State ~= WL.GamePlayerState.RemovedByHost and p.State ~= WL.GamePlayerState.Declined then
