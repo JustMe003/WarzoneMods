@@ -485,66 +485,68 @@ function factionSettings(factionName)
 	
 	CreateEmpty(root).SetPreferredHeight(10);
 
-	if #Mod.PublicGameData.Factions[factionName].PendingOffers > 0 then
-		CreateLabel(root).SetText("Your Faction has pending peace offers from the following Factions").SetColor(colors.TextColor);
-		for i, name in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
-			line = CreateHorz(root).SetFlexibleWidth(1);
-			CreateButton(line).SetText(name).SetColor(game.Game.Players[Mod.PublicGameData.Factions[name].FactionLeader].Color.HtmlColor).SetOnClick(function()
-				showFactionDetails(name);
-			end);
-			CreateEmpty(line).SetFlexibleWidth(1).SetPreferredWidth(20);
-			CreateButton(line).SetText("Accept").SetColor(colors.Green).SetOnClick(function()
-				confirmChoice("Do you wish to accept the peace offer from the '" .. name .. "' faction?", function() 
-					AddToHistory(void);
-					Close(); 
-					game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); 
-					factionSettings(factionName); 
-				end, function() 
-					factionSettings(factionName); 
-				end); 
-			end);
-			CreateButton(line).SetText("Decline").SetColor(colors.Red).SetOnClick(function()
-				confirmChoice("Do you wish to decline the peace offer from the '" .. name .. "' faction?", function() 
-					AddToHistory(void);
-					Close();
-					game.SendGameCustomMessage("Declining peace offer...", {Type="declineFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); 
-				end, function() 
-					factionSettings(factionName); 
-				end); 
-			end);
+	if Mod.PublicGameData.Factions[factionName] == nil then 
+		if #Mod.PublicGameData.Factions[factionName].PendingOffers > 0 then
+			CreateLabel(root).SetText("Your Faction has pending peace offers from the following Factions").SetColor(colors.TextColor);
+			for i, name in pairs(Mod.PublicGameData.Factions[factionName].PendingOffers) do
+				line = CreateHorz(root).SetFlexibleWidth(1);
+				CreateButton(line).SetText(name).SetColor(game.Game.Players[Mod.PublicGameData.Factions[name].FactionLeader].Color.HtmlColor).SetOnClick(function()
+					showFactionDetails(name);
+				end);
+				CreateEmpty(line).SetFlexibleWidth(1).SetPreferredWidth(20);
+				CreateButton(line).SetText("Accept").SetColor(colors.Green).SetOnClick(function()
+					confirmChoice("Do you wish to accept the peace offer from the '" .. name .. "' faction?", function() 
+						AddToHistory(void);
+						Close(); 
+						game.SendGameCustomMessage("Accepting peace offer...", { Type="acceptFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); 
+						factionSettings(factionName); 
+					end, function() 
+						factionSettings(factionName); 
+					end); 
+				end);
+				CreateButton(line).SetText("Decline").SetColor(colors.Red).SetOnClick(function()
+					confirmChoice("Do you wish to decline the peace offer from the '" .. name .. "' faction?", function() 
+						AddToHistory(void);
+						Close();
+						game.SendGameCustomMessage("Declining peace offer...", {Type="declineFactionPeaceOffer", Index=i, PlayerFaction=factionName}, gameCustomMessageReturn); 
+					end, function() 
+						factionSettings(factionName); 
+					end); 
+				end);
+			end
+		else
+			CreateLabel(root).SetText("Your Faction does not have any pending peace offers").SetColor(colors.TextColor);
 		end
-	else
-		CreateLabel(root).SetText("Your Faction does not have any pending peace offers").SetColor(colors.TextColor);
-	end
-
-	CreateEmpty(root).SetPreferredHeight(5);
-
-	if Mod.Settings.GlobalSettings.ApproveFactionJoins and #Mod.PublicGameData.Factions[factionName].JoinRequests > 0 then
-		CreateLabel(root).SetText("Your Faction has the following join requests from players").SetColor(colors.TextColor);
-		for index, i in pairs(Mod.PublicGameData.Factions[factionName].JoinRequests) do
-			line = CreateHorz(root).SetFlexibleWidth(1);
-			CreateButton(line).SetText(game.Game.Players[i].DisplayName(nil, true)).SetColor(game.Game.Players[i].Color.HtmlColor).SetOnClick(function()
-				showPlayerDetails(i);
-			end);
-			CreateEmpty(line).SetFlexibleWidth(1).SetPreferredWidth(20);
-			CreateButton(line).SetText("Accept").SetColor(colors.Green).SetOnClick(function()
-				confirmChoice("Do you wish to accept the join request of " .. game.Game.Players[i].DisplayName(nil, true) .. "?", function()
-					AddToHistory(void);
-					Close();
-					game.SendGameCustomMessage("Accepting join request...", {Type = "joinFaction", PlayerID = i, Faction = factionName, RequestApproved = true}, gameCustomMessageReturn);
-				end, function()
-					factionSettings(factionName);
+	
+		CreateEmpty(root).SetPreferredHeight(5);
+	
+		if Mod.Settings.GlobalSettings.ApproveFactionJoins and #Mod.PublicGameData.Factions[factionName].JoinRequests > 0 then
+			CreateLabel(root).SetText("Your Faction has the following join requests from players").SetColor(colors.TextColor);
+			for index, i in pairs(Mod.PublicGameData.Factions[factionName].JoinRequests) do
+				line = CreateHorz(root).SetFlexibleWidth(1);
+				CreateButton(line).SetText(game.Game.Players[i].DisplayName(nil, true)).SetColor(game.Game.Players[i].Color.HtmlColor).SetOnClick(function()
+					showPlayerDetails(i);
 				end);
-			end);
-			CreateButton(line).SetText("Reject").SetColor(colors.Red).SetOnClick(function()
-				confirmChoice("Do you wish to reject the join request of " .. game.Game.Players[i].DisplayName(nil, true) .. "?", function()
-					AddToHistory(void);
-					Close();
-					game.SendGameCustomMessage("Rejecting join request...", {Type = "DeclineJoinRequest", PlayerID = i, Faction = factionName, Index = index}, gameCustomMessageReturn);
-				end, function()
-					factionSettings(factionName);
+				CreateEmpty(line).SetFlexibleWidth(1).SetPreferredWidth(20);
+				CreateButton(line).SetText("Accept").SetColor(colors.Green).SetOnClick(function()
+					confirmChoice("Do you wish to accept the join request of " .. game.Game.Players[i].DisplayName(nil, true) .. "?", function()
+						AddToHistory(void);
+						Close();
+						game.SendGameCustomMessage("Accepting join request...", {Type = "joinFaction", PlayerID = i, Faction = factionName, RequestApproved = true}, gameCustomMessageReturn);
+					end, function()
+						factionSettings(factionName);
+					end);
 				end);
-			end);
+				CreateButton(line).SetText("Reject").SetColor(colors.Red).SetOnClick(function()
+					confirmChoice("Do you wish to reject the join request of " .. game.Game.Players[i].DisplayName(nil, true) .. "?", function()
+						AddToHistory(void);
+						Close();
+						game.SendGameCustomMessage("Rejecting join request...", {Type = "DeclineJoinRequest", PlayerID = i, Faction = factionName, Index = index}, gameCustomMessageReturn);
+					end, function()
+						factionSettings(factionName);
+					end);
+				end);
+			end
 		end
 	end
 end
