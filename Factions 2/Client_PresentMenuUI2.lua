@@ -155,7 +155,7 @@ function showPendingOffers()
 					Close();
 					AddToHistory(void);
 					game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
-					showPlayerPage();
+					showMenu();
 				end, function() 
 					Close(); 
 					AddToHistory(void);
@@ -212,14 +212,14 @@ function showPlayerDetails(playerID)
 					local i = getKeyFromValue(Mod.PlayerGameData.PendingOffers, playerID);
 					confirmChoice("Do you wish to accept the peace offer from " .. player.DisplayName(nil, true) .. "?", function() 
 						Close();
+						showMenu();
 						AddToHistory(void);
 						game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
-						showPlayerPage();
 					end, function() 
 						Close(); 
+						showPendingOffers();
 						AddToHistory(void);
 						game.SendGameCustomMessage("Declining peace offer...", {Type="declinePeaceOffer", Index=i}, gameCustomMessageReturn); 
-						showPendingOffers();
 					end);
 				end);
 			else
