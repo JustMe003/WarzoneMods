@@ -532,6 +532,8 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 		else
 			table.remove(playerData[playerID].PendingOffers, payload.Index);
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+			playerData[playerID].Offers[opponent] = nil;
+			playerData[opponent].Offers[playerID] = nil;
 			data.Relations[opponent][playerID] = "InPeace";
 			data.Relations[playerID][opponent] = "InPeace";
 			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
