@@ -3,10 +3,6 @@ require("Client_PresentMenuUI1");
 function Client_GameRefreshMain(game)
 	if game.Us == nil then return; end
 	if Mod.PlayerGameData.NumberOfNotifications == nil then return; end
-	if Mod.PlayerGameData.HasSeenUpdateWindow == nil then
-		game.CreateDialog(function(root, size, scroll, game, Close) local vert = UI.CreateVerticalLayoutGroup(root); UI.CreateLabel(vert).SetText("Factions 2.0!\n\n(Note: This game uses the old version. That is not a problem, but you won't be able to use the new features / settings)\n\nAfter 6 months of designing, decision making and a lot of rewriting code, I've finally released the biggest update a mod has ever seen. Seriously, this mod already was the biggest and now it got almost triple the amount of files it first had...\nThis does mean we've got new features! Most biggest change is that now you're able to join multiple Factions! Joining a lot of Factions might get you in trouble tho, and you still won't be able to attack any Faction member of yours. This mod is also the first mod ever to allow 2 versions of it to be used. Game creators can choose whether they use the newest version (and allow players to join multiple Factions) or the old one (force players to be either in 1 faction or none).\n\nUsing the new version does come with some extra forced rules. These rules are all documented in the game settings, mod menu and mod configuration.").SetColor("#FFA500"); end);
-		game.SendGameCustomMessage("Updating mod...", {Type="hasSeenUpdateWindow"}, function(t) end);
-	end
 	if Mod.PlayerGameData.NumberOfNotifications ~= count(Mod.PlayerGameData.Notifications, function(t) if type(t) == type({}) then return #t; else return 1; end end) and dateIsEarlier(dateToTable(Mod.PlayerGameData.LastMessage), dateToTable(game.Game.ServerTime)) then
 		showAlert(game);
 		local payload = {};
@@ -15,6 +11,9 @@ function Client_GameRefreshMain(game)
 		game.SendGameCustomMessage("Updating Factions mod...", payload, function(reply) end);
 	end
 	if Mod.PlayerGameData.NeedsRefresh ~= nil and pageHasClosed ~= nil then
+		if not UI.IsDestroyed(GlobalRoot) then
+			Close();
+		end
 		game.CreateDialog(function(a, b, c, d, e) Client_PresentMenuUI(a, b, c, d, e, true); end);
 		game.SendGameCustomMessage("Refreshing page...", {Type="RefreshWindow"}, function(reply) end);
 	end
@@ -123,8 +122,9 @@ function showAlert(game)
 		end
 		s = s .. "\n";
 	end
-	if playerData.Notifications.Messages ~= nil and #playerData.Notifications.Messages > 0 then
-		s = s .. "You have " .. #playerData.Notifications.Messages .. " unread messages in the faction chat";
+	print(playerData.Notifications.Messages);
+	if Mod.PublicGameData.PlayerInFaction[game.Us.ID] and playerData.Notifications.Messages ~= nil and playerData.Notifications.Messages > 0 then
+		s = s .. "You have " .. playerData.Notifications.Messages .. " unread messages in the faction chat";
 	end
 	if #s > 0 then
 		UI.Alert(s);

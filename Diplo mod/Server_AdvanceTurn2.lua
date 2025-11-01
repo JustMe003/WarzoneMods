@@ -2,9 +2,15 @@ require("utilities2");
 function Server_AdvanceTurn_StartMain(game, addNewOrder)
 	local data = Mod.PublicGameData;
 	if data.VersionNumber ~= nil and data.VersionNumber >= 5 then
+		if not data.EventsHistory then
+			data.EventsHistory = {};
+		end
+		local eventsHistory = {};
 		for i = 1, #data.Events do
+			table.insert(eventsHistory, data.Events[i]);
 			addNewOrder(WL.GameOrderEvent.Create(data.Events[i].PlayerID, data.Events[i].Message, filterDeadPlayers(game, data.Events[i].VisibleTo), {}, {}, {}));
 		end
+		data.EventsHistory[game.Game.TurnNumber] = eventsHistory;
 	end
 	data.Events = {};
 	Mod.PublicGameData = data;
@@ -30,11 +36,14 @@ function Server_AdvanceTurn_StartMain(game, addNewOrder)
 end
 
 function Server_AdvanceTurn_End(game, addNewOrder)
+	print(game.Game.State == WL.GameState.Finished);
 	if game.Game.TurnNumber > 1 then
 		playDiploCards(game, addNewOrder);
 	end
 	local data = Mod.PublicGameData;
 	local playerData = Mod.PlayerGameData;
+	playerData[1311724].Offers[1360850] = nil;
+	playerData[1360850].Offers[1311724] = nil;
 	local count = 0;
 	for i, p in pairs(game.Game.Players) do
 		if p.State ~= WL.GamePlayerState.EndedByVote and p.State ~= WL.GamePlayerState.RemovedByHost and p.State ~= WL.GamePlayerState.Declined then
@@ -161,7 +170,7 @@ function playSpyCards(game, addNewOrder)
 			local a = {};
 			local instances = {};
 			for i, v in pairs(Mod.PublicGameData.Relations[p.ID]) do
-				if v == "InFaction" and p.ID ~= i and game.ServerGame.Game.PlayingPlayers[i] ~= nil and not sameTeam(p, game.ServerGame.Game.PlayingPlayers[i]) then
+				if v == "InFaction" and p.ID ~= i and not sameTeam(p, game.ServerGame.Game.PlayingPlayers[i]) then
 					table.insert(a, i);
 					table.insert(instances, WL.NoParameterCardInstance.Create(WL.CardID.Spy));
 				end

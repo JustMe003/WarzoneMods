@@ -22,12 +22,17 @@ function Server_GameCustomMessageMain(game, playerID, payload, setReturn)
 	functions["declinePeaceOffer"] = declinePeaceOffer;
 	functions["DeclineJoinRequest"] = DeclineJoinRequest;
 	functions["RefreshWindow"] = RefreshWindow;
-	functions["hasSeenUpdateWindow"] = hasSeenUpdateWindow;
-	functions["resetOffer"] = resetOffer;
 	
 	print(playerID, payload.Type);
-	
+
 	local playerData = Mod.PlayerGameData;
+	for _, p in pairs(game.Game.Players) do
+		if not p.IsAI then
+			playerData[p.ID].Notifications.Messages = 0;
+		end
+	end
+
+	
 	playerData[playerID].NeedsRefresh = true;
 	if payload.Type == "openedChat" then playerData[playerID].NeedsRefresh = nil; end
 	Mod.PlayerGameData = playerData;
@@ -91,7 +96,6 @@ function leaveFaction(game, playerID, payload, setReturn)
 				if not game.Game.Players[v].IsAI then
 					if playerData[v].Notifications == nil then playerData[v].Notifications = setPlayerNotifications(); end
 					table.insert(playerData[v].Notifications.LeftPlayers, playerID);
-					playerData[v].Notifications.Messages = {};
 				end
 			end
 		end
@@ -139,10 +143,21 @@ function fiveMinuteAlert(game, playerID, payload, setReturn)
 	if playerData[playerID] == nil then playerData[playerID] = {}; end
 	playerData[playerID].LastMessage = payload.NewTime;
 	playerData[playerID].Notifications = resetPlayerNotifications(playerData[playerID].Notifications);
-	playerData[playerID].NumberOfNotifications = count(playerData[playerID].Notifications, function(t) return #t; end);
+	playerData[playerID].NumberOfNotifications = count(playerData[playerID].Notifications, function(t) 
+		if type(t) == "table" then 
+			return #t; 
+		else 
+			return t; 
+		end
+	end);
 	Mod.PlayerGameData = playerData;
 end
 
+---comment
+---@param game GameServerHook
+---@param playerID any
+---@param payload any
+---@param setReturn any
 function sendMessage(game, playerID, payload, setReturn)
 	local faction = data.PlayerInFaction[playerID];
 	local ret;
@@ -154,13 +169,14 @@ function sendMessage(game, playerID, payload, setReturn)
 		local t = {};
 		t.Text = payload.Text;
 		t.Player = playerID;
+		t.TimeStamp = payload.TimeStamp;
 		table.insert(data.Factions[faction].FactionChat, t);
 		local playerData = Mod.PlayerGameData;
 		for _, i in pairs(data.Factions[faction].FactionMembers) do
 			if i ~= playerID and not game.Game.Players[i].IsAI then
 				if playerData[i].Notifications == nil then playerData[i].Notifications = setPlayerNotifications(); end
-				if playerData[i].Notifications.Messages == nil then playerData[i].Notifications.Messages = {}; end
-				table.insert(playerData[i].Notifications.Messages, true);
+				if playerData[i].Notifications.Messages == nil or type(playerData[i].Notifications.Messages) == 'table' then playerData[i].Notifications.Messages = 0; end
+				playerData[i].Notifications.Messages = playerData[i].Notifications.Messages + 1;
 			end
 		end
 		Mod.PlayerGameData = playerData;
@@ -453,7 +469,6 @@ end
 
 function openedChat(game, playerID, payload, setReturn)
 	local playerData = Mod.PlayerGameData;
-	playerData[playerID].Notifications.Messages = {};
 	Mod.PlayerGameData = playerData;
 end
 
@@ -506,11 +521,10 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			if not data.Factions[data.PlayerInFaction[playerID]].AtWar[data.PlayerInFaction[opponent]] then
 				table.remove(playerData[playerID].PendingOffers, payload.Index);
 				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
-				data.Relations[opponent][playerID] = "InPeace";
-				data.Relations[playerID][opponent] = "InPeace";
 				playerData[playerID].Offers[opponent] = nil;
 				playerData[opponent].Offers[playerID] = nil;
-				table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
+				data.Relations[opponent][playerID] = "InPeace";
+				data.Relations[playerID][opponent] = "InPeace";
 				table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 				setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 			else
@@ -520,17 +534,16 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 		else
 			table.remove(playerData[playerID].PendingOffers, payload.Index);
 			table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
-			data.Relations[opponent][playerID] = "InPeace";
-			data.Relations[playerID][opponent] = "InPeace";
 			playerData[playerID].Offers[opponent] = nil;
 			playerData[opponent].Offers[playerID] = nil;
+			data.Relations[opponent][playerID] = "InPeace";
+			data.Relations[playerID][opponent] = "InPeace";
 			table.insert(playerData[opponent].Notifications.PeaceConfirmed, playerID);
 			table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 			setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 		end
 	else
 		setReturn(setReturnPayload("Something went wrong", "Fail"));
-		setReturn(setReturnPayload("Successfully accepted the offer", "Success"));
 	end
 	Mod.PlayerGameData = playerData;
 end
@@ -591,9 +604,9 @@ function kickPlayer(game, playerID, payload, setReturn)
 			end
 		else
 			setReturn(setReturnPayload("You are not the faction leader and cannot make do this", "Fail"));
-			end
-		else
-			setReturn(setReturnPayload("Your faction doesn't exists anymore", "Fail"));
+		end
+	else
+		setReturn(setReturnPayload("Your faction doesn't exists anymore", "Fail"));
 	end
 end
 
@@ -661,10 +674,10 @@ function declinePeaceOffer(game, playerID, payload, setReturn)
 	if payload.Index <= #playerData[playerID].PendingOffers then
 		local opponent = playerData[playerID].PendingOffers[payload.Index];
 		table.remove(playerData[playerID].PendingOffers, payload.Index);
-		table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
-		table.insert(playerData[opponent].Notifications.PeaceDeclines, playerID);
 		playerData[playerID].Offers[opponent] = nil;
 		playerData[opponent].Offers[playerID] = nil;
+		table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+		table.insert(playerData[opponent].Notifications.PeaceDeclines, playerID);
 		setReturn(setReturnPayload("Successfully declined the offer", "Success"));
 		table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " declined the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
 	else
@@ -717,43 +730,4 @@ function getFactionIncome(game, faction)
 		count = count + game.ServerGame.Game.PlayingPlayers[i].Income(0, game.ServerGame.LatestTurnStanding, true, true).Total;
 	end
 	return count;
-end
-
-function hasSeenUpdateWindow(game, playerID, payload, setReturn)
-	local playerData = Mod.PlayerGameData;
-	playerData[playerID].HasSeenUpdateWindow = true;
-	Mod.PlayerGameData = playerData;
-end
-
-function resetOffer(game, playerID, payload, setReturn)
-	local playerData = Mod.PlayerGameData;
-	if playerData[playerID].Offers ~= nil and playerData[playerID].Offers[payload.Opponent] ~= nil then
-		playerData[playerID].Offers[payload.Opponent] = nil;
-		playerData[payload.Opponent].Offers[playerID] = nil;
-		if playerData[playerID].PendingOffers ~= nil then
-			local index = 0;
-			for i, p in pairs(playerData[playerID].PendingOffers) do
-				if p == payload.Opponent then
-					index = i;
-				end
-			end
-			if index > 0 then
-				table.remove(playerData[playerID].PendingOffers, index);
-			end
-		end
-		if playerData[payload.Opponent].PendingOffers ~= nil then
-			local index = 0;
-			for i, p in pairs(playerData[payload.Opponent].PendingOffers) do
-				if p == playerID then
-					index = i;
-				end
-			end
-			if index > 0 then
-				table.remove(playerData[payload.Opponent].PendingOffers, index);
-			end
-		end
-	else
-		setReturn(setReturnPayload(tostring(playerData[playerID].Offers) .. " | " .. tostring(playerData[playerID].Offers[payload.Opponent]), "Fail"));
-	end
-	Mod.PlayerGameData = playerData;
 end

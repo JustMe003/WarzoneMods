@@ -52,16 +52,6 @@ function count(t, func)
 	return c;
 end
 
-function getSlotName(i)
-	local c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	local s = "Slot ";
-	if i > 25 then
-		s = s .. c[math.floor(i / 26)];
-		i = i - math.floor(i / 26);
-	end
-	return s .. c[i % 26 + 1];
-end
-
 function concatArrays(t1, t2)
 	for _, v in pairs(t2) do
 		table.insert(t1, v);
@@ -145,8 +135,23 @@ function isFactionLeader(p)
 	return false;
 end
 
-function round(num, numDecimalPlaces)
-	local mult = 10^(numDecimalPlaces or 0)
-	return math.floor(num * mult + 0.5) / mult
-  end
-  
+function showVersionDetails(showVersionChangeText)
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot).SetFlexibleWidth(1));
+
+	CreateButton(CreateHorz(root).SetCenter(true).SetFlexibleWidth(1)).SetText("Go back").SetColor(colors.Orange).SetOnClick(showMain);
+	
+	if showVersionChangeText then
+		CreateEmpty(root).SetPreferredHeight(5);
+		
+		CreateLabel(root).SetText("To change the version of the mod, you have to remove the mod from the game unfortunately. This will mean that you will lose all configurations you have already made").SetColor(colors.OrangeRed);
+	end
+	
+	CreateEmpty(root).SetPreferredHeight(5);
+
+	CreateLabel(root).SetText("In this version, the most notable difference is that players can be in multiple Factions at a time. This does come with some rules though").SetColor(colors.TextColor);
+	CreateLabel(root).SetText("Players are free to join any Faction, unless one of the normal rules apply.").SetColor(colors.TextColor);
+	CreateLabel(root).SetText("The main detail to note about players being in multiple Factions is that they can be automatically kicked out when a Faction starts a Faction war. If a player is in 2 Factions, and these Factions go to war against each other, that player will be kicked out of the Faction that started the Faction war.").SetColor(colors.TextColor);
+end
+
+
