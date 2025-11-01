@@ -208,7 +208,7 @@ function showPlayerDetails(playerID)
 					local i = getKeyFromValue(Mod.PlayerGameData.PendingOffers, playerID);
 					confirmChoice("Do you wish to accept the peace offer from " .. player.DisplayName(nil, true) .. "?", function() 
 						Close();
-						showMain();
+						showMenu();
 						AddToHistory(void);
 						game.SendGameCustomMessage("Accepting peace offer...", {Type="acceptPeaceOffer", Index=i}, gameCustomMessageReturn); 
 					end, function() 
