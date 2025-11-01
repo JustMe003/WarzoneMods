@@ -2,7 +2,7 @@
 function Server_AdvanceTurn_End(game, addNewOrder)
 	if game.Settings.BonusArmyPer == 0 then return; end
 	local terrCount = {};
-	for i,_ in pairs(game.Game.PlayingPlayers) do
+	for i,_ in pairs(game.Game.Players) do    -- need to account for dead players with territories
 		terrCount[i] = 0;
 	end
 
