@@ -521,6 +521,8 @@ function acceptPeaceOffer(game, playerID, payload, setReturn)
 			if not data.Factions[data.PlayerInFaction[playerID]].AtWar[data.PlayerInFaction[opponent]] then
 				table.remove(playerData[playerID].PendingOffers, payload.Index);
 				table.remove(playerData[playerID].Notifications.PeaceOffers, payload.Index);
+				playerData[playerID].Offers[opponent] = nil;
+				playerData[opponent].Offers[playerID] = nil;
 				data.Relations[opponent][playerID] = "InPeace";
 				data.Relations[playerID][opponent] = "InPeace";
 				table.insert(data.Events, createEvent(game.ServerGame.Game.Players[playerID].DisplayName(nil, false) .. " accepted the peace offer from " .. game.ServerGame.Game.Players[opponent].DisplayName(nil, false), playerID, getPlayerHashMap(data, playerID, opponent)));
