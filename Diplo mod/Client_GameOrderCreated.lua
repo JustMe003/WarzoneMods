@@ -5,7 +5,7 @@ require("utilities")
 ---@param order GameOrder # The order that was just created by the player
 ---@param skipOrder fun() # function that when invoked, will cancel the order actually being added to the orderlist of the player. When invoking this function, you should make sure that the player knows why their order was not added to the orderlist
 function Client_GameOrderCreated(game, order, skipOrder)
-    if Mod.PlayerGameData.PersonalSettings.DisableWarningAlerts then
+    if Mod.PlayerGameData and Mod.PlayerGameData.PersonalSettings and Mod.PlayerGameData.PersonalSettings.DisableWarningAlerts then
         return;
     end
     if order.proxyType == "GameOrderAttackTransfer" and order.AttackTransfer ~= WL.AttackTransferEnum.Transfer then
