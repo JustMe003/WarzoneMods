@@ -1,0 +1,34 @@
+[string "Server_GameCustomMessage2.lua"]:654: attempt to index field '?' (a nil value)
+? (Server_GameCustomMessage2.lua:654)
+Server_GameCustomMessageMain (Server_GameCustomMessage2.lua:36)
+(Unknown Function) (Server_GameCustomMessage.lua:7)
+
+GameID=32893926
+Hook=Server_GameCustomMessage
+
+Data:
+6	acceptPeaceOffer	1421520
+
+
+[string "Server_GameCustomMessage1.lua"]:518: attempt to index field '?' (a nil value)
+? (Server_GameCustomMessage1.lua:518)
+Server_GameCustomMessageMain (Server_GameCustomMessage1.lua:34)
+(Unknown Function) (Server_GameCustomMessage.lua:7)
+
+GameID=32657858
+Hook=Server_GameCustomMessage
+
+Data:
+acceptPeaceOffer	1472936
+
+[string "Server_GameCustomMessage1.lua"]:708: attempt to index field '?' (a nil value)
+getFactionIncome (Server_GameCustomMessage1.lua:708)
+? (Server_GameCustomMessage1.lua:178)
+Server_GameCustomMessageMain (Server_GameCustomMessage1.lua:34)
+(Unknown Function) (Server_GameCustomMessage.lua:7)
+
+GameID=32657858
+Hook=Server_GameCustomMessage
+
+Data:
+joinFaction	1475358
