@@ -66,3 +66,8 @@ function round(n)
 		return math.ceil(n);
 	end
 end
+
+function tableIsEmpty(t)
+	for _, _ in pairs(t) do return false; end
+	return true;
+end

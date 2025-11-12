@@ -1,225 +1,184 @@
 require("UI");
 
 function Client_PresentConfigureUI(rootParent)
-	init(rootParent);
+	Init();
+	colors = GetColors();
+	GlobalRoot = CreateVert(rootParent).SetCenter(true);
 
-	setValues();
 	showCannons();		-- initialize the default values or restore the values stored
 	showMortars();		-- initialize the default values or restore the values stored
-	showCommerceSettings();		-- initialize the default values or restore the values stored
+	showMiscelaneousSettings();		-- initialize the default values or restore the values stored
 
-	local win = "Main";
-	if windowExists(win) then
-		if getCurrentWindow() ~= win then
-			destroyWindow(getCurrentWindow());
-			restoreWindow(win);
-		end
-	else
-		destroyWindow(getCurrentWindow());
-		window(win);
-		showButtons();
-		showDescription();
-	end
-	
+	showButtons();
+	CreateEmpty(GlobalRoot).SetMinHeight(10);
+	showDescription();
 end
 
 function showDescription()
-	local win = "Description";
-	if windowExists(win) then
-		if getCurrentWindow() ~= win then
-			destroyWindow(getCurrentWindow());
-			restoreWindow(win);
-		end
-	else
-		destroyWindow(getCurrentWindow());
-		window(win);
-		showButtons();
-		local vert = newVerticalGroup(win .. " vert", "root");
-		newLabel(win .. " line 1", vert, "This mod adds 2 new attack features, both long range\n", "Lime");
-		newLabel(win .. " line 2", vert, "\nCannons:\n - Cannons are able to attack territories within a maximum range\n - Cannons work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - The further the cannon is from its target, the less damage it does (can be avoided)\n", "Royal Blue");
-		newLabel(win .. " line 3", vert, "\nMortars:\n - Mortars are able to attack territories within a maximum range\n - Mortars also work very similar to bomb cards, they remove a certain percentage of armies from a territory\n - Mortars have some extra options that makes them 'miss' the target territory and hit a connected territory", "Royal Blue")
-	end
+	saveAll();
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot)).SetCenter(true);
+	CreateLabel(root).SetText("Welcome to the Artillery Strike mod!").SetColor(colors.TextDefault);
+	CreateEmpty(root).SetMinHeight(5);
+	CreateLabel(root).SetText("This mod utilises the structures \"Cannons\" and \"Mortars\", in this mod referred to as artillery, from the idle version and provides functionality to them. Any cannon and mortar structure can be used as an artillery, it does not matter which mod added the structure and when this structure was added.").SetColor(colors.TextDefault);
+	CreateEmpty(root).SetMinHeight(3);
+	CreateLabel(root).SetText("All cannons and mortars have a maximum range. An artillery structure can only attack territories in this range. Cannons can have a different range than mortars").SetColor(colors.TextDefault).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Left);
+	CreateLabel(root).SetText("All cannons and all mortars do the same amount of % damage. On default, the further the target territory, the less damage an artillery strike will inflict although this is optional. Note again that cannons and mortars can deal a different % of damage").SetColor(colors.TextDefault).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Left);
+	CreateLabel(root).SetText("A special feature that only the mortars have is a miss chance. When a portion of a the artillery strike \"misses\" the target territory, they will inflict damage on territories connected to the target").SetColor(colors.TextDefault).SetFlexibleWidth(1).SetAlignment(WL.TextAlignmentOptions.Left);
 end
 
 function showCannons()
-	local win = "Cannons";
-	if windowExists(win) then
-		if getCurrentWindow() ~= win then
-			destroyWindow(getCurrentWindow());
-			restoreWindow(win);
-		end
+	saveAll();
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot)).SetFlexibleWidth(1);
+	local line = CreateHorz(root);
+	addCannons = CreateCheckBox(line).SetText(" ").SetIsChecked(Mod.Settings.Cannons or false).SetOnValueChanged(updateCannons);
+	CreateLabel(line).SetText("Enable cannons").SetColor(colors.TextDefault);
+	
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("Number of territories to start with a cannon").SetColor(colors.TextDefault);
+	end, "The number of territories that will be assigned a cannon structure. Note that if this value is greater than the number of territories available, the mod will assign all territories 1 cannon");
+	maxCannons = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(Mod.Settings.AmountOfCannons or 20);
+	
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("Minimum % of damage inflicted by a cannon").SetColor(colors.TextDefault);
+	end, "The minimum amount of damage that will be applied to the targetted territory. The damage is applied in percentages, meaning that the number of killed armies depends on the number of armies on the target territory");
+	minimumCannonDamage = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(100).SetWholeNumbers(false).SetValue(Mod.Settings.MinCannonDamage or 20);
+	
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("Maximum % of damage inflicted by a cannon").SetColor(colors.TextDefault);
+	end, "The maximum amount of damage that will be applied to the targetted territory. The damage is applied in percentages, meaning that the number of killed armies depends on the number of armies on the target territory");
+	maximumCannonDamage = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(100).SetWholeNumbers(false).SetValue(Mod.Settings.MaxCannonDamage or 40);
+	
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("The range of cannons").SetColor(colors.TextDefault);
+	end, "Sets the range of all cannons. Range determines how far a cannon can target a territory. With a range of 1, cannons can only target directly connected territories. With a range of 2, they can also target territories connected to their directly connected territories, etc. Note that the further a target is, the less damage will be inflicted by a cannon");
+	rangeOfCannons = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(Mod.Settings.RangeOfCannons or 3);
+
+	CreateButton(CreateHorz(root).SetCenter(true)).SetText("Save").SetColor(colors.Green).SetOnClick(function()
+		saveCannons();
 		updateCannons();
-	else
-		destroyWindow(getCurrentWindow());
-		window(win);
-		showButtons();
-		local vert = newVerticalGroup(win .. " vert", "root");
-		local line = newHorizontalGroup(win .. " line", vert);
-		addCannons = newCheckbox("addCannons", line, " ", cannons, true, updateCannons);
-		newLabel("addCanonsLabel", line, "Add cannons to the game", "Lime");
-		maxCannonsLabel = newLabel("maxCannonsLabel", vert, "Maximum amount of cannons\n(Note that the mod might overwrite this value depending on how many neutral territories there are)", getColorCannons());
-		maxCannons = newNumberField("maxCannons", vert, 1, 50, numberOfCannons, cannons);
-		minDamageCannonsLabel = newLabel("minDamageCannonsLabel", vert, "The minimum damage (in %) a cannon will inflict on a territory", getColorCannons());
-		minimumCannonDamage = newNumberField("minimumCannonDamage", vert, 1, 100, cannonMinDamage, cannons);
-		maxDamageCannonsLabel = newLabel("maxDamageCannonsLabel", vert, "The maximum damage (in %) a cannon will inflict on a territory", getColorCannons());
-		maximumCannonDamage = newNumberField("maximumCannonDamage", vert, 1, 100, cannonMaxDamage, cannons);
-		rangeOfCannonsLabel = newLabel("rangeOfCannonsLabel", vert, "The maximum range of cannons", getColorCannons());
-		rangeOfCannons = newNumberField("rangeOfCannons", vert, 1, 5, cannonRange, cannons);
-	end
+	end);
+
+	updateCannons();
 end
 
 function showMortars()
-	local win = "Mortars";
-	if windowExists(win) then
-		if getCurrentWindow() ~= win then
-			destroyWindow(getCurrentWindow());
-			restoreWindow(win);
-		end
+	saveAll();
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot)).SetFlexibleWidth(1);
+	local line = CreateHorz(root);
+	addMortars = CreateCheckBox(line).SetText(" ").SetIsChecked(Mod.Settings.Mortars or false).SetOnValueChanged(updateMortars);
+	CreateLabel(line).SetText("Enable mortars").SetColor(colors.TextDefault);
+
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("Number of territories that start with a mortar").SetColor(colors.TextDefault);
+	end, "The number of territories that will be assigned a mortar structure. Note that if this value is greater than the number of territories available, the mod will assign all territories 1 mortar");
+	maxMortars = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(50).SetValue(Mod.Settings.AmountOfMortars or 20);
+
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("Damage (%) inflicted by a mortar").SetColor(colors.TextDefault);
+	end, "The damage inflicted by a mortar to the target territory. Note that depending on the miss chance this value will not always get fully applied");
+	mortarDamage = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(100).SetValue(Mod.Settings.MortarDamage or 30);
+
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("Minimum miss chance (%)").SetColor(colors.TextDefault);
+	end, "Simulate how some of the shells miss their target territory. If a shell misses, it inflicts damage to a neighbouring territory. The miss chance is subtracted from the total mortar damage, and is divided over all the neighbouring territories of the target territory. Note that the miss percentage is influenced by how far the target territory is from the mortar, this value determines the minimum possible miss chance");
+	minMissPercentage = CreateNumberInputField(root).SetSliderMinValue(0).SetSliderMaxValue(50).SetValue(Mod.Settings.MinMissPercentage or 10);
+
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("Maximum miss chance (%)").SetColor(colors.TextDefault);
+	end, "Simulate how some of the shells miss their target territory. If a shell misses, it inflicts damage to a neighbouring territory. The miss chance is subtracted from the total mortar damage, and is divided over all the neighbouring territories of the target territory. Note that the miss percentage is influenced by how far the target territory is from the mortar, this value determines the maximum possible miss chance");
+	maxMissPercentage = CreateNumberInputField(root).SetSliderMinValue(0).SetSliderMaxValue(50).SetValue(Mod.Settings.MaxMissPercentage or 20);
+
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("The range of mortars").SetColor(colors.TextDefault);
+	end, "Sets the range of all mortars. The range determines how far a mortar can target a territory. With a range of 1, mortars can only target directly connected territories. With a range of 2, they can also target territories connected to their directly connected territories, etc. Note that the further a target is, the higher miss chance will be applied")
+	rangeOfMortars = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(5).SetValue(Mod.Settings.RangeOfMortars or 3);
+
+	-- CreateLabel(root).SetText(getMissPercentagesString()).SetColor(colors.TextDefault);
+	CreateButton(CreateHorz(root).SetCenter(true)).SetText("Save").SetColor(colors.Green).SetOnClick(function()
+		saveMortars();
 		updateMortars();
-	else
-		destroyWindow(getCurrentWindow());
-		window(win);
-		showButtons();
-		local vert = newVerticalGroup(win .. " vert", "root");
-		local line = newHorizontalGroup(win .. " line", vert);
-		addMortars = newCheckbox("addMortars", line, " ", mortars, true, updateMortars);
-		newLabel("addMortarsLabel", line, "Add mortars to the game", "Royal Blue");
-		maxMortarsLabel = newLabel("maxMortarsLabel", vert, "Maximum amount of mortars\n(Note that the mod might overwrite this value depending on how many neutral territories there are)", getColorMortars());
-		maxMortars = newNumberField("maxMortars", vert, 1, 50, numberOfMortars, mortars);
-		damageMortarsLabel = newLabel("damageMortarsLabel", vert, "The damage (in %) a cannon will inflict on a territory", getColorMortars());
-		mortarDamage = newNumberField("mortarDamage", vert, 1, 100, damageOfMortars, mortars);
-		mortarMissExplanation = newLabel("mortarMissExplanation", vert, "\nMortars are more powerful than cannons but they do tend to miss their target sometimes. The further their target is, the bigger the chance a shell misses. \n\nNote that the minimum percentage applies for the closest territories (those directly connected to the territory of the mortar) and the maximum percentage applies to those territories that are at the maximum range\n\nSee [Description] for an extended explanation and see [Advanced settings] for examples\n", getColorMortars());
-		minMissPercentageLabel = newLabel("minMissPercentageLabel", vert, "The chance of a mortar shot missing its target territory (minimum)", getColorMortars());
-		minMissPercentage = newNumberField("minMissPercentage", vert, 1, 50, missPercentageMin, mortars);
-		maxMissPercentageLabel = newLabel("maxMissPercentageLabel", vert, "The chance of a mortar shot missing its target territory (maximum)", getColorMortars());
-		maxMissPercentage = newNumberField("maxMissPercentage", vert, 1, 50, missPercentageMax, mortars);
-		mortarPercentageLabel = newLabel("mortarPercentageLabel", vert, " ", "#777777");
-		rangeOfMortarsLabel = newLabel("rangeOfMortarsLabel", vert, "The range of mortars", getColorMortars());
-		rangeOfMortars = newNumberField("rangeOfMortars", vert, 1, 5, mortarRange, mortars);
-		updateText(mortarPercentageLabel, getMissPercentagesString());
-		mortarRefreshButton = newButton("mortarRefreshButton", vert, "Refresh", function() updateText(mortarPercentageLabel, getMissPercentagesString()); end, "Green", mortars);
-	end
+	end);
+
+	updateMortars();
 end
 
-function showCommerceSettings()
-	local win = "commerce";
-	if windowExists(win) then
-		if getCurrentWindow() ~= win then
-			destroyWindow(getCurrentWindow());
-			restoreWindow(win);
-		end
-	else
-		destroyWindow(getCurrentWindow());
-		window(win);
-		showButtons();
-		local vert = newVerticalGroup("vert", "root");
-		newLabel("cannonShotTurnNumberLabel", vert, "Players can launch an artillery strike every X amount of turns", "Light Blue");
-		cannonShotTurnNumber = newNumberField("cannonShotTurnNumber", vert, 1, 10, artilleryShot);
-		local line = newHorizontalGroup("line1", vert);
-		useGoldInput = newCheckbox("UseGold", line, " ", useGold, true, updateCommerceSettings);
-		newLabel(win .. "descGold", line, "If commerce is enabled and checked, players have to use gold to launch an artillery strike", "Orange");
-		goldCostDesc = newLabel(win .. "GoldCostLine", vert, "The amount of gold for a artillery strike", getColorCommerce());
-		goldCostInput = newNumberField(win .. "GoldCost", vert, 10, 50, goldCost, getIsChecked(useGoldInput));
-		line = newHorizontalGroup("line2", vert);
-		customScenarioInput = newCheckbox(win .. "customScenarioInput", line, " ", customScenario);
-		newLabel(win .. "CustomScenario", line, "Check this checkbox if this mod should not place any structures (for instance if you use the Structures for Custom Scenarios mod)", "Orange Red");
-	end
+function showMiscelaneousSettings()
+	saveAll();
+	DestroyWindow();
+	local root = CreateWindow(CreateVert(GlobalRoot));
+	
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("How frequent players are able to use an artillery strike").SetColor(colors.TextDefault);
+	end, "Determines how frequent players can order an artillery strike. For example, if set to 5, players are able to target a territory with an artillery strike every 5 turns. If players do not use an artillery strike, it is saved up, players can have an unlimited number of unused artillery strikes");
+	cannonShotTurnNumber = CreateNumberInputField(root).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(Mod.Settings.ArtilleryShot or 5);
+
+	CreateInfoButtonLine(root, function(l)
+		useGoldInput = CreateCheckBox(l).SetText(" ").SetIsChecked(Mod.Settings.UseGold or false);
+		CreateLabel(l).SetText("Players must use gold to order an artillery strike").SetColor(colors.TextDefault);
+	end, "");
+	
+	CreateInfoButtonLine(root, function(l)
+		CreateLabel(l).SetText("The gold cost for an artillery strike").SetColor(colors.TextDefault);
+	end, "The amount of gold a player has to pay to order an artillery strike. One can see this as ammunition an service costs");
+	goldCostInput = CreateNumberInputField(root).SetSliderMinValue(5).SetSliderMaxValue(25).SetValue(Mod.Settings.GoldCost or 10);
+
+	CreateInfoButtonLine(root, function(l)
+		customScenarioInput = CreateCheckBox(l).SetText(" ").SetIsChecked(Mod.Settings.CustomScenario or false);
+		CreateLabel(l).SetText("Do not place cannons and mortars").SetColor(colors.TextDefault);
+	end, "This option enables or disables whether the mod will place structures or not. This can be useful if you are using another mod that also places the same structures, for example, the \"Structures Distribution\" mod.");
+
+	CreateButton(CreateHorz(root).SetCenter(true)).SetText("Save").SetColor(colors.Green).SetOnClick(function()
+		saveMiscelaneous();
+		updateMiscelaneousSettings();
+	end);
+
+	updateMiscelaneousSettings();
 end
 
 function updateCannons()
-	updateColor(maxCannonsLabel, getColorCannons());
-	updateColor(rangeOfCannonsLabel, getColorCannons());
-	updateColor(minDamageCannonsLabel, getColorCannons());
-	updateColor(maxDamageCannonsLabel, getColorCannons());
-	updateInteractable(maxCannons, getIsChecked(addCannons));
-	updateInteractable(minimumCannonDamage, getIsChecked(addCannons));
-	updateInteractable(maximumCannonDamage, getIsChecked(addCannons));
-	updateInteractable(rangeOfCannons, getIsChecked(addCannons));
+	local cannons = addCannons.GetIsChecked();
+	maxCannons.SetInteractable(cannons);
+	minimumCannonDamage.SetInteractable(cannons);
+	maximumCannonDamage.SetInteractable(cannons);
+	rangeOfCannons.SetInteractable(cannons);
 end
 
 function updateMortars()
-	updateColor(maxMortarsLabel, getColorMortars());
-	updateColor(damageMortarsLabel, getColorMortars());
-	updateColor(minMissPercentageLabel, getColorMortars());
-	updateColor(maxMissPercentageLabel, getColorMortars());
-	updateColor(rangeOfMortarsLabel, getColorMortars());
-	updateColor(mortarMissExplanation, getColorMortars());
-	updateColor(mortarPercentageLabel, getColorMortars());
-	updateInteractable(maxMortars, getIsChecked(addMortars));
-	updateInteractable(mortarDamage, getIsChecked(addMortars));
-	updateInteractable(minMissPercentage, getIsChecked(addMortars));
-	updateInteractable(maxMissPercentage, getIsChecked(addMortars));
-	updateInteractable(rangeOfMortars, getIsChecked(addMortars));
-	updateInteractable(mortarRefreshButton, getIsChecked(addMortars));
+	local mortars = addMortars.GetIsChecked();
+	maxMortars.SetInteractable(mortars);
+	mortarDamage.SetInteractable(mortars);
+	minMissPercentage.SetInteractable(mortars);
+	maxMissPercentage.SetInteractable(mortars);
+	rangeOfMortars.SetInteractable(mortars);
 end
 
-function updateCommerceSettings()
-	updateColor(goldCostDesc, getColorCommerce());
-	updateInteractable(goldCostInput, getIsChecked(useGoldInput));
+function updateMiscelaneousSettings()
+	goldCostInput.SetInteractable(useGoldInput.GetIsChecked());
 end
 
 
 function showButtons();
-	local line = newHorizontalGroup(getCurrentWindow() .. " Buttons line", "root");
-	newButton(getCurrentWindow() .. " Description button", line, "Description", showDescription, "Green");
-	newButton(getCurrentWindow() .. " Commerce Settings", line, "General", showCommerceSettings, "Yellow");
-	newButton(getCurrentWindow() .. " Cannons button", line, "Cannons", showCannons, "Aqua");
-	newButton(getCurrentWindow() .. " Mortars button", line, "Mortars", showMortars, "Royal Blue");
+	local line = CreateHorz(GlobalRoot).SetCenter(true);
+	CreateButton(line).SetText("General").SetColor(colors.Yellow).SetOnClick(showMiscelaneousSettings);
+	CreateEmpty(line).SetMinWidth(5);
+	CreateButton(line).SetText("Cannons").SetColor(colors.Aqua).SetOnClick(showCannons);
+	CreateEmpty(line).SetMinWidth(5);
+	CreateButton(line).SetText("Mortars").SetColor(colors.RoyalBlue).SetOnClick(showMortars);
+	CreateEmpty(line).SetMinWidth(5);
+	CreateButton(line).SetText("Info").SetColor(colors.Green).SetOnClick(showDescription);
 end
 
 function getMissPercentagesString()
 	local str = "the percentages will be (from close to far):";
-	local minPer = getValue(minMissPercentage);
-	local maxPer = getValue(maxMissPercentage);
-	local maxRange = getValue(rangeOfMortars) - 1;
+	local minPer = minMissPercentage.GetValue();
+	local maxPer = maxMissPercentage.GetValue();
+	local maxRange = rangeOfMortars.GetValue() - 1;
 	local increment = (maxPer - minPer) / maxRange;
 	for i = 0, maxRange do
 		str = str .. " " .. (minPer + increment * i) .. ",";
 	end
 	return string.sub(str, 1, string.len(str)-1);
-end
-
-function getColorCannons()
-	if addCannons ~= nil then
-		if getIsChecked(addCannons) then
-			return "Lime";
-		end
-	end
-	return "#777777";
-end
-
-function getColorMortars()
-	if addMortars ~= nil then
-		if getIsChecked(addMortars) then
-			return "Royal Blue";
-		end
-	end
-	return "#777777";
-end
-
-function getColorCommerce()
-	if useGoldInput ~= nil then
-		if getIsChecked(useGoldInput) then
-			return "Orange";
-		end
-	end
-	return "#777777";
-end
-
-function setValues()
-	cannons = Mod.Settings.Cannons;	if cannons == nil then cannons = false; end
-	numberOfCannons = Mod.Settings.AmountOfCannons; if numberOfCannons == nil then numberOfCannons = 20; end
-	cannonMaxDamage = Mod.Settings.MaxCannonDamage; if cannonMaxDamage == nil then cannonMaxDamage = 25; end
-	cannonMinDamage = Mod.Settings.MinCannonDamage; if cannonMinDamage == nil then cannonMinDamage = 10; end
-	cannonRange = Mod.Settings.RangeOfCannons; if cannonRange == nil then cannonRange = 2; end
-	mortars = Mod.Settings.Mortars; if mortars == nil then mortars = false; end
-	numberOfMortars = Mod.Settings.AmountOfMortars; if numberOfMortars == nil then numberOfMortars = 20; end
-	damageOfMortars = Mod.Settings.MortarDamage; if damageOfMortars == nil then damageOfMortars = 25; end
-	missPercentageMin = Mod.Settings.MinMissPercentage; if missPercentageMin == nil then missPercentageMin = 10; end
-	missPercentageMax = Mod.Settings.MaxMissPercentage; if missPercentageMax == nil then missPercentageMax = 25; end
-	mortarRange = Mod.Settings.RangeOfMortars; if mortarRange == nil then mortarRange = 2; end
-	artilleryShot = Mod.Settings.ArtilleryShot; if artilleryShot == nil then artilleryShot = 4; end
-	useGold = Mod.Settings.UseGold; if useGold == nil then useGold = false; end
-	goldCost = Mod.Settings.GoldCost; if goldCost == nil then goldCost = 20; end
-	customScenario = Mod.Settings.CustomScenario; if customScenario == nil then customScenario = false; end
 end
