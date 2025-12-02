@@ -37,7 +37,7 @@ function Server_StartDistribution(game, standing)
 			if structures == nil then structures = {}; end
 			for j, k in pairs(v) do
 				if j > 0 and j < 19 then
-					structures[j] = math.min(k[1], 100);
+					structures[tonumber(j)] = math.min(k[1], 100);
 				end
 			end
 			standing.Territories[i].Structures = structures;

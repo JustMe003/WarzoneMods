@@ -16,7 +16,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 						local playerCards = game.ServerGame.LatestTurnStanding.Cards[p.ID];
 						local totalPieces = 0;
 						if playerCards.Pieces ~= nil then
-							totalPieces = playerCards.Pieces[card];
+							totalPieces = playerCards.Pieces[card] or 0;
 						end
 						if totalPieces >= math.abs(amount) then
 							pieces[card] = amount;
