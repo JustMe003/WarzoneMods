@@ -1,5 +1,3 @@
-local funcs = require("test");
-
 ---Client_PresentMenuUI hook
 ---@param rootParent RootParent
 ---@param setMaxSize fun(width: integer, height: integer)
@@ -7,5 +5,5 @@ local funcs = require("test");
 ---@param game GameClientHook
 ---@param close fun()
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-    print(funcs);
+    
 end
