@@ -3,7 +3,7 @@
 ---@param standing GameStanding
 function Server_StartGame(game, standing)
     local structs = standing.Territories[1].Structures or {};
-    structs["1"] = 5;
+    structs["1.0"] = 5;
     standing.Territories[1].Structures = structs
     -- local terrs = {};
     -- --First, loop through and extract all possible territories we could put cities on
