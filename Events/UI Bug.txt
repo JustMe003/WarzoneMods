@@ -1,0 +1,32 @@
+444: Destroy	function: 00012829	nil
+444: Different field: Destroy
+444: IsDestroyed	function: 0001282A	nil
+444: Different field: IsDestroyed
+444: CreateHorizontalLayoutGroup	function: 0001282B	nil
+444: Different field: CreateHorizontalLayoutGroup
+444: CreateVerticalLayoutGroup	function: 0001282C	nil
+444: Different field: CreateVerticalLayoutGroup
+444: CreateLabel	function: 0001282D	nil
+444: Different field: CreateLabel
+444: CreateButton	function: 0001282E	nil
+444: Different field: CreateButton
+444: CreateEmpty	function: 0001282F	nil
+444: Different field: CreateEmpty
+444: CreateCheckBox	function: 00012830	nil
+444: Different field: CreateCheckBox
+444: CreateRadioButton	function: 00012831	nil
+444: Different field: CreateRadioButton
+444: CreateRadioButtonGroup	function: 00012832	nil
+444: Different field: CreateRadioButtonGroup
+444: CreateTextInputField	function: 00012833	nil
+444: Different field: CreateTextInputField
+444: CreateNumberInputField	function: 00012834	nil
+444: Different field: CreateNumberInputField
+444: Alert	function: 00012835	function: 00012680
+444: Different field: Alert
+444: PromptFromList	function: 00012836	function: 00012681
+444: Different field: PromptFromList
+444: InterceptNextTerritoryClick	function: 00012837	function: 00012682
+444: Different field: InterceptNextTerritoryClick
+444: InterceptNextBonusLinkClick	function: 00012838	function: 00012683
+444: Different field: InterceptNextBonusLinkClick
