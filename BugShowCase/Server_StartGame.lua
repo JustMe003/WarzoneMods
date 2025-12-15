@@ -2,9 +2,9 @@
 ---@param game GameServerHook
 ---@param standing GameStanding
 function Server_StartGame(game, standing)
-    local structs = standing.Territories[1].Structures or {};
-    structs[1.0] = 5;
-    standing.Territories[1].Structures = structs
+    local data = Mod.PublicGameData;
+    data.Logs = {};
+    Mod.PublicGameData = data;
     -- local terrs = {};
     -- --First, loop through and extract all possible territories we could put cities on
 	-- for _, territory in pairs(standing.Territories) do
