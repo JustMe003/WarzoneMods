@@ -1,0 +1,8 @@
+ServerMessageEnum = {
+    UPDATE_TRIGGER = 1,
+    DELETE_TRIGGER = 2,
+    UPDATE_EVENT = 3,
+    DELETE_EVENT = 4,
+    ADD_TO_TERRITORY_MAP = 5,
+    ADD_TO_GLOBAL_TRIGGERS = 6,
+}

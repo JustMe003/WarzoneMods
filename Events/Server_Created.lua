@@ -6,5 +6,6 @@ function Server_Created(game, settings)
     data.Triggers = {};
     data.Events = {};
     data.TerritoryMap = {};
+    data.GlobalTriggers = {};
     Mod.PublicGameData = data;
 end

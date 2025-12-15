@@ -1,4 +1,6 @@
-require("Events");
+require("Enums.ServerMessageEnum");
+
+require("Util.Util");
 
 ---Server_GameCustomMessage
 ---@param game GameServerHook
@@ -11,11 +13,12 @@ function Server_GameCustomMessage(game, playerID, payload, setReturn)
         return;
     end
 	local commandMap = {
-        UpdateTrigger = updateTrigger,
-        DeleteTrigger = deleteTrigger,
-        UpdateEvent = updateEvent,
-        DeleteEvent = deleteEvent,
-        AddToTerritoryMap = addToTerritoryMap,
+        [ServerMessageEnum.UPDATE_TRIGGER] = updateTrigger,
+        [ServerMessageEnum.DELETE_TRIGGER] = deleteTrigger,
+        [ServerMessageEnum.UPDATE_EVENT] = updateEvent,
+        [ServerMessageEnum.DELETE_EVENT] = deleteEvent,
+        [ServerMessageEnum.ADD_TO_TERRITORY_MAP] = addToTerritoryMap,
+        [ServerMessageEnum.ADD_TO_GLOBAL_TRIGGERS] = addToGlobalTriggers
     };
     data = Mod.PublicGameData; 
     commandMap[payload.Type](game, playerID, payload, setReturn);
@@ -38,6 +41,7 @@ function deleteTrigger(game, playerID, payload, setReturn)
     end
 
     removeEmptyTables(data.TerritoryMap);
+    removeFromGlobalTriggers(game, playerID, payload, setReturn);
     
     data.Triggers[payload.Trigger.ID] = nil;
 end
@@ -84,26 +88,12 @@ function addToTerritoryMap(game, playerID, payload, setReturn)
     });
 end
 
-function printTable(t, s)
-    s = s or "";
-    for k, v in pairs(t) do
-        print(s .. k .. " = " .. tostring(v));
-        if type(v) == "table" then
-            printTable(v, s .. "  ");
-        end
-    end
+function addToGlobalTriggers(game, playerID, payload, setReturn)
+    data.GlobalTriggers[payload.Trigger.ID] = payload.Events;
 end
 
-function removeEmptyTables(t)
-    for i, v in pairs(t) do
-        if type(v) == "table" then
-            v = removeEmptyTables(v);
-        end
-        if tableIsNilOrEmpty(v) then
-            t[i] = nil;
-        end
-    end
-    return t;
+function removeFromGlobalTriggers(game, playerID, payload, setReturn)
+    data.GlobalTriggers[payload.Trigger.ID] = nil;
 end
 
 function tableIsNilOrEmpty(t)
