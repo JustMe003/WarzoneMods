@@ -10,12 +10,8 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     for turn, orders in pairs(Mod.PublicGameData.Logs) do
         local vert;
         UI.CreateButton(root).SetText("Turn " .. turn).SetColor("#0000FF").SetOnClick(function()
-            if UI.IsDestroyed(vert) then
-                for _, order in pairs(orders) do
-                    UI.CreateLabel(vert).SetText(order);
-                end
-            else
-                UI.Destroy(vert);
+            for _, order in pairs(orders) do
+                UI.CreateLabel(vert).SetText(order);
             end
         end);
         vert = UI.CreateVerticalLayoutGroup(root).SetFlexibleWidth(1);
