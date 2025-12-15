@@ -10,7 +10,7 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     for i = 1, game.Game.TurnNumber - 1 do
         local vert;
         UI.CreateButton(root).SetText("Turn " .. i).SetColor("#0000FF").SetOnClick(function()
-            for _, order in pairs(Mod.PublicGameData.Logs[i]) do
+            for _, order in ipairs(Mod.PublicGameData.Logs[i]) do
                 UI.CreateLabel(vert).SetText(order);
             end
         end);
