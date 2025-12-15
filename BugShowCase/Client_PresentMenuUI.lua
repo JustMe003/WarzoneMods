@@ -7,10 +7,10 @@
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
     local root = UI.CreateVerticalLayoutGroup(rootParent).SetFlexibleWidth(1);
     
-    for turn, orders in pairs(Mod.PublicGameData.Logs) do
+    for i = 1, game.Game.TurnNumber - 1 do
         local vert;
-        UI.CreateButton(root).SetText("Turn " .. turn).SetColor("#0000FF").SetOnClick(function()
-            for _, order in pairs(orders) do
+        UI.CreateButton(root).SetText("Turn " .. i).SetColor("#0000FF").SetOnClick(function()
+            for _, order in pairs(Mod.PublicGameData.Logs[i]) do
                 UI.CreateLabel(vert).SetText(order);
             end
         end);
