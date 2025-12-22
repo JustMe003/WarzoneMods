@@ -12,7 +12,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
         table.insert(t, v);
     end
 
-    local fogMod = WL.FogMod.Create("Giving you vision!", 10000, WL.StandingFogLevel.Visible, terrs, t);
+    local fogMod = WL.FogMod.Create("Giving you vision!", 10000, WL.StandingFogLevel.Visible, terrs, {});
     local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Vision!", nil, {});
     event.FogModsOpt = {fogMod};
     addNewOrder(event);
