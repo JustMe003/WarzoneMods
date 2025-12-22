@@ -8,11 +8,11 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
     end
 
     local t = {};
-    for i, v in pairs(Mod.PublicGameData.Players or {}) do
+    for _, v in pairs(Mod.PublicGameData.Players or {}) do
         table.insert(t, v);
     end
 
-    local fogMod = WL.FogMod.Create("testing", WL.StandingFogLevel.Visible, 10000, terrs, nil);
+    local fogMod = WL.FogMod.Create("testing", WL.StandingFogLevel.Visible, 10000, terrs, t);
     local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Vision!", nil, {});
     event.FogModsOpt = {fogMod};
     addNewOrder(event);
