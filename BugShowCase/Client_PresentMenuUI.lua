@@ -9,6 +9,8 @@ require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, refreshed)
     local root = UI2.CreateVert(rootParent);
 
+    print(game.Us.ID);
+
     local textInput = UI2.CreateTextInputField(root).SetPlaceholderText("PlayerID").SetCharacterLimit(20).SetPreferredWidth(200);
 
     UI2.CreateButton(root).SetText("Submit").SetColor("#0000FF").SetOnClick(function()
