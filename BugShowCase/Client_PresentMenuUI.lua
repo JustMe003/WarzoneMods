@@ -14,6 +14,6 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
     UI2.CreateButton(root).SetText("Submit").SetColor("#0000FF").SetOnClick(function()
         local num = tonumber(textInput.GetText());
         if type(num) ~= "number" then UI2.Alert("Please enter a valid ID"); return; end
-        game.SendGameCustomMessage("Adding your ID", {ID = num}, function()  end);
+        game.SendGameCustomMessage("Adding your ID", {ID = num}, function() UI2.Alert("Succes!"); close(); end);
     end);
 end
