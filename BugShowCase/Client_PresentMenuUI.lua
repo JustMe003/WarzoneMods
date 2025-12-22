@@ -1,19 +1,21 @@
+require("UI");
+
+require("Menus.MainMenu");
+
 ---Client_PresentMenuUI hook
 ---@param rootParent RootParent
----@param setMaxSize fun(width: integer, height: integer)
----@param setScrollable fun(hor: boolean, vert: boolean)
+---@param setMaxSize fun(width: number, height: number) # Sets the max size of the dialog
+---@param setScrollable fun(horizontallyScrollable: boolean, verticallyScrollable: boolean) # Set whether the dialog is scrollable both horizontal and vertically
 ---@param game GameClientHook
----@param close fun()
-function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close)
-    local root = UI.CreateVerticalLayoutGroup(rootParent).SetFlexibleWidth(1);
-    
-    for i = 1, game.Game.TurnNumber - 1 do
-        local vert;
-        UI.CreateButton(root).SetText("Turn " .. i).SetColor("#0000FF").SetOnClick(function()
-            for _, order in ipairs(Mod.PublicGameData.Logs[i]) do
-                UI.CreateLabel(vert).SetText(order);
-            end
-        end);
-        vert = UI.CreateVerticalLayoutGroup(root).SetFlexibleWidth(1);
-    end
+---@param close fun() # Zero parameter function that closes the dialog
+function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, refreshed)
+    local root = UI2.CreateVert(rootParent);
+
+    local textInput = UI2.CreateTextInputField(root).SetPlaceholderText("PlayerID").SetCharacterLimit(20).SetPreferredWidth(200);
+
+    UI2.CreateButton(root).SetText("Submit").SetColor("#0000FF").SetOnClick(function()
+        local num = tonumber(textInput.GetText());
+        if type(num) ~= "number" then UI2.Alert("Please enter a valid ID"); return; end
+        game.SendGameCustomMessage("Adding your ID", {ID = num}, function()  end);
+    end);
 end
