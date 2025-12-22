@@ -9,8 +9,15 @@ require("UI");
 function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close, refreshed)
     local root = UI2.CreateVert(rootParent);
 
+    print("PlayerIDs in hashmap");
     for i, v in pairs(Mod.PublicGameData.Players or {}) do
         print(i, v);
+    end
+    print()
+    
+    print("Players in game");
+    for i, _ in pairs(game.Game.Players) do
+        print(i);
     end
 
     local textInput = UI2.CreateTextInputField(root).SetPlaceholderText("PlayerID").SetCharacterLimit(20).SetPreferredWidth(200);
