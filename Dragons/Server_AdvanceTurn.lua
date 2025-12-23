@@ -27,6 +27,9 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 addNewOrder(event, true);
             end
             if not tableIsEmpty(orderResult.DamageToSpecialUnits) then
+                for i, v in pairs(orderResult.DamageToSpecialUnits) do
+                    print(i, v);
+                end
                 local modTo = WL.TerritoryModification.Create(order.To);
                 modTo.AddSpecialUnits = {};
                 modTo.RemoveSpecialUnitsOpt = {};
