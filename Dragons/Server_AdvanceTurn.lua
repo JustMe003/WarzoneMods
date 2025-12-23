@@ -11,7 +11,6 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     end
                 end
             end
-            print(dragonBreathDamage);
             if dragonBreathDamage > 0 then
                 local mods = {};
                 for connID, _ in pairs(game.Map.Territories[order.To].ConnectedTo) do
