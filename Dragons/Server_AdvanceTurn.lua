@@ -11,6 +11,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     end
                 end
             end
+            print(dragonBreathDamage);
             if dragonBreathDamage > 0 then
                 local mods = {};
                 for connID, _ in pairs(game.Map.Territories[order.To].ConnectedTo) do
@@ -26,11 +27,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY, game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY)
                 addNewOrder(event, true);
             end
-            print(tableIsEmpty(orderResult.DamageToSpecialUnits));
             if not tableIsEmpty(orderResult.DamageToSpecialUnits) then
-                for i, v in pairs(orderResult.DamageToSpecialUnits) do
-                    print(i, v);
-                end
                 local modTo = WL.TerritoryModification.Create(order.To);
                 modTo.AddSpecialUnits = {};
                 modTo.RemoveSpecialUnitsOpt = {};
