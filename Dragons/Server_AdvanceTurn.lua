@@ -3,7 +3,8 @@ require("DataConverter");
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack then
         if #orderResult.ActualArmies.SpecialUnits > 0 then
-            for i, v in pairs(orderResult.AttackingArmiesKilled) do
+            print(orderResult.AttackingArmiesKilled.NumArmies);
+            for i, v in pairs(orderResult.AttackingArmiesKilled.SpecialUnits or {}) do
                 print(i, v);
             end
             local dragonBreathDamage = 0;
