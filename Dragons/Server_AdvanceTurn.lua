@@ -5,7 +5,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         if #orderResult.ActualArmies.SpecialUnits > 0 then
             print(orderResult.AttackingArmiesKilled.NumArmies);
             for i, v in pairs(orderResult.AttackingArmiesKilled.SpecialUnits or {}) do
-                print(i, v);
+                print(v.Name, v.ID);
             end
             local dragonBreathDamage = 0;
             for _, sp in pairs(orderResult.ActualArmies.SpecialUnits) do
