@@ -33,7 +33,7 @@ function showMenu()
 		CreateLabel(line).SetText(totalShots).SetColor((function() if totalShots > 0 then return colors.Green; else return colors.OrangeRed; end end)());
 
 		line = CreateHorz(root).SetFlexibleWidth(1);
-		CreateButton(line).SetText("Artillery Strike").SetOnClick(artilleryStrikeMenu).SetColor(colors.Orange);
+		CreateButton(line).SetText("Artillery Strike").SetOnClick(artilleryStrikeMenu).SetColor(colors.Orange).SetInteractable(totalShots > 0);
 		CreateEmpty(line).SetFlexibleWidth(1);
 		CreateButton(line).SetText("Target Finder").SetOnClick(targetFinderMenu).SetColor(colors.RoyalBlue);
 
