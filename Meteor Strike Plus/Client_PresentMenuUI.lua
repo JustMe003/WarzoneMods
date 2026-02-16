@@ -109,8 +109,6 @@ function showForecast()
     if allUpcomingStorms == nil then
         allUpcomingStorms = {};
         for _, rain in ipairs(Mod.Settings.Data.Normal) do
-            printTable(Mod.PublicGameData.NormalStormsStartTurn);
-            print(Mod.PublicGameData.NormalStormsStartTurn[rain.ID]);
             if rain.NotEveryTurn and (rain.StartStorm > TurnNumber or (Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= nil and Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= 0 and TurnNumber < Mod.PublicGameData.NormalStormsStartTurn[rain.ID])) then
                 table.insert(allUpcomingStorms, {TurnNumber = rain.StartStorm, Name = rain.Name, StormType = "Normal", Data = rain});
             end
@@ -185,14 +183,4 @@ end
 
 function showDecimal(x, n)
     return math.floor((x * (10^n)) + 0.5) / (10^n);
-end
-
-function printTable(t, indent)
-    indent = indent or "  ";
-    for i, v in pairs(t) do
-        print(indent .. tostring(i) .. ": " .. tostring(v));
-        if type(v) == "table" then
-            printTable(t[i], indent .. "  ");
-        end
-    end
 end
