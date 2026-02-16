@@ -109,7 +109,7 @@ function showForecast()
     if allUpcomingStorms == nil then
         allUpcomingStorms = {};
         for _, rain in ipairs(Mod.Settings.Data.Normal) do
-            printTable(rain);
+            printTable(Mod.PublicGameData.NormalStormsStartTurn);
             print(Mod.PublicGameData.NormalStormsStartTurn[rain.ID]);
             if rain.NotEveryTurn and (rain.StartStorm > TurnNumber or (Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= 0 and TurnNumber < Mod.PublicGameData.NormalStormsStartTurn[rain.ID])) then
                 table.insert(allUpcomingStorms, {TurnNumber = rain.StartStorm, Name = rain.Name, StormType = "Normal", Data = rain});
