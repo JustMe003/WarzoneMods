@@ -185,3 +185,13 @@ end
 function showDecimal(x, n)
     return math.floor((x * (10^n)) + 0.5) / (10^n);
 end
+
+function printTable(t, indent)
+    indent = indent or "  ";
+    for i, v in pairs(t) do
+        print(indent .. tostring(i) .. ": " .. tostring(v));
+        if type(v) == "table" then
+            printTable(t[i], indent .. "  ");
+        end
+    end
+end
