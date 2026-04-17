@@ -9,8 +9,10 @@ function Server_StartGame(game, standing)
         local restrictions = player.Income(0, standing, false, false).BonusRestrictions;
         local total = 0;
         for b, n in pairs(restrictions) do
-            total = total + n;
-            table.insert(incomeMods, WL.IncomeMod.Create(p, -n, "cancel out " .. bonuses[b].Name, b));
+            if n ~= 0 then
+                total = total + n;
+                table.insert(incomeMods, WL.IncomeMod.Create(p, -n, "cancel out " .. bonuses[b].Name, b));
+            end
         end
         table.insert(incomeMods, WL.IncomeMod.Create(p, total, "free income"));
     end

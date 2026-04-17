@@ -50,8 +50,10 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 			local incomeMods = {};
 			local total = 0;
 			for bonusID, n in pairs(player.Income(0, game.ServerGame.LatestTurnStanding, true, true).BonusRestrictions) do
-				table.insert(incomeMods, WL.IncomeMod.Create(p, -n, "Cancel out " .. bonuses[bonusID].Name, bonusID));
-				total = total + n;
+				if n ~= 0 then
+					table.insert(incomeMods, WL.IncomeMod.Create(p, -n, "Cancel out " .. bonuses[bonusID].Name, bonusID));
+					total = total + n;
+				end
 			end
 			table.insert(incomeMods, WL.IncomeMod.Create(p, total, "Added free income"));
 			local event = WL.GameOrderEvent.Create(p, "Added free income", getPlayerOrAllTeamPlayers(game, player), {}, {}, incomeMods);
