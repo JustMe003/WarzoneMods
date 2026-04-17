@@ -1,4 +1,3 @@
-require("Annotations");
 require("UI");
 
 ---Client_PresentConfigureUI hook
@@ -27,8 +26,13 @@ function Client_PresentConfigureUI(rootParent)
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(1);
     CreateLabel(line).SetText("Number of turns the card will last").SetColor(textColor);
-    duration = CreateNumberInputField(line).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(Mod.Settings.Duration or 3);
+    duration = CreateNumberInputField(line).SetSliderMinValue(1).SetSliderMaxValue(10).SetValue(Mod.Settings.Duration or 2);
     
+    line = CreateHorz(root).SetFlexibleWidth(1);
+    CreateEmpty(line).SetFlexibleWidth(1);
+    CreateLabel(line).SetText("The weight of the card").SetColor(textColor);
+    weight = CreateNumberInputField(line).SetSliderMinValue(0).SetSliderMaxValue(5).SetWholeNumbers(false).SetValue(Mod.Settings.Weight or 1);
+
     CreateEmpty(root).SetPreferredWidth(15);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
@@ -36,11 +40,11 @@ function Client_PresentConfigureUI(rootParent)
     CreateLabel(line).SetText("Additional settings").SetColor(textColor);
     CreateEmpty(line).SetFlexibleWidth(1);
 
-    line = CreateHorz(root).SetFlexibleWidth(1);
-    CreateEmpty(line).SetFlexibleWidth(1);
-    CreateLabel(line).SetText("AI can play Forced LD cards").SetColor(textColor);
-    AIAutoplayCards = CreateCheckBox(line).SetText(" ").SetIsChecked(Mod.Settings.AIAutoplayCards or false);
-    CreateEmpty(line).SetFlexibleWidth(1);
+    -- line = CreateHorz(root).SetFlexibleWidth(1);
+    -- CreateEmpty(line).SetFlexibleWidth(1);
+    -- CreateLabel(line).SetText("AI can play Forced LD cards").SetColor(textColor);
+    -- AIAutoplayCards = CreateCheckBox(line).SetText(" ").SetIsChecked(Mod.Settings.AIAutoplayCards or false);
+    -- CreateEmpty(line).SetFlexibleWidth(1);
 
     line = CreateHorz(root).SetFlexibleWidth(1);
     CreateEmpty(line).SetFlexibleWidth(1);

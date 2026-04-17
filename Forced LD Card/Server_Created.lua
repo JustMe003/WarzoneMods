@@ -1,5 +1,3 @@
-require("Annotations");
-
 ---Server_Created hook
 ---@param game GameServerHook
 ---@param settings GameSettings

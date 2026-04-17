@@ -1,4 +1,3 @@
-require("Annotations");
 require("UI");
 
 ---Client_PresentSettingsUI hook
@@ -30,14 +29,19 @@ function Client_PresentSettingsUI(rootParent)
         CreateLabel(line).SetText(Mod.Settings.Duration).SetColor(colors.Aqua);
     end, "The number of turns the card will last when played");
     CreateInfoButtonLine(root, function(line)
-        CreateLabel(line).SetText("AI can play this card").SetColor(colors.TextColor);
+        CreateLabel(line).SetText("Weight of the card").SetColor(colors.TextColor);
         CreateEmpty(line).SetPreferredWidth(10);
-        if Mod.Settings.AIAutoplayCards then
-            CreateLabel(line).SetText("Yes").SetColor(colors.Green);
-        else
-            CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
-        end
-    end, "When true, this option allows AI players (or teams that consist of only AI) to play Forced LD cards. They will play the cards as soon as possible on a random target, but not at their teammates. \n\nDoes nothing if the option is not selected");
+        CreateLabel(line).SetText(Mod.Settings.Weight).SetColor(colors.Aqua);
+    end, "The weight of the card");
+    -- CreateInfoButtonLine(root, function(line)
+    --     CreateLabel(line).SetText("AI can play this card").SetColor(colors.TextColor);
+    --     CreateEmpty(line).SetPreferredWidth(10);
+    --     if Mod.Settings.AIAutoplayCards then
+    --         CreateLabel(line).SetText("Yes").SetColor(colors.Green);
+    --     else
+    --         CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
+    --     end
+    -- end, "When true, this option allows AI players (or teams that consist of only AI) to play Forced LD cards. They will play the cards as soon as possible on a random target, but not at their teammates. \n\nDoes nothing if the option is not selected");
     CreateInfoButtonLine(root, function(line)
         CreateLabel(line).SetText("Can play Forced LD card on teammates").SetColor(colors.TextColor);
         CreateEmpty(line).SetPreferredWidth(10);
@@ -47,4 +51,9 @@ function Client_PresentSettingsUI(rootParent)
             CreateLabel(line).SetText("No").SetColor(colors["Orange Red"]);
         end
     end, "When true, players can play Forced LD cards on teammates. When false, this is not permitted by the mod");
+end
+
+function round(n, dec)
+    local m = 10^dec;
+    return math.floor((n * m) + 0.5) / m;
 end
