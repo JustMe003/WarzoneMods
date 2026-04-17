@@ -13,7 +13,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 			local data = Mod.PrivateGameData;
 			local target = getTargetPlayerID(order.ModData);
 			if target ~= nil then
-				table.insert(data.ActiveCards, {PlayerID = order.PlayerID, Target = target, LastTillTurn = game.Game.TurnNumber + Mod.Settings.Duration});
+				table.insert(data.ActiveCards, {PlayerID = order.PlayerID, Target = target, LastTillTurn = game.Game.TurnNumber + Mod.Settings.Duration - 1});
+				addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Played forced local deployment card on " .. game.Game.PlayingPlayers[target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[target]), getPlayerOrAllTeamPlayers(game, game.Game.Players[order.PlayerID])), nil), {}));
 			else
 				addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Something went wrong: Could not extract PlayerID from GameOrderPlayCardCustom", ""), true);
 			end
