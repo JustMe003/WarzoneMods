@@ -1,7 +1,7 @@
 function Server_Created(game, settings)
 	data = Mod.PublicGameData;
     data.Errors = {};
-    local s = Mod.Settings.DragonPlacements
+    local s = Mod.Settings.DragonPlacements;
     local start, ending = s:find("%[[%d]+%]");
     local mapID = nil;
     if #s > 0 and start ~= nil and ending ~= nil then

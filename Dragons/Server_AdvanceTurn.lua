@@ -5,10 +5,8 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         if #orderResult.ActualArmies.SpecialUnits > 0 then
             local dragonBreathDamage = 0;
             for _, sp in pairs(orderResult.ActualArmies.SpecialUnits) do
-                if sp.proxyType == "CustomSpecialUnit" then
-                    if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonBreathAttack[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
-                        dragonBreathDamage = dragonBreathDamage + Mod.PublicGameData.DragonBreathAttack[Mod.PublicGameData.DragonNamesIDs[sp.Name]];
-                    end
+                if isDragon(sp) and Mod.PublicGameData.DragonBreathAttack[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
+                    dragonBreathDamage = dragonBreathDamage + Mod.PublicGameData.DragonBreathAttack[Mod.PublicGameData.DragonNamesIDs[sp.Name]];
                 end
             end
             if dragonBreathDamage > 0 then
@@ -36,7 +34,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 for ID, v in pairs(orderResult.DamageToSpecialUnits) do 
                     for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.To].NumArmies.SpecialUnits) do
                         if sp.ID == ID then
-                            if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DynamicDefencePower ~= nil and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
+                            if isDragon(sp) and Mod.PublicGameData.DynamicDefencePower ~= nil and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
                                 modTo = replaceDragon(modTo, sp, v);
                             end
                             break;
@@ -44,7 +42,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     end
                     for _, sp in pairs(game.ServerGame.LatestTurnStanding.Territories[order.From].NumArmies.SpecialUnits) do
                         if sp.ID == ID then
-                            if sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DynamicDefencePower ~= nil and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
+                            if isDragon(sp) and Mod.PublicGameData.DynamicDefencePower ~= nil and Mod.PublicGameData.DynamicDefencePower[Mod.PublicGameData.DragonNamesIDs[sp.Name]] ~= nil then
                                 if orderResult.IsSuccessful then
                                     modTo = replaceDragon(modTo, sp, v);
                                 else
@@ -183,7 +181,7 @@ function getNumOfOwnedDragons(terrs, dragonID, p)
     for _, terr in pairs(terrs) do
         if not tableIsEmpty(terr.NumArmies.SpecialUnits) and terr.OwnerPlayerID == p then
             for _, sp in pairs(terr.NumArmies.SpecialUnits) do
-                if sp.proxyType == "CustomSpecialUnit" and sp.ModID ~= nil and sp.ModID == 594 and Mod.PublicGameData.DragonNamesIDs[sp.Name] ~= nil and Mod.PublicGameData.DragonNamesIDs[sp.Name] == dragonID then
+                if isDragon(sp) and Mod.PublicGameData.DragonNamesIDs[sp.Name] ~= nil and Mod.PublicGameData.DragonNamesIDs[sp.Name] == dragonID then
                     c = c + 1;
                 end
             end
@@ -191,4 +189,8 @@ function getNumOfOwnedDragons(terrs, dragonID, p)
     end
     print(c);
     return c;
+end
+
+function isDragon(sp)
+    return sp.proxyType == "CustomSpecialUnit" and string.sub(sp.ImageFilename, 1, #"Dragon") == "Dragon";
 end
