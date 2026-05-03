@@ -4,6 +4,7 @@
 function Server_StartGame(game, standing)
     local cards = standing.Cards;
 
+    print(tostring(cards), tostring(standing.Cards));
     for pID, playerCards in pairs(cards) do
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
     end
