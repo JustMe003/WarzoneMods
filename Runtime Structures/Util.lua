@@ -22,14 +22,14 @@ end
 
 function getGroupText(group)
     local structuresMap = getStructuresMap();
+    for i, v in pairs(structuresMap) do
+        print(i, v);
+    end
     local s = group.Amount .. " structure" -- of type " .. table.concat(group.Structures, ", ") .. " will be added every " .. group.Interval .. " turns";
     if group.Amount ~= 1 then
         s = s .. "s";
     end
     s = s .. " of "
-    for i, v in pairs(group.Structures) do
-        print(i, v);
-    end
     if #group.Structures > 1 then
         s = s .. "either " .. structuresMap[group.Structures[1]];
         for i = 2, #group.Structures - 1 do
