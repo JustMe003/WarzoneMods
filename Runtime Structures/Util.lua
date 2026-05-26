@@ -1,8 +1,9 @@
 function getStructuresMap()
     local t = {};
     for i, v in pairs(WL.StructureType) do
+        print(i, type(i), v, type(v));
         if i ~= "ToString" then
-                t[v] = readableString(i);
+            t[v] = readableString(i);
         end
     end
     return t;
@@ -22,9 +23,6 @@ end
 
 function getGroupText(group)
     local structuresMap = getStructuresMap();
-    for i, v in pairs(structuresMap) do
-        print(i, v);
-    end
     local s = group.Amount .. " structure" -- of type " .. table.concat(group.Structures, ", ") .. " will be added every " .. group.Interval .. " turns";
     if group.Amount ~= 1 then
         s = s .. "s";
