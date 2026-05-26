@@ -1,9 +1,9 @@
 function getStructuresMap()
     local t = {};
     for i, v in pairs(WL.StructureType) do
-	if i ~= "ToString" then
-            t[v] = readableString(i);
-	end
+        if i ~= "ToString" then
+                t[v] = readableString(i);
+        end
     end
     return t;
 end
