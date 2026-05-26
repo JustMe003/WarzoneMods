@@ -1,9 +1,8 @@
 function getStructuresMap()
     local t = {};
     for i, v in pairs(WL.StructureType) do
-        print(i, type(i), v, type(v));
-        if i ~= "ToString" then
-            t[v] = readableString(i);
+        if type(v) ~= "function" then
+            t[tonumber(v)] = readableString(i);
         end
     end
     return t;
