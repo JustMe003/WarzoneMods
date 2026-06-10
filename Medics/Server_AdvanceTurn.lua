@@ -44,6 +44,9 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
         end
         skipThisOrder(WL.ModOrderControl.SkipAndSupressSkippedMessage);
     elseif order.proxyType == "GameOrderAttackTransfer" and orderResult.IsAttack then
+        if game.ServerGame.LatestTurnStanding.Territories[order.To].OwnerPlayerID == WL.PlayerID.Neutral and Mod.Settings.DontAffectNeutrals then
+            return;
+        end
         skipFrom = false
         if getNMedics(orderResult.ActualArmies) > 0 then
             skipFrom = true;

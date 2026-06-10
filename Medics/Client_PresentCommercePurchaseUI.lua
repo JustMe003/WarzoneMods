@@ -8,7 +8,7 @@ function Client_PresentCommercePurchaseUI(rootParent, game, close)
     colors = GetColors();
 
     local line = CreateHorz(root);
-    CreateLabel(line).SetText("Medics recover " .. Mod.Settings.Percentage .. "% of lost armies on bordering territories if they are stationary. When they are attacking or forced to defend, they cannot recover armies (during that order). Medics are worth " .. Mod.Settings.Health .. " armies and cost " .. Mod.Settings.Cost .. " gold").SetColor(colors.Ivory);
+    CreateLabel(line).SetText("Medics recover " .. Mod.Settings.Percentage .. "% of lost armies on bordering territories if they are stationary. When they are attacking or forced to defend, they cannot recover armies (during that order). Medics are worth " .. Mod.Settings.Health .. " armies and cost " .. Mod.Settings.Cost .. " gold").SetColor(colors.Text);
     CreateButton(line).SetText("Purchase Medic").SetColor(colors["Dark Green"]).SetOnClick(buyMedic).SetPreferredWidth(250);
 end
 
@@ -40,7 +40,7 @@ function pickTerr(rootParent, setMaxSize, setScrollable, game, close)
     root = GetRoot().SetFlexibleWidth(1);
 
     selected = CreateButton(root).SetText("Pick territory").SetColor(colors.Orange).SetOnClick(selectTerr);
-    label = CreateLabel(root).SetText("").SetColor(colors.Ivory);
+    label = CreateLabel(root).SetText("").SetColor(colors.Text);
     purchase = CreateButton(root).SetText("Purchase Medic").SetColor(colors.Green).SetOnClick(purchaseMedic).SetInteractable(false);
     selectTerr();
 end
