@@ -69,7 +69,15 @@ end
 
 function purchaseMedic()
     local orders = Game.Orders;
-    table.insert(orders, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Medic on " .. selectedTerr.Name, "BuyMedic_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost}));
+    local index = 0;
+    for i, order in pairs(orders) do
+        if order.OccursInPhase ~= nil and order.OccursInPhase > WL.TurnPhase.Deploys then
+            index = i;
+            break;
+        end
+    end
+    if index == 0 then index = #orders + 1; end
+    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Medic on " .. selectedTerr.Name, "BuyMedic_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost}, WL.TurnPhase.Deploys));
     Game.Orders = orders;
     Close();
 end
