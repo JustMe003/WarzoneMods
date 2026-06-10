@@ -39,6 +39,9 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             local event = WL.GameOrderEvent.Create(order.PlayerID, "Purchased a Medic", {}, {mod});
             event.AddResourceOpt = {[order.PlayerID]={[WL.ResourceType.Gold]=-order.CostOpt[WL.ResourceType.Gold]}};
             event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
+            event.TerritoryAnnotationsOpt = {
+                [terrID] = WL.TerritoryAnnotation.Create("Purchased Medic");
+            }
             addNewOrder(event);
             medics[order.PlayerID] = medics[order.PlayerID] + 1;
         end
@@ -65,6 +68,9 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                 if mod.AddArmies ~= nil and mod.AddArmies > 0 then
                     local event = WL.GameOrderEvent.Create(p, "Medic recovered " .. mod.AddArmies .. " armies", {}, {mod});
                     event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
+                    event.TerritoryAnnotationsOpt = {
+                        [connID] = WL.TerritoryAnnotation.Create(string.format("+%d", mod.AddArmies));
+                    }
                     addNewOrder(event, true);
                 end
             end
