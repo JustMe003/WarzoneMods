@@ -17,8 +17,8 @@ function Server_StartGame(game, standing)
         
         -- Adding a card
         local new = WL.ReinforcementCardInstance.Create(1);
+        print(string.format("Adding card with ID %s, indexing gives %s", new.ID, tostring(playerCards.WholeCards[new.ID])));
         playerCards.WholeCards[new.ID] = new;
-        print(string.format("Adding card with ID %s, indexing gives %s", cardID, tostring(playerCards.WholeCards[cardID])));
         cards[pID] = playerCards;
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
     end
