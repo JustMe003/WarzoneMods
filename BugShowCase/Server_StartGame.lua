@@ -7,9 +7,20 @@ function Server_StartGame(game, standing)
     print(tostring(cards), tostring(standing.Cards));
     for pID, playerCards in pairs(cards) do
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
+        local cardID = getFirstCard(playerCards.WholeCards);
+        print("Removing a card");
+        playerCards.WholeCards[cardID] = nil;
+        cards[pID] = playerCards;
+        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
     end
 
     standing.Cards = cards;
+end
+
+function getFirstCard(cards)
+    for cardID, _ in pairs(cards) do
+        return cardID;
+    end
 end
 
 function tableSize(t)
