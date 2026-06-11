@@ -8,7 +8,7 @@ function Server_StartGame(game, standing)
     for pID, playerCards in pairs(cards) do
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
         local cardID = getFirstCard(playerCards.WholeCards);
-        print("Removing a card");
+        print(string.format("Removing card with ID %s, indexing gives %s", cardID, tostring(playerCards.WholeCards[cardID])));
         playerCards.WholeCards[cardID] = nil;
         cards[pID] = playerCards;
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
