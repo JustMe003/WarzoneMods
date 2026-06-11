@@ -6,21 +6,23 @@ function Server_StartGame(game, standing)
 
     print(tostring(cards), tostring(standing.Cards));
     for pID, playerCards in pairs(cards) do
-        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
+        local whole = playerCards.WholeCards;
+        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(whole.WholeCards)));
         
         -- Removing a card
-        local cardID = getFirstCard(playerCards.WholeCards);
-        print(string.format("Removing card with ID %s, indexing gives %s", cardID, tostring(playerCards.WholeCards[cardID])));
-        playerCards.WholeCards[cardID] = nil;
-        cards[pID] = playerCards;
-        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
+        local cardID = getFirstCard(whole.WholeCards);
+        print(string.format("Removing card with ID %s, indexing gives %s", cardID, tostring(whole.WholeCards[cardID])));
+        whole.WholeCards[cardID] = nil;
+        cards[pID] = whole;
+        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(whole.WholeCards)));
         
         -- Adding a card
         local new = WL.ReinforcementCardInstance.Create(1);
-        print(string.format("Adding card with ID %s, indexing gives %s", new.ID, tostring(playerCards.WholeCards[new.ID])));
-        playerCards.WholeCards[new.ID] = new;
-        cards[pID] = playerCards;
-        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(playerCards.WholeCards)));
+        print(string.format("Adding card with ID %s, indexing gives %s", new.ID, tostring(whole.WholeCards[new.ID])));
+        whole.WholeCards[new.ID] = new;
+        cards[pID] = whole;
+        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(whole.WholeCards)));
+        playerCards = whole;
     end
 
     standing.Cards = cards;
