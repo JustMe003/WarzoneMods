@@ -22,7 +22,7 @@ function Server_StartGame(game, standing)
         whole.WholeCards[new.ID] = new;
         cards[pID] = whole;
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(whole.WholeCards)));
-        playerCards = whole;
+        playerCards.WholeCards = whole;
     end
 
     standing.Cards = cards;
