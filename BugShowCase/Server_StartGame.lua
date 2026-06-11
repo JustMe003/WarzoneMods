@@ -22,6 +22,7 @@ function Server_StartGame(game, standing)
         playerCards.WholeCards[new.ID] = new;
         cards[pID] = playerCards;
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
+        print();
     end
 
     standing.Cards = cards;
