@@ -6,7 +6,6 @@ function Server_StartGame(game, standing)
 
     print(tostring(cards), tostring(standing.Cards));
     for pID, playerCards in pairs(cards) do
-        local whole = playerCards.WholeCards;
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
         
         -- Removing a card
