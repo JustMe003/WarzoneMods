@@ -17,6 +17,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
             end
             local group = Mod.Settings.Config[i];
             local structID = group.Structures[math.random(#group.Structures)];
+            print(string.format("StructureID: %d, amount: %d, structureMap[StructureID]: %s", structID or -1, group.Amount or -1, structuresMap[structID] or "Nil"))
             local rand = math.random(#terrs);
             local terrID = terrs[rand];
             table.remove(terrs, rand);
