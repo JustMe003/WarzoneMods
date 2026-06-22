@@ -58,6 +58,17 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 			table.insert(incomeMods, WL.IncomeMod.Create(p, total, "Added free income"));
 			local event = WL.GameOrderEvent.Create(p, "Added free income", getPlayerOrAllTeamPlayers(game, player), {}, {}, incomeMods);
 			addNewOrder(event);
+
+			if game.Settings.CommerceGame then
+				addNewOrder(WL.GameOrderEvent.Create(p, "Removing unused gold", getPlayerOrAllTeamPlayers(game, player), {}, {
+					[p] = {
+						[WL.ResourceType.Gold] = 0;
+					}
+				}, {
+					WL.IncomeMod.Create(p, game.ServerGame.LatestTurnStanding.NumResources(p, WL.ResourceType.Gold), "Unused gold from last turn");
+				}));
+
+			end
 		end
     end
 

@@ -17,7 +17,7 @@ function Client_SaveConfigureUI(alert, addCard)
     -- Mod.Settings.AIAutoplayCards = AIAutoplayCards.GetIsChecked();
     Mod.Settings.CanPlayOnTeammates = canPlayOnTeammates.GetIsChecked();
 
-    Mod.Settings.Version = VersionNumber.CreateVersionNumberString(1, 1);
+    Mod.Settings.Version = VersionNumber.CreateVersionNumberString(1, 1, 1);
 
     Mod.Settings.CardID = addCard("Forced Local Deployment card", 
         "Force a player to deploy their armies according to the local deployment rules", 
