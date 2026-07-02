@@ -69,7 +69,7 @@ function removeArmies(terr, damage)
 			end
 		end
 
-		if not processedArmies then
+		if not processedArmies and damage > 0 then
 			mod.AddArmies = math.max(-damage, -terr.NumArmies.NumArmies);
 		end
 		
