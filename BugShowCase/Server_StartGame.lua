@@ -13,6 +13,7 @@ function Server_StartGame(game, standing)
         print(string.format("Removing card with ID %s, indexing gives %s", cardID, tostring(cards[pID].WholeCards[cardID])));
         playerCards.WholeCards[cardID] = nil;
         cards[pID] = playerCards;
+        print(string.format("Indexing %s gives %s", cardID, tostring(cards[pID].WholeCards[cardID])));
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
         
         -- Adding a card
@@ -21,7 +22,7 @@ function Server_StartGame(game, standing)
         playerCards.WholeCards[new.ID] = new;
         cards[pID] = playerCards;
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
-        print();
+        print("\n");
     end
 
     standing.Cards = cards;
