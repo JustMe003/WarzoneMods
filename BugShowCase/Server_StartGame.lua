@@ -9,12 +9,12 @@ function Server_StartGame(game, standing)
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
         
         -- Removing a card
-        -- local cardID = getFirstCard(playerCards.WholeCards);
-        -- print(string.format("Removing card with ID %s, indexing gives %s", cardID, tostring(cards[pID].WholeCards[cardID])));
-        -- playerCards.WholeCards[cardID] = nil;
-        -- cards[pID] = playerCards;
-        -- print(string.format("Indexing %s gives %s", cardID, tostring(cards[pID].WholeCards[cardID])));
-        -- print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
+        local cardID = getFirstCard(playerCards.WholeCards);
+        print(string.format("Removing card with ID %s, indexing gives %s", cardID, tostring(cards[pID].WholeCards[cardID])));
+        playerCards.WholeCards[cardID] = nil;
+        cards[pID] = playerCards;
+        print(string.format("Indexing %s gives %s", cardID, tostring(cards[pID].WholeCards[cardID])));
+        print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
         
         -- Adding a card
         local new = WL.ReinforcementCardInstance.Create(1);
