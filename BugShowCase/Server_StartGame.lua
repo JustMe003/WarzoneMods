@@ -23,6 +23,8 @@ function Server_StartGame(game, standing)
         cards[pID] = playerCards;
         print(string.format("Player: %d\tNum cards: %d", pID, tableSize(cards[pID].WholeCards)));
         print("\n");
+
+        printTable(cards[pID].WholeCards)
     end
 
     standing.Cards = cards;
@@ -40,4 +42,14 @@ function tableSize(t)
         c = c + 1;
     end
     return c;
+end
+
+function printTable(t, n)
+    n = n or 0;
+    for i, v in pairs(t) do
+        print(string.format("%s%s: %s", string.rep(" ", n), tostring(i), tostring(v)));
+        if type(v) == "table" then
+            printTable(v, n + 2);
+        end
+    end
 end
