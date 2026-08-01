@@ -9,6 +9,14 @@ function setUpHills(standing)
 		end
     end
 
+	if #list < Mod.Settings.NumHills then
+		print("Not enough territories! Adding all territories to the list")
+		list = {};
+		for terrID, _ in pairs(standing.Territories) do
+			table.insert(list, terrID);
+		end
+	end
+
 	local terrs = {};
     local i = 0;
     while i < Mod.Settings.NumHills and #list > 0 do
