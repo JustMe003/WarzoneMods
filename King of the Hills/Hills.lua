@@ -6,8 +6,6 @@ function setUpHills(standing)
     for terrID, terr in pairs(standing.Territories) do
 		if terr.OwnerPlayerID == WL.PlayerID.Neutral then
 			table.insert(list, terrID);
-		else
-			print(terrID, terr.OwnerPlayerID);
 		end
     end
 
