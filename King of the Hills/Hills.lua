@@ -3,8 +3,12 @@
 function setUpHills(standing)
 	local hill = WL.StructureType.Custom("Hill");
     local list = {};
-    for terrID, _ in pairs(standing.Territories) do
-        table.insert(list, terrID);
+    for terrID, terr in pairs(standing.Territories) do
+		if terr.OwnerPlayerID == WL.PlayerID.Neutral then
+			table.insert(list, terrID);
+		else
+			print(terrID, terr.OwnerPlayerID);
+		end
     end
 
 	local terrs = {};
