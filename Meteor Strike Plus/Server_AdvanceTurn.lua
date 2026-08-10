@@ -165,14 +165,14 @@ function moveAlien(game, addNewOrder, terr, alien)
                 modTo.AddSpecialUnits = {solveAlienConflicts(modTo, alien, connID)};
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getEventMessage(modTo, game.Map.Territories[connID].Name, game.Map.Territories[terr.ID].Name), {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
-                event.TerritoryAnnotationsOpt = { [modFrom] = WL.TerritoryAnnotation.Create("From", 5); [modTo] = WL.TerritoryAnnotation.Create("To", 5) };
+                event.TerritoryAnnotationsOpt = { [terr.ID] = WL.TerritoryAnnotation.Create("From", 5); [connID] = WL.TerritoryAnnotation.Create("To", 5) };
                 event.Icon = "Alien";
                 addNewOrder(event);
             else
                 solveAlienConflicts(modTo, alien, terr.ID);
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Aliens attacked " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
-                event.TerritoryAnnotationsOpt = { [modFrom] = WL.TerritoryAnnotation.Create("From", 5); [modTo] = WL.TerritoryAnnotation.Create("To", 5) };
+                event.TerritoryAnnotationsOpt = { [terr.ID] = WL.TerritoryAnnotation.Create("From", 5); [connID] = WL.TerritoryAnnotation.Create("To", 5) };
                 event.Icon = "Alien";
                 addNewOrder(event);
             end
