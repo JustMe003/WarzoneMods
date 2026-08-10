@@ -73,7 +73,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					WL.IncomeMod.Create(p, game.ServerGame.LatestTurnStanding.NumResources(p, WL.ResourceType.Gold), "Unused gold from last turn");
 				});
 				event2.Icon = "LD";
-				addNewOrder(event);
+				addNewOrder(event2);
 			end
 		end
     end
