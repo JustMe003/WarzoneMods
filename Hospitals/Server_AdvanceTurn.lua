@@ -33,14 +33,18 @@ function reviveArmies(game, armies, eventTerr, order, orderResult, addNewOrder)
 				local mod = WL.TerritoryModification.Create(terrID);
 				if order.From == terrID then
 					if orderResult.IsSuccessful then
-						mod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + math.floor(armies / 100 * data.Values[dis]) - orderResult.ActualArmies.NumArmies;
+						mod.AddArmies = math.floor(armies / 100 * data.Values[dis]) - orderResult.ActualArmies.NumArmies;
 					else
-						mod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + math.floor(armies / 100 * data.Values[dis]) - orderResult.AttackingArmiesKilled.NumArmies;
+						mod.AddArmies = math.floor(armies / 100 * data.Values[dis]) - orderResult.AttackingArmiesKilled.NumArmies;
 					end
 				else
-					mod.SetArmiesTo = game.ServerGame.LatestTurnStanding.Territories[terrID].NumArmies.NumArmies + math.floor(armies / 100 * data.Values[dis]);
+					mod.AddArmies = math.floor(armies / 100 * data.Values[dis]);
 				end
-				addNewOrder(WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[eventTerr].OwnerPlayerID, "revived " .. data.Values[dis] .. "% armies at " .. game.Map.Territories[terrID].Name, {}, {mod}), true);
+				local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[eventTerr].OwnerPlayerID, "revived " .. data.Values[dis] .. "% armies at " .. game.Map.Territories[terrID].Name, {}, {mod});
+				event.Icon = "Hospital";
+				event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[eventTerr].MiddlePointX, game.Map.Territories[eventTerr].MiddlePointY, game.Map.Territories[eventTerr].MiddlePointX, game.Map.Territories[eventTerr].MiddlePointY);
+				event.TerritoryAnnotationsOpt = WL.TerritoryAnnotation.Create("+" .. mod.AddArmies);
+				addNewOrder(event, true);
 			end
 		end
 	end
