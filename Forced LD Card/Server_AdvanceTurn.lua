@@ -5,7 +5,7 @@ require("Util");
 ---@param order GameOrder
 ---@param orderResult GameOrderResult
 ---@param skipThisOrder fun(modOrderControl: EnumModOrderControl) # Allows you to skip the current order
----@param addNewOrder fun(order: GameOrder, skipIfOriginalSkipped: boolean) # Adds a game order, will be processed before any of the rest of the orders 
+---@param addNewOrder fun(order: GameOrder, skipIfOriginalSkipped: boolean?) # Adds a game order, will be processed before any of the rest of the orders 
 function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNewOrder)
 	if order.proxyType == "GameOrderPlayCardCustom" then
 		---@cast order GameOrderPlayCardCustom
@@ -14,9 +14,13 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 			local target = getTargetPlayerID(order.ModData);
 			if target ~= nil then
 				table.insert(data.ActiveCards, {PlayerID = order.PlayerID, Target = target, LastTillTurn = game.Game.TurnNumber + Mod.Settings.Duration - 1});
-				addNewOrder(WL.GameOrderEvent.Create(order.PlayerID, "Played forced local deployment card on " .. game.Game.PlayingPlayers[target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[target]), getPlayerOrAllTeamPlayers(game, game.Game.Players[order.PlayerID])), nil), {}));
+				local event = WL.GameOrderEvent.Create(order.PlayerID, "Played forced local deployment card on " .. game.Game.PlayingPlayers[target].DisplayName(nil, false), aOrB(game.Settings.CardPlayingsFogged, mergeLists(getPlayerOrAllTeamPlayers(game, game.Game.Players[target]), getPlayerOrAllTeamPlayers(game, game.Game.Players[order.PlayerID])), nil), {});
+				event.Icon = "LD";
+				addNewOrder(event);
 			else
-				addNewOrder(WL.GameOrderCustom.Create(order.PlayerID, "Something went wrong: Could not extract PlayerID from GameOrderPlayCardCustom", ""), true);
+				local custom = WL.GameOrderCustom.Create(order.PlayerID, "Something went wrong: Could not extract PlayerID from GameOrderPlayCardCustom", "");
+				custom.Icon = "LD";
+				addNewOrder(custom);
 			end
 			Mod.PrivateGameData = data;
 		end
@@ -57,17 +61,19 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 			end
 			table.insert(incomeMods, WL.IncomeMod.Create(p, total, "Added free income"));
 			local event = WL.GameOrderEvent.Create(p, "Added free income", getPlayerOrAllTeamPlayers(game, player), {}, {}, incomeMods);
+			event.Icon = "LD";
 			addNewOrder(event);
 
 			if game.Settings.CommerceGame then
-				addNewOrder(WL.GameOrderEvent.Create(p, "Removing unused gold", getPlayerOrAllTeamPlayers(game, player), {}, {
+				local event2 = WL.GameOrderEvent.Create(p, "Removing unused gold", getPlayerOrAllTeamPlayers(game, player), {}, {
 					[p] = {
 						[WL.ResourceType.Gold] = 0;
 					}
 				}, {
 					WL.IncomeMod.Create(p, game.ServerGame.LatestTurnStanding.NumResources(p, WL.ResourceType.Gold), "Unused gold from last turn");
-				}));
-
+				});
+				event2.Icon = "LD";
+				addNewOrder(event);
 			end
 		end
     end
