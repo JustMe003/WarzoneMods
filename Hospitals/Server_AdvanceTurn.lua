@@ -43,7 +43,7 @@ function reviveArmies(game, armies, eventTerr, order, orderResult, addNewOrder)
 				local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[eventTerr].OwnerPlayerID, "revived " .. data.Values[dis] .. "% armies at " .. game.Map.Territories[terrID].Name, {}, {mod});
 				event.Icon = "Hospital";
 				event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[eventTerr].MiddlePointX, game.Map.Territories[eventTerr].MiddlePointY, game.Map.Territories[eventTerr].MiddlePointX, game.Map.Territories[eventTerr].MiddlePointY);
-				event.TerritoryAnnotationsOpt = WL.TerritoryAnnotation.Create("+" .. mod.AddArmies);
+				event.TerritoryAnnotationsOpt = { [eventTerr] = WL.TerritoryAnnotation.Create("+" .. mod.AddArmies) };
 				addNewOrder(event, true);
 			end
 		end
