@@ -77,7 +77,9 @@ function purchaseMedic()
         end
     end
     if index == 0 then index = #orders + 1; end
-    table.insert(orders, index, WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Medic on " .. selectedTerr.Name, "BuyMedic_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost}, WL.TurnPhase.Deploys));
+    local custom = WL.GameOrderCustom.Create(Game.Us.ID, "Buy a Medic on " .. selectedTerr.Name, "BuyMedic_" .. selectedTerr.ID, {[WL.ResourceType.Gold] = Mod.Settings.Cost}, WL.TurnPhase.Deploys);
+    custom.Icon = "Medic";
+    table.insert(orders, index, custom);
     Game.Orders = orders;
     Close();
 end
