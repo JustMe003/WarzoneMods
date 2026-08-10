@@ -21,7 +21,7 @@ function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addN
                             mod.AddSpecialUnits = {clone};
                             local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated data", {}, {mod});
                             event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY, game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY);
-                            event.TerritoryAnnotationsOpt = { [terrID] = WL.TerritoryAnnotation.Create("!") };
+                            event.TerritoryAnnotationsOpt = { [order.To] = WL.TerritoryAnnotation.Create("!") };
                             event.Icon = "Alien";
                             addNewOrder(event, true);
                         end
