@@ -5,19 +5,18 @@ require("Util");
 ---@param standing GameStanding
 function Server_StartGame(game, standing)
     local data = Mod.PrivateGameData;
-    for _, player in pairs(game.Game.PlayingPlayers) do
-        local id = GetTeamOrPlayerID(player);
-        if data[id] == nil then
-            data[id] = {};
+    local cards = standing.Cards;
+    for p, playerCards in pairs(cards) do
+        if data[p] == nil then
+            data[p] = {};
             for card, settings in pairs(Mod.Settings) do
                 if settings.MaxGameCardLimit > 0 then
-                    data[id][card] = settings.MaxGameCardLimit;
+                    data[p][card] = settings.MaxGameCardLimit;
                 end 
             end
         end
     end
 
-    local cards = standing.Cards;
     local cardsPerPlayer = {};
     for p, playerCards in pairs(cards) do
         cardsPerPlayer[p] = {};
@@ -43,6 +42,7 @@ function Server_StartGame(game, standing)
                     end
                     cards[p].WholeCards = tmp;
                     if settings.MaxGameCardLimit > 0 then
+                        
                         data[p][cardId] = data[p][cardId] - #playerCards[cardId];
                     end
                 end
