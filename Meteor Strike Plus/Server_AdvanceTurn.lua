@@ -21,6 +21,7 @@ function Server_AdvanceTurn_Order(game, order, orderDetails, skipThisOrder, addN
                             mod.AddSpecialUnits = {clone};
                             local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Updated data", {}, {mod});
                             event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY, game.Map.Territories[order.To].MiddlePointX, game.Map.Territories[order.To].MiddlePointY);
+                            event.Icon = "Alien";
                             addNewOrder(event, true);
                         end
                     end
@@ -163,11 +164,13 @@ function moveAlien(game, addNewOrder, terr, alien)
                 modTo.AddSpecialUnits = {solveAlienConflicts(modTo, alien, connID)};
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getEventMessage(modTo, game.Map.Territories[connID].Name, game.Map.Territories[terr.ID].Name), {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
+                event.Icon = "Alien";
                 addNewOrder(event);
             else
                 solveAlienConflicts(modTo, alien, terr.ID);
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Aliens attacked " .. game.Map.Territories[connID].Name, {}, {modFrom, modTo});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY, game.Map.Territories[connID].MiddlePointX, game.Map.Territories[connID].MiddlePointY);
+                event.Icon = "Alien";
                 addNewOrder(event);
             end
         end
