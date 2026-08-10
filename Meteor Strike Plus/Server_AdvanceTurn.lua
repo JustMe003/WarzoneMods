@@ -113,6 +113,7 @@ function Server_AdvanceTurn_End(game, addNewOrder)
                 local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Meteor landed on " .. game.Map.Territories[terrID].Name .. " (" .. meteor.Data.Name .. ")", {}, {mod});
                 event.JumpToActionSpotOpt = WL.RectangleVM.Create(game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY, game.Map.Territories[terrID].MiddlePointX, game.Map.Territories[terrID].MiddlePointY);
                 event.TerritoryAnnotationsOpt = { [terrID] = WL.TerritoryAnnotation.Create("Meteor") };
+                event.Icon = "Meteor";
                 table.insert(orders, event);
                 break;
             end
