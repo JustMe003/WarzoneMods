@@ -26,7 +26,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 					table.insert(mods, mod);
 				end
 			end
-			addNewOrder(WL.GameOrderEvent.Create(p.ID, p.DisplayName(nil, false) .. " was with " .. p.Income(0, game.ServerGame.LatestTurnStanding, true, true).Total .. " income below the income threshold", nil, mods));
+			local event = WL.GameOrderEvent.Create(p.ID, p.DisplayName(nil, false) .. " was with " .. p.Income(0, game.ServerGame.LatestTurnStanding, true, true).Total .. " income below the income threshold", nil, mods);
+			event.Icon = "chart";
+			addNewOrder(event);
 		end
 	end
 end
