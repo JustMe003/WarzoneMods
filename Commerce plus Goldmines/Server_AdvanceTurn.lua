@@ -16,6 +16,7 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 	if #mods > 0 then
 		local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Gold mine building has continued", {}, mods);
 		event.Icon = "Goldmine";
+		addNewOrder(event);
 	end
 end
 
