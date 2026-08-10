@@ -42,6 +42,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
             event.TerritoryAnnotationsOpt = {
                 [terrID] = WL.TerritoryAnnotation.Create("Purchased Medic");
             }
+            event.Icon = "Medic";
             addNewOrder(event);
             medics[order.PlayerID] = medics[order.PlayerID] + 1;
         end
@@ -71,6 +72,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
                     event.TerritoryAnnotationsOpt = {
                         [connID] = WL.TerritoryAnnotation.Create(string.format("+%d", mod.AddArmies));
                     }
+                    event.Icon = "Medic";
                     addNewOrder(event, true);
                 end
             end
