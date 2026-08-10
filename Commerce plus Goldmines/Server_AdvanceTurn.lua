@@ -14,7 +14,8 @@ function Server_AdvanceTurn_Start(game, addNewOrder)
 		end
 	end
 	if #mods > 0 then
-		addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Gold mine building has continued", {}, mods));
+		local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, "Gold mine building has continued", {}, mods);
+		event.Icon = "Goldmine";
 	end
 end
 
@@ -41,6 +42,7 @@ function Server_AdvanceTurn_Order(game, order, orderResult, skipThisOrder, addNe
 			t[order.PlayerID] = {};
 			t[order.PlayerID][WL.ResourceType.Gold] = cost;
 			event.AddResourceOpt = t;
+			event.Icon = "Goldmine";
 			addNewOrder(event);
 		end
 	end
@@ -71,7 +73,9 @@ function Server_AdvanceTurn_End(game, addNewOrder)
 		if t[WL.StructureType.Mine] > 0 then
 			table.insert(mods, WL.IncomeMod.Create(p, Mod.Settings.Income * t[WL.StructureType.Mine], "Income from goldmines"));
 		end
-		addNewOrder(WL.GameOrderEvent.Create(p, "Adjusted income", {}, {}, {}, mods));
+		local event = WL.GameOrderEvent.Create(p, "Adjusted income", {}, {}, {}, mods);
+		event.Icon = "Goldmine";
+		addNewOrder(event);
 	end
 end
 
