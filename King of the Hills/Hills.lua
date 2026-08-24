@@ -81,7 +81,9 @@ function endGame(winner, game, addNewOrder)
 		end
 	end
 
-	addNewOrder(WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getTeamOrPlayerName(game, Mod.PublicGameData.LastControllingPlayer) .. " captured all the hills, and held them for " .. Mod.Settings.NumTurns .. " turn" .. aOrB(Mod.Settings.NumTurns ~= 1, "s", "") .. "!", {}, mods));
+	local event = WL.GameOrderEvent.Create(WL.PlayerID.Neutral, getTeamOrPlayerName(game, Mod.PublicGameData.LastControllingPlayer) .. " captured all the hills, and held them for " .. Mod.Settings.NumTurns .. " turn" .. aOrB(Mod.Settings.NumTurns ~= 1, "s", "") .. "!", {}, mods);
+	event.Icon = "image";
+	addNewOrder(event);
 end
 
 ---returns the teamID if the team is a team game, otherwise returns the playerID
