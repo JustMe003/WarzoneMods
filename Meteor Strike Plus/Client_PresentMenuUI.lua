@@ -86,8 +86,7 @@ function showForecast()
             end
         end
 
-        stormsThisTurn = table.sort(stormsThisTurn, function(a, b) return a.Probability < b.Probability; end);
-        print(stormsThisTurn);
+        table.sort(stormsThisTurn, function(a, b) return a.Probability < b.Probability; end);
     end
     
     for _, rain in ipairs(stormsThisTurn or {}) do
@@ -134,7 +133,7 @@ function showForecast()
             end
         end
         
-        allUpcomingStorms = table.sort(allUpcomingStorms, function(a, b) return a.TurnNumber < b.TurnNumber; end);
+        table.sort(allUpcomingStorms, function(a, b) return a.TurnNumber < b.TurnNumber; end);
     end
     
     for _, rain in ipairs(allUpcomingStorms or {}) do
