@@ -11,12 +11,13 @@ function Client_PresentMenuUI(rootParent, setMaxSize, setScrollable, game, close
 						ByArmies = (function(a, b) return (#b.Standing.NumArmies.SpecialUnits * 1000000 + b.Standing.NumArmies.NumArmies) < (#a.Standing.NumArmies.SpecialUnits * 1000000 + a.Standing.NumArmies.NumArmies); end),
 						ByLocation = (function(a, b) return (b.Data.MiddlePointX^2 + b.Data.MiddlePointY^2) > (a.Data.MiddlePointX^2 + a.Data.MiddlePointY^2); end)
 					}
-	currentSort = sortingMethods.ByName;
+	CurrentSort = sortingMethods.ByName;
+	Close = close;
     showMenu();
 end
 
 function showMenu()
-	if Game.Us == nil then UI.Alert("You are not in the game"); return; end
+	if Game.Us == nil then UI.Alert("You are not in the game"); Close(); return; end
 	
 	if playerTerritories == nil or turnNumber ~= Game.Game.TurnNumber then
 		turnNumber = Game.Game.TurnNumber;
@@ -128,8 +129,8 @@ function showTextByLocation(vert)
 end
 
 function sortTerritories(func)
-	currentSort = func;
-	table.sort(playerTerritories, currentSort); 
+	CurrentSort = func;
+	table.sort(playerTerritories, CurrentSort); 
 	showNthPage(1);
 end
 
@@ -141,5 +142,5 @@ function getTerritories()
 			table.insert(playerTerritories, {ID = terrID, Data = Game.Map.Territories[terrID], Standing = Game.LatestStanding.Territories[terrID]});
 		end
 	end
-	table.sort(playerTerritories, currentSort);
+	table.sort(playerTerritories, CurrentSort);
 end
