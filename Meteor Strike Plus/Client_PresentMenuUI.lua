@@ -66,7 +66,6 @@ function showForecast()
         stormsThisTurn = {};
         CreateLabel(root).SetText("Expected storms coming turn").SetColor(colors.TextColor);
         for _, rain in ipairs(Mod.Settings.Data.Normal) do
-            print(rain.Name);
             if not rain.NotEveryTurn or (TurnNumber >= rain.StartStorm and TurnNumber <= rain.EndStorm) or (Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= nil and Mod.PublicGameData.NormalStormsStartTurn[rain.ID] ~= 0 and TurnNumber >= Mod.PublicGameData.NormalStormsStartTurn[rain.ID] and TurnNumber <= (rain.EndStorm - rain.StartStorm + 1) + Mod.PublicGameData.NormalStormsStartTurn[rain.ID]) then
                 table.insert(stormsThisTurn, {Probability = rain.ChanceofFalling, Name = rain.Name, StormType = "Normal", Data = rain});
             elseif rain.NotEveryTurn and rain.Repeat and Mod.PublicGameData.NormalStormsLastTurn[rain.ID] > 0 and TurnNumber >= Mod.PublicGameData.NormalStormsLastTurn[rain.ID] + rain.RepeatAfterMin and TurnNumber <= Mod.PublicGameData.NormalStormsLastTurn[rain.ID] + rain.RepeatAfterMax then
@@ -74,7 +73,6 @@ function showForecast()
             end
         end
         for _, rain in ipairs(Mod.Settings.Data.Special) do
-            print(rain.Name);
             if not rain.RandomTurn and TurnNumber == rain.FixedTurn then
                 table.insert(stormsThisTurn, {Probability = 100, Name = rain.Name, StormType = "Doomsday", Data = rain});
             elseif rain.RandomTurn and TurnNumber >= rain.MinTurnNumber and TurnNumber <= rain.MaxTurnNumber and Mod.PublicGameData.DoomsdaysLastTurn[rain.ID] == 0 then
@@ -89,6 +87,7 @@ function showForecast()
         end
 
         stormsThisTurn = table.sort(stormsThisTurn, function(a, b) return a.Probability < b.Probability; end);
+        print(stormsThisTurn);
     end
     
     for _, rain in ipairs(stormsThisTurn or {}) do
