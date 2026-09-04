@@ -30,7 +30,7 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 		local armies = getNumArmies(game, terrID);
 		mod.AddArmies = -(armies * (per / 100));
 		local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a cannon at " .. game.Map.Territories[from].Name .. " for " .. per .. "% damage", {}, {mod});
-		if game.Settings.CommerceGame and Mod.Settings.UseGold then
+		if game.Settings.CommerceGame and Mod.Settings.UseGold and game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -(Mod.Settings.GoldCost or 0)}};
 		end
 		event.JumpToActionSpotOpt = createRectangleVM(game, terrID);
@@ -55,7 +55,7 @@ function artilleryStrike(game, addNewOrder, artillery, terrID, from, per)
 			annotations[i] = WL.TerritoryAnnotation.Create(mod.AddArmies, 5, annotationColor);
 		end
 		local event = WL.GameOrderEvent.Create(game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID, game.Map.Territories[terrID].Name .. " was attacked by a mortar at " .. game.Map.Territories[from].Name, {}, mods);
-		if game.Settings.CommerceGame then
+		if game.Settings.CommerceGame and game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID ~= WL.PlayerID.Neutral then
 			event.AddResourceOpt = {[game.ServerGame.LatestTurnStanding.Territories[from].OwnerPlayerID] = {[WL.ResourceType.Gold] = -(Mod.Settings.GoldCost or 0)}};
 		end
 		event.TerritoryAnnotationsOpt = annotations;
